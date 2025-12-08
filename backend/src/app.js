@@ -12,6 +12,7 @@ const spotifyRoutes = require('./routes/spotifyRoutes');
 const analyticsRoutes = require('./routes/analyticsRoutes');
 const llmRoutes = require('./routes/llmRoutes');
 const seedRoutes = require('./routes/seedRoutes');
+const feedbackRoutes = require('./routes/feedbackRoutes');
 
 const app = express();
 
@@ -58,6 +59,7 @@ app.use('/api/spotify', spotifyRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/llm', llmRoutes);
 app.use('/api/seed', seedRoutes); // Mounted seed route
+app.use('/api/feedback', feedbackRoutes);
 
 app.get('/api/health', (req, res) => {
   res.status(200).json({ status: 'ok', timestamp: new Date() });
