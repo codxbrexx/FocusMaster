@@ -19,7 +19,9 @@ const connectDB = async () => {
       console.log(`MongoDB Connected (In-Memory): ${conn.connection.host}`);
     } catch (fallbackError) {
        console.error(`Fallback Error: ${fallbackError.message}`);
-       process.exit(1);
+       console.error(`Fallback Error: ${fallbackError.message}`);
+       // Don't exit process in Vercel/Production, just log error so other routes might work or returning 500
+       // process.exit(1); 
     }
   }
 };

@@ -56,6 +56,10 @@ app.use('/api/analytics', analyticsRoutes);
 app.use('/api/llm', llmRoutes);
 app.use('/api/seed', seedRoutes); // Mounted seed route
 
+app.get('/api/health', (req, res) => {
+  res.status(200).json({ status: 'ok', timestamp: new Date() });
+});
+
 app.get('/', (req, res) => {
   res.send('FocusMaster API is running...');
 });
