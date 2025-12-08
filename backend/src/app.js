@@ -26,6 +26,9 @@ app.use(cors({
     // Allow explicitly configured origins
     if (allowedOrigins.includes(origin)) return callback(null, true);
 
+    // Allow Vercel deployments automatically
+    if (origin && origin.endsWith('.vercel.app')) return callback(null, true);
+
     // In development allow any localhost:<port> origin so Vite's dynamic ports don't block requests
     if (process.env.NODE_ENV !== 'production') {
       try {
