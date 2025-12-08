@@ -1,14 +1,15 @@
-// import { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Button } from '../components/ui/button';
-// // import { Input } from '../components/ui/input';
+import { Input } from '../components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../components/ui/card';
 import { Lock, ArrowRight } from 'lucide-react';
 // import { Mail, Loader2 } from 'lucide-react';
 // import { toast } from 'sonner';
 
 export function Login() {
+  const [guestName, setGuestName] = useState('');
   //   const [email, setEmail] = useState('');
   //   const [password, setPassword] = useState('');
   //   const [isLoading, setIsLoading] = useState(false);
@@ -95,18 +96,29 @@ export function Login() {
               <p>FocusMaster is currently in Guest Preview mode.</p>
             </div>
 
-            <Button
-              type="button"
-              variant="default"
-              className="w-full"
-              size="lg"
-              onClick={() => {
-                loginAsGuest();
-                navigate('/');
-              }}
-            >
-              Continue as Guest <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
+            <div className="space-y-4">
+              <div className="space-y-2 text-left">
+                <Input
+                  type="text"
+                  placeholder="Enter your name (Optional)"
+                  value={guestName}
+                  onChange={(e) => setGuestName(e.target.value)}
+                  className="text-center"
+                />
+              </div>
+
+              <Button
+                type="button"
+                className="w-full"
+                size="lg"
+                onClick={() => {
+                  loginAsGuest(guestName);
+                  navigate('/');
+                }}
+              >
+                Continue as Guest <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </div>
           </form>
 
           <div className="mt-6 text-center text-sm text-muted-foreground">

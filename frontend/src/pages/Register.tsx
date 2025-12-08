@@ -1,14 +1,15 @@
-// import { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Button } from '../components/ui/button';
-// import { Input } from '../components/ui/input';
+import { Input } from '../components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../components/ui/card';
 import { User, ArrowRight } from 'lucide-react';
 // import { Lock, Mail, Loader2 } from 'lucide-react';
 // import { toast } from 'sonner';
 
 export function Register() {
+  const [guestName, setGuestName] = useState('');
   //   const [name, setName] = useState('');
   //   const [email, setEmail] = useState('');
   //   const [password, setPassword] = useState('');
@@ -111,17 +112,29 @@ export function Register() {
               Registration is currently disabled. Please use the Guest mode to access all features.
             </p>
 
-            <Button
-              type="button"
-              className="w-full"
-              size="lg"
-              onClick={() => {
-                loginAsGuest();
-                navigate('/');
-              }}
-            >
-              Start as Guest <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
+            <div className="space-y-4">
+              <div className="space-y-2 text-left">
+                <Input
+                  type="text"
+                  placeholder="Enter your name (Optional)"
+                  value={guestName}
+                  onChange={(e) => setGuestName(e.target.value)}
+                  className="text-center"
+                />
+              </div>
+
+              <Button
+                type="button"
+                className="w-full"
+                size="lg"
+                onClick={() => {
+                  loginAsGuest(guestName);
+                  navigate('/');
+                }}
+              >
+                Start as Guest <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </div>
           </div>
 
           <div className="mt-6 text-center text-sm text-muted-foreground">

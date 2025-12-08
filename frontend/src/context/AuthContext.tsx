@@ -16,7 +16,7 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<void>;
   register: (name: string, email: string, password: string) => Promise<void>;
   logout: () => void;
-  loginAsGuest: () => Promise<void>;
+  loginAsGuest: (name?: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -88,9 +88,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     toast.success('Logged out');
   };
 
-  const loginAsGuest = async () => {
+  const loginAsGuest = async (name?: string) => {
     try {
-      const { data } = await api.post('/auth/guest');
+      const { data } = await api.post('/auth/guest', { name });
       // Token set in cookie
       localStorage.setItem('isGuest', 'true');
       setUser(data);

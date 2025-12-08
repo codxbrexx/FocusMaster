@@ -29,7 +29,7 @@ const authUser = asyncHandler(async (req, res) => {
 // @access  Public
 const loginGuest = asyncHandler(async (req, res) => {
   const guestId = require('crypto').randomBytes(4).toString('hex');
-  const name = `Guest ${guestId}`;
+  const name = req.body.name || `Guest ${guestId}`;
   const email = `guest_${guestId}_${Date.now()}@temp.focusmaster`;
   const password = require('crypto').randomBytes(10).toString('hex');
 
