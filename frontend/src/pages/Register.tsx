@@ -1,4 +1,4 @@
-import { useState } from 'react';
+// import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Button } from '../components/ui/button';
@@ -6,14 +6,14 @@ import { Button } from '../components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../components/ui/card';
 import { User, ArrowRight } from 'lucide-react';
 // import { Lock, Mail, Loader2 } from 'lucide-react';
-import { toast } from 'sonner';
+// import { toast } from 'sonner';
 
 export function Register() {
   //   const [name, setName] = useState('');
   //   const [email, setEmail] = useState('');
   //   const [password, setPassword] = useState('');
   //   const [isLoading, setIsLoading] = useState(false);
-  const { register, loginAsGuest } = useAuth();
+  const { loginAsGuest } = useAuth();
   const navigate = useNavigate();
 
   //   const handleSubmit = async (e: React.FormEvent) => {
