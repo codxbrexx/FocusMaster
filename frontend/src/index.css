@@ -65,4 +65,270 @@
     --matrix-bg: #0c0c0e;
     --matrix-dot: #27272a;
   }
-  
+
+  /* SHARED DARK VARS */
+  :is(.dark, .blue, .green, .purple) {
+    --chart-1: 250 89% 70%;
+    --chart-2: 173 80% 50%;
+    --chart-3: 38 92% 60%;
+    --chart-4: 340 75% 65%;
+    --chart-5: 220 14% 56%;
+    --success: 142 76% 46%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 92% 60%;
+    --warning-foreground: 0 0% 100%;
+    --shadow-glow: 0 0 60px hsl(250 89% 67% / 0.4);
+    --shadow-glow-lg: 0 0 120px hsl(250 89% 67% / 0.5);
+  }
+
+  .light {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 10% 3.9%;
+    
+    /* White Matrix with Black Dot */
+    --matrix-bg: #ffffff;
+    --matrix-dot: #e4e4e7; /* Zinc-200 for subtle "black" dot feel, true black is too noisy. Or requested 'black dot'? I'll allow semi-transparent black in gradient or solid dark gray */
+    
+    /* Re-defined dots to be sharper if user wants 'black dot' */
+    --matrix-bg: #ffffff;
+    --matrix-dot: #000000; /* As requested */
+
+    /* Light Charts */
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+    --shadow-glow: 0 0 40px rgba(0,0,0,0.1);
+    --shadow-glow-lg: 0 0 80px rgba(0,0,0,0.15);
+  }
+
+  .dark {
+    /* Charcoal Matrix */
+    --background: 224 71% 4%;
+    --foreground: 213 31% 91%;
+    --card: 224 71% 8%;
+    --card-foreground: 213 31% 91%;
+    --popover: 224 71% 8%;
+    --popover-foreground: 213 31% 91%;
+    --primary: 250 89% 67%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 215 28% 17%;
+    --secondary-foreground: 213 31% 91%;
+    --muted: 215 28% 17%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 250 50% 20%;
+    --accent-foreground: 250 89% 80%;
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 215 28% 17%;
+    --input: 215 28% 17%;
+    --ring: 250 89% 67%;
+
+    --matrix-bg: #0c0c0e;
+    --matrix-dot: #27272a;
+  }
+
+  .blue {
+    /* Navy Matrix */
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+    --card: 222 47% 13%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222 47% 11%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217 91% 60%;
+    --primary-foreground: 222 47% 11%;
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 217 33% 17%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217 33% 20%;
+    --input: 217 33% 17%;
+    --ring: 217 91% 60%;
+    
+    --matrix-bg: #020617;
+    --matrix-dot: #1e293b;
+  }
+
+  .green {
+    /* Forest Matrix */
+    --background: 164 23% 7%;
+    --foreground: 142 70% 96%;
+    --card: 164 23% 10%;
+    --card-foreground: 142 70% 96%;
+    --popover: 164 23% 7%;
+    --popover-foreground: 142 70% 96%;
+    --primary: 142 70% 50%;
+    --primary-foreground: 145 80% 10%;
+    --secondary: 162 20% 15%;
+    --secondary-foreground: 142 70% 96%;
+    --muted: 162 20% 15%;
+    --muted-foreground: 155 15% 65%;
+    --accent: 162 20% 15%;
+    --accent-foreground: 142 70% 96%;
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 162 20% 18%;
+    --input: 162 20% 15%;
+    --ring: 142 70% 50%;
+
+    --matrix-bg: #020905;
+    --matrix-dot: #064e3b;
+  }
+}
+
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+  }
+
+  .bg-matrix {
+    background-color: var(--matrix-bg) !important;
+    background-image: radial-gradient(circle, var(--matrix-dot) 1.5px, transparent 1.5px) !important;
+    background-size: 32px 32px;
+    background-position: center;
+    background-repeat: repeat;
+  }
+
+  body {
+    background-color: var(--matrix-bg);
+    background-image: radial-gradient(circle, var(--matrix-dot) 1.5px, transparent 1.5px);
+    background-size: 32px 32px;
+    background-position: center;
+    background-repeat: repeat;
+    background-attachment: fixed;
+    color: hsl(var(--foreground));
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background-color: hsl(var(--primary) / 0.2);
+    color: hsl(var(--primary));
+  }
+}
+
+@layer components {
+  .focus-gradient {
+    background-image: linear-gradient(
+      to bottom right,
+      hsl(var(--background)),
+      hsl(var(--card)),
+      hsl(var(--accent) / 0.3)
+    );
+  }
+
+  .glass-card {
+    background-color: hsl(var(--card) / 0.8);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid hsl(var(--border) / 0.5);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  }
+
+  .glass-panel {
+    background-color: hsl(var(--background) / 0.6);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    border: 1px solid hsl(var(--border) / 0.3);
+  }
+
+  .timer-ring {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 1s linear;
+  }
+
+  .glow-primary {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .glow-primary-lg {
+    box-shadow: var(--shadow-glow-lg);
+  }
+
+  .animate-pulse-slow {
+    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    background-image: linear-gradient(
+      to right,
+      hsl(var(--primary)),
+      hsl(var(--accent-foreground)),
+      hsl(var(--primary))
+    );
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes glow {
+  from {
+    box-shadow:
+      0 0 20px hsl(var(--primary) / 0.3),
+      0 0 40px hsl(var(--primary) / 0.2);
+  }
+  to {
+    box-shadow:
+      0 0 40px hsl(var(--primary) / 0.5),
+      0 0 80px hsl(var(--primary) / 0.3);
+  }
+}
