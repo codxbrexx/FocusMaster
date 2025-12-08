@@ -1,15 +1,15 @@
-import { useState } from 'react';
+// import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Button } from '../components/ui/button';
-import { Input } from '../components/ui/input';
+// import { Input } from '../components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../components/ui/card';
 import { Lock, ArrowRight } from 'lucide-react';
 // import { Mail, Loader2 } from 'lucide-react';
 // import { toast } from 'sonner';
 
 export function Login() {
-  const [guestName, setGuestName] = useState('');
+  // const [guestName, setGuestName] = useState('');
   //   const [email, setEmail] = useState('');
   //   const [password, setPassword] = useState('');
   //   const [isLoading, setIsLoading] = useState(false);
@@ -97,22 +97,15 @@ export function Login() {
             </div>
 
             <div className="space-y-4">
-              <div className="space-y-2 text-left">
-                <Input
-                  type="text"
-                  placeholder="Enter your name (Optional)"
-                  value={guestName}
-                  onChange={(e) => setGuestName(e.target.value)}
-                  className="text-center"
-                />
-              </div>
-
+              <p className="text-center text-muted-foreground">
+                Continue seamlessly. We'll save your progress.
+              </p>
               <Button
                 type="button"
-                className="w-full"
+                className="w-full rounded-lg"
                 size="lg"
                 onClick={() => {
-                  loginAsGuest(guestName);
+                  loginAsGuest();
                   navigate('/');
                 }}
               >

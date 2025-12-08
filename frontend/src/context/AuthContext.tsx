@@ -16,7 +16,7 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<void>;
   register: (name: string, email: string, password: string) => Promise<void>;
   logout: () => void;
-  loginAsGuest: (name?: string) => Promise<void>;
+  loginAsGuest: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -83,21 +83,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       console.error('Logout error', error);
     }
     localStorage.removeItem('isGuest');
+    localStorage.removeItem('guest_id'); // Clear guest ID on logout
     setUser(null);
     setIsAuthenticated(false);
     toast.success('Logged out');
   };
 
-  const loginAsGuest = async (name?: string) => {
+  const loginAsGuest = async () => {
     try {
-      const { data } = await api.post('/auth/guest', { name });
-      // Token set in cookie
+      // client-side "sticky" session ID to resume data
+      const savedId = localStorage.getItem('guest_id');
+
+      const { data } = await api.post('/auth/guest', { guestId: savedId });
+
+      // Save ID for next time
+      localStorage.setItem('guest_id', data._id);
       localStorage.setItem('isGuest', 'true');
+
       setUser(data);
       setIsAuthenticated(true);
       toast.success('Welcome! You are now using a guest account.');
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || 'Guest login failed');
+      return data;
+    } catch (error) {
+      console.error('Guest login error:', error);
+      toast.error('Guest login failed'); // Added toast for guest login failure
+      throw error;
     }
   };
 

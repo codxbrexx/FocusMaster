@@ -28,30 +28,36 @@ const authUser = asyncHandler(async (req, res) => {
 // @route   POST /api/auth/guest
 // @access  Public
 const loginGuest = asyncHandler(async (req, res) => {
-  const guestId = require('crypto').randomBytes(4).toString('hex');
-  const name = req.body.name || `Guest ${guestId}`;
-  const email = `guest_${guestId}_${Date.now()}@temp.focusmaster`;
-  const password = require('crypto').randomBytes(10).toString('hex');
-
-  const user = await User.create({
-    name,
-    email,
-    password,
-    isGuest: true,
-  });
-
-  if (user) {
-    generateToken(res, user._id);
-    res.status(201).json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      isGuest: user.isGuest,
-    });
-  } else {
-    res.status(400);
-    throw new Error('Invalid user data');
+  let user;
+  
+  // Try to resume existing guest session if ID provided
+  if (req.body.guestId) {
+    user = await User.findById(req.body.guestId);
   }
+
+  // If no user found (or no ID provided), create new one
+  if (!user) {
+      const guestId = require('crypto').randomBytes(4).toString('hex');
+      const name = `Guest ${guestId}`;
+      const email = `guest_${guestId}_${Date.now()}@temp.focusmaster`;
+      const password = require('crypto').randomBytes(10).toString('hex');
+
+      user = await User.create({
+        name,
+        email,
+        password,
+        isGuest: true // Flag to identify guest accounts
+      });
+  }
+
+  generateToken(res, user._id);
+
+  res.status(200).json({
+    _id: user._id,
+    name: user.name,
+    email: user.email,
+    isGuest: user.isGuest
+  });
 });
 
 // @desc    Register a new user

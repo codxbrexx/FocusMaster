@@ -1,15 +1,15 @@
-import { useState } from 'react';
+// import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Button } from '../components/ui/button';
-import { Input } from '../components/ui/input';
+// import { Input } from '../components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../components/ui/card';
 import { User, ArrowRight } from 'lucide-react';
 // import { Lock, Mail, Loader2 } from 'lucide-react';
 // import { toast } from 'sonner';
 
 export function Register() {
-  const [guestName, setGuestName] = useState('');
+  // const [guestName, setGuestName] = useState('');
   //   const [name, setName] = useState('');
   //   const [email, setEmail] = useState('');
   //   const [password, setPassword] = useState('');
@@ -112,22 +112,12 @@ export function Register() {
             </p>
 
             <div className="space-y-4">
-              <div className="space-y-2 text-left">
-                <Input
-                  type="text"
-                  placeholder="Enter your name (Optional)"
-                  value={guestName}
-                  onChange={(e) => setGuestName(e.target.value)}
-                  className="text-center"
-                />
-              </div>
-
               <Button
                 type="button"
                 className="w-full"
                 size="lg"
                 onClick={() => {
-                  loginAsGuest(guestName);
+                  loginAsGuest();
                   navigate('/');
                 }}
               >
