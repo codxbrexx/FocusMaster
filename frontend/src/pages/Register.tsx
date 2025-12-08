@@ -107,7 +107,6 @@ export function Register() {
           </form>
           */}
           <div className="text-center space-y-6 py-4">
-
             <p className="text-muted-foreground">
               Registration is currently disabled. Please use the Guest mode to access all features.
             </p>
