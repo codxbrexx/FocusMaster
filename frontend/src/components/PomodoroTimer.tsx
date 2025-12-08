@@ -11,10 +11,10 @@ import {
 import { Card, CardContent } from './ui/card';
 import { Button } from './ui/button';
 
-import { useTaskStore } from '../../../../FocusMaster (Copy)/frontend/src/store/useTaskStore';
-import { useHistoryStore } from '../../../../FocusMaster (Copy)/frontend/src/store/useHistoryStore';
-import { useTimerStore } from '../../../../FocusMaster (Copy)/frontend/src/store/useTimerStore';
-import type { TimerMode } from '../../../../FocusMaster (Copy)/frontend/src/store/useTimerStore';
+import { useTaskStore } from '../store/useTaskStore';
+import { useHistoryStore } from '../store/useHistoryStore';
+import { useTimerStore } from '../store/useTimerStore';
+import type { TimerMode } from '../store/useTimerStore';
 import { MoodSelectionModal } from './pomodoro/MoodSelectionModal';
 import { FocusModeOverlay } from './pomodoro/FocusModeOverlay';
 
