@@ -26,29 +26,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Check for existing token on load
   useEffect(() => {
     const checkAuth = async () => {
-      const token = localStorage.getItem('token');
-      // Check if temporary guest
       const isGuest = localStorage.getItem('isGuest') === 'true';
 
-      if (token) {
-        try {
-          // Verify token and get user
-          const { data } = await api.get('/auth/profile');
-          setUser(data);
-          setIsAuthenticated(true);
-        } catch (error) {
-          console.error('Auth check failed', error);
-          localStorage.removeItem('token');
-          setIsAuthenticated(false); // Ensure isAuthenticated is false on failure
-        }
-      } else if (isGuest) {
-        setUser({ _id: 'guest', name: 'Guest User', email: 'guest@daylite.app' });
+      try {
+        const { data } = await api.get('/auth/profile');
+        setUser(data);
         setIsAuthenticated(true);
+      } catch (error) {
+        if (isGuest) {
+          setUser({ _id: 'guest', name: 'Guest User', email: 'guest@daylite.app' });
+          setIsAuthenticated(true);
+        } else {
+          setUser(null);
+          setIsAuthenticated(false);
+        }
+      } finally {
+        setIsLoading(false);
       }
-      setIsLoading(false);
     };
 
     checkAuth();
@@ -57,7 +53,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = async (email: string, password: string) => {
     try {
       const { data } = await api.post('/auth/login', { email, password });
-      localStorage.setItem('token', data.token);
       localStorage.removeItem('isGuest');
       setUser(data);
       setIsAuthenticated(true);
@@ -71,7 +66,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const register = async (name: string, email: string, password: string) => {
     try {
       const { data } = await api.post('/auth/register', { name, email, password });
-      localStorage.setItem('token', data.token);
       localStorage.removeItem('isGuest');
       setUser(data);
       setIsAuthenticated(true);
@@ -88,25 +82,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } catch (error) {
       console.error('Logout error', error);
     }
-    localStorage.removeItem('token');
     localStorage.removeItem('isGuest');
     setUser(null);
-    setIsAuthenticated(false); // Ensure this is set
+    setIsAuthenticated(false);
     toast.success('Logged out');
   };
 
   const loginAsGuest = async () => {
     try {
       const { data } = await api.post('/auth/guest');
-      localStorage.setItem('token', data.token); // Assuming backend returns token
-      // Backend returns isGuest in user object, but we can also set it explicitly if needed for logic
+      // Token set in cookie
       localStorage.setItem('isGuest', 'true');
       setUser(data);
       setIsAuthenticated(true);
       toast.success('Welcome! You are now using a guest account.');
     } catch (error: any) {
       toast.error(error.response?.data?.message || 'Guest login failed');
-      // Fallback to local guest mode if offline? (Optional, but let's stick to valid backend auth)
     }
   };
 

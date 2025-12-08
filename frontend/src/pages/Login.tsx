@@ -2,35 +2,36 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Button } from '../components/ui/button';
-import { Input } from '../components/ui/input';
+// // import { Input } from '../components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../components/ui/card';
-import { Lock, Mail, Loader2, ArrowRight } from 'lucide-react';
+import { Lock, ArrowRight } from 'lucide-react';
+// import { Mail, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 export function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  //   const [email, setEmail] = useState('');
+  //   const [password, setPassword] = useState('');
+  //   const [isLoading, setIsLoading] = useState(false);
   const { login, loginAsGuest } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email || !password) {
-      toast.error('Please fill in all fields');
-      return;
-    }
-
-    setIsLoading(true);
-    try {
-      await login(email, password);
-      navigate('/');
-    } catch (error) {
-      // Error handled in AuthContext
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  //   const handleSubmit = async (e: React.FormEvent) => {
+  //     e.preventDefault();
+  //     if (!email || !password) {
+  //       toast.error('Please fill in all fields');
+  //       return;
+  //     }
+  // 
+  //     setIsLoading(true);
+  //     try {
+  //       await login(email, password);
+  //       navigate('/');
+  //     } catch (error) {
+  //       // Error handled in AuthContext
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background px-4">
@@ -48,7 +49,8 @@ export function Login() {
           <CardDescription>Enter your email to sign in to your account</CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={(e) => e.preventDefault()} className="space-y-4">
+            {/* 
             <div className="space-y-2">
               <div className="relative">
                 <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -87,16 +89,23 @@ export function Login() {
                 </>
               )}
             </Button>
+            */}
+
+            <div className="text-center mb-4 text-muted-foreground">
+              <p>FocusMaster is currently in Guest Preview mode.</p>
+            </div>
+
             <Button
               type="button"
-              variant="outline"
-              className="w-full mt-2"
+              variant="default"
+              className="w-full"
+              size="lg"
               onClick={() => {
                 loginAsGuest();
                 navigate('/');
               }}
             >
-              Continue as Guest
+              Continue as Guest <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </form>
 
