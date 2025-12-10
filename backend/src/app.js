@@ -21,16 +21,12 @@ const allowedOrigins = (process.env.FRONTEND_URLS || process.env.FRONTEND_URL ||
 
 app.use(cors({
   origin: function(origin, callback) {
-    // Allow requests with no origin (like curl, server-to-server)
     if (!origin) return callback(null, true);
 
-    // Allow explicitly configured origins
     if (allowedOrigins.includes(origin)) return callback(null, true);
 
-    // Allow Vercel deployments automatically
     if (origin && origin.endsWith('.vercel.app')) return callback(null, true);
 
-    // In development allow any localhost:<port> origin so Vite's dynamic ports don't block requests
     if (process.env.NODE_ENV !== 'production') {
       try {
         const u = new URL(origin);
@@ -58,7 +54,7 @@ app.use('/api/clock', workLogRoutes);
 app.use('/api/spotify', spotifyRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/llm', llmRoutes);
-app.use('/api/seed', seedRoutes); // Mounted seed route
+app.use('/api/seed', seedRoutes); 
 app.use('/api/feedback', feedbackRoutes);
 
 app.get('/api/health', (req, res) => {

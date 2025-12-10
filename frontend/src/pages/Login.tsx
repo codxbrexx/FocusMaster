@@ -1,38 +1,36 @@
-// import { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Button } from '../components/ui/button';
-// import { Input } from '../components/ui/input';
+import { Input } from '../components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../components/ui/card';
-import { Lock, ArrowRight } from 'lucide-react';
-// import { Mail, Loader2 } from 'lucide-react';
-// import { toast } from 'sonner';
+import { Lock, ArrowRight, Mail, Loader2 } from 'lucide-react';
+import { toast } from 'sonner';
 
 export function Login() {
-  // const [guestName, setGuestName] = useState('');
-  //   const [email, setEmail] = useState('');
-  //   const [password, setPassword] = useState('');
-  //   const [isLoading, setIsLoading] = useState(false);
-  const { loginAsGuest } = useAuth();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const { login, loginAsGuest } = useAuth();
   const navigate = useNavigate();
 
-  //   const handleSubmit = async (e: React.FormEvent) => {
-  //     e.preventDefault();
-  //     if (!email || !password) {
-  //       toast.error('Please fill in all fields');
-  //       return;
-  //     }
-  // 
-  //     setIsLoading(true);
-  //     try {
-  //       await login(email, password);
-  //       navigate('/');
-  //     } catch (error) {
-  //       // Error handled in AuthContext
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   };
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email || !password) {
+      toast.error('Please fill in all fields');
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      await login(email, password);
+      navigate('/');
+    } catch (error) {
+      // Error handled in AuthContext
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background px-4">
@@ -50,8 +48,7 @@ export function Login() {
           <CardDescription>Enter your email to sign in to your account</CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={(e) => e.preventDefault()} className="space-y-4">
-            {/* 
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <div className="relative">
                 <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -90,28 +87,27 @@ export function Login() {
                 </>
               )}
             </Button>
-            */}
 
-            <div className="text-center mb-4 text-muted-foreground">
-              <p>FocusMaster is currently in Guest Preview mode.</p>
+            <div className="relative my-4">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
+              </div>
             </div>
 
-            <div className="space-y-4">
-              <p className="text-center text-muted-foreground">
-                Continue seamlessly. We'll save your progress.
-              </p>
-              <Button
-                type="button"
-                className="w-full rounded-lg"
-                size="lg"
-                onClick={() => {
-                  loginAsGuest();
-                  navigate('/');
-                }}
-              >
-                Continue as Guest <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </div>
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full"
+              onClick={() => {
+                loginAsGuest();
+                navigate('/');
+              }}
+            >
+              Continue as Guest
+            </Button>
           </form>
 
           <div className="mt-6 text-center text-sm text-muted-foreground">

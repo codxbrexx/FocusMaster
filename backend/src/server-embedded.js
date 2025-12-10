@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 const app = require('./app');
 
-const PORT = 5000; // Force 5000 to match frontend expectation
+const PORT = 5000; // force to 5000
 
 const startServer = async () => {
   try {
@@ -11,9 +11,8 @@ const startServer = async () => {
     console.log('Starting embedded MongoDB...');
     const mongod = await MongoMemoryServer.create({
         instance: {
-            port: 27017, // Try to bind default port if possible, or just let it pick random
-            // actually, the backend app connects using process.env.MONGO_URI, so random port is fine
-        }
+            port: 27017,         
+      }
     });
     const uri = mongod.getUri();
     console.log(`MongoMemoryServer started at ${uri}`);

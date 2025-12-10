@@ -6,23 +6,7 @@ const connectDB = async () => {
     console.log(`MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
     console.error(`Error connecting to MongoDB: ${error.message}`);
-    console.log('Attempting to start in-memory MongoDB...');
-    
-    try {
-      // Dynamic import to avoid issues if dependency is missing in prod
-      const { MongoMemoryServer } = require('mongodb-memory-server');
-      const mongod = await MongoMemoryServer.create();
-      const uri = mongod.getUri();
-      
-      console.log(`In-memory MongoDB started at: ${uri}`);
-      const conn = await mongoose.connect(uri);
-      console.log(`MongoDB Connected (In-Memory): ${conn.connection.host}`);
-    } catch (fallbackError) {
-       console.error(`Fallback Error: ${fallbackError.message}`);
-       console.error(`Fallback Error: ${fallbackError.message}`);
-       // Don't exit process in Vercel/Production, just log error so other routes might work or returning 500
-       // process.exit(1); 
-    }
+    process.exit(1);
   }
 };
 

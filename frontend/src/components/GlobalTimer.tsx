@@ -44,7 +44,6 @@ export function GlobalTimer() {
         // We don't want to reset timeLeft if it's running.
         if (!isActive && timeLeft === totalDuration) {
             const newDuration = durationMap[mode];
-            // Only update if the duration actually needs changing to prevent infinite loop
             if (totalDuration !== newDuration) {
                 setTotalDuration(newDuration);
             }
@@ -75,8 +74,6 @@ export function GlobalTimer() {
         }
 
         const endTime = new Date();
-        // Start time is approx endTime - duration (since we don't track exact start in store yet, 
-        // but accurate enough for history logs)
         const startTime = new Date(endTime.getTime() - (mode === 'pomodoro' ? settings.pomodoroDuration : (mode === 'short-break' ? settings.shortBreakDuration : settings.longBreakDuration)) * 60 * 1000);
 
         // Save to history
@@ -85,7 +82,7 @@ export function GlobalTimer() {
             duration: (mode === 'pomodoro' ? settings.pomodoroDuration : (mode === 'short-break' ? settings.shortBreakDuration : settings.longBreakDuration)),
             startTime,
             endTime,
-            tag: 'Focus', // Default tag if global store doesn't have it. Ideally we lift 'selectedTag' to store too.
+            tag: 'Focus', 
             mood: undefined
         });
 
@@ -95,14 +92,12 @@ export function GlobalTimer() {
                 description: "Take a break, you earned it.",
                 duration: 5000,
             });
-            // Note: We don't verify tasks here automatically unless we store 'selectedTaskId' in global store too.
-            // For now, user has to manually verify in the modal if they are on the page.
 
             // If auto-start break is on
             if (settings.autoStartBreak) {
                 setMode('short-break');
                 const breakDuration = settings.shortBreakDuration * 60;
-                setTotalDuration(breakDuration); // Start fresh
+                setTotalDuration(breakDuration); 
                 setIsActive(true);
             }
         } else {
@@ -118,5 +113,5 @@ export function GlobalTimer() {
         }
     };
 
-    return null; // This component handles logic only
+    return null; 
 }

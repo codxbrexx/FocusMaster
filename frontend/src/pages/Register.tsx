@@ -1,39 +1,37 @@
-// import { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Button } from '../components/ui/button';
-// import { Input } from '../components/ui/input';
+import { Input } from '../components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../components/ui/card';
-import { User, ArrowRight } from 'lucide-react';
-// import { Lock, Mail, Loader2 } from 'lucide-react';
-// import { toast } from 'sonner';
+import { User, ArrowRight, Lock, Mail, Loader2 } from 'lucide-react';
+import { toast } from 'sonner';
 
 export function Register() {
-  // const [guestName, setGuestName] = useState('');
-  //   const [name, setName] = useState('');
-  //   const [email, setEmail] = useState('');
-  //   const [password, setPassword] = useState('');
-  //   const [isLoading, setIsLoading] = useState(false);
-  const { loginAsGuest } = useAuth();
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const { register, loginAsGuest } = useAuth();
   const navigate = useNavigate();
 
-  //   const handleSubmit = async (e: React.FormEvent) => {
-  //     e.preventDefault();
-  //     if (!name || !email || !password) {
-  //       toast.error('Please fill in all fields');
-  //       return;
-  //     }
-  // 
-  //     setIsLoading(true);
-  //     try {
-  //       await register(name, email, password);
-  //       navigate('/');
-  //     } catch (error) {
-  //       // Error handled in AuthContext
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   };
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name || !email || !password) {
+      toast.error('Please fill in all fields');
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      await register(name, email, password);
+      navigate('/');
+    } catch (error) {
+      // Error handled in AuthContext
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background px-4">
@@ -51,7 +49,6 @@ export function Register() {
           <CardDescription>Enter your information to get started</CardDescription>
         </CardHeader>
         <CardContent>
-          {/* Form Hidden for Guest Mode
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <div className="relative">
@@ -104,27 +101,28 @@ export function Register() {
                 </>
               )}
             </Button>
-          </form>
-          */}
-          <div className="text-center space-y-6 py-4">
-            <p className="text-muted-foreground">
-              Registration is currently disabled. Please use the Guest mode to access all features.
-            </p>
 
-            <div className="space-y-4">
-              <Button
-                type="button"
-                className="w-full"
-                size="lg"
-                onClick={() => {
-                  loginAsGuest();
-                  navigate('/');
-                }}
-              >
-                Start as Guest <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
+            <div className="relative my-4">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
+              </div>
             </div>
-          </div>
+
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full"
+              onClick={() => {
+                loginAsGuest();
+                navigate('/');
+              }}
+            >
+              Start as Guest
+            </Button>
+          </form>
 
           <div className="mt-6 text-center text-sm text-muted-foreground">
             Already have an account?{' '}

@@ -15,10 +15,10 @@ const workLogSchema = mongoose.Schema(
       type: Date,
     },
     duration: {
-      type: Number, // in seconds
+      type: Number, 
     },
     breakTime: {
-      type: Number, // in seconds
+      type: Number, 
       default: 0
     },
     notes: {

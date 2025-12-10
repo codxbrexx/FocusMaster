@@ -37,19 +37,17 @@ const seedData = async () => {
         for (let i = 0; i < 365; i++) {
             const date = subDays(today, i);
             
-            // Random chance to have sessions on this day (60% chance)
             if (Math.random() > 0.4) {
-                // Random number of sessions (1 to 6)
                 const sessionCount = Math.floor(Math.random() * 6) + 1;
                 
                 for (let j = 0; j < sessionCount; j++) {
-                    const startTime = addMinutes(startOfDay(date), 480 + (j * 60)); // Start at 8 AM + j hours
+                    const startTime = addMinutes(startOfDay(date), 480 + (j * 60)); 
                     
                     sessions.push({
                         user: user._id,
                         type: 'focus',
                         startTime: startTime,
-                        duration: 1500, // 25 mins
+                        duration: 1500, 
                         completed: true,
                         mood: 'focused'
                     });

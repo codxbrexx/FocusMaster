@@ -26,7 +26,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
+useEffect(() => {
     const checkAuth = async () => {
       const isGuest = localStorage.getItem('isGuest') === 'true';
 
@@ -83,7 +83,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       console.error('Logout error', error);
     }
     localStorage.removeItem('isGuest');
-    localStorage.removeItem('guest_id'); // Clear guest ID on logout
+    localStorage.removeItem('guest_id'); 
     setUser(null);
     setIsAuthenticated(false);
     toast.success('Logged out');
@@ -106,7 +106,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return data;
     } catch (error) {
       console.error('Guest login error:', error);
-      toast.error('Guest login failed'); // Added toast for guest login failure
+      toast.error('Guest login failed'); 
       throw error;
     }
   };
