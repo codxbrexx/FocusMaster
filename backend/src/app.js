@@ -20,26 +20,7 @@ const app = express();
 const allowedOrigins = (process.env.FRONTEND_URLS || process.env.FRONTEND_URL || 'http://localhost:5173').split(',').map(s => s.trim()).filter(Boolean);
 
 app.use(cors({
-  origin: function(origin, callback) {
-    if (!origin) return callback(null, true);
-
-    if (allowedOrigins.includes(origin)) return callback(null, true);
-
-    if (origin && origin.endsWith('.vercel.app')) return callback(null, true);
-
-    if (process.env.NODE_ENV !== 'production') {
-      try {
-        const u = new URL(origin);
-        if ((u.hostname === 'localhost' || u.hostname === '127.0.0.1') && /^[0-9]+$/.test(u.port)) {
-          return callback(null, true);
-        }
-      } catch (e) {
-        // ignore parse errors
-      }
-    }
-
-    return callback(new Error('CORS policy: Origin not allowed'));
-  },
+  origin: true, // Allow any origin
   credentials: true
 }));
 app.use(express.json());
