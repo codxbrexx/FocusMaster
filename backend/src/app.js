@@ -15,6 +15,7 @@ const seedRoutes = require('./routes/seedRoutes');
 const feedbackRoutes = require('./routes/feedbackRoutes');
 
 const app = express();
+app.set('trust proxy', 1); // Trust first proxy (Vercel/Heroku) for secure cookies
 
 // Middleware
 const allowedOrigins = (process.env.FRONTEND_URLS || process.env.FRONTEND_URL || 'http://localhost:5173').split(',').map(s => s.trim()).filter(Boolean);
