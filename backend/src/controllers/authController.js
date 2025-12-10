@@ -31,8 +31,12 @@ const loginGuest = asyncHandler(async (req, res) => {
   let user;
   
   // Try to resume existing guest session if ID provided
-  if (req.body.guestId) {
-    user = await User.findById(req.body.guestId);
+  if (req.body.guestId && req.body.guestId.match(/^[0-9a-fA-F]{24}$/)) {
+    try {
+      user = await User.findById(req.body.guestId);
+    } catch (e) {
+      // Ignore invalid/expired guest IDs
+    }
   }
 
   // If no user found (or no ID provided), create new one
