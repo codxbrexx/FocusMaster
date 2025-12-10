@@ -20,7 +20,7 @@ const app = express();
 const allowedOrigins = (process.env.FRONTEND_URLS || process.env.FRONTEND_URL || 'http://localhost:5173').split(',').map(s => s.trim()).filter(Boolean);
 
 app.use(cors({
-  origin: true, // Allow any origin
+  origin: true,
   credentials: true
 }));
 app.use(express.json());
