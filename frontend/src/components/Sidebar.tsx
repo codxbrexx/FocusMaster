@@ -22,7 +22,7 @@ interface SidebarProps {
 }
 
 const MENU_ITEMS = [
-  { path: '/', label: 'Dashboard', icon: LayoutDashboard },
+  { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { path: '/pomodoro', label: 'Pomodoro', icon: Timer },
   { path: '/clock', label: 'Clock In/Out', icon: Clock },
   { path: '/tasks', label: 'Tasks', icon: ListTodo },
