@@ -103,7 +103,7 @@ export function Login() {
               className="w-full"
               onClick={() => {
                 loginAsGuest();
-                navigate('/');
+                navigate('/dashboard');
               }}
             >
               Continue as Guest
