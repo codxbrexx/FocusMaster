@@ -44,6 +44,9 @@ app.use('/api/llm', llmRoutes);
 app.use('/api/seed', seedRoutes); 
 app.use('/api/feedback', feedbackRoutes);
 
+//ignore it 
+app.get(['/favicon.ico', '/favicon.png'], (req, res) => res.status(204).end());
+
 app.get('/api/health', (req, res) => {
   res.status(200).json({ status: 'ok', timestamp: new Date() });
 });
