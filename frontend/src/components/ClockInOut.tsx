@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import {Clock,LogIn,LogOut, Calendar, Timer, TrendingUp, ChevronLeft, ChevronRight,} from 'lucide-react';
+import { Clock, LogIn, LogOut, Calendar, Timer, TrendingUp, ChevronLeft, ChevronRight, } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
@@ -109,10 +109,12 @@ export function ClockInOut() {
     });
   };
 
-  const changeDate = (days: number) => {
-    const newDate = new Date(selectedDate);
-    newDate.setDate(newDate.getDate() + days);
-    setSelectedDate(newDate);
+  const calculateDuration = (start: Date, end?: Date) => {
+    if (!end) return 'Active';
+    const diff = new Date(end).getTime() - new Date(start).getTime();
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    return `${hours}h ${minutes}m`;
   };
 
   const selectedDayEntries = clockEntries.filter((e) => e.date === selectedDateStr);
@@ -254,14 +256,14 @@ export function ClockInOut() {
                 </div>
               </div>
 
-              {/* Action Buttons */}
+              {/* Clock In/Out Buttons */}
               {isToday && (
                 <div className="flex flex-col sm:flex-row gap-3 w-full max-w-md">
                   <Button
                     size="lg"
                     onClick={handleClockIn}
                     disabled={!!todayEntry}
-                    className="flex-1 h-14 text-base gap-3 shadow-lg shadow-purple-500/30 hover:shadow-xl hover:shadow-purple-500/40 hover:scale-105 transition-all disabled:opacity-50"
+                    className="flex-1 h-14 text-base gap-3 shadow-lg shadow-purple-500/30 hover:shadow-xl hover:shadow-purple-500/40  disabled:opacity-50"
                   >
                     <LogIn className="w-5 h-5" />
                     Clock In
@@ -271,7 +273,7 @@ export function ClockInOut() {
                     onClick={handleClockOut}
                     disabled={!todayEntry}
                     variant="secondary"
-                    className="flex-1 h-14 text-base gap-3 shadow-lg hover:scale-105 transition-all disabled:opacity-50"
+                    className="flex-1 h-14 text-base gap-3 shadow-lg shadow-red-500/30 hover:shadow-xl hover:shadow-red-500/40 transition-all disabled:opacity-40"
                   >
                     <LogOut className="w-5 h-5" />
                     Clock Out
@@ -318,17 +320,16 @@ export function ClockInOut() {
                 <div className="text-4xl text-blue-500 tabular-nums">
                   {isToday
                     ? `${String(todayTotal.hours).padStart(2, '0')}h ${String(todayTotal.minutes).padStart(2, '0')}m ${String(todayTotal.seconds).padStart(2, '0')}s`
-                    : `${
-                        selectedDayEntries.reduce((acc, e) => {
-                          if (e.clockOut) {
-                            const diff =
-                              new Date(e.clockOut).getTime() - new Date(e.clockIn).getTime();
-                            return acc + diff;
-                          }
-                          return acc;
-                        }, 0) /
-                        (1000 * 60 * 60)
-                      }h`}
+                    : `${selectedDayEntries.reduce((acc, e) => {
+                      if (e.clockOut) {
+                        const diff =
+                          new Date(e.clockOut).getTime() - new Date(e.clockIn).getTime();
+                        return acc + diff;
+                      }
+                      return acc;
+                    }, 0) /
+                    (1000 * 60 * 60)
+                    }h`}
                 </div>
               </div>
             </CardContent>
@@ -344,9 +345,16 @@ export function ClockInOut() {
                 <div className="space-y-3">
                   {selectedDayEntries.map((entry) => (
                     <div key={entry.id} className="flex items-center gap-3">
-                      <div className="text-sm text-muted-foreground min-w-[100px]">
-                        {formatArrivalTime(new Date(entry.clockIn))} -{' '}
-                        {entry.clockOut ? formatArrivalTime(new Date(entry.clockOut)) : 'Active'}
+                      <div className="text-sm text-muted-foreground min-w-[140px] flex items-center gap-2">
+                        <span>
+                          {formatArrivalTime(new Date(entry.clockIn))} -{' '}
+                          {entry.clockOut ? formatArrivalTime(new Date(entry.clockOut)) : 'Active'}
+                        </span>
+                        {entry.clockOut && (
+                          <span className="text-xs font-medium text-purple-500 bg-purple-500/10 px-1.5 py-0.5 rounded">
+                            {calculateDuration(entry.clockIn, entry.clockOut)}
+                          </span>
+                        )}
                       </div>
                       <div className="flex-1 h-2 bg-muted/20 rounded-full overflow-hidden">
                         <div
@@ -380,7 +388,7 @@ export function ClockInOut() {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <Card className="backdrop-blur-xl bg-card/50 border-2 hover:shadow-lg hover:scale-105 transition-all group">
+        <Card className="backdrop-blur-xl bg-card/50 border-2 hover:shadow-lg hover:scale-95 transition-all group">
           <CardContent className="pt-6">
             <div className="flex items-start justify-between mb-4">
               <div className="p-3 rounded-xl bg-gradient-to-br from-blue-500/20 to-blue-500/10">
@@ -398,7 +406,7 @@ export function ClockInOut() {
           </CardContent>
         </Card>
 
-        <Card className="backdrop-blur-xl bg-card/50 border-2 hover:shadow-lg hover:scale-105 transition-all group">
+        <Card className="backdrop-blur-xl bg-card/50 border-2 hover:shadow-lg hover:scale-95 transition-all group">
           <CardContent className="pt-6">
             <div className="flex items-start justify-between mb-4">
               <div className="p-3 rounded-xl bg-gradient-to-br from-purple-500/20 to-purple-500/10">
@@ -416,7 +424,7 @@ export function ClockInOut() {
           </CardContent>
         </Card>
 
-        <Card className="backdrop-blur-xl bg-card/50 border-2 hover:shadow-lg hover:scale-105 transition-all group">
+        <Card className="backdrop-blur-xl bg-card/50 border-2 hover:shadow-lg hover:scale-95 transition-all group">
           <CardContent className="pt-6">
             <div className="flex items-start justify-between mb-4">
               <div className="p-3 rounded-xl bg-gradient-to-br from-green-500/20 to-green-500/10">

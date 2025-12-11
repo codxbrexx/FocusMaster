@@ -33,10 +33,10 @@ export function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background px-4">
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl opacity-50" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl opacity-50" />
+    <div className="min-h-[100dvh] flex items-center justify-center bg-background px-4 relative overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-[-10%] left-[-10%] md:top-0 md:left-1/4 w-64 h-64 md:w-96 md:h-96 bg-primary/10 rounded-full blur-3xl opacity-50" />
+        <div className="absolute bottom-[-10%] right-[-10%] md:bottom-0 md:right-1/4 w-64 h-64 md:w-96 md:h-96 bg-blue-500/10 rounded-full blur-3xl opacity-50" />
       </div>
 
       <Card className="w-full max-w-md border-primary/10 shadow-xl bg-card/50 backdrop-blur-sm relative z-10">
@@ -54,8 +54,8 @@ export function Login() {
                 <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input
                   type="email"
-                  placeholder="name@example.com"
-                  className="pl-9"
+                  placeholder="name@gmail.com"
+                  className="pl-9 text-base md:text-sm h-12 md:h-10 transition-all font-medium border-primary/20 bg-background/50 hover:bg-background/80 focus:bg-background"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   disabled={isLoading}
@@ -68,7 +68,7 @@ export function Login() {
                 <Input
                   type="password"
                   placeholder="Password"
-                  className="pl-9"
+                  className="pl-9 text-base md:text-sm h-12 md:h-10 transition-all font-medium border-primary/20 bg-background/50 hover:bg-background/80 focus:bg-background"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   disabled={isLoading}
@@ -76,7 +76,7 @@ export function Login() {
               </div>
             </div>
 
-            <Button type="submit" className="w-full" disabled={isLoading}>
+            <Button type="submit" className="w-full h-12 md:h-10 text-base md:text-sm font-semibold shadow-lg border-dashed border-2 hover:border-solid hover:border-purple-500/50 shadow-primary/20 hover:shadow-primary/40 transition-all duration-300" disabled={isLoading}>
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Signing in...
@@ -100,7 +100,7 @@ export function Login() {
             <Button
               type="button"
               variant="outline"
-              className="w-full"
+              className="w-full h-12 md:h-10 border-dashed border-2 hover:border-solid hover:border-purple-500/50 hover:bg-secondary/50 text-base md:text-sm"
               onClick={() => {
                 loginAsGuest();
                 navigate('/dashboard');

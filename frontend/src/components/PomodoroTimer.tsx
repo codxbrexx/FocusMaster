@@ -150,7 +150,7 @@ export function PomodoroTimer() {
 
         <CardContent className="p-8 md:p-12">
           <div className="flex flex-col items-center justify-center">
-            <div className="flex gap-12 mb-8 bg-secondary/50 p-1 rounded-xl">
+            <div className="flex flex-wrap justify-center gap-4 md:gap-12 mb-8 bg-secondary/50 p-1 rounded-xl">
               {[
                 { id: 'pomodoro', icon: Brain, label: 'Focus' },
                 { id: 'short-break', icon: Coffee, label: 'Short' },

@@ -1,6 +1,4 @@
 import { useState, useEffect } from 'react';
-import { Search, Bell, User } from 'lucide-react';
-import { Button } from './ui/button';
 
 export function TopBar() {
   const [currentTime, setCurrentTime] = useState(new Date());

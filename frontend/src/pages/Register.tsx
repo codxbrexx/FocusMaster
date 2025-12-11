@@ -90,7 +90,7 @@ export function Register() {
               </div>
             </div>
 
-            <Button type="submit" className="w-full" disabled={isLoading}>
+            <Button type="submit" className="w-full border-dashed border-2 hover:border-solid hover:border-purple-500/50" disabled={isLoading}>
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Creating account...
@@ -114,7 +114,7 @@ export function Register() {
             <Button
               type="button"
               variant="outline"
-              className="w-full"
+              className="w-full border-dashed border-2 hover:border-solid hover:border-purple-500/50"
               onClick={() => {
                 loginAsGuest();
                 navigate('/');

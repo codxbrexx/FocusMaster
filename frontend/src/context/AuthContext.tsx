@@ -26,19 +26,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-useEffect(() => {
+  useEffect(() => {
     const checkAuth = async () => {
       const isGuest = localStorage.getItem('isGuest') === 'true';
+      const hasAuthFlag = localStorage.getItem('isAuthenticated') === 'true';
+
+      if (!hasAuthFlag && !isGuest) {
+        setIsLoading(false);
+        return;
+      }
 
       try {
         const { data } = await api.get('/auth/profile');
         setUser(data);
         setIsAuthenticated(true);
+        if (!isGuest) localStorage.setItem('isAuthenticated', 'true');
       } catch (error) {
         if (isGuest) {
           setUser({ _id: 'guest', name: 'Guest User', email: 'guest@daylite.app' });
           setIsAuthenticated(true);
         } else {
+          localStorage.removeItem('isAuthenticated');
           setUser(null);
           setIsAuthenticated(false);
         }
@@ -54,6 +62,7 @@ useEffect(() => {
     try {
       const { data } = await api.post('/auth/login', { email, password });
       localStorage.removeItem('isGuest');
+      localStorage.setItem('isAuthenticated', 'true');
       setUser(data);
       setIsAuthenticated(true);
       toast.success('Welcome back!');
@@ -67,6 +76,7 @@ useEffect(() => {
     try {
       const { data } = await api.post('/auth/register', { name, email, password });
       localStorage.removeItem('isGuest');
+      localStorage.setItem('isAuthenticated', 'true');
       setUser(data);
       setIsAuthenticated(true);
       toast.success('Account created!');
@@ -83,7 +93,8 @@ useEffect(() => {
       console.error('Logout error', error);
     }
     localStorage.removeItem('isGuest');
-    localStorage.removeItem('guest_id'); 
+    localStorage.removeItem('guest_id');
+    localStorage.removeItem('isAuthenticated');
     setUser(null);
     setIsAuthenticated(false);
     toast.success('Logged out');
@@ -106,7 +117,7 @@ useEffect(() => {
       return data;
     } catch (error) {
       console.error('Guest login error:', error);
-      toast.error('Guest login failed'); 
+      toast.error('Guest login failed');
       throw error;
     }
   };

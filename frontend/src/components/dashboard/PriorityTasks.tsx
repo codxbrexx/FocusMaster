@@ -31,7 +31,7 @@ export function PriorityTasks({ tasks }: PriorityTasksProps) {
             className="lg:col-span-2 h-full"
         >
             <Card className="h-full backdrop-blur-xl bg-card/50 border-2 shadow-sm flex flex-col">
-                <CardHeader className="flex flex-row items-center justify-between pb-4 border-b border-border/40">
+                <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-border/40">
                     <div className="space-y-1">
                         <CardTitle className="text-lg flex items-center gap-2">
                             <LayoutDashboard className="h-5 w-5 text-primary" />
@@ -45,7 +45,7 @@ export function PriorityTasks({ tasks }: PriorityTasksProps) {
                         variant="ghost"
                         size="sm"
                         onClick={() => navigate('/tasks')}
-                        className="gap-1 hover:bg-primary/5 text-primary"
+                        className="gap-1 hover:bg-primary/5 text-primary w-full sm:w-auto justify-center"
                     >
                         View All <ArrowRight className="h-4 w-4" />
                     </Button>
@@ -69,20 +69,31 @@ export function PriorityTasks({ tasks }: PriorityTasksProps) {
                             {tasks.slice(0, 4).map((task) => (
                                 <div
                                     key={task._id}
-                                    className="group flex items-center gap-4 p-4 rounded-xl bg-card hover:bg-accent/40 border border-border/40 hover:border-primary/20 transition-all shadow-sm"
+                                    className="group flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 p-4 rounded-xl bg-card hover:bg-accent/40 border border-border/40 hover:border-primary/20 transition-all shadow-sm"
                                 >
-                                    <div
-                                        className={`w-1.5 h-12 rounded-full flex-shrink-0 ${task.priority === 'high'
-                                            ? 'bg-red-500'
-                                            : task.priority === 'medium'
-                                                ? 'bg-orange-500'
-                                                : 'bg-blue-500'
-                                            }`}
-                                    />
+                                    <div className="flex items-center gap-3 w-full sm:w-auto">
+                                        <div
+                                            className={`w-1.5 h-12 rounded-full flex-shrink-0 ${task.priority === 'high'
+                                                ? 'bg-red-500'
+                                                : task.priority === 'medium'
+                                                    ? 'bg-orange-500'
+                                                    : 'bg-blue-500'
+                                                }`}
+                                        />
 
-                                    <div className="flex-1 min-w-0">
-                                        <div className="flex items-center justify-between mb-1">
+                                        <div className="flex-1 sm:hidden">
                                             <h4 className="font-semibold text-sm truncate">{task.title}</h4>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex-1 min-w-0 w-full">
+                                        <div className="hidden sm:flex items-center justify-between mb-1">
+                                            <h4 className="font-semibold text-sm truncate">{task.title}</h4>
+                                            <span className="text-xs font-mono text-muted-foreground bg-muted px-2 py-0.5 rounded">
+                                                {task.completedPomodoros}/{task.estimatedPomodoros} 🍅
+                                            </span>
+                                        </div>
+                                        <div className="flex sm:hidden items-center justify-between mb-2">
                                             <span className="text-xs font-mono text-muted-foreground bg-muted px-2 py-0.5 rounded">
                                                 {task.completedPomodoros}/{task.estimatedPomodoros} 🍅
                                             </span>

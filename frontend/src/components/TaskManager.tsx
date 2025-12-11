@@ -22,6 +22,10 @@ import { Badge } from './ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
+import { Calendar as CalendarComponent } from './ui/calendar';
+import { format } from 'date-fns';
+import { cn } from '@/lib/utils';
 import { useTaskStore, type Task } from '../store/useTaskStore';
 
 const CATEGORIES = ['Work', 'Study', 'Personal', 'Health', 'Coding', 'Creative'];
@@ -39,7 +43,7 @@ export function TaskManager() {
     title: '',
     estimatedPomodoros: 1,
     priority: 'medium' as 'high' | 'medium' | 'low',
-    deadline: '',
+    deadline: new Date().toISOString().split('T')[0],
     category: 'Work',
   });
 
@@ -67,7 +71,7 @@ export function TaskManager() {
       title: '',
       estimatedPomodoros: 1,
       priority: 'medium',
-      deadline: '',
+      deadline: new Date().toISOString().split('T')[0],
       category: 'Work',
     });
     setEditingTaskId(null);
@@ -130,7 +134,7 @@ export function TaskManager() {
     >
       {/* --- DASHBOARD STATS --- */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <Card className="backdrop-blur-xl bg-card/50 shadow-sm border-2 border-l-4 border-l-primary">
+        <Card className="backdrop-blur-xl bg-card/50 shadow-sm border-2 border-l-4 border-l-purple-500">
           <CardContent className="p-4 flex items-center justify-between">
             <div>
               <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
@@ -272,7 +276,7 @@ export function TaskManager() {
                   <div className="grid gap-3">
                     <label className="text-sm font-medium">What needs to be done?</label>
                     <Input
-                      placeholder="e.g. Finish React Project..."
+                      placeholder="Eg. Add your Task here..."
                       value={taskForm.title}
                       onChange={(e) => setTaskForm({ ...taskForm, title: e.target.value })}
                       className="text-lg py-6 px-4"
@@ -344,15 +348,39 @@ export function TaskManager() {
                         <Timer className="w-4 h-4 text-muted-foreground absolute right-3" />
                       </div>
                     </div>
-
+                    {/* date */}
                     <div className="space-y-2">
                       <label className="text-sm font-medium">Due Date</label>
-                      <Input
-                        type="date"
-                        value={taskForm.deadline}
-                        onChange={(e) => setTaskForm({ ...taskForm, deadline: e.target.value })}
-                        className="h-10"
-                      />
+                      <div className="flex w-full items-center">
+                        <Input
+                          type="text" 
+                          placeholder="MM-DD-YYYY"
+                          value={taskForm.deadline}
+                          onChange={(e) => setTaskForm({ ...taskForm, deadline: e.target.value })}
+                          className="rounded-r-none focus-visible:z-10"
+                        />
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <Button
+                              variant="outline"
+                              size="icon"
+                              className="rounded-l-none -ml-px focus-visible:z-10"
+                            >
+                              <Calendar className="h-4 w-4 text-muted-foreground" />
+                            </Button>
+                          </PopoverTrigger>
+                          {/* <PopoverContent className="w-auto p-0 bg-black/10 backdrop-blur-sm" align="end">
+                            <CalendarComponent
+                              mode="single"
+                              selected={taskForm.deadline ? new Date(taskForm.deadline) : undefined}
+                              onSelect={(date) =>
+                                setTaskForm({ ...taskForm, deadline: date ? format(date, 'MM-dd-yyyy') : '' })
+                              }
+                              initialFocus
+                            />
+                          </PopoverContent> */}
+                        </Popover>
+                      </div>
                     </div>
                   </div>
 
