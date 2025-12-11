@@ -75,7 +75,7 @@ export function TopBar() {
       <div className="flex items-center gap-3">
         <div className="h-8 w-px bg-border/60 mx-1 hidden md:block" />
 
-        <div className="flex items-center gap-1.5">
+        {/* <div className="flex items-center gap-1.5">
           <Button
             variant="ghost"
             size="icon"
@@ -98,7 +98,7 @@ export function TopBar() {
           >
             <User className="w-4 h-4" />
           </Button>
-        </div>
+        </div> */}
       </div>
     </header>
   );

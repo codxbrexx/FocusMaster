@@ -57,7 +57,7 @@ export function DailyOverviewChart({
                                     strokeWidth="8"
                                     strokeDasharray={351}
                                     strokeDashoffset={351 - (351 * progressPercentage) / 100}
-                                    className="text-primary transition-all duration-1000 ease-out"
+                                    className="text-purple-500 transition-all duration-1000 ease-out"
                                     strokeLinecap="round"
                                 />
                             </svg>

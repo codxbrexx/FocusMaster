@@ -48,9 +48,11 @@ export const Sidebar = ({ open, onOpenChange }: SidebarProps) => {
       initial={{ width: open ? SIDEBAR_WIDTH : SIDEBAR_WIDTH_COLLAPSED }}
       animate={{ width: open ? SIDEBAR_WIDTH : SIDEBAR_WIDTH_COLLAPSED }}
       transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+      onClick={() => onOpenChange(!open)}
       className={cn(
         'h-screen fixed left-0 top-0 z-40 flex flex-col',
-        'bg-background/80 backdrop-blur-xl border-r border-border/40'
+        'bg-background/80 backdrop-blur-xl border-r border-border/40',
+        'cursor-pointer'
       )}
     >
       <div className="h-20 flex items-center justify-between px-4 mb-4">
@@ -82,7 +84,10 @@ export const Sidebar = ({ open, onOpenChange }: SidebarProps) => {
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => onOpenChange(false)}
+            onClick={(e) => {
+              e.stopPropagation();
+              onOpenChange(false);
+            }}
             className="text-muted-foreground hover:bg-muted/50 rounded-full w-8 h-8"
           >
             <ChevronLeft className="w-4 h-4" />
@@ -95,7 +100,10 @@ export const Sidebar = ({ open, onOpenChange }: SidebarProps) => {
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => onOpenChange(true)}
+            onClick={(e) => {
+              e.stopPropagation();
+              onOpenChange(true);
+            }}
             className="text-muted-foreground hover:bg-muted/50 rounded-full w-8 h-8"
           >
             <ChevronLeft className="w-4 h-4 rotate-180" />
@@ -120,6 +128,7 @@ export const Sidebar = ({ open, onOpenChange }: SidebarProps) => {
             'mt-4 flex items-center gap-3 p-2 rounded-xl bg-muted/30 border border-border/50',
             !open && 'justify-center bg-transparent border-0'
           )}
+          onClick={(e) => e.stopPropagation()}
         >
           <img
             src="/profilelogo.png"
@@ -163,6 +172,7 @@ const SidebarItem = ({ item, isOpen }: { item: any; isOpen: boolean }) => {
     <NavLink
       to={item.path}
       end={item.path === '/'}
+      onClick={(e) => e.stopPropagation()}
       className={({ isActive }) =>
         cn(
           'relative flex items-center gap-3 px-3 py-3 rounded-xl transition-all duration-300 group',

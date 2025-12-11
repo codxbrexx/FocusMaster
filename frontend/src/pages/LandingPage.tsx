@@ -284,8 +284,6 @@ export const LandingPage = () => {
                         © {new Date().getFullYear()} FocusMaster. All rights reserved.
                     </div>
                     <div className="flex gap-6 text-sm text-muted-foreground">
-                        <a href="updated soon" className="hover:text-primary transition-colors">Privacy</a>
-                        <a href="https://github.com/codxbrexx" className="hover:text-primary transition-colors">Terms</a>
                         <a href="https://github.com/codxbrexx" className="hover:text-primary transition-colors">GitHub</a>
                         <a href="https://linkedin/mozammilali" className="hover:text-primary transition-colors">LinkedIn</a>
                     </div>

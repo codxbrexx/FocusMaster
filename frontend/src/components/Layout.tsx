@@ -34,7 +34,7 @@ export const Layout = () => {
                                     <div className="flex items-center gap-2 font-mono order-2 md:order-1">
                                         <span>FocusMaster v1.0</span>
                                         <span className="hidden md:inline">•</span>
-                                        <span className="opacity-75">Built by codxbrexx</span>
+                                        <span className="opacity-75">Built by <a href="https://github.com/codxbrexx" target="_blank" rel="noopener noreferrer" className="hover:text-purple-500 transition-colors">codxbrexx</a></span>
                                     </div>
 
                                     <div className="flex items-center gap-4 order-1 md:order-2">
