@@ -1,6 +1,9 @@
 const asyncHandler = require('express-async-handler');
 const User = require('../models/User');
 const generateToken = require('../utils/generateToken');
+const { OAuth2Client } = require('google-auth-library');
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
 
 // @desc    Auth user/set token
 // @route   POST /api/auth/login
@@ -62,6 +65,52 @@ const loginGuest = asyncHandler(async (req, res) => {
     email: user.email,
     isGuest: user.isGuest
   });
+});
+
+// @desc    Login with Google
+// @route   POST /api/auth/google
+// @access  Public
+const googleLogin = asyncHandler(async (req, res) => {
+  const { token } = req.body;
+
+  try {
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+    
+    const { name, email, picture } = ticket.getPayload();
+
+    let user = await User.findOne({ email });
+
+    if (!user) {
+      // Create new user if not exists
+      // Generate a random password since they use Google
+      const randomPassword = require('crypto').randomBytes(16).toString('hex');
+      
+      user = await User.create({
+        name,
+        email,
+        password: randomPassword,
+        googleId: ticket.getUserId(),
+         // You might want to save picture url too if schema supports it
+      });
+    }
+
+    generateToken(res, user._id);
+    
+    res.status(200).json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      isGuest: user.isGuest,
+      // picture: picture 
+    });
+
+  } catch (error) {
+    res.status(401);
+    throw new Error('Google authentication failed: ' + error.message);
+  }
 });
 
 // @desc    Register a new user
@@ -162,4 +211,5 @@ module.exports = {
   getUserProfile,
   updateUserProfile,
   loginGuest,
+  googleLogin,
 };

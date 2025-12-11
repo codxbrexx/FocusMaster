@@ -17,6 +17,7 @@ interface AuthContextType {
   register: (name: string, email: string, password: string) => Promise<void>;
   logout: () => void;
   loginAsGuest: () => Promise<void>;
+  googleLogin: (token: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -68,6 +69,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       toast.success('Welcome back!');
     } catch (error: any) {
       toast.error(error.response?.data?.message || 'Login failed');
+      throw error;
+    }
+  };
+
+  const googleLogin = async (token: string) => {
+    try {
+      const { data } = await api.post('/auth/google', { token });
+      localStorage.removeItem('isGuest');
+      localStorage.setItem('isAuthenticated', 'true');
+      setUser(data);
+      setIsAuthenticated(true);
+      toast.success('Signed in with Google!');
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || 'Google login failed');
       throw error;
     }
   };
@@ -124,7 +139,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, isAuthenticated, isLoading, login, register, logout, loginAsGuest }}
+      value={{ user, isAuthenticated, isLoading, login, register, logout, loginAsGuest, googleLogin }}
     >
       {children}
     </AuthContext.Provider>

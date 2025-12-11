@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { GoogleLogin } from '@react-oauth/google';
 import { useAuth } from '../context/AuthContext';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
@@ -12,7 +13,7 @@ export function Login() {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const { login, loginAsGuest } = useAuth();
+  const { login, loginAsGuest, googleLogin } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -104,6 +105,21 @@ export function Login() {
               <div className="relative flex justify-center text-xs uppercase">
                 <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
               </div>
+            </div>
+
+            <div className="flex justify-center mb-4">
+              <GoogleLogin
+                onSuccess={(credentialResponse) => {
+                  if (credentialResponse.credential) {
+                    googleLogin(credentialResponse.credential);
+                    navigate('/dashboard');
+                  }
+                }}
+                onError={() => {
+                  setError('Google Login Failed');
+                }}
+                useOneTap
+              />
             </div>
 
             <Button

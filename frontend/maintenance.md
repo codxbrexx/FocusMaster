@@ -1,7 +1,6 @@
 ## Todos
 
 phone responsive a nd its shows small text  ite phone  and other  component and  add the responsiveness of whole project
-auth error  use firebase for auth
 
 
 # sportify
@@ -13,6 +12,8 @@ name change
 
 
 # Done tasks
+auth error fixed it basically saving the old token and i after login i redirect to loading page  now it fixed  
+
 edit landing page  put the discraption of the project 
 topbar comment no use 
 date picker 
