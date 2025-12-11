@@ -1,6 +1,6 @@
 ## Todos
 
-phone responsive a nd its shows small text  ite phone  and other  component and  add the responsiveness of whole project 
+phone responsive a nd its shows small text  ite phone  and other  component and  add the responsiveness of whole project
 auth error  use firebase for auth
 
 

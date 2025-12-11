@@ -12,22 +12,29 @@ export function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { register, loginAsGuest } = useAuth();
+  const [error, setError] = useState('');
+  const { register, loginAsGuest, logout } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
     if (!name || !email || !password) {
       toast.error('Please fill in all fields');
+      setError('Please fill in all fields');
       return;
     }
 
     setIsLoading(true);
     try {
       await register(name, email, password);
-      navigate('/');
-    } catch (error) {
-      // Error handled in AuthContext
+      // User requested redirect to Login page after creation.
+      // Since register auto-logs in, we explicitly logout to force manual login flow.
+      logout();
+      navigate('/login');
+    } catch (err: any) {
+      const errorMessage = err.response?.data?.message || 'Registration failed';
+      setError(errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -49,6 +56,11 @@ export function Register() {
           <CardDescription>Enter your information to get started</CardDescription>
         </CardHeader>
         <CardContent>
+          {error && (
+            <div className="mb-4 p-3 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive text-sm font-medium text-center transition-all animate-in fade-in slide-in-from-top-1">
+              {error}
+            </div>
+          )}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <div className="relative">
