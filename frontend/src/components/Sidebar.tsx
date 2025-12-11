@@ -15,6 +15,7 @@ import { Button } from '@/components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
+import { useState, useEffect } from 'react';
 
 interface SidebarProps {
   open: boolean;
@@ -37,22 +38,35 @@ const SIDEBAR_WIDTH_COLLAPSED = 80;
 export const Sidebar = ({ open, onOpenChange }: SidebarProps) => {
   const { logout, user } = useAuth();
   const navigate = useNavigate();
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleLogout = () => {
     logout();
     navigate('/login');
   };
 
+  const sidebarWidth = open ? SIDEBAR_WIDTH : (isMobile ? 0 : SIDEBAR_WIDTH_COLLAPSED);
+
   return (
     <motion.aside
-      initial={{ width: open ? SIDEBAR_WIDTH : SIDEBAR_WIDTH_COLLAPSED }}
-      animate={{ width: open ? SIDEBAR_WIDTH : SIDEBAR_WIDTH_COLLAPSED }}
+      initial={false}
+      animate={{
+        width: sidebarWidth,
+        x: (isMobile && !open) ? -100 : 0 // Slide out completely on mobile to be sure
+      }}
       transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-      onClick={() => onOpenChange(!open)}
+      onClick={() => isMobile && open ? null : onOpenChange(!open)} // On mobile, clicking sidebar shouldn't toggle it, only specific elements or backdrop
       className={cn(
         'h-screen fixed left-0 top-0 z-40 flex flex-col',
         'bg-background/80 backdrop-blur-xl border-r border-border/40',
-        'cursor-pointer'
+        'cursor-pointer',
+        (isMobile && !open) && 'border-none' // Hide border when closed on mobile
       )}
     >
       <div className="h-20 flex items-center justify-between px-4 mb-4">

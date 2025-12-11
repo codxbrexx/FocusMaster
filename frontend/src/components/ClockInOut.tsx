@@ -16,10 +16,18 @@ export function ClockInOut() {
     return () => clearInterval(timer);
   }, []);
 
-  const today = new Date().toDateString();
-  const selectedDateStr = selectedDate.toDateString();
-  const todayEntry = clockEntries.find((e) => e.date === today && !e.clockOut);
-  const isToday = selectedDateStr === today;
+  const today = new Date().toISOString().split('T')[0];
+  const selectedDateStr = selectedDate.toISOString().split('T')[0];
+  const todayEntry = clockEntries.find((e) => !e.clockOut);
+  const isToday = selectedDate.getDate() === new Date().getDate() &&
+    selectedDate.getMonth() === new Date().getMonth() &&
+    selectedDate.getFullYear() === new Date().getFullYear();
+
+  const changeDate = (days: number) => {
+    const newDate = new Date(selectedDate);
+    newDate.setDate(selectedDate.getDate() + days);
+    setSelectedDate(newDate);
+  };
 
   const handleClockIn = () => {
     if (todayEntry) {
@@ -177,9 +185,7 @@ export function ClockInOut() {
 
           <CardContent className="relative z-10 pt-8 pb-8">
             <div className="flex flex-col items-center justify-center space-y-6">
-              {/* Circular Progress */}
               <div className="relative w-64 h-64 sm:w-72 sm:h-72">
-                {/* Outer ring with ticks */}
                 <svg className="w-full h-full transform -rotate-90">
                   <defs>
                     <linearGradient id="clockGradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -188,7 +194,6 @@ export function ClockInOut() {
                     </linearGradient>
                   </defs>
 
-                  {/* Hour ticks */}
                   {[...Array(60)].map((_, i) => {
                     const angle = (i * 6 * Math.PI) / 180;
                     const isHourMark = i % 5 === 0;
@@ -286,7 +291,6 @@ export function ClockInOut() {
 
         {/* Info Panel */}
         <div className="space-y-4">
-          {/* Arrival & Left Time */}
           <Card className="border-2 backdrop-blur-xl bg-card/50">
             <CardContent className="pt-6 space-y-6">
               <div>

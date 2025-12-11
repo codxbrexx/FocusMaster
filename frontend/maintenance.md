@@ -2,6 +2,11 @@
 
 phone responsive a nd its shows small text  ite phone  and other  component and  add the responsiveness of whole project
 
+date are not updated in the kanban board                                  
+pomodoro timer are not able to save to increaswe time 
+setting time + botton are not responsive
+clock in out are not shows working 
+
 
 # sportify
 sportify api connect  on the pomodoro tab  show like card and controled the sportify music  

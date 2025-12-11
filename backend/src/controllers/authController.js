@@ -189,7 +189,8 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     }
     
     if (req.body.settings) {
-        user.settings = { ...user.settings, ...req.body.settings };
+        const currentSettings = user.settings ? (user.settings.toObject ? user.settings.toObject() : user.settings) : {};
+        user.settings = { ...currentSettings, ...req.body.settings };
     }
 
     const updatedUser = await user.save();

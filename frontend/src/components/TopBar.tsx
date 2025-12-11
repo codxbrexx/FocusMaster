@@ -1,6 +1,12 @@
 import { useState, useEffect } from 'react';
+import { Menu } from 'lucide-react';
+import { Button } from './ui/button';
 
-export function TopBar() {
+interface TopBarProps {
+  onMenuClick?: () => void;
+}
+
+export function TopBar({ onMenuClick }: TopBarProps) {
   const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
@@ -28,19 +34,17 @@ export function TopBar() {
     });
   };
 
-  /* const navItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { id: 'pomodoro', label: 'Focus', icon: Timer }, // Changed label to Focus for clarity
-    { id: 'tasks', label: 'Tasks', icon: CheckSquare },
-    { id: 'clock', label: 'Time Log', icon: Clock },
-    { id: 'analytics', label: 'Analytics', icon: BarChart },
-    { id: 'spotify', label: 'Music', icon: Music },
-    { id: 'settings', label: 'Settings', icon: Settings },
-  ] as const; */
-
   return (
     <header className="h-20 border-b border-border/40 bg-card/50 backdrop-blur-xl px-4 md:px-8 flex items-center justify-between sticky top-0 z-30 shadow-sm">
-      <div className="flex items-center gap-6">
+      <div className="flex items-center gap-4">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="md:hidden -ml-2 text-muted-foreground"
+          onClick={onMenuClick}
+        >
+          <Menu className="w-6 h-6" />
+        </Button>
         <div className="flex flex-col gap-0.5">
           <div className="text-2xl font-bold tracking-tight text-foreground tabular-nums leading-none">
             {formatTime(currentTime)}

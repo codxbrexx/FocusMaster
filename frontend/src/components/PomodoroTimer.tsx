@@ -13,6 +13,7 @@ import { Button } from './ui/button';
 
 import { useTaskStore } from '../store/useTaskStore';
 import { useHistoryStore } from '../store/useHistoryStore';
+import { useSettingsStore } from '../store/useSettingsStore';
 import { useTimerStore } from '../store/useTimerStore';
 import type { TimerMode } from '../store/useTimerStore';
 import { MoodSelectionModal } from './pomodoro/MoodSelectionModal';
@@ -53,6 +54,30 @@ export function PomodoroTimer() {
 
   const sessionStartTime = useRef<Date | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  // Sync settings with timer store
+  const { settings } = useSettingsStore();
+
+  useEffect(() => {
+    // Only update if timer is not active to avoid disruption
+    if (!isActive) {
+      // We need to map settings to totalDuration based on current mode
+      let newDuration = settings.pomodoroDuration * 60;
+      if (mode === 'short-break') newDuration = settings.shortBreakDuration * 60;
+      if (mode === 'long-break') newDuration = settings.longBreakDuration * 60;
+
+      // Update store
+      // Note: setTotalDuration also sets timeLeft in the store implementation
+      // We might need to be careful if we want to preserve partial progress, but generally configuration changes reset timer.
+      // Let's check store implementation: "setTotalDuration: (duration) => set({ totalDuration: duration, timeLeft: duration })"
+      // Yes, it resets. This is acceptable behavior for settings change.
+
+      // Only update if different to avoid infinite loops or unnecessary renders
+      if (totalDuration !== newDuration) {
+        useTimerStore.getState().setTotalDuration(newDuration);
+      }
+    }
+  }, [settings, mode, isActive, totalDuration]);
 
   const handleStart = useCallback(() => {
     if (!isActive) {

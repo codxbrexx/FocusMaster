@@ -23,6 +23,8 @@ const createTask = asyncHandler(async (req, res) => {
     description: req.body.description,
     priority: req.body.priority,
     estimatedPomodoros: req.body.estimatedPomodoros,
+    category: req.body.category,
+    deadline: req.body.deadline,
     user: req.user._id,
   });
 

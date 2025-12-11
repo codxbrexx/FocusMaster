@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import { Sidebar } from './Sidebar';
 import { TopBar } from './TopBar';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Github, Linkedin } from 'lucide-react';
 import { Toaster as Sonner } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
@@ -10,18 +10,41 @@ import { ReportBugDialog } from './ReportBugDialog';
 
 
 export const Layout = () => {
-    const [sidebarOpen, setSidebarOpen] = useState(true);
+    const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 768);
+
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth < 768) {
+                setSidebarOpen(false);
+            } else {
+                setSidebarOpen(true);
+            }
+        };
+        // Optional: Listen to resize. But maybe just initial state is enough or let user control it. 
+        // Let's stick to simple initial state for SSR safety (though this is SPA).
+        // Actually, if I resize to mobile, I want it to close.
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     return (
         <TooltipProvider>
             <Sonner />
             <div className="min-h-screen flex w-full font-sans text-foreground relative">
+                {/* Mobile Backdrop */}
+                {sidebarOpen && (
+                    <div
+                        className="fixed inset-0 bg-background/80 backdrop-blur-sm z-30 md:hidden"
+                        onClick={() => setSidebarOpen(false)}
+                    />
+                )}
+
                 <Sidebar open={sidebarOpen} onOpenChange={setSidebarOpen} />
 
                 <div
-                    className={`flex-1 flex flex-col transition-all duration-300 ${sidebarOpen ? 'ml-72' : 'ml-20'}`}
+                    className={`flex-1 flex flex-col transition-all duration-300 ml-0 ${sidebarOpen ? 'md:ml-72' : 'md:ml-20'}`}
                 >
-                    <TopBar />
+                    <TopBar onMenuClick={() => setSidebarOpen(true)} />
 
                     <main className="flex-1 p-4 md:p-6 overflow-x-hidden overflow-y-auto">
                         <div className="max-w-7xl mx-auto h-full flex flex-col">

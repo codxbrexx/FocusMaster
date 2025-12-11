@@ -48,7 +48,7 @@ const DurationInput = ({ label, value, onChange, min = 1, max = 60 }: DurationIn
       >
         <Minus className="w-4 h-4" />
       </Button>
-      <div className="flex-1 flex justify-center items-center relative">
+      <div className="flex-1 flex justify-center items-center gap-1">
         <Input
           type="number"
           min={min}
@@ -71,9 +71,9 @@ const DurationInput = ({ label, value, onChange, min = 1, max = 60 }: DurationIn
             if (val > max) val = max;
             if (val !== value) onChange(val);
           }}
-          className="w-20 h-10 text-2xl font-bold font-mono text-center p-0 border-none bg-transparent focus-visible:ring-0 shadow-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+          className="w-16 h-10 text-2xl font-bold font-mono text-center p-0 border-none bg-transparent focus-visible:ring-0 shadow-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
         />
-        <span className="text-xs text-muted-foreground absolute right-4 sm:right-8 md:right-6 pointer-events-none">
+        <span className="text-xs text-muted-foreground pt-1.5 font-medium">
           min
         </span>
       </div>

@@ -31,8 +31,15 @@ const taskSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    dueDate: {
+    category: {
+      type: String,
+      default: 'Work',
+    },
+    deadline: {
       type: Date,
+    },
+    dueDate: { 
+       type: Date 
     }
   },
   {
