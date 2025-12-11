@@ -7,8 +7,7 @@
 
 **FocusMaster** is a comprehensive productivity ecosystem designed to help you achieve and maintain the "Flow State". By integrating essential tools like a Pomodoro timer, Kanban task manager, deep analytics, and Spotify control into a single, cohesive dashboard, FocusMaster reduces context switching and maximizes your cognitive potential.
 
-![FocusMaster Dashboard](https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?q=80&w=2072&auto=format&fit=crop)
-*(Note: Replace with actual application screenshot)*
+![FocusMaster Dashboard](/frontend/public/dashboard.png)
 
 ## 🎨 Design Philosophy
 
