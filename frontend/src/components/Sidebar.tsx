@@ -131,7 +131,7 @@ export const Sidebar = ({ open, onOpenChange }: SidebarProps) => {
           onClick={(e) => e.stopPropagation()}
         >
           <img
-            src="/profilelogo.png"
+            src={user?.picture || "/profilelogo.png"}
             alt="Profile"
             className="w-8 h-8 rounded-full shrink-0 border-2 border-background object-cover"
           />

@@ -19,6 +19,7 @@ const authUser = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      picture: user.picture,
       isGuest: user.isGuest,
     });
   } else {
@@ -93,7 +94,7 @@ const googleLogin = asyncHandler(async (req, res) => {
         email,
         password: randomPassword,
         googleId: ticket.getUserId(),
-         // You might want to save picture url too if schema supports it
+        picture: picture,
       });
     }
 
@@ -103,8 +104,8 @@ const googleLogin = asyncHandler(async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      picture: user.picture,
       isGuest: user.isGuest,
-      // picture: picture 
     });
 
   } catch (error) {
@@ -164,6 +165,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
     _id: req.user._id,
     name: req.user.name,
     email: req.user.email,
+    picture: req.user.picture,
     settings: req.user.settings,
     points: req.user.points,
     badges: req.user.badges,
