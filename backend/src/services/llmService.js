@@ -26,12 +26,10 @@ async function generate(prompt, model, options = {}) {
   try {
     const res = await axios.post(ANTHROPIC_ENDPOINT, payload, { headers });
 
-    // The exact response shape can vary; try common fields first.
     if (res.data && (res.data.output || res.data.completion || res.data.text)) {
       return res.data.output || res.data.completion || res.data.text;
     }
 
-    // Fallback: return entire response data as string
     return JSON.stringify(res.data);
   } catch (err) {
     const message = err.response && err.response.data ? JSON.stringify(err.response.data) : err.message;

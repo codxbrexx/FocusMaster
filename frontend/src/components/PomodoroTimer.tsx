@@ -65,14 +65,6 @@ export function PomodoroTimer() {
       let newDuration = settings.pomodoroDuration * 60;
       if (mode === 'short-break') newDuration = settings.shortBreakDuration * 60;
       if (mode === 'long-break') newDuration = settings.longBreakDuration * 60;
-
-      // Update store
-      // Note: setTotalDuration also sets timeLeft in the store implementation
-      // We might need to be careful if we want to preserve partial progress, but generally configuration changes reset timer.
-      // Let's check store implementation: "setTotalDuration: (duration) => set({ totalDuration: duration, timeLeft: duration })"
-      // Yes, it resets. This is acceptable behavior for settings change.
-
-      // Only update if different to avoid infinite loops or unnecessary renders
       if (totalDuration !== newDuration) {
         useTimerStore.getState().setTotalDuration(newDuration);
       }
@@ -122,8 +114,8 @@ export function PomodoroTimer() {
     };
   }, [setIsActive]);
 
-  const savePomodoroSession = (selectedMood: string) => {
-    console.log("Mood selected:", selectedMood);
+  const savePomodoroSession = (_selectedMood: string) => {
+
     setShowMoodModal(false);
   };
 

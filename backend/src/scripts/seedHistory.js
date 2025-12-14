@@ -18,7 +18,6 @@ const seedData = async () => {
     await connectDB();
 
     try {
-        // Find a user (Guest or first registered)
         const user = await User.findOne({});
         if (!user) {
             console.log('No user found');
@@ -27,13 +26,10 @@ const seedData = async () => {
 
         console.log(`Seeding data for user: ${user.name} (${user._id})`);
 
-        // Clear existing sessions for clean slate? No, let's append.
-        // await Session.deleteMany({ user: user._id });
 
         const sessions = [];
         const today = new Date();
 
-        // Generate scatter data for the last 365 days
         for (let i = 0; i < 365; i++) {
             const date = subDays(today, i);
             

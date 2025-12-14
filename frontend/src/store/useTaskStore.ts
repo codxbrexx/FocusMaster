@@ -3,13 +3,13 @@ import api from '../services/api';
 import { toast } from 'sonner';
 
 export interface Task {
-  _id: string; // Backend uses _id
+  _id: string;
   title: string;
   description?: string;
   priority: 'low' | 'medium' | 'high';
   estimatedPomodoros: number;
   completedPomodoros: number;
-  isCompleted: boolean; // Backend uses isCompleted
+  isCompleted: boolean;   
   category?: string;
   deadline?: string;
   createdAt: string;
@@ -44,8 +44,6 @@ export const useTaskStore = create<TaskState>((set, get) => ({
       }
     } catch (error) {
       console.error('Failed to fetch tasks', error);
-      // toast.error('Failed to sync tasks'); // optional
-      // Fallback to empty if auth error?
     } finally {
       set({ isLoading: false });
     }
@@ -98,7 +96,6 @@ export const useTaskStore = create<TaskState>((set, get) => ({
     }
 
     const previousTasks = get().tasks;
-    // Optimistic update
     set((state) => ({
       tasks: state.tasks.map((t) => (t._id === id ? { ...t, ...updates } : t)),
     }));
@@ -109,7 +106,6 @@ export const useTaskStore = create<TaskState>((set, get) => ({
     } catch (error: any) {
       console.error('Failed to update task', error);
       toast.error(error.response?.data?.message || 'Failed to update task');
-      // Revert on error
       set({ tasks: previousTasks });
     }
   },
@@ -126,8 +122,7 @@ export const useTaskStore = create<TaskState>((set, get) => ({
       return;
     }
 
-    const previousTasks = get().tasks; // Capture for potential rollback
-    // Optimistic update
+    const previousTasks = get().tasks; 
     set((state) => ({
       tasks: state.tasks.filter((t) => t._id !== id),
     }));
@@ -138,7 +133,6 @@ export const useTaskStore = create<TaskState>((set, get) => ({
     } catch (error: any) {
       console.error('Failed to delete task', error);
       toast.error(error.response?.data?.message || 'Failed to delete task');
-      // Revert on error
       set({ tasks: previousTasks });
     }
   },

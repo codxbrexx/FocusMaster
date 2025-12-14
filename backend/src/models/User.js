@@ -29,6 +29,8 @@ const userSchema = mongoose.Schema(
         shortBreakDuration: { type: Number, default: 5 },
         longBreakDuration: { type: Number, default: 15 },
         dailyGoal: { type: Number, default: 8 },
+        soundEnabled: { type: Boolean, default: true },
+        strictMode: { type: Boolean, default: false },
     },
     points: {
         type: Number,
@@ -49,9 +51,9 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-userSchema.pre('save', async function (next) {
+userSchema.pre('save', async function () {
   if (!this.isModified('password')) {
-    return next();
+    return;
   }
 
   const salt = await bcrypt.genSalt(10);

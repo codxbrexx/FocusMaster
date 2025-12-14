@@ -48,10 +48,8 @@ export const useSettingsStore = create<SettingsState>((set, get) => ({
                 if (local) {
                     set({ settings: JSON.parse(local) });
                 }
-                // If no local, keep default
             } else {
                 const { data } = await api.get('/auth/profile');
-                // Map backend settings to frontend
                 const backendSettings = data.settings || {};
                 set({
                     settings: {
@@ -68,9 +66,8 @@ export const useSettingsStore = create<SettingsState>((set, get) => ({
                             backendSettings.motivationalQuotes ?? defaultSettings.motivationalQuotes,
                         dailyGoal: backendSettings.dailyGoal ?? defaultSettings.dailyGoal,
                         theme: backendSettings.theme ?? defaultSettings.theme,
-                        // These might not be in backend yet, keep defaults or local
-                        soundEnabled: defaultSettings.soundEnabled,
-                        strictMode: defaultSettings.strictMode,
+                        soundEnabled: backendSettings.soundEnabled ?? defaultSettings.soundEnabled,
+                        strictMode: backendSettings.strictMode ?? defaultSettings.strictMode,
                     },
                 });
             }
@@ -82,7 +79,6 @@ export const useSettingsStore = create<SettingsState>((set, get) => ({
     },
 
     updateSettings: async (newSettings) => {
-        // Optimistic update
         const previousSettings = get().settings;
         const updated = { ...previousSettings, ...newSettings };
         set({ settings: updated });
@@ -95,7 +91,6 @@ export const useSettingsStore = create<SettingsState>((set, get) => ({
         }
 
         try {
-            // Map frontend to backend
             const backendPayload = {
                 settings: {
                     focusDuration: updated.pomodoroDuration,
@@ -106,6 +101,8 @@ export const useSettingsStore = create<SettingsState>((set, get) => ({
                     motivationalQuotes: updated.motivationalQuotes,
                     dailyGoal: updated.dailyGoal,
                     theme: updated.theme,
+                    soundEnabled: updated.soundEnabled,
+                    strictMode: updated.strictMode,
                 },
             };
 
@@ -114,7 +111,7 @@ export const useSettingsStore = create<SettingsState>((set, get) => ({
         } catch (error) {
             console.error('Failed to update settings', error);
             toast.error('Failed to save settings');
-            set({ settings: previousSettings }); // Revert
+            set({ settings: previousSettings });
         }
     },
 }));

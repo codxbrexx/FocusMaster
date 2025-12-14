@@ -33,7 +33,7 @@ interface HistoryState {
   clockIn: () => Promise<void>;
   clockOut: (breakTime: number, notes?: string) => Promise<void>;
 
- 
+
   addClockEntry: (entry: Omit<ClockEntry, 'id'>) => Promise<void>; // Used for Clock In
   updateClockEntry: (id: string, updates: Partial<ClockEntry>) => Promise<void>; // Used for Clock Out
 }
@@ -83,7 +83,7 @@ export const useHistoryStore = create<HistoryState>((set) => ({
           id: l._id,
           clockIn: new Date(l.startTime),
           clockOut: l.endTime ? new Date(l.endTime) : undefined,
-          date: new Date(l.startTime).toISOString().split('T')[0],
+          date: new Date(l.startTime).toLocaleDateString('en-CA'),
           breakTime: l.breakTime || 0,
         })),
       });
@@ -156,14 +156,12 @@ export const useHistoryStore = create<HistoryState>((set) => ({
           id: data._id,
           clockIn: new Date(data.startTime),
           clockOut: undefined,
-          date: new Date(data.startTime).toISOString().split('T')[0],
+          date: new Date(data.startTime).toLocaleDateString('en-CA'),
           breakTime: 0,
         };
         set((state) => ({ clockEntries: [newEntry, ...state.clockEntries] }));
         toast.success('Clocked in successfully');
 
-        // If entry has a start time different from now, we can't easily honor it with /start endpoint which uses server time.
-        // But /start uses new Date().
       } catch (error: any) {
         toast.error(error.response?.data?.message || 'Failed to clock in');
         throw error;
@@ -191,16 +189,16 @@ export const useHistoryStore = create<HistoryState>((set) => ({
       try {
         const { data } = await api.post('/clock/stop', {
           breakTime: updates.breakTime,
-          notes: '', // notes support if available in updates?
+          notes: '', 
         });
         set((state) => ({
           clockEntries: state.clockEntries.map((e) =>
             e.id === id
               ? {
-                  ...e,
-                  clockOut: new Date(data.endTime),
-                  breakTime: data.breakTime,
-                }
+                ...e,
+                clockOut: new Date(data.endTime),
+                breakTime: data.breakTime,
+              }
               : e
           ),
         }));
@@ -210,6 +208,5 @@ export const useHistoryStore = create<HistoryState>((set) => ({
         throw error;
       }
     }
-    // Other updates (editing past logs) not supported yet
   },
 }));

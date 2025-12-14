@@ -22,7 +22,7 @@ interface UserState {
 export const useUserStore = create<UserState>((set) => ({
   user: null,
   isAuthenticated: false,
-  isLoading: true, // Start loading by default to check auth
+  isLoading: true, 
 
   login: async (userData: any) => {
     set({ user: userData, isAuthenticated: true });
@@ -38,7 +38,7 @@ export const useUserStore = create<UserState>((set) => ({
       set({ user: null, isAuthenticated: false });
     } catch (_error) {
       console.error('Logout failed', _error);
-      set({ user: null, isAuthenticated: false }); // Force logout anyway
+      set({ user: null, isAuthenticated: false });  
     }
   },
 

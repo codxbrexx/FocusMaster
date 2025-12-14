@@ -16,8 +16,8 @@ export function ClockInOut() {
     return () => clearInterval(timer);
   }, []);
 
-  const today = new Date().toISOString().split('T')[0];
-  const selectedDateStr = selectedDate.toISOString().split('T')[0];
+  const today = new Date().toLocaleDateString('en-CA');
+  const selectedDateStr = selectedDate.toLocaleDateString('en-CA');
   const todayEntry = clockEntries.find((e) => !e.clockOut);
   const isToday = selectedDate.getDate() === new Date().getDate() &&
     selectedDate.getMonth() === new Date().getMonth() &&

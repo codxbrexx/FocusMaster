@@ -35,7 +35,7 @@ const loginGuest = asyncHandler(async (req, res) => {
   let user;
   
   // Try to resume existing guest session if ID provided
-  if (req.body.guestId && req.body.guestId.match(/^[0-9a-fA-F]{24}$/)) {
+  if (req.body && req.body.guestId && req.body.guestId.match(/^[0-9a-fA-F]{24}$/)) {
     try {
       user = await User.findById(req.body.guestId);
     } catch (e) {
@@ -188,9 +188,15 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       user.password = req.body.password;
     }
     
+    // Explicitly handle settings update
     if (req.body.settings) {
-        const currentSettings = user.settings ? (user.settings.toObject ? user.settings.toObject() : user.settings) : {};
-        user.settings = { ...currentSettings, ...req.body.settings };
+        // Use spread syntax to merge existing settings with new ones
+        // Mongoose subdocuments can be tricky, so we ensure we're working with a plain object
+        const newSettings = { 
+            ...(user.settings ? user.settings.toObject() : {}), 
+            ...req.body.settings 
+        };
+        user.settings = newSettings;
     }
 
     const updatedUser = await user.save();

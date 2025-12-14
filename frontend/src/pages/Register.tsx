@@ -29,7 +29,6 @@ export function Register() {
     setIsLoading(true);
     try {
       await register(name, email, password);
-      // User requested redirect to Login page after creation.
       // Since register auto-logs in, we explicitly logout to force manual login flow.
       logout();
       navigate('/login');
