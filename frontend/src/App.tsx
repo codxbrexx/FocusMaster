@@ -6,6 +6,7 @@ import { Layout } from './components/Layout';
 import { GlobalTimer } from './components/GlobalTimer';
 import { LoadingSpinner } from './components/ui/LoadingSpinner';
 import { ProtectedRoute } from './components/ProtectedRoute';
+import { PublicOnlyRoute } from './components/PublicOnlyRoute';
 
 // Lazy Load Pages/Components
 const Dashboard = lazy(() => import('./components/Dashboard').then(module => ({ default: module.Dashboard })));
@@ -35,9 +36,11 @@ const App = () => {
         <BrowserRouter>
           <Suspense fallback={<div className="h-screen w-full flex items-center justify-center bg-background"><LoadingSpinner size={40} /></div>}>
             <Routes>
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
+              <Route element={<PublicOnlyRoute />}>
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+              </Route>
 
               <Route element={<ProtectedRoute />}>
                 <Route element={<Layout />}>

@@ -5,9 +5,16 @@ require('dotenv').config();
 
 const PORT = 5000;
 
+const path = require('path');
+
 const startTestServer = async () => {
   try {
-    const mongod = await MongoMemoryServer.create();
+    const mongod = await MongoMemoryServer.create({
+        instance: {
+            dbPath: path.join(__dirname, '../data/db'),
+            storageEngine: 'wiredTiger'
+        }
+    });
     const uri = mongod.getUri();
     
     console.log(`Test MongoDB running at: ${uri}`);

@@ -58,15 +58,15 @@ export const Sidebar = ({ open, onOpenChange }: SidebarProps) => {
       initial={false}
       animate={{
         width: sidebarWidth,
-        x: (isMobile && !open) ? -100 : 0 // Slide out completely on mobile to be sure
+        x: (isMobile && !open) ? -100 : 0 
       }}
       transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-      onClick={() => isMobile && open ? null : onOpenChange(!open)} // On mobile, clicking sidebar shouldn't toggle it, only specific elements or backdrop
+      onClick={() => isMobile && open ? null : onOpenChange(!open)}
       className={cn(
         'h-screen fixed left-0 top-0 z-40 flex flex-col',
         'bg-background/80 backdrop-blur-xl border-r border-border/40',
         'cursor-pointer',
-        (isMobile && !open) && 'border-none' // Hide border when closed on mobile
+        (isMobile && !open) && 'border-none' 
       )}
     >
       <div className="h-20 flex items-center justify-between px-4 mb-4">
