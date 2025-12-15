@@ -8,14 +8,14 @@ import {
   Coffee,
   Brain,
 } from 'lucide-react';
-import { Card, CardContent } from './ui/card';
-import { Button } from './ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 
-import { useTaskStore } from '../store/useTaskStore';
-import { useHistoryStore } from '../store/useHistoryStore';
-import { useSettingsStore } from '../store/useSettingsStore';
-import { useTimerStore } from '../store/useTimerStore';
-import type { TimerMode } from '../store/useTimerStore';
+import { useTaskStore } from '@/store/useTaskStore';
+import { useHistoryStore } from '@/store/useHistoryStore';
+import { useSettingsStore } from '@/store/useSettingsStore';
+import { useTimerStore } from '@/store/useTimerStore';
+import type { TimerMode } from '@/store/useTimerStore';
 import { MoodSelectionModal } from './pomodoro/MoodSelectionModal';
 import { FocusModeOverlay } from './pomodoro/FocusModeOverlay';
 

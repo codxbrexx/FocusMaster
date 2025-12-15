@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { ChevronLeft, ChevronRight, Clock } from 'lucide-react';
-import { Card, CardContent, CardHeader } from './ui/card';
-import { Button } from './ui/button';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
-import { cn } from '../lib/utils';
+import { cn } from '@/lib/utils';
 
 export function Calendar() {
   const [currentDate, setCurrentDate] = useState(new Date());

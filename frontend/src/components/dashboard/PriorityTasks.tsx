@@ -1,9 +1,9 @@
 
 import { motion } from 'framer-motion';
 import { LayoutDashboard, ArrowRight, CheckCircle2, Calendar } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
-import { Button } from '../ui/button';
-import { Progress } from '../ui/progress';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
 import { useNavigate } from 'react-router-dom';
 
 interface Task {

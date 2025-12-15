@@ -1,7 +1,7 @@
 
 import { motion } from 'framer-motion';
 import { Target, Zap, Activity } from 'lucide-react';
-import { Card, CardContent } from '../ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 
 interface AnalyticsStatsProps {
     todayPomodoros: number;

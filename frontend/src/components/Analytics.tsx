@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
-import { useHistoryStore } from '../store/useHistoryStore';
-import { useSettingsStore } from '../store/useSettingsStore';
+import { useHistoryStore } from '@/store/useHistoryStore';
+import { useSettingsStore } from '@/store/useSettingsStore';
 import { AnalyticsStats } from './analytics/AnalyticsStats';
 import { FocusActivityChart } from './analytics/FocusActivityChart';
 import { WeeklyIntensityChart } from './analytics/WeeklyIntensityChart';

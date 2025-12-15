@@ -5,9 +5,9 @@ import {
   Target,
 } from 'lucide-react';
 import { motion, type Variants } from 'framer-motion';
-import { useTaskStore } from '../store/useTaskStore';
-import { useSettingsStore } from '../store/useSettingsStore';
-import { useHistoryStore } from '../store/useHistoryStore';
+import { useTaskStore } from '@/store/useTaskStore';
+import { useSettingsStore } from '@/store/useSettingsStore';
+import { useHistoryStore } from '@/store/useHistoryStore';
 import { useAuth } from '../context/AuthContext';
 import { WelcomeHeader } from './dashboard/WelcomeHeader';
 import { StatsOverview } from './dashboard/StatsOverview';

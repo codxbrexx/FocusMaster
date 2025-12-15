@@ -1,10 +1,10 @@
 import { useState, useEffect, useMemo } from 'react';
 
-import { Card, CardHeader, CardTitle, CardContent } from './ui/card';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Flame } from 'lucide-react';
 import api from '../services/api';
 import { format, subDays, eachDayOfInterval, startOfToday, isSameMonth, getDay } from 'date-fns';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface HeatmapData {
     date: string;

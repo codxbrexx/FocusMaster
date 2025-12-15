@@ -1,8 +1,8 @@
 
 import { motion } from 'framer-motion';
 import { Target, Clock, Flame, CheckCircle2 } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
-import { Progress } from '../ui/progress';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
 
 interface StatsOverviewProps {
     todayPomodoros: number;

@@ -20,9 +20,6 @@ export const Layout = () => {
                 setSidebarOpen(true);
             }
         };
-        // Optional: Listen to resize. But maybe just initial state is enough or let user control it. 
-        // Let's stick to simple initial state for SSR safety (though this is SPA).
-        // Actually, if I resize to mobile, I want it to close.
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);

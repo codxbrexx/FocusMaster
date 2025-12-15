@@ -1,10 +1,10 @@
 
 import { motion } from 'framer-motion';
 import { ArrowLeft, Brain, Coffee, Armchair } from 'lucide-react';
-import { Button } from '../ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
-import { Badge } from '../ui/badge';
-import type { TimerMode } from '../../store/useTimerStore';
+import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Badge } from '@/components/ui/badge';
+import type { TimerMode } from '@/store/useTimerStore';
 
 interface FocusModeOverlayProps {
     mode: TimerMode;

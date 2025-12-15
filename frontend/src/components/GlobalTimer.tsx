@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
-import { useTimerStore } from '../store/useTimerStore';
-import { useSettingsStore } from '../store/useSettingsStore';
-import { useHistoryStore } from '../store/useHistoryStore';
+import { useTimerStore } from '@/store/useTimerStore';
+import { useSettingsStore } from '@/store/useSettingsStore';
+import { useHistoryStore } from '@/store/useHistoryStore';
 import { toast } from 'sonner';
 
 export function GlobalTimer() {
@@ -82,7 +82,7 @@ export function GlobalTimer() {
             duration: (mode === 'pomodoro' ? settings.pomodoroDuration : (mode === 'short-break' ? settings.shortBreakDuration : settings.longBreakDuration)),
             startTime,
             endTime,
-            tag: 'Focus', 
+            tag: 'Focus',
             mood: undefined
         });
 
@@ -97,7 +97,7 @@ export function GlobalTimer() {
             if (settings.autoStartBreak) {
                 setMode('short-break');
                 const breakDuration = settings.shortBreakDuration * 60;
-                setTotalDuration(breakDuration); 
+                setTotalDuration(breakDuration);
                 setIsActive(true);
             }
         } else {
@@ -113,5 +113,5 @@ export function GlobalTimer() {
         }
     };
 
-    return null; 
+    return null;
 }
