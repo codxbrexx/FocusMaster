@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
 import { useAuth } from '../context/AuthContext';
@@ -15,6 +15,17 @@ export function Login() {
   const [error, setError] = useState('');
   const { login, loginAsGuest, googleLogin } = useAuth();
   const navigate = useNavigate();
+
+  // Check for AdBlocker blocking Google Script
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      // @ts-ignore
+      if (typeof window !== 'undefined' && !window.google) {
+        setError('AdBlocker detected. Please disable it to use Google Login.');
+      }
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

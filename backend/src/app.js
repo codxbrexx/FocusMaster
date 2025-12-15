@@ -29,9 +29,20 @@ app.use(cors({
   origin: (origin, callback) => {
     // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV === 'development') {
+    
+    // Check against allowed list
+    const isAllowed = allowedOrigins.indexOf(origin) !== -1;
+    
+    // Check if it's a Vercel deployment (permanent fix for previews/mismatches)
+    const isVercel = origin.endsWith('.vercel.app');
+    
+    // Check for localhost (allows testing Production build on Localhost)
+    const isLocal = origin.includes('localhost') || origin.includes('127.0.0.1');
+
+    if (isAllowed || isVercel || isLocal) {
       callback(null, true);
     } else {
+      console.log('CORS blocked origin:', origin); // Log for debugging
       callback(new Error('Not allowed by CORS'));
     }
   },
