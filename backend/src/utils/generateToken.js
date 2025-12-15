@@ -5,8 +5,6 @@ const generateToken = (res, userId, req = null) => {
     expiresIn: '30d',
   });
 
-  // Determine if we are running locally (localhost)
-  // This helps when running 'npm start' (production mode) on a developer machine.
   let isLocal = false;
   
   if (req) {
@@ -19,13 +17,10 @@ const generateToken = (res, userId, req = null) => {
       }
   }
 
-  // Also enable if specifically in 'dev' lifecycle
   if (process.env.npm_lifecycle_event === 'dev') {
       isLocal = true;
   }
 
-  // If local, disable Secure (HTTP) and use Lax
-  // If production (and not local), use Secure (HTTPS) and None
   const secure = process.env.NODE_ENV !== 'development' && !isLocal;
   const sameSite = (process.env.NODE_ENV !== 'development' && !isLocal) ? 'none' : 'lax';
 

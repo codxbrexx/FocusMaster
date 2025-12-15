@@ -15,7 +15,7 @@ const seedRoutes = require('./routes/seedRoutes');
 const feedbackRoutes = require('./routes/feedbackRoutes');
 
 const app = express();
-app.set('trust proxy', 1); // Trust first proxy (Vercel/Heroku) for secure cookies
+app.set('trust proxy', 1); 
 
 // Middleware
 app.use((req, res, next) => {
@@ -26,7 +26,15 @@ app.use((req, res, next) => {
 const allowedOrigins = (process.env.FRONTEND_URLS || process.env.FRONTEND_URL || 'http://localhost:5173').split(',').map(s => s.trim()).filter(Boolean);
 
 app.use(cors({
-  origin: true,
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV === 'development') {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true
 }));
 app.use(express.json());
