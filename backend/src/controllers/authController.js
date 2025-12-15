@@ -14,7 +14,7 @@ const authUser = asyncHandler(async (req, res) => {
   const user = await User.findOne({ email });
 
   if (user && (await user.matchPassword(password))) {
-    generateToken(res, user._id);
+    generateToken(res, user._id, req);
     res.json({
       _id: user._id,
       name: user.name,
@@ -58,7 +58,7 @@ const loginGuest = asyncHandler(async (req, res) => {
       });
   }
 
-  generateToken(res, user._id);
+  generateToken(res, user._id, req);
 
   res.status(200).json({
     _id: user._id,
@@ -98,7 +98,7 @@ const googleLogin = asyncHandler(async (req, res) => {
       });
     }
 
-    generateToken(res, user._id);
+    generateToken(res, user._id, req);
     
     res.status(200).json({
       _id: user._id,
@@ -134,7 +134,7 @@ const registerUser = asyncHandler(async (req, res) => {
   });
 
   if (user) {
-    generateToken(res, user._id);
+    generateToken(res, user._id, req);
     res.status(201).json({
       _id: user._id,
       name: user.name,
