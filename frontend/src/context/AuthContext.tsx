@@ -2,6 +2,9 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 import api from '../services/api';
 import { toast } from 'sonner';
+import { useSettingsStore } from '../store/useSettingsStore';
+import { useTaskStore } from '../store/useTaskStore';
+import { useHistoryStore } from '../store/useHistoryStore';
 
 interface User {
   _id: string;
@@ -43,10 +46,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(data);
         setIsAuthenticated(true);
         if (!isGuest) localStorage.setItem('isAuthenticated', 'true');
+
+        // Hydrate all stores after authentication
+        await Promise.all([
+          useSettingsStore.getState().fetchSettings(),
+          useTaskStore.getState().fetchTasks(),
+          useHistoryStore.getState().fetchHistory(),
+        ]);
       } catch (error) {
         if (isGuest) {
           setUser({ _id: 'guest', name: 'Guest User', email: 'guest@daylite.app' });
           setIsAuthenticated(true);
+
+          // Hydrate stores for guest mode
+          await Promise.all([
+            useSettingsStore.getState().fetchSettings(),
+            useTaskStore.getState().fetchTasks(),
+            useHistoryStore.getState().fetchHistory(),
+          ]);
         } else {
           localStorage.removeItem('isAuthenticated');
           setUser(null);
@@ -67,6 +84,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       localStorage.setItem('isAuthenticated', 'true');
       setUser(data);
       setIsAuthenticated(true);
+
+      // Hydrate stores after login
+      await Promise.all([
+        useSettingsStore.getState().fetchSettings(),
+        useTaskStore.getState().fetchTasks(),
+        useHistoryStore.getState().fetchHistory(),
+      ]);
+
       toast.success('Welcome back!');
     } catch (error: any) {
       toast.error(error.response?.data?.message || 'Login failed');
@@ -81,6 +106,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       localStorage.setItem('isAuthenticated', 'true');
       setUser(data);
       setIsAuthenticated(true);
+
+      // Hydrate stores after Google login
+      await Promise.all([
+        useSettingsStore.getState().fetchSettings(),
+        useTaskStore.getState().fetchTasks(),
+        useHistoryStore.getState().fetchHistory(),
+      ]);
+
       toast.success('Signed in with Google!');
     } catch (error: any) {
       toast.error(error.response?.data?.message || 'Google login failed');
@@ -95,6 +128,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       localStorage.setItem('isAuthenticated', 'true');
       setUser(data);
       setIsAuthenticated(true);
+
+      // Hydrate stores after registration
+      await Promise.all([
+        useSettingsStore.getState().fetchSettings(),
+        useTaskStore.getState().fetchTasks(),
+        useHistoryStore.getState().fetchHistory(),
+      ]);
+
       toast.success('Account created!');
     } catch (error: any) {
       toast.error(error.response?.data?.message || 'Registration failed');
@@ -129,6 +170,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       setUser(data);
       setIsAuthenticated(true);
+
+      // Hydrate stores for guest mode
+      await Promise.all([
+        useSettingsStore.getState().fetchSettings(),
+        useTaskStore.getState().fetchTasks(),
+        useHistoryStore.getState().fetchHistory(),
+      ]);
+
       toast.success('Welcome! You are now using a guest account.');
       return data;
     } catch (error) {

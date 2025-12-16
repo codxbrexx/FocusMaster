@@ -24,7 +24,7 @@ const sessionSchema = mongoose.Schema(
       type: Date,
     },
     duration: {
-      type: Number, // in seconds
+      type: Number, // in sec
       required: true,
     },
     mood: {

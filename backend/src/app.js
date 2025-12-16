@@ -27,22 +27,18 @@ const allowedOrigins = (process.env.FRONTEND_URLS || process.env.FRONTEND_URL ||
 
 app.use(cors({
   origin: (origin, callback) => {
-    // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
     
-    // Check against allowed list
     const isAllowed = allowedOrigins.indexOf(origin) !== -1;
     
-    // Check if it's a Vercel deployment (permanent fix for previews/mismatches)
     const isVercel = origin.endsWith('.vercel.app');
     
-    // Check for localhost (allows testing Production build on Localhost)
     const isLocal = origin.includes('localhost') || origin.includes('127.0.0.1');
 
     if (isAllowed || isVercel || isLocal) {
       callback(null, true);
     } else {
-      console.log('CORS blocked origin:', origin); // Log for debugging
+      console.log('CORS blocked origin:', origin); 
       callback(new Error('Not allowed by CORS'));
     }
   },
@@ -63,7 +59,6 @@ app.use('/api/llm', llmRoutes);
 app.use('/api/seed', seedRoutes); 
 app.use('/api/feedback', feedbackRoutes);
 
-//ignore it 
 app.get(['/favicon.ico', '/favicon.png'], (req, res) => res.status(204).end());
 
 app.get('/api/health', (req, res) => {
@@ -74,7 +69,7 @@ app.get('/', (req, res) => {
   res.send('FocusMaster API is running...');
 });
 
-// Error Handling
+//error handling
 app.use(notFound);
 app.use(errorHandler);
 

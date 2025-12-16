@@ -1,6 +1,11 @@
 ## Todos
+ pomodoro session failed to save 
+reload gose to defult 25 min  not the changed one 
+change to the inactive and cahnged form pomodoro they have to run 
+task  edit delete overleap 
+after relaoding every thing are goes defult 
 
-phone responsive a nd its shows small text  ite phone  and other  component and  add the responsiveness of whole project
+
 
 date are not updated in the kanban board                                  
 pomodoro timer are not able to save to increaswe time 

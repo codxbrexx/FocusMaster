@@ -19,13 +19,10 @@ const createSession = asyncHandler(async (req, res) => {
     mood,
   });
 
-  // Award points if it's a focus session
   if (type === 'focus') {
       const user = await User.findById(req.user._id);
       user.points += 10;
       await user.save();
-
-      // Update task completed pomodoros
       if (task) {
           const taskDoc = await Task.findById(task);
           if (taskDoc) {
@@ -45,7 +42,6 @@ const getSessions = asyncHandler(async (req, res) => {
     const { range } = req.query;
     let query = { user: req.user._id };
     
-    // Simple range filtering
     if (range) {
         const now = new Date();
         let startDate = new Date();
@@ -71,11 +67,9 @@ const getSessions = asyncHandler(async (req, res) => {
 // @access  Private
 const getSessionStats = asyncHandler(async (req, res) => {
     const userId = req.user._id;
-    // Aggregation pipeline could go here for total duration, etc.
     const sessions = await Session.find({ user: userId });
     
-    // Simple JS calculation for now
-    let totalFocusTime = 0; // seconds
+    let totalFocusTime = 0; 
     let totalSessions = 0;
 
     sessions.forEach(s => {

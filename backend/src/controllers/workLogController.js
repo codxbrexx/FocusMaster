@@ -5,7 +5,6 @@ const WorkLog = require('../models/WorkLog');
 // @route   POST /api/clock/start
 // @access  Private
 const startClock = asyncHandler(async (req, res) => {
-    // Check if already clocked in
     const activeLog = await WorkLog.findOne({ user: req.user._id, endTime: { $exists: false } });
     if (activeLog) {
         res.status(400);
@@ -31,7 +30,7 @@ const stopClock = asyncHandler(async (req, res) => {
     }
 
     activeLog.endTime = new Date();
-    activeLog.duration = (activeLog.endTime - activeLog.startTime) / 1000; // seconds
+    activeLog.duration = (activeLog.endTime - activeLog.startTime) / 1000; 
     activeLog.notes = req.body.notes;
     activeLog.breakTime = req.body.breakTime || 0;
     await activeLog.save();

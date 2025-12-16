@@ -19,9 +19,9 @@ interface TaskFormProps {
     taskForm: TaskFormState;
     setTaskForm: (form: TaskFormState) => void;
     editingTaskId: string | null;
-    resetForm: () => void;
     handleSubmit: () => void;
     categories: string[];
+    onCancel: () => void;
 }
 
 export function TaskForm({
@@ -29,9 +29,9 @@ export function TaskForm({
     taskForm,
     setTaskForm,
     editingTaskId,
-    resetForm,
     handleSubmit,
-    categories
+    categories,
+    onCancel
 }: TaskFormProps) {
     if (!isAdding) return null;
 
@@ -156,7 +156,7 @@ export function TaskForm({
                     </div>
 
                     <div className="flex justify-end gap-3 pt-4">
-                        <Button variant="ghost" onClick={resetForm}>
+                        <Button variant="ghost" onClick={onCancel}>
                             Cancel
                         </Button>
                         <Button onClick={handleSubmit} className="px-8">

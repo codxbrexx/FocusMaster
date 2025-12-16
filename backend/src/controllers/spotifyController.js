@@ -62,7 +62,6 @@ const getValidToken = async (userId) => {
     if (!tokenDoc) return null;
 
     if (new Date() >= tokenDoc.expiresAt) {
-        // Refresh token
         try {
             const response = await axios.post('https://accounts.spotify.com/api/token', new URLSearchParams({
                 grant_type: 'refresh_token',

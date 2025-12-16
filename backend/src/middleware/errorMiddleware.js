@@ -13,11 +13,11 @@ const errorHandler = (err, req, res, next) => {
     message = 'Resource not found';
   }
 
-  console.error('[Error Middleware Caught]:', err); // Log full error to Vercel console
+  console.error('[Error Middleware Caught]:', err); 
 
   res.status(statusCode).json({
     message,
-    stack: err.stack, // TEMPORARY DEBUGGING: Always show stack
+    stack: err.stack, 
   });
 };
 

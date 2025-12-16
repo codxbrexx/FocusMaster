@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 const app = require('./app');
 
-const PORT = 5000; // force to 5000
+const PORT = 5000; 
 
 const startServer = async () => {
   try {

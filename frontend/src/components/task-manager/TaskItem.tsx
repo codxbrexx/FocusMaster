@@ -38,24 +38,41 @@ export function TaskItem({ task, onToggle, onEdit, onDelete }: TaskItemProps) {
 
             {/* Content */}
             <div className="flex-1 space-y-2 min-w-0">
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                    <h3
-                        className="font-semibold text-lg cursor-pointer hover:text-primary transition-colors truncate pr-8"
-                        onClick={() => onEdit(task)}
-                    >
-                        {task.title}
-                    </h3>
-                    <div className="flex gap-2 shrink-0">
-                        {task.category && (
-                            <Badge variant="secondary" className="font-normal">
-                                {task.category}
-                            </Badge>
-                        )}
-                        {task.priority === 'high' && (
-                            <Badge variant="destructive" className="font-normal animate-pulse">
-                                High
-                            </Badge>
-                        )}
+                <div className="flex flex-wrap items-start justify-between gap-4">
+                    <div className="space-y-1 min-w-0 flex-1">
+                        <h3
+                            className="font-semibold text-lg cursor-pointer hover:text-primary transition-colors truncate"
+                            onClick={() => onEdit(task)}
+                        >
+                            {task.title}
+                        </h3>
+                        <div className="flex gap-2">
+                            {task.priority === 'high' && (
+                                <Badge variant="destructive" className="font-normal text-xs animate-pulse pointer-events-none">
+                                    High
+                                </Badge>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Actions (Desktop: visible on hover, Mobile: always visible) */}
+                    <div className="flex items-center gap-1 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8 text-muted-foreground hover:text-primary"
+                            onClick={(e) => { e.stopPropagation(); onEdit(task); }}
+                        >
+                            <Pencil className="w-4 h-4" />
+                        </Button>
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8 text-muted-foreground hover:text-destructive"
+                            onClick={(e) => { e.stopPropagation(); onDelete(task._id); }}
+                        >
+                            <Trash2 className="w-4 h-4" />
+                        </Button>
                     </div>
                 </div>
 
@@ -84,27 +101,12 @@ export function TaskItem({ task, onToggle, onEdit, onDelete }: TaskItemProps) {
                             {task.completedPomodoros}/{task.estimatedPomodoros}
                         </span>
                     </div>
+                    {task.category && (
+                        <Badge variant="secondary" className="font-normal text-xs pointer-events-none">
+                            {task.category}
+                        </Badge>
+                    )}
                 </div>
-            </div>
-
-            {/* Actions (Absolute on Desktop, static on mobile) */}
-            <div className="flex md:flex-col md:absolute md:right-2 md:top-2 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity gap-1">
-                <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-8 w-8 text-muted-foreground hover:text-primary"
-                    onClick={() => onEdit(task)}
-                >
-                    <Pencil className="w-4 h-4" />
-                </Button>
-                <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-8 w-8 text-muted-foreground hover:text-destructive"
-                    onClick={() => onDelete(task._id)}
-                >
-                    <Trash2 className="w-4 h-4" />
-                </Button>
             </div>
         </motion.div>
     );

@@ -18,10 +18,8 @@ const createFeedback = asyncHandler(async (req, res) => {
     deviceInfo
   };
 
-  // If user is logged in (middleware attached user to req), link it
   if (req.user) {
     feedbackData.user = req.user._id;
-    // Use user's email if not provided in body
     feedbackData.email = email || req.user.email;
   } else {
     feedbackData.email = email;

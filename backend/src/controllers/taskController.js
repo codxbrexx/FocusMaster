@@ -42,13 +42,10 @@ const updateTask = asyncHandler(async (req, res) => {
     throw new Error('Task not found');
   }
 
-  // Check for user
   if (!req.user) {
     res.status(401);
     throw new Error('User not found');
   }
-
-  // Make sure the logged in user matches the task user
   if (task.user.toString() !== req.user._id.toString()) {
     res.status(401);
     throw new Error('User not authorized');
@@ -72,13 +69,10 @@ const deleteTask = asyncHandler(async (req, res) => {
     throw new Error('Task not found');
   }
 
-  // Check for user
   if (!req.user) {
     res.status(401);
     throw new Error('User not found');
   }
-
-  // Make sure the logged in user matches the task user
   if (task.user.toString() !== req.user._id.toString()) {
     res.status(401);
     throw new Error('User not authorized');

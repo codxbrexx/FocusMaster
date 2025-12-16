@@ -34,12 +34,10 @@ const authUser = asyncHandler(async (req, res) => {
 const loginGuest = asyncHandler(async (req, res) => {
   let user;
   
-  // Try to resume existing guest session if ID provided
   if (req.body && req.body.guestId && req.body.guestId.match(/^[0-9a-fA-F]{24}$/)) {
     try {
       user = await User.findById(req.body.guestId);
     } catch (e) {
-      // Ignore invalid/expired guest IDs
     }
   }
 
@@ -54,7 +52,7 @@ const loginGuest = asyncHandler(async (req, res) => {
         name,
         email,
         password,
-        isGuest: true // Flag to identify guest accounts
+        isGuest: true 
       });
   }
 
@@ -85,8 +83,6 @@ const googleLogin = asyncHandler(async (req, res) => {
     let user = await User.findOne({ email });
 
     if (!user) {
-      // Create new user if not exists
-      // Generate a random password since they use Google
       const randomPassword = require('crypto').randomBytes(16).toString('hex');
       
       user = await User.create({
@@ -190,8 +186,6 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     
     // Explicitly handle settings update
     if (req.body.settings) {
-        // Use spread syntax to merge existing settings with new ones
-        // Mongoose subdocuments can be tricky, so we ensure we're working with a plain object
         const newSettings = { 
             ...(user.settings ? user.settings.toObject() : {}), 
             ...req.body.settings 

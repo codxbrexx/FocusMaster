@@ -9,7 +9,7 @@ const feedbackSchema = mongoose.Schema(
     },
     email: {
       type: String,
-      required: false, // Optional if user is logged in, but good to have
+      required: false,
     },
     message: {
       type: String,

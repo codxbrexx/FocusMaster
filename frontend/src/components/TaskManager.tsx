@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Trash2, CheckCircle2, ListTodo } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent } from '@/components/ui/tabs';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTaskStore, type Task } from '@/store/useTaskStore';
@@ -21,7 +20,6 @@ export function TaskManager() {
   const [editingTaskId, setEditingTaskId] = useState<string | null>(null);
   const [filter, setFilter] = useState<'all' | 'high' | 'medium' | 'low'>('all');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
-  const [currentTab, setCurrentTab] = useState('active');
 
   const [taskForm, setTaskForm] = useState({
     title: '',
@@ -130,9 +128,8 @@ export function TaskManager() {
       />
 
       {/* --- MAIN CONTENT --- */}
-      <Tabs value={currentTab} onValueChange={setCurrentTab} className="w-full">
+      <div className="w-full space-y-12">
         <TaskFilters
-          currentTab={currentTab}
           categoryFilter={categoryFilter}
           setCategoryFilter={setCategoryFilter}
           filter={filter}
@@ -148,14 +145,21 @@ export function TaskManager() {
             taskForm={taskForm}
             setTaskForm={setTaskForm}
             editingTaskId={editingTaskId}
-            resetForm={resetForm}
             handleSubmit={handleSubmit}
             categories={CATEGORIES}
+            onCancel={() => { setIsAdding(false); resetForm(); }}
           />
         </AnimatePresence>
 
         {/* --- ACTIVE LIST --- */}
-        <TabsContent value="active" className="space-y-4">
+        <div className="space-y-6">
+          <div className="flex items-center gap-2 pb-2 border-b border-white/5">
+            <h2 className="text-xl font-semibold tracking-tight">To Do</h2>
+            <span className="text-sm text-muted-foreground bg-secondary/50 px-2 py-0.5 rounded-full">
+              {sortedTasks.length}
+            </span>
+          </div>
+
           <AnimatePresence mode="popLayout">
             {sortedTasks.length === 0 ? (
               <motion.div
@@ -173,39 +177,37 @@ export function TaskManager() {
                 </Button>
               </motion.div>
             ) : (
-              sortedTasks.map((task) => (
-                <TaskItem
-                  key={task._id}
-                  task={task}
-                  onToggle={handleToggleComplete}
-                  onEdit={handleEditClick}
-                  onDelete={deleteTask}
-                />
-              ))
+              <div className="space-y-3">
+                {sortedTasks.map((task) => (
+                  <TaskItem
+                    key={task._id}
+                    task={task}
+                    onToggle={handleToggleComplete}
+                    onEdit={handleEditClick}
+                    onDelete={deleteTask}
+                  />
+                ))}
+              </div>
             )}
           </AnimatePresence>
-        </TabsContent>
+        </div>
 
         {/* --- COMPLETED LIST --- */}
-        <TabsContent value="completed">
-          <div className="space-y-2">
-            <AnimatePresence>
-              {completedTasks.length === 0 ? (
-                <div className="text-center py-12 text-muted-foreground">
-                  <p>No completed tasks yet. Get to work!</p>
-                </div>
-              ) : (
-                completedTasks.map((task) => (
+        {completedTasks.length > 0 && (
+          <div className="space-y-6 pt-6 border-t border-white/5">
+            <div className="space-y-2">
+              <AnimatePresence>
+                {completedTasks.map((task) => (
                   <motion.div
                     key={task._id}
                     layout
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 0.6, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.95 }}
-                    className="flex items-center justify-between p-4 rounded-lg bg-secondary/30 border border-transparent"
+                    className="flex items-center justify-between p-4 rounded-lg bg-secondary/30 border border-transparent hover:bg-secondary/40 transition-colors"
                   >
                     <div className="flex items-center gap-3">
-                      <button onClick={() => handleToggleComplete(task)} className="text-green-600">
+                      <button onClick={() => handleToggleComplete(task)} className="text-green-600 hover:text-green-500 transition-colors">
                         <CheckCircle2 className="w-5 h-5" />
                       </button>
                       <span className="line-through text-muted-foreground font-medium">
@@ -221,12 +223,12 @@ export function TaskManager() {
                       <Trash2 className="w-4 h-4" />
                     </Button>
                   </motion.div>
-                ))
-              )}
-            </AnimatePresence>
+                ))}
+              </AnimatePresence>
+            </div>
           </div>
-        </TabsContent>
-      </Tabs>
+        )}
+      </div>
     </motion.div>
   );
 }

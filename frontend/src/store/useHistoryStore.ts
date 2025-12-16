@@ -107,7 +107,23 @@ export const useHistoryStore = create<HistoryState>((set) => ({
     }
 
     try {
-      const { data } = await api.post('/sessions', session);
+      // Transform frontend session data to backend API format
+      const typeMapping: Record<string, string> = {
+        'pomodoro': 'focus',
+        'short-break': 'shortBreak',
+        'long-break': 'longBreak',
+      };
+
+      const backendSession = {
+        type: typeMapping[session.type] || session.type,
+        startTime: session.startTime,
+        endTime: session.endTime,
+        duration: session.duration * 60, // Convert minutes to seconds
+        task: session.taskId, // Map taskId to task
+        mood: session.mood,
+      };
+
+      const { data } = await api.post('/sessions', backendSession);
       set((state) => ({
         sessions: [
           { ...data, startTime: new Date(data.startTime), endTime: new Date(data.endTime) },
@@ -189,7 +205,7 @@ export const useHistoryStore = create<HistoryState>((set) => ({
       try {
         const { data } = await api.post('/clock/stop', {
           breakTime: updates.breakTime,
-          notes: '', 
+          notes: '',
         });
         set((state) => ({
           clockEntries: state.clockEntries.map((e) =>

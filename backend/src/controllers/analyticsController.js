@@ -16,7 +16,7 @@ const getDailyStats = asyncHandler(async (req, res) => {
         type: 'focus'
     });
 
-    const totalDuration = sessions.reduce((acc, curr) => acc + curr.duration, 0); // seconds
+    const totalDuration = sessions.reduce((acc, curr) => acc + curr.duration, 0); 
     const sessionCount = sessions.length;
 
     res.json({
@@ -39,15 +39,14 @@ const getWeeklyStats = asyncHandler(async (req, res) => {
         type: 'focus'
     });
 
-    // Group by day
     const days = eachDayOfInterval({ start: weekStart, end: weekEnd });
     const chartData = days.map(day => {
         const dayStr = format(day, 'yyyy-MM-dd');
         const daySessions = sessions.filter(s => format(s.startTime, 'yyyy-MM-dd') === dayStr);
         const duration = daySessions.reduce((acc, curr) => acc + curr.duration, 0);
         return {
-            name: format(day, 'EEE'), // Mon, Tue...
-            duration: Math.round(duration / 60), // minutes
+            name: format(day, 'EEE'), 
+            duration: Math.round(duration / 60), 
             date: dayStr
         };
     });
@@ -60,9 +59,6 @@ const getWeeklyStats = asyncHandler(async (req, res) => {
 // @access  Private
 const getTaskDistribution = asyncHandler(async (req, res) => {
     const tasks = await Task.find({ user: req.user._id });
-    
-    // Group by completed vs pending or priority? 
-    // Spec says: Pie chart (task distribution). Maybe by status or priority.
     
     const priorityDist = {
         low: 0,
@@ -94,18 +90,16 @@ const getHeatmap = asyncHandler(async (req, res) => {
     const sessions = await Session.find({
         user: req.user._id,
         startTime: { $gte: yearStart },
-        type: 'focus' // Assuming 'focus' or 'pomodoro' - check model enum
+        type: 'focus' 
     });
 
-    // Aggregate by date
     const map = {};
     sessions.forEach(s => {
         const date = format(s.startTime, 'yyyy-MM-dd');
         if (!map[date]) map[date] = 0;
-        map[date] += 1; // Count sessions, not duration
+        map[date] += 1; 
     });
 
-    // Transform to heatmap format
     const data = Object.keys(map).map(date => ({
         date,
         count: map[date]

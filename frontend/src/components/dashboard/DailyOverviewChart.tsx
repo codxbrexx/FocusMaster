@@ -8,9 +8,7 @@ interface DailyOverviewChartProps {
     todayPomodoros: number;
     dailyGoal: number;
     todayMinutes: number;
-    sessionCount: number; // For average calc, usually total sessions in history or just today?
-    // Dashboard used `sessions.length` for max(..,1) denominator to avoid div 0?
-    // Let's pass the raw numbers needed.
+    sessionCount: number; 
     averageFocusDuration: number;
 }
 
