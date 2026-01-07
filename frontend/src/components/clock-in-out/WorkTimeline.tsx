@@ -31,7 +31,7 @@ export function WorkTimeline({ entries }: WorkTimelineProps) {
                 <CardTitle className="text-base">Working Hours</CardTitle>
             </CardHeader>
             <CardContent className="pt-4">
-                <div className="space-y-3">
+                <div className="space-y-3 max-h-[150px] overflow-y-auto pr-2 custom-scrollbar">
                     {entries.map((entry) => (
                         <div key={entry.id} className="flex items-center gap-3">
                             <div className="text-sm text-muted-foreground min-w-[140px] flex items-center gap-2">

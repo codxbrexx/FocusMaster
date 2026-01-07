@@ -100,14 +100,13 @@
     --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
     --ring: 240 10% 3.9%;
-    
+
     /* White Matrix with Black Dot */
     --matrix-bg: #ffffff;
-    --matrix-dot: #e4e4e7; /* Zinc-200 for subtle "black" dot feel, true black is too noisy. Or requested 'black dot'? I'll allow semi-transparent black in gradient or solid dark gray */
-    
-    /* Re-defined dots to be sharper if user wants 'black dot' */
+    --matrix-dot: #e4e4e7;
+
     --matrix-bg: #ffffff;
-    --matrix-dot: #000000; /* As requested */
+    --matrix-dot: #000000;
 
     /* Light Charts */
     --chart-1: 12 76% 61%;
@@ -119,8 +118,8 @@
     --success-foreground: 0 0% 100%;
     --warning: 38 92% 50%;
     --warning-foreground: 0 0% 100%;
-    --shadow-glow: 0 0 40px rgba(0,0,0,0.1);
-    --shadow-glow-lg: 0 0 80px rgba(0,0,0,0.15);
+    --shadow-glow: 0 0 40px rgba(0, 0, 0, 0.1);
+    --shadow-glow-lg: 0 0 80px rgba(0, 0, 0, 0.15);
   }
 
   .dark {
@@ -170,7 +169,7 @@
     --border: 217 33% 20%;
     --input: 217 33% 17%;
     --ring: 217 91% 60%;
-    
+
     --matrix-bg: #020617;
     --matrix-dot: #1e293b;
   }
@@ -236,12 +235,10 @@
 
 @layer components {
   .focus-gradient {
-    background-image: linear-gradient(
-      to bottom right,
-      hsl(var(--background)),
-      hsl(var(--card)),
-      hsl(var(--accent) / 0.3)
-    );
+    background-image: linear-gradient(to bottom right,
+        hsl(var(--background)),
+        hsl(var(--card)),
+        hsl(var(--accent) / 0.3));
   }
 
   .glass-card {
@@ -291,12 +288,10 @@
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
-    background-image: linear-gradient(
-      to right,
-      hsl(var(--primary)),
-      hsl(var(--accent-foreground)),
-      hsl(var(--primary))
-    );
+    background-image: linear-gradient(to right,
+        hsl(var(--primary)),
+        hsl(var(--accent-foreground)),
+        hsl(var(--primary)));
   }
 
   .scrollbar-hide {
@@ -307,13 +302,32 @@
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted-foreground) / 0.3);
+    border-radius: 10px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground) / 0.5);
+  }
 }
 
 @keyframes float {
+
   0%,
   100% {
     transform: translateY(0px);
   }
+
   50% {
     transform: translateY(-10px);
   }
@@ -325,6 +339,7 @@
       0 0 20px hsl(var(--primary) / 0.3),
       0 0 40px hsl(var(--primary) / 0.2);
   }
+
   to {
     box-shadow:
       0 0 40px hsl(var(--primary) / 0.5),

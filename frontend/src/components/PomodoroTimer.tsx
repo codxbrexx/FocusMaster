@@ -279,10 +279,10 @@ export function PomodoroTimer() {
                   </span>
                   <Select value={selectedTaskId} onValueChange={setSelectedTaskId}>
                     <SelectTrigger className="h-10 bg-white/5 border-white/10 text-sm hover:bg-white/10 transition-colors focus:ring-0">
-                      <SelectValue placeholder="-- No Specific Task --" />
+                      <SelectValue placeholder="No Task Added" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="none">-- No Specific Task --</SelectItem>
+                      <SelectItem value="none">No Task Added</SelectItem>
                       {activeTasks.map((t) => (
                         <SelectItem key={t._id} value={t._id}>
                           {t.title}

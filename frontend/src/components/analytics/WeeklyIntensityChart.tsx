@@ -29,31 +29,44 @@ export function WeeklyIntensityChart({ data }: WeeklyIntensityChartProps) {
     };
 
     return (
-        <motion.div variants={item}>
-            <Card className="border-2 shadow-md backdrop-blur-xl bg-card/50 h-full">
+        <motion.div variants={item} className="h-full">
+            <Card className="border-white/10 shadow-xl backdrop-blur-xl bg-black/40 h-full">
                 <CardHeader>
-                    <CardTitle className="text-lg">Weekly Intensity</CardTitle>
-                    <CardDescription>Sessions completed per day</CardDescription>
+                    <CardTitle className="text-lg font-medium tracking-wide text-white/90">Weekly Intensity</CardTitle>
+                    <CardDescription className="text-white/50">Sessions completed daily</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <div className="h-[250px] w-full min-w-0">
                         <ResponsiveContainer width="100%" height="100%" minWidth={0}>
-                            <BarChart data={data} barSize={20}>
+                            <BarChart data={data} barSize={32}>
+                                <defs>
+                                    <linearGradient id="intensityGradient" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="0%" stopColor="#8b5cf6" stopOpacity={1} />
+                                        <stop offset="100%" stopColor="#3b82f6" stopOpacity={0.8} />
+                                    </linearGradient>
+                                </defs>
                                 <CartesianGrid
                                     strokeDasharray="3 3"
                                     vertical={false}
-                                    stroke="hsl(var(--border))"
-                                    opacity={0.4}
+                                    stroke="rgba(255,255,255,0.05)"
                                 />
                                 <XAxis
                                     dataKey="day"
                                     axisLine={false}
                                     tickLine={false}
-                                    tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
+                                    tick={{ fill: 'rgba(255,255,255,0.4)', fontSize: 12, fontWeight: 500 }}
                                     dy={10}
                                 />
-                                <Tooltip content={<ChartTooltip />} />
-                                <Bar dataKey="count" radius={[4, 4, 0, 0]} fill="hsl(var(--primary))" />
+                                <Tooltip
+                                    cursor={{ fill: 'rgba(255,255,255,0.05)' }}
+                                    content={<ChartTooltip />}
+                                />
+                                <Bar
+                                    dataKey="count"
+                                    radius={[6, 6, 6, 6]}
+                                    fill="url(#intensityGradient)"
+                                    className="filter drop-shadow-[0_0_10px_rgba(139,92,246,0.2)]"
+                                />
                             </BarChart>
                         </ResponsiveContainer>
                     </div>

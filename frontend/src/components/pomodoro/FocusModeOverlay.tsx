@@ -118,16 +118,16 @@ export function FocusModeOverlay({
                     <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
                         <defs>
                             <linearGradient id="gradient-focus" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stopColor="#6366f1" /> {/* Indigo-500 */}
-                                <stop offset="100%" stopColor="#a855f7" /> {/* Purple-500 */}
+                                <stop offset="0%" stopColor="indigo-500" />
+                                <stop offset="100%" stopColor="purple-500" />
                             </linearGradient>
                             <linearGradient id="gradient-short-break" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stopColor="#14b8a6" /> {/* Teal-500 */}
-                                <stop offset="100%" stopColor="#22c55e" /> {/* Green-500 */}
+                                <stop offset="0%" stopColor="teal-500" />
+                                <stop offset="100%" stopColor="green-500" />
                             </linearGradient>
                             <linearGradient id="gradient-long-break" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stopColor="#3b82f6" /> {/* Blue-500 */}
-                                <stop offset="100%" stopColor="#06b6d4" /> {/* Cyan-500 */}
+                                <stop offset="0%" stopColor="blue-500" />
+                                <stop offset="100%" stopColor="cyan-500" />
                             </linearGradient>
                         </defs>
                         <circle
@@ -200,10 +200,10 @@ export function FocusModeOverlay({
                         </span>
                         <Select value={selectedTaskId} onValueChange={setSelectedTaskId}>
                             <SelectTrigger className="h-12 bg-white/5 border-white/10 text-lg hover:bg-white/10 transition-colors focus:ring-0">
-                                <SelectValue placeholder="-- No Specific Task --" />
+                                <SelectValue placeholder="No Task Added" />
                             </SelectTrigger>
                             <SelectContent className="dark:bg-zinc-900 border-zinc-800">
-                                <SelectItem value="none">-- No Specific Task --</SelectItem>
+                                <SelectItem value="none">No Task Added</SelectItem>
                                 {activeTasks.map((t) => (
                                     <SelectItem key={t._id} value={t._id}>
                                         {t.title}

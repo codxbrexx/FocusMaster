@@ -89,20 +89,27 @@ export function TaskForm({
                             <label className="text-sm font-medium">Priority</label>
                             <Select
                                 value={taskForm.priority}
-                                onValueChange={(v: any) => setTaskForm({ ...taskForm, priority: v })}
+                                onValueChange={(v: 'low' | 'medium' | 'high') => {
+                                    const defaults = { low: 2, medium: 3, high: 4 };
+                                    setTaskForm({
+                                        ...taskForm,
+                                        priority: v,
+                                        estimatedPomodoros: defaults[v]
+                                    });
+                                }}
                             >
                                 <SelectTrigger className="h-10">
                                     <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="high" className="text-destructive">
-                                        High Priority
+                                    <SelectItem value="high" className="text-red-500">
+                                        High
                                     </SelectItem>
                                     <SelectItem value="medium" className="text-orange-500">
-                                        Medium Priority
+                                        Medium
                                     </SelectItem>
                                     <SelectItem value="low" className="text-blue-500">
-                                        Low Priority
+                                        Low
                                     </SelectItem>
                                 </SelectContent>
                             </Select>

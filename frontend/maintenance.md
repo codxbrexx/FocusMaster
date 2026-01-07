@@ -5,12 +5,7 @@ task  edit delete overleap
 after relaoding every thing are goes defult 
 
 spotify  page ui error 
-my tasks Category dropdown transprancy error 
-animatation in the pomodoro main page
 project workng slow
-red color for high priority 
-pomodoro remove active page only 
-clockin out  abter 5 clock  it dose not make page big is go for scrolldown for the clock workig hours 
 
 ## logical
 pomodoro session failed to save 

@@ -30,14 +30,14 @@ export function FocusActivityChart({ data }: FocusActivityChartProps) {
     };
 
     return (
-        <motion.div variants={item} className="lg:col-span-2">
-            <Card className="border-2 shadow-md backdrop-blur-xl bg-card/50">
+        <motion.div variants={item} className="lg:col-span-2 h-full">
+            <Card className="border-white/10 shadow-xl backdrop-blur-xl bg-black/40 h-full">
                 <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-lg">
-                        <Activity className="w-5 h-5 text-primary" />
+                    <CardTitle className="flex items-center gap-2 text-lg font-medium tracking-wide text-white/90">
+                        <Activity className="w-5 h-5 text-indigo-400" />
                         Focus Activity
                     </CardTitle>
-                    <CardDescription>
+                    <CardDescription className="text-white/50">
                         Compare your focus time vs break time over the last 7 days.
                     </CardDescription>
                 </CardHeader>
@@ -46,42 +46,41 @@ export function FocusActivityChart({ data }: FocusActivityChartProps) {
                         <ResponsiveContainer width="100%" height="100%" minWidth={0}>
                             <AreaChart
                                 data={data}
-                                margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+                                margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
                             >
                                 <defs>
                                     <linearGradient id="colorFocus" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.8} />
-                                        <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
+                                        <stop offset="5%" stopColor="#818cf8" stopOpacity={0.5} />
+                                        <stop offset="95%" stopColor="#818cf8" stopOpacity={0} />
                                     </linearGradient>
                                     <linearGradient id="colorBreak" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="hsl(var(--chart-2))" stopOpacity={0.8} />
-                                        <stop offset="95%" stopColor="hsl(var(--chart-2))" stopOpacity={0} />
+                                        <stop offset="5%" stopColor="#2dd4bf" stopOpacity={0.5} />
+                                        <stop offset="95%" stopColor="#2dd4bf" stopOpacity={0} />
                                     </linearGradient>
                                 </defs>
                                 <CartesianGrid
                                     strokeDasharray="3 3"
                                     vertical={false}
-                                    stroke="hsl(var(--border))"
-                                    opacity={0.4}
+                                    stroke="rgba(255,255,255,0.05)"
                                 />
                                 <XAxis
                                     dataKey="day"
                                     axisLine={false}
                                     tickLine={false}
-                                    tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
+                                    tick={{ fill: 'rgba(255,255,255,0.4)', fontSize: 12, fontWeight: 500 }}
                                     dy={10}
                                 />
                                 <YAxis
                                     hide={false}
                                     axisLine={false}
                                     tickLine={false}
-                                    tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
+                                    tick={{ fill: 'rgba(255,255,255,0.4)', fontSize: 12 }}
                                 />
                                 <Tooltip content={<ChartTooltip />} />
                                 <Area
                                     type="monotone"
                                     dataKey="focus"
-                                    stroke="hsl(var(--primary))"
+                                    stroke="#818cf8"
                                     strokeWidth={3}
                                     fillOpacity={1}
                                     fill="url(#colorFocus)"
@@ -90,7 +89,7 @@ export function FocusActivityChart({ data }: FocusActivityChartProps) {
                                 <Area
                                     type="monotone"
                                     dataKey="break"
-                                    stroke="hsl(var(--chart-2))"
+                                    stroke="#2dd4bf"
                                     strokeWidth={3}
                                     fillOpacity={1}
                                     fill="url(#colorBreak)"
