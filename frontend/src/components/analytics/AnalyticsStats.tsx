@@ -27,7 +27,7 @@ export function AnalyticsStats({
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <motion.div variants={item}>
-                <Card className="backdrop-blur-xl bg-black/40 border-white/10 group hover:shadow-lg hover:shadow-indigo-500/10 transition-all duration-300">
+                <Card className="backdrop-blur-xl bg-card/40 border-border group hover:shadow-lg hover:shadow-indigo-500/10 transition-all duration-300">
                     <CardContent className="p-6">
                         <div className="flex items-center justify-between mb-4">
                             <div className="p-2 bg-indigo-500/20 text-indigo-400 rounded-lg group-hover:bg-indigo-500/30 transition-colors">
@@ -40,13 +40,13 @@ export function AnalyticsStats({
                             </span>
                         </div>
                         <div>
-                            <div className="text-3xl font-bold tabular-nums text-white/90">{todayPomodoros}</div>
-                            <div className="text-sm text-white/50 flex items-center justify-between mt-1">
+                            <div className="text-3xl font-bold tabular-nums text-foreground">{todayPomodoros}</div>
+                            <div className="text-sm text-muted-foreground flex items-center justify-between mt-1">
                                 <span>Sessions Today</span>
                                 <span className="text-xs opacity-70">Goal: {dailyGoal}</span>
                             </div>
                         </div>
-                        <div className="mt-4 w-full h-1 bg-white/5 rounded-full overflow-hidden">
+                        <div className="mt-4 w-full h-1 bg-muted rounded-full overflow-hidden">
                             <div
                                 className="h-full bg-indigo-500 transition-all duration-1000"
                                 style={{ width: `${Math.min(completionRate, 100)}%` }}
@@ -57,7 +57,7 @@ export function AnalyticsStats({
             </motion.div>
 
             <motion.div variants={item}>
-                <Card className="backdrop-blur-xl bg-black/40 border-white/10 group hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300">
+                <Card className="backdrop-blur-xl bg-card/40 border-border group hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300">
                     <CardContent className="p-6">
                         <div className="flex items-center justify-between mb-4">
                             <div className="p-2 bg-amber-500/20 text-amber-400 rounded-lg group-hover:bg-amber-500/30 transition-colors">
@@ -65,10 +65,10 @@ export function AnalyticsStats({
                             </div>
                         </div>
                         <div>
-                            <div className="text-3xl font-bold tabular-nums text-white/90">{longestStreak}</div>
-                            <div className="text-sm text-white/50 mt-1">Day Streak</div>
+                            <div className="text-3xl font-bold tabular-nums text-foreground">{longestStreak}</div>
+                            <div className="text-sm text-muted-foreground mt-1">Day Streak</div>
                         </div>
-                        <div className="mt-4 w-full h-1 bg-white/5 rounded-full overflow-hidden">
+                        <div className="mt-4 w-full h-1 bg-muted rounded-full overflow-hidden">
                             <div
                                 className="h-full bg-amber-500 transition-all duration-1000"
                                 style={{ width: '40%' }} // You might want to make this dynamic if possible
@@ -79,7 +79,7 @@ export function AnalyticsStats({
             </motion.div>
 
             <motion.div variants={item}>
-                <Card className="backdrop-blur-xl bg-black/40 border-white/10 group hover:shadow-lg hover:shadow-emerald-500/10 transition-all duration-300">
+                <Card className="backdrop-blur-xl bg-card/40 border-border group hover:shadow-lg hover:shadow-emerald-500/10 transition-all duration-300">
                     <CardContent className="p-6">
                         <div className="flex items-center justify-between mb-4">
                             <div className="p-2 bg-emerald-500/20 text-emerald-400 rounded-lg group-hover:bg-emerald-500/30 transition-colors">
@@ -87,10 +87,10 @@ export function AnalyticsStats({
                             </div>
                         </div>
                         <div>
-                            <div className="text-3xl font-bold tabular-nums text-white/90">{totalWorkHours}h</div>
-                            <div className="text-sm text-white/50 mt-1">Total Work Hours</div>
+                            <div className="text-3xl font-bold tabular-nums text-foreground">{totalWorkHours}h</div>
+                            <div className="text-sm text-muted-foreground mt-1">Total Work Hours</div>
                         </div>
-                        <div className="mt-4 w-full h-1 bg-white/5 rounded-full overflow-hidden">
+                        <div className="mt-4 w-full h-1 bg-muted rounded-full overflow-hidden">
                             <div
                                 className="h-full bg-emerald-500 transition-all duration-1000"
                                 style={{ width: '75%' }} // Dynamic width advised

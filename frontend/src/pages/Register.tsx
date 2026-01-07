@@ -20,7 +20,7 @@ export function Register() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      // @ts-ignore
+      // @ts-expect-error Google global is injected via script tag
       if (typeof window !== 'undefined' && !window.google) {
         setError('AdBlocker detected. Please disable it to use Google Login.');
       }
@@ -72,11 +72,6 @@ export function Register() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background px-4">
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 right-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl opacity-50" />
-        <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl opacity-50" />
-      </div>
-
       <Card className="w-full max-w-md border-primary/10 shadow-xl bg-card/50 backdrop-blur-sm relative z-10">
         <CardHeader className="space-y-1 text-center">
           <div className="mx-auto w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-2">

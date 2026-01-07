@@ -80,12 +80,12 @@ export function Analytics() {
 
     return last7Days.map((dateStr) => {
       const daySessions = sessions.filter((s) => new Date(s.startTime).toDateString() === dateStr);
-      const focus = daySessions
+      const focus = Math.floor(daySessions
         .filter((s) => s.type === 'pomodoro')
-        .reduce((acc, s) => acc + s.duration, 0);
-      const breaks = daySessions
+        .reduce((acc, s) => acc + s.duration, 0) / 60);
+      const breaks = Math.floor(daySessions
         .filter((s) => s.type !== 'pomodoro')
-        .reduce((acc, s) => acc + s.duration, 0);
+        .reduce((acc, s) => acc + s.duration, 0) / 60);
 
       const date = new Date(dateStr);
       const dayName = date.toLocaleDateString('en-US', { weekday: 'short' });

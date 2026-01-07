@@ -1,5 +1,5 @@
 import { Card, CardContent } from '@/components/ui/card';
-import { Timer, TrendingUp, Calendar, Clock } from 'lucide-react';
+import { Timer, Calendar, Clock } from 'lucide-react';
 
 interface StatsGridProps {
     isToday: boolean;
@@ -11,13 +11,12 @@ interface StatsGridProps {
 export function StatsGrid({ isToday, todayTotal, weeklyHours, totalEntries }: StatsGridProps) {
     return (
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <Card className="backdrop-blur-xl bg-card/50 border-2 hover:shadow-lg hover:scale-95 transition-all group">
+            <Card className="backdrop-blur-xl bg-card/50 border-2 hover:shadow-md transition-all group">
                 <CardContent className="pt-6">
                     <div className="flex items-start justify-between mb-4">
                         <div className="p-3 rounded-xl bg-gradient-to-br from-blue-500/20 to-blue-500/10">
                             <Timer className="w-6 h-6 text-blue-500" />
                         </div>
-                        <TrendingUp className="w-5 h-5 text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity" />
                     </div>
                     <div className="space-y-1">
                         <p className="text-sm text-muted-foreground">Today's Hours</p>
@@ -29,13 +28,12 @@ export function StatsGrid({ isToday, todayTotal, weeklyHours, totalEntries }: St
                 </CardContent>
             </Card>
 
-            <Card className="backdrop-blur-xl bg-card/50 border-2 hover:shadow-lg hover:scale-95 transition-all group">
+            <Card className="backdrop-blur-xl bg-card/50 border-2 hover:shadow-md  transition-all group">
                 <CardContent className="pt-6">
                     <div className="flex items-start justify-between mb-4">
                         <div className="p-3 rounded-xl bg-gradient-to-br from-purple-500/20 to-purple-500/10">
                             <Calendar className="w-6 h-6 text-purple-500" />
                         </div>
-                        <TrendingUp className="w-5 h-5 text-purple-500 opacity-0 group-hover:opacity-100 transition-opacity" />
                     </div>
                     <div className="space-y-1">
                         <p className="text-sm text-muted-foreground">Weekly Hours</p>
@@ -47,13 +45,12 @@ export function StatsGrid({ isToday, todayTotal, weeklyHours, totalEntries }: St
                 </CardContent>
             </Card>
 
-            <Card className="backdrop-blur-xl bg-card/50 border-2 hover:shadow-lg hover:scale-95 transition-all group">
+            <Card className="backdrop-blur-xl bg-card/50 border-2 hover:shadow-md  transition-all group">
                 <CardContent className="pt-6">
                     <div className="flex items-start justify-between mb-4">
                         <div className="p-3 rounded-xl bg-gradient-to-br from-green-500/20 to-green-500/10">
                             <Clock className="w-6 h-6 text-green-500" />
                         </div>
-                        <TrendingUp className="w-5 h-5 text-green-500 opacity-0 group-hover:opacity-100 transition-opacity" />
                     </div>
                     <div className="space-y-1">
                         <p className="text-sm text-muted-foreground">Total Entries</p>

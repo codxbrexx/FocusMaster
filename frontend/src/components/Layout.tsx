@@ -6,13 +6,20 @@ import { Github, Linkedin } from 'lucide-react';
 import { Toaster as Sonner } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { ReportBugDialog } from './ReportBugDialog';
+import { useTaskStore } from '@/store/useTaskStore';
+import { useHistoryStore } from '@/store/useHistoryStore';
 
 
 
 export const Layout = () => {
     const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 768);
+    const { fetchTasks } = useTaskStore();
+    const { fetchHistory } = useHistoryStore();
 
     useEffect(() => {
+        fetchTasks();
+        fetchHistory();
+
         const handleResize = () => {
             if (window.innerWidth < 768) {
                 setSidebarOpen(false);
@@ -22,7 +29,7 @@ export const Layout = () => {
         };
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
-    }, []);
+    }, [fetchTasks, fetchHistory]);
 
     return (
         <TooltipProvider>

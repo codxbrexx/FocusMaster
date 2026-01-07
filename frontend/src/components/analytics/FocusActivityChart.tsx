@@ -31,13 +31,13 @@ export function FocusActivityChart({ data }: FocusActivityChartProps) {
 
     return (
         <motion.div variants={item} className="lg:col-span-2 h-full">
-            <Card className="border-white/10 shadow-xl backdrop-blur-xl bg-black/40 h-full">
+            <Card className="border-border shadow-xl backdrop-blur-xl bg-card/40 h-full">
                 <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-lg font-medium tracking-wide text-white/90">
+                    <CardTitle className="flex items-center gap-2 text-lg font-medium tracking-wide text-foreground">
                         <Activity className="w-5 h-5 text-indigo-400" />
                         Focus Activity
                     </CardTitle>
-                    <CardDescription className="text-white/50">
+                    <CardDescription className="text-muted-foreground">
                         Compare your focus time vs break time over the last 7 days.
                     </CardDescription>
                 </CardHeader>
@@ -61,20 +61,20 @@ export function FocusActivityChart({ data }: FocusActivityChartProps) {
                                 <CartesianGrid
                                     strokeDasharray="3 3"
                                     vertical={false}
-                                    stroke="rgba(255,255,255,0.05)"
+                                    stroke="rgba(128,128,128,0.2)"
                                 />
                                 <XAxis
                                     dataKey="day"
                                     axisLine={false}
                                     tickLine={false}
-                                    tick={{ fill: 'rgba(255,255,255,0.4)', fontSize: 12, fontWeight: 500 }}
+                                    tick={{ fill: '#888888', fontSize: 12, fontWeight: 500 }}
                                     dy={10}
                                 />
                                 <YAxis
                                     hide={false}
                                     axisLine={false}
                                     tickLine={false}
-                                    tick={{ fill: 'rgba(255,255,255,0.4)', fontSize: 12 }}
+                                    tick={{ fill: '#888888', fontSize: 12 }}
                                 />
                                 <Tooltip content={<ChartTooltip />} />
                                 <Area

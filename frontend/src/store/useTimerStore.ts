@@ -15,6 +15,10 @@ interface TimerState {
   resetTimer: () => void;
   tick: () => void;
   setTotalDuration: (duration: number) => void;
+  selectedTag: string;
+  selectedTaskId: string;
+  setSelectedTag: (tag: string) => void;
+  setSelectedTaskId: (id: string) => void;
 }
 
 const DEFAULT_DURATIONS = {
@@ -28,6 +32,11 @@ export const useTimerStore = create<TimerState>((set) => ({
   timeLeft: DEFAULT_DURATIONS['pomodoro'],
   isActive: false,
   totalDuration: DEFAULT_DURATIONS['pomodoro'],
+  selectedTag: 'Study',
+  selectedTaskId: 'none',
+
+  setSelectedTag: (tag) => set({ selectedTag: tag }),
+  setSelectedTaskId: (id) => set({ selectedTaskId: id }),
 
   setMode: (mode) => {
     // When changing mode, we need to know the duration from settings.

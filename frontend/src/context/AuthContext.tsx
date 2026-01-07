@@ -53,7 +53,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           useTaskStore.getState().fetchTasks(),
           useHistoryStore.getState().fetchHistory(),
         ]);
-      } catch (error) {
+      } catch {
         if (isGuest) {
           setUser({ _id: 'guest', name: 'Guest User', email: 'guest@daylite.app' });
           setIsAuthenticated(true);

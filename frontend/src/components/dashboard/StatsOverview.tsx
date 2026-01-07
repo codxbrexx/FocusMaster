@@ -39,8 +39,8 @@ export function StatsOverview({
         },
         {
             title: 'Time Focused',
-            value: todayMinutes,
-            label: 'minutes',
+            value: (todayMinutes / 60).toFixed(1),
+            label: 'hours',
             sub: 'Total today',
             icon: Clock,
             color: 'text-green-500',

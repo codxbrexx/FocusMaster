@@ -38,8 +38,12 @@ const taskSchema = mongoose.Schema(
     deadline: {
       type: Date,
     },
-    dueDate: { 
-       type: Date 
+    dueDate: {
+      type: Date
+    },
+    isAllDay: {
+      type: Boolean,
+      default: false,
     }
   },
   {

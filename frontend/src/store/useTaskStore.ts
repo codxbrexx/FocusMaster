@@ -9,9 +9,11 @@ export interface Task {
   priority: 'low' | 'medium' | 'high';
   estimatedPomodoros: number;
   completedPomodoros: number;
-  isCompleted: boolean;   
+  isCompleted: boolean;
   category?: string;
   deadline?: string;
+  dueDate?: string;
+  isAllDay?: boolean;
   createdAt: string;
 }
 
@@ -122,7 +124,7 @@ export const useTaskStore = create<TaskState>((set, get) => ({
       return;
     }
 
-    const previousTasks = get().tasks; 
+    const previousTasks = get().tasks;
     set((state) => ({
       tasks: state.tasks.filter((t) => t._id !== id),
     }));

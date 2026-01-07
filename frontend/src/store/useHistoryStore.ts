@@ -73,9 +73,16 @@ export const useHistoryStore = create<HistoryState>((set) => ({
         api.get('/clock/logs'),
       ]);
 
+      const typeMappingReverse: Record<string, 'pomodoro' | 'short-break' | 'long-break'> = {
+        'focus': 'pomodoro',
+        'shortBreak': 'short-break',
+        'longBreak': 'long-break',
+      };
+
       set({
         sessions: sessionsRes.data.map((s: any) => ({
           ...s,
+          type: typeMappingReverse[s.type] || s.type,
           startTime: new Date(s.startTime),
           endTime: new Date(s.endTime),
         })),

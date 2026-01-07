@@ -30,10 +30,10 @@ export function WeeklyIntensityChart({ data }: WeeklyIntensityChartProps) {
 
     return (
         <motion.div variants={item} className="h-full">
-            <Card className="border-white/10 shadow-xl backdrop-blur-xl bg-black/40 h-full">
+            <Card className="border-border shadow-xl backdrop-blur-xl bg-card/40 h-full">
                 <CardHeader>
-                    <CardTitle className="text-lg font-medium tracking-wide text-white/90">Weekly Intensity</CardTitle>
-                    <CardDescription className="text-white/50">Sessions completed daily</CardDescription>
+                    <CardTitle className="text-lg font-medium tracking-wide text-foreground">Weekly Intensity</CardTitle>
+                    <CardDescription className="text-muted-foreground">Sessions completed daily</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <div className="h-[250px] w-full min-w-0">
@@ -48,17 +48,17 @@ export function WeeklyIntensityChart({ data }: WeeklyIntensityChartProps) {
                                 <CartesianGrid
                                     strokeDasharray="3 3"
                                     vertical={false}
-                                    stroke="rgba(255,255,255,0.05)"
+                                    stroke="rgba(128,128,128,0.2)"
                                 />
                                 <XAxis
                                     dataKey="day"
                                     axisLine={false}
                                     tickLine={false}
-                                    tick={{ fill: 'rgba(255,255,255,0.4)', fontSize: 12, fontWeight: 500 }}
+                                    tick={{ fill: '#888888', fontSize: 12, fontWeight: 500 }}
                                     dy={10}
                                 />
                                 <Tooltip
-                                    cursor={{ fill: 'rgba(255,255,255,0.05)' }}
+                                    cursor={{ fill: 'rgba(128,128,128,0.1)' }}
                                     content={<ChartTooltip />}
                                 />
                                 <Bar

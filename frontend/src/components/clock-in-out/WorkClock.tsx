@@ -13,7 +13,7 @@ interface WorkClockProps {
 
 export function WorkClock({ todayEntry, isToday, todayTotal, onClockIn, onClockOut }: WorkClockProps) {
     return (
-        <Card className="border-2 backdrop-blur-xl bg-gradient-to-br from-card/80 via-card/50 to-card/80 shadow-2xl overflow-hidden relative">
+        <Card className="border-2 backdrop-blur-xl bg-gradient-to-br from-card/80 via-card/50 to-card/80 shadow-x overflow-hidden relative">
             <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/10"></div>
 
             <CardContent className="relative z-10 pt-8 pb-8">
@@ -101,7 +101,7 @@ export function WorkClock({ todayEntry, isToday, todayTotal, onClockIn, onClockO
                                 size="lg"
                                 onClick={onClockIn}
                                 disabled={!!todayEntry}
-                                className="flex-1 h-14 text-base gap-3 shadow-lg shadow-purple-500/30 hover:shadow-xl hover:shadow-purple-500/40  disabled:opacity-50"
+                                className="flex-1 h-14 border-2 border-gray-500/20 text-base gap-3 shadow-green-500/15 hover:shadow-x hover:border-purple-500/20 transition-radius disabled:opacity-50"
                             >
                                 <LogIn className="w-5 h-5" />
                                 Clock In
@@ -111,7 +111,7 @@ export function WorkClock({ todayEntry, isToday, todayTotal, onClockIn, onClockO
                                 onClick={onClockOut}
                                 disabled={!todayEntry}
                                 variant="secondary"
-                                className="flex-1 h-14 text-base gap-3 shadow-lg shadow-red-500/30 hover:shadow-xl hover:shadow-red-500/40 transition-all disabled:opacity-40"
+                                className="flex-1 h-14 border-2 border-gray-500/20 text-base gap-3 shadow-red-500/15 hover:shadow-x hover:border-red-500/20 transition-radius disabled:opacity-40"
                             >
                                 <LogOut className="w-5 h-5" />
                                 Clock Out

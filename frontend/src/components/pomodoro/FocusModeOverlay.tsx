@@ -118,16 +118,16 @@ export function FocusModeOverlay({
                     <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
                         <defs>
                             <linearGradient id="gradient-focus" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stopColor="indigo-500" />
-                                <stop offset="100%" stopColor="purple-500" />
+                                <stop offset="0%" stopColor="#6366f1" />
+                                <stop offset="100%" stopColor="#a855f7" />
                             </linearGradient>
                             <linearGradient id="gradient-short-break" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stopColor="teal-500" />
-                                <stop offset="100%" stopColor="green-500" />
+                                <stop offset="0%" stopColor="#14b8a6" />
+                                <stop offset="100%" stopColor="#22c55e" />
                             </linearGradient>
                             <linearGradient id="gradient-long-break" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stopColor="blue-500" />
-                                <stop offset="100%" stopColor="cyan-500" />
+                                <stop offset="0%" stopColor="#3b82f6" />
+                                <stop offset="100%" stopColor="#06b6d4" />
                             </linearGradient>
                         </defs>
                         <circle
@@ -170,7 +170,7 @@ export function FocusModeOverlay({
                                 <Button
                                     onClick={handleStart}
                                     variant="outline"
-                                    className="h-16 px-12 rounded-full text-xl border-white/20 hover:bg-white/10 hover:scale-105 transition-all bg-black/20 backdrop-blur-sm"
+                                    className="h-16 px-12 rounded-full text-xl border border-gray-500 hover:text-purple-500 transition-all backdrop-blur-sm"
                                 >
                                     START
                                 </Button>
@@ -178,7 +178,7 @@ export function FocusModeOverlay({
                                 <Button
                                     onClick={handlePause}
                                     variant="outline"
-                                    className="h-16 px-12 rounded-full text-xl border-white/20 hover:bg-white/10 bg-black/20 backdrop-blur-sm"
+                                    className="h-16 px-12 rounded-full text-xl border border-gray-500 hover:text-purple-500 transition-all backdrop-blur-sm"
                                 >
                                     PAUSE
                                 </Button>
@@ -191,58 +191,60 @@ export function FocusModeOverlay({
             <motion.div
                 initial={{ y: 100 }}
                 animate={{ y: 0 }}
-                className="w-full bg-black/5 backdrop-blur-2xl border-t border-white/10 pb-8 pt-6 px-6 md:px-12"
+                className="w-full border-t border-white/10 pb-8 pt-6 px-6 md:px-12"
             >
-                <div className="max-w-5xl mx-auto flex flex-col md:flex-row gap-8 justify-between items-start md:items-center">
-                    <div className="space-y-2 w-full md:w-auto min-w-[300px]">
-                        <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest pl-1">
-                            Working On
-                        </span>
-                        <Select value={selectedTaskId} onValueChange={setSelectedTaskId}>
-                            <SelectTrigger className="h-12 bg-white/5 border-white/10 text-lg hover:bg-white/10 transition-colors focus:ring-0">
-                                <SelectValue placeholder="No Task Added" />
-                            </SelectTrigger>
-                            <SelectContent className="dark:bg-zinc-900 border-zinc-800">
-                                <SelectItem value="none">No Task Added</SelectItem>
-                                {activeTasks.map((t) => (
-                                    <SelectItem key={t._id} value={t._id}>
-                                        {t.title}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
-                    </div>
-
-                    <div className="space-y-3 w-full md:w-auto">
-                        <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest pl-1">
-                            Session Tag
-                        </span>
-                        <div className="flex flex-wrap gap-2">
-                            {['Study', 'Work', 'Code', 'Write', 'Read'].map((tag) => (
-                                <Badge
-                                    key={tag}
-                                    variant={selectedTag === tag ? 'default' : 'outline'}
-                                    onClick={() => setSelectedTag(tag)}
-                                    className={`px-4 py-1.5 cursor-pointer text-sm font-normal rounded-full transition-all ${selectedTag === tag ? 'bg-white text-black hover:bg-white/90' : 'border-white/20 hover:bg-white/10'}`}
-                                >
-                                    {tag}
-                                </Badge>
-                            ))}
-                        </div>
-                    </div>
-
-                    <div className="space-y-3 w-full md:w-[200px]">
-                        <div className="flex justify-between items-center px-1">
-                            <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest">
-                                Daily Goal
+                <div className="max-w-5xl mx-auto">
+                    <div className="flex flex-col md:flex-row gap-8 justify-between items-start md:items-center backdrop-blur-lg bg-background/20 border border-white/10 rounded-xl p-6">
+                        <div className="space-y-2 w-full md:w-auto min-w-[300px]">
+                            <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest pl-1">
+                                Working On
                             </span>
-                            <span className="text-lg font-bold tabular-nums">{sessionCount} / 4</span>
+                            <Select value={selectedTaskId} onValueChange={setSelectedTaskId}>
+                                <SelectTrigger className="h-12 bg-card border-border text-lg text-foreground hover:bg-primary/5 hover:border-primary/30 transition-all duration-300 focus:ring-ring">
+                                    <SelectValue placeholder="No Task Added" />
+                                </SelectTrigger>
+                                <SelectContent className="bg-popover border-border text-popover-foreground">
+                                    <SelectItem value="none" className="focus:bg-primary/10 focus:text-primary cursor-pointer">No Task Added</SelectItem>
+                                    {activeTasks.map((t) => (
+                                        <SelectItem key={t._id} value={t._id} className="focus:bg-primary/10 focus:border-primary hover:text-purple-500 focus:text-primary cursor-pointer font-medium">
+                                            {t.title}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
                         </div>
-                        <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
-                            <div
-                                className="h-full bg-white rounded-full transition-all duration-1000"
-                                style={{ width: `${(sessionCount / 4) * 100}%` }}
-                            />
+
+                        <div className="space-y-3 w-full md:w-auto">
+                            <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest pl-1">
+                                Session Tag
+                            </span>
+                            <div className="flex flex-wrap gap-2">
+                                {['Study', 'Work', 'Code', 'Write', 'Read'].map((tag) => (
+                                    <Badge
+                                        key={tag}
+                                        variant={selectedTag === tag ? 'default' : 'outline'}
+                                        onClick={() => setSelectedTag(tag)}
+                                        className={`px-4 py-1.5 cursor-pointer text-sm font-normal rounded-full transition-all border duration-300 ${selectedTag === tag ? 'bg-primary text-primary-foreground border-purple-500 hover:text-purple-500' : 'border-border hover:border-primary/50 hover:text-primary hover:bg-primary/5 text-muted-foreground'}`}
+                                    >
+                                        {tag}
+                                    </Badge>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="space-y-3 w-full md:w-[200px]">
+                            <div className="flex justify-between items-center px-1">
+                                <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest">
+                                    Daily Goal
+                                </span>
+                                <span className="text-lg font-bold tabular-nums">{sessionCount} / 4</span>
+                            </div>
+                            <div className="h-2 w-full bg-muted rounded-full overflow-hidden border border-border/50">
+                                <div
+                                    className="h-full bg-white rounded-full transition-all duration-1000 shadow-[0_0_10px_rgba(255,255,255,0.5)]"
+                                    style={{ width: `${(sessionCount / 4) * 100}%` }}
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>

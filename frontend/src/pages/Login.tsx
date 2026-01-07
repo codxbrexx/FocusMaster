@@ -19,7 +19,7 @@ export function Login() {
   // Check for AdBlocker blocking Google Script
   useEffect(() => {
     const timer = setTimeout(() => {
-      // @ts-ignore
+      // @ts-expect-error Google global is injected via script tag
       if (typeof window !== 'undefined' && !window.google) {
         setError('AdBlocker detected. Please disable it to use Google Login.');
       }

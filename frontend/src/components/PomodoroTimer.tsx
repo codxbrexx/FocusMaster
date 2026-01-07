@@ -32,6 +32,10 @@ export function PomodoroTimer() {
   const setMode = useTimerStore(state => state.setMode);
   const setIsActive = useTimerStore(state => state.setIsActive);
   const resetTimer = useTimerStore(state => state.resetTimer);
+  const selectedTag = useTimerStore(state => state.selectedTag);
+  const selectedTaskId = useTimerStore(state => state.selectedTaskId);
+  const setSelectedTag = useTimerStore(state => state.setSelectedTag);
+  const setSelectedTaskId = useTimerStore(state => state.setSelectedTaskId);
 
   // Local state for UI specifics
   const { sessions } = useHistoryStore();
@@ -46,8 +50,8 @@ export function PomodoroTimer() {
       s.type === 'pomodoro';
   }).length;
 
-  const [selectedTag, setSelectedTag] = useState<string>('Study');
-  const [selectedTaskId, setSelectedTaskId] = useState<string>('none');
+
+
   const [showMoodModal, setShowMoodModal] = useState(false);
   const [focusMode, setFocusMode] = useState(false);
 
@@ -197,16 +201,16 @@ export function PomodoroTimer() {
               <svg className="absolute w-full h-full transform -rotate-90 pointer-events-none" viewBox="0 0 100 100">
                 <defs>
                   <linearGradient id="main-gradient-focus" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#6366f1" /> {/* Indigo-500 */}
-                    <stop offset="100%" stopColor="#a855f7" /> {/* Purple-500 */}
+                    <stop offset="0%" stopColor="#6366f1" />
+                    <stop offset="100%" stopColor="#a855f7" />
                   </linearGradient>
                   <linearGradient id="main-gradient-short-break" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#14b8a6" /> {/* Teal-500 */}
-                    <stop offset="100%" stopColor="#22c55e" /> {/* Green-500 */}
+                    <stop offset="0%" stopColor="#14b8a6" />
+                    <stop offset="100%" stopColor="#22c55e" />
                   </linearGradient>
                   <linearGradient id="main-gradient-long-break" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#3b82f6" /> {/* Blue-500 */}
-                    <stop offset="100%" stopColor="#06b6d4" /> {/* Cyan-500 */}
+                    <stop offset="0%" stopColor="#3b82f6" />
+                    <stop offset="100%" stopColor="#06b6d4" />
                   </linearGradient>
                 </defs>
 
@@ -271,20 +275,20 @@ export function PomodoroTimer() {
             </div>
 
             {/* Session Controls */}
-            <div className="w-full mt-12 pt-8 border-t border-white/10">
-              <div className="flex flex-col md:flex-row gap-8 justify-between items-start md:items-center">
+            <div className="w-full mt-12 pt-8 backdrop-blur-lg bg-background/20 border-t border-muted/10">
+              <div className="flex flex-col bg-muted-50 border-muted/10  rounded-lg md:flex-row gap-8 justify-between items-start md:items-center">
                 <div className="space-y-2 w-full md:w-auto min-w-[320px]">
                   <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest pl-1">
                     Working On
                   </span>
                   <Select value={selectedTaskId} onValueChange={setSelectedTaskId}>
-                    <SelectTrigger className="h-10 bg-white/5 border-white/10 text-sm hover:bg-white/10 transition-colors focus:ring-0">
+                    <SelectTrigger className="h-10 bg-card border-border text-sm text-foreground hover:bg-primary/5 hover:border-primary/30 transition-all duration-300 focus:ring-ring">
                       <SelectValue placeholder="No Task Added" />
                     </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="none">No Task Added</SelectItem>
+                    <SelectContent className="bg-popover border-border text-popover-foreground">
+                      <SelectItem value="none" className="focus:bg-primary/10 focus:text-primary cursor-pointer">No Task Added</SelectItem>
                       {activeTasks.map((t) => (
-                        <SelectItem key={t._id} value={t._id}>
+                        <SelectItem key={t._id} value={t._id} className="focus:bg-primary/10 hover:text-purple-500  focus:text-primary cursor-pointer font-medium">
                           {t.title}
                         </SelectItem>
                       ))}
@@ -303,7 +307,7 @@ export function PomodoroTimer() {
                           key={tag}
                           variant={selectedTag === tag ? 'default' : 'outline'}
                           onClick={() => setSelectedTag(tag)}
-                          className={`px-3 py-1 cursor-pointer text-xs font-normal rounded-full transition-all border-white/10 ${selectedTag === tag ? 'bg-white text-black hover:bg-white/90' : 'hover:bg-white/10 text-muted-foreground'}`}
+                          className={`px-3 py-1 cursor-pointer text-xs font-normal rounded-full transition-all border duration-300 ${selectedTag === tag ? 'bg-primary text-primary-foreground border-purple-500 hover:text-purple-500 ' : 'border-border hover:border-primary/50 hover:text-primary hover:bg-primary/5 text-muted-foreground'}`}
                         >
                           {tag}
                         </Badge>
@@ -321,9 +325,9 @@ export function PomodoroTimer() {
                       <span className="text-foreground">{sessionCount}</span> / 4
                     </span>
                   </div>
-                  <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                  <div className="h-2 w-full bg-muted rounded-full overflow-hidden border border-border/50">
                     <div
-                      className="h-full bg-primary rounded-full transition-all duration-1000"
+                      className="h-full bg-primary rounded-full transition-all duration-1000 shadow-[0_0_10px_rgba(99,102,241,0.5)]"
                       style={{ width: `${Math.min((sessionCount / 4) * 100, 100)}%` }}
                     />
                   </div>

@@ -30,14 +30,14 @@ export function CategoryDistributionChart({ data, colors }: CategoryDistribution
 
     return (
         <motion.div variants={item} className="h-full">
-            <Card className="border-white/10 shadow-xl backdrop-blur-xl bg-black/40 h-full">
+            <Card className="border-border shadow-xl backdrop-blur-xl bg-card/40 h-full">
                 <CardHeader>
-                    <CardTitle className="text-lg font-medium tracking-wide text-white/90">Category Distribution</CardTitle>
-                    <CardDescription className="text-white/50">Where your focus is going</CardDescription>
+                    <CardTitle className="text-lg font-medium tracking-wide text-foreground">Category Distribution</CardTitle>
+                    <CardDescription className="text-muted-foreground">Where your focus is going</CardDescription>
                 </CardHeader>
                 <CardContent className="h-full flex items-center justify-center pb-8">
                     {data.length === 0 ? (
-                        <div className="flex flex-col items-center justify-center h-[250px] text-white/30">
+                        <div className="flex flex-col items-center justify-center h-[250px] text-muted-foreground/30">
                             <Target className="h-12 w-12 mb-4 opacity-50" />
                             <p className="font-medium">No category data yet</p>
                             <p className="text-sm opacity-70">Start sessions to see distribution</p>
@@ -70,8 +70,8 @@ export function CategoryDistributionChart({ data, colors }: CategoryDistribution
                             {/* Central Label Idea - Optional, but adds 'professional' feel if we show Total Hours or Top Category */}
                             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                                 <div className="text-center">
-                                    <span className="text-3xl font-bold text-white/90">{data.length}</span>
-                                    <p className="text-xs text-white/50 uppercase tracking-wider">Cats</p>
+                                    <span className="text-3xl font-bold text-foreground">{data.length}</span>
+                                    <p className="text-xs text-muted-foreground uppercase tracking-wider">Cats</p>
                                 </div>
                             </div>
                         </div>

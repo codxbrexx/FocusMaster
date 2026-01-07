@@ -54,7 +54,7 @@ export function WelcomeHeader({ user, settings, randomQuote, points, badge }: We
                         <Button
                             onClick={() => navigate('/pomodoro')}
                             size="lg"
-                            className="rounded-full px-8 shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all hover:-translate-y-0.5"
+                            className="rounded-full px-8 bg-background/50 hover:bg-background/80 border border-white/1 hover:border-purple-500"
                         >
                             <Target className="mr-2 h-5 w-5" /> Start Session
                         </Button>

@@ -39,9 +39,9 @@ export function Dashboard() {
   const today = new Date().toDateString();
   const todaySessions = sessions.filter((s) => new Date(s.startTime).toDateString() === today);
   const todayPomodoros = todaySessions.filter((s) => s.type === 'pomodoro').length;
-  const todayMinutes = todaySessions
+  const todayMinutes = Math.floor(todaySessions
     .filter((s) => s.type === 'pomodoro')
-    .reduce((acc, s) => acc + s.duration, 0);
+    .reduce((acc, s) => acc + s.duration, 0) / 60);
 
   const todayTasks = tasks.filter((t) => !t.isCompleted);
   const completedToday = tasks.filter(
