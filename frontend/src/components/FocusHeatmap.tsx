@@ -143,7 +143,7 @@ export function FocusHeatmap() {
                                     {m.label}
                                 </span>
                             ))}
-                        </div>kk
+                        </div>
 
                         <div className="flex relative">
                             {/* Day Labels (Sticky-ish absolute positioning) */}

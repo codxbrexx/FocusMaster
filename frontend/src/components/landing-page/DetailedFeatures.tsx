@@ -42,7 +42,7 @@ export const DetailedFeatures = () => {
                     transition={{ duration: 0.8 }}
                     className="lg:w-1/2 p-8 rounded-2xl bg-gradient-to-br from-blue-500/5 to-transparent border border-blue-500/20"
                 >
-                    {/* Placeholder illustration for Pomodoro */}
+
                     <div className="aspect-video rounded-xl bg-blue-500/10 flex items-center justify-center border border-blue-500/10">
                         <div className="text-6xl font-mono text-blue-400/50 font-bold">25:00</div>
                     </div>
@@ -69,7 +69,7 @@ export const DetailedFeatures = () => {
                     </ul>
                 </div>
                 <div className="lg:w-1/2 p-8 rounded-2xl bg-gradient-to-br from-green-500/5 to-transparent border border-green-500/20">
-                    {/* Placeholder illustration for Kanban */}
+
                     <div className="aspect-video rounded-xl bg-green-500/10 flex gap-4 p-4 overflow-hidden border border-green-500/10">
                         <div className="w-1/3 bg-green-500/20 rounded-lg h-full" />
                         <div className="w-1/3 bg-green-500/20 rounded-lg h-full" />
@@ -98,7 +98,7 @@ export const DetailedFeatures = () => {
                     </ul>
                 </div>
                 <div className="lg:w-1/2 p-8 rounded-2xl bg-gradient-to-br from-purple-500/5 to-transparent border border-purple-500/20">
-                    {/* Placeholder illustration for Analytics */}
+
                     <div className="aspect-video rounded-xl bg-purple-500/10 flex items-end justify-between p-6 gap-2 border border-purple-500/10">
                         {[40, 70, 50, 90, 60, 80, 50].map((h, i) => (
                             <div key={i} style={{ height: `${h}%` }} className="w-full bg-purple-500/40 rounded-t-sm" />
@@ -127,7 +127,7 @@ export const DetailedFeatures = () => {
                     </ul>
                 </div>
                 <div className="lg:w-1/2 p-8 rounded-2xl bg-gradient-to-br from-pink-500/5 to-transparent border border-pink-500/20">
-                    {/* Placeholder illustration for Spotify */}
+
                     <div className="aspect-video rounded-xl bg-pink-500/10 flex items-center justify-center border border-pink-500/10 gap-4">
                         <div className="w-12 h-12 rounded-full border-2 border-pink-500/50 flex items-center justify-center">
                             <div className="w-0 h-0 border-t-[8px] border-t-transparent border-l-[12px] border-l-pink-500 border-b-[8px] border-b-transparent ml-1" />
@@ -156,7 +156,7 @@ export const DetailedFeatures = () => {
                     </ul>
                 </div>
                 <div className="lg:w-1/2 p-8 rounded-2xl bg-gradient-to-br from-yellow-500/5 to-transparent border border-yellow-500/20">
-                    {/* Placeholder illustration for Time Tracking */}
+
                     <div className="aspect-video rounded-xl bg-yellow-500/10 flex items-center justify-center border border-yellow-500/10 text-yellow-500 font-mono text-4xl">
                         09:41:05
                     </div>

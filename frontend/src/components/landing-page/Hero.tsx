@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
 
@@ -9,8 +9,8 @@ export const Hero = () => {
     const navigate = useNavigate();
 
     const fadeInUp = {
-        hidden: { opacity: 0, y: 30 },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+        hidden: { opacity: 0, y: 20 },
+        visible: { opacity: 1, y: 0, transition: { duration: 0.5 } } // Removed ease to match types for now
     };
 
     const staggerContainer = {
@@ -18,65 +18,65 @@ export const Hero = () => {
         visible: {
             opacity: 1,
             transition: {
-                staggerChildren: 0.2
+                staggerChildren: 0.1,
+                delayChildren: 0.1
             }
         }
     };
 
     return (
-        <header className="relative z-10 container mx-auto px-6 pt-12 pb-20 md:pt-20 md:pb-32 text-center">
+        <header className="relative z-10 container mx-auto px-6 pt-16 pb-24 md:pt-28 md:pb-32 text-center overflow-hidden">
+
             <motion.div
                 initial="hidden"
                 animate="visible"
                 variants={staggerContainer}
-                className="max-w-5xl mx-auto space-y-8"
+                className="max-w-4xl mx-auto space-y-8"
             >
-                <div className="relative z-10 pt-12">
-                    <motion.div variants={fadeInUp} className="inline-flex items-center gap-2 w-fit px-4 py-2 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-sm font-medium mb-8 backdrop-blur-md">
-                        <span> Welcome to FocusMaster</span>
-                    </motion.div>
-
-                    <div className="relative">
-                        {/* Text Glow */}
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] " />
-
-                        <motion.h1 variants={fadeInUp} className="text-4xl md:text-6xl font-extrabold font-heading tracking-tight leading-[1.1] mb-6 text-foreground">
-                            Focus <span className="text-blue-500">Deeply</span>. <br />
-                            <span className="text-purple-500 backdown-blur-sm">
-                                Achieve Mastery.
-                            </span>
-                        </motion.h1>
+                {/* Badge */}
+                <motion.div variants={fadeInUp} className="flex justify-center">
+                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-secondary/50 border border-border/50 text-secondary-foreground text-sm font-medium backdrop-blur-sm">
+                    <span>Welcome to FocusMaster</span>
                     </div>
+                </motion.div>
 
-                    <motion.p variants={fadeInUp} className="text-xl md:text-2xl text-gray-400 max-w-2xl mx-auto leading-relaxed mb-10">
-                        Transform the way you work with a powerful workspace that integrates focus tools, real-time insights, and
-                        intuitive task management to keep you in the zone longer.
-                    </motion.p>
+                {/* Main Heading */}
+                <motion.div variants={fadeInUp} className="relative">
+                    <h1 className="text-5xl md:text-7xl font-bold font-heading tracking-tight leading-[1.1] text-foreground">
+                        Master Your <br className="hidden md:block" />
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-indigo-400">Focus State</span>
+                    </h1>
+                </motion.div>
 
-                    <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                        <Link to="/register">
-                            <Button size="lg" className="h-14 px-8 text-lg rounded-full border-white/10 bg-white/5 hover:bg-white/10 text-white backdrop-blur-sm transition-all hover:scale-101"
-                            >
-                                Start for Free <ArrowRight className="ml-2 w-5 h-5" />
-                            </Button>
-                        </Link>
-                        <Button
-                            variant="outline"
-                            size="lg"
-                            className="h-14 px-8 text-lg rounded-full border-white/10 bg-white/5 hover:bg-white/10 text-white backdrop-blur-sm transition-all hover:scale-101"
-                            onClick={async () => {
-                                try {
-                                    await loginAsGuest();
-                                    navigate('/dashboard');
-                                } catch (e) {
-                                    console.error(e);
-                                }
-                            }}
-                        >
-                            Try as Guest
+                {/* Subheading */}
+                <motion.p variants={fadeInUp} className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+                    The all-in-one workspace designed to eliminate distraction.
+                    Combine tasks, time tracking, and deep work analytics into a single, flowing experience.
+                </motion.p>
+
+                {/* CTA Buttons */}
+                <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+                    <Link to="/register">
+                        <Button size="lg" className="h-12 px-8 text-base rounded-lg shadow-lg hover:shadow-purple-500/15 transition-all duration-300">
+                            Get Started <ArrowRight className="ml-2 w-4 h-4" />
                         </Button>
-                    </motion.div>
-                </div>
+                    </Link>
+                    <Button
+                        variant="secondary"
+                        size="lg"
+                        className="h-12 px-8 text-base rounded-lg shadow-lg hover:shadow-purple-500/15 border border-border/50 transition-all duration-300"
+                        onClick={async () => {
+                            try {
+                                await loginAsGuest();
+                                navigate('/dashboard');
+                            } catch (e) {
+                                console.error(e);
+                            }
+                        }}
+                    >
+                        Try as Guest
+                    </Button>
+                </motion.div>
 
                 {/* Dashboard Preview Mockup */}
                 <motion.div
@@ -84,11 +84,14 @@ export const Hero = () => {
                     className="mt-20 relative mx-auto max-w-5xl rounded-xl border border-border/40 bg-black/40 shadow-2xl overflow-hidden backdrop-blur-sm"
                     style={{ perspective: "1000px" }}
                 >
-                    {/* Browser Window Controls */}
-                    <div className="absolute top-0 left-0 right-0 h-10 bg-muted/80 flex items-center px-4 gap-2 border-b border-white/5 z-20">
-                        <div className="w-3 h-3 rounded-full bg-red-500/80" />
-                        <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
-                        <div className="w-3 h-3 rounded-full bg-green-500/80" />
+                    {/* Browser Header */}
+                    <div className="h-10 bg-muted/30 border-b border-white/5 flex items-center px-4 gap-2">
+                        <div className="flex gap-1.5">
+                            <div className="w-3 h-3 rounded-full bg-red-400/20 border border-red-500/30" />
+                            <div className="w-3 h-3 rounded-full bg-yellow-400/20 border border-yellow-500/30" />
+                            <div className="w-3 h-3 rounded-full bg-green-400/20 border border-green-500/30" />
+                        </div>
+                        <div className="ml-4 h-5 w-64 rounded bg-muted/20 hidden sm:block"></div>
                     </div>
 
                     {/* App Content */}

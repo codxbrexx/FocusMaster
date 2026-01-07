@@ -6,7 +6,7 @@ import {
 
 export const WorkflowSteps = () => {
     return (
-        <section className="relative z-10 container mx-auto px-6 py-24 border-t border-border/40">
+        <section id="workflow" className="relative z-10 container mx-auto px-6 py-24 border-t border-border/40">
             <div className="text-center mb-16">
                 <h2 className="text-3xl md:text-5xl font-heading font-bold mb-6">
                     A Simple Workflow Designed for <span className="text-primary">Real Productivity</span>
