@@ -30,7 +30,7 @@ export function PriorityTasks({ tasks }: PriorityTasksProps) {
             }}
             className="lg:col-span-2 h-full"
         >
-            <Card className="h-full backdrop-blur-xl bg-card/50 border-2 shadow-sm flex flex-col">
+            <Card className="h-full backdrop-blur-xl bg-card/50 border border-white/10 shadow-none flex flex-col">
                 <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-border/40">
                     <div className="space-y-1">
                         <CardTitle className="text-lg flex items-center gap-2">

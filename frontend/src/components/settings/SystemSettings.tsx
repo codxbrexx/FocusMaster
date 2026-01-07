@@ -62,7 +62,7 @@ export function SystemSettings() {
                 </CardContent>
             </Card>
 
-            <Card className=" border-none backdrop-blur-lg shadow-none">
+            <Card className=" border-none shadow-none">
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-destructive text-lg">
                         <Trash2 className="w-5 h-5" /> Danger Zone

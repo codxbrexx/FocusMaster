@@ -98,7 +98,7 @@ export function FocusHeatmap() {
     }
 
     return (
-        <Card className="backdrop-blur-xl bg-card/50 border-2 border-border/50 shadow-sm order-last lg:col-span-3">
+        <Card className="backdrop-blur-xl bg-card/50 border border-white/10 shadow-none order-last lg:col-span-3">
             <CardHeader className="pb-4 border-b border-border/50">
                 <div className="flex items-center justify-between">
                     <div>
@@ -125,32 +125,30 @@ export function FocusHeatmap() {
             </CardHeader>
 
             <CardContent className="pt-6 overflow-hidden">
-                <div className="w-full overflow-x-auto pb-2 scrollbar-hide">
-                    <div
-                        className="flex flex-col gap-1 min-w-max"
-                        style={{ paddingLeft: '30px' }}
-                    >
-                        {/* Month Labels Layer */}
-                        <div className="relative h-6 w-full text-[11px] font-medium text-muted-foreground">
-                            {monthLabels.map((m, i) => (
-                                <span
-                                    key={i}
-                                    className="absolute transform transition-colors hover:text-foreground cursor-default"
-                                    style={{
-                                        left: `${m.weekIndex * (CELL_SIZE + CELL_GAP)}px`
-                                    }}
-                                >
-                                    {m.label}
-                                </span>
-                            ))}
-                        </div>
+                <div className="flex gap-4">
+                    {/* Fixed Day Labels */}
+                    <div className="flex flex-col justify-between pt-[23px] pb-[6px] text-[10px] font-medium text-muted-foreground/60 h-[126px]">
+                        <span>Mon</span>
+                        <span>Wed</span>
+                        <span>Fri</span>
+                    </div>
 
-                        <div className="flex relative">
-                            {/* Day Labels (Sticky-ish absolute positioning) */}
-                            <div className="absolute -left-[30px] top-0 flex flex-col justify-between h-[calc(100%-4px)] py-[2px] text-[10px] font-medium text-muted-foreground/60">
-                                <span>Mon</span>
-                                <span>Wed</span>
-                                <span>Fri</span>
+                    {/* Scrollable Grid */}
+                    <div className="flex-1 overflow-x-auto pb-2 scrollbar-hide">
+                        <div className="flex flex-col gap-1 min-w-max">
+                            {/* Month Labels Layer */}
+                            <div className="relative h-6 w-full text-[11px] font-medium text-muted-foreground">
+                                {monthLabels.map((m, i) => (
+                                    <span
+                                        key={i}
+                                        className="absolute transform transition-colors hover:text-foreground cursor-default whitespace-nowrap"
+                                        style={{
+                                            left: `${m.weekIndex * (CELL_SIZE + CELL_GAP)}px`
+                                        }}
+                                    >
+                                        {m.label}
+                                    </span>
+                                ))}
                             </div>
 
                             {/* The Grid */}

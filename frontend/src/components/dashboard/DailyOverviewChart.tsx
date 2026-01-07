@@ -8,7 +8,7 @@ interface DailyOverviewChartProps {
     todayPomodoros: number;
     dailyGoal: number;
     todayMinutes: number;
-    sessionCount: number; 
+    sessionCount: number;
     averageFocusDuration: number;
 }
 
@@ -26,7 +26,7 @@ export function DailyOverviewChart({
             }}
             className="space-y-6"
         >
-            <Card className="backdrop-blur-xl bg-card/50 border-2 shadow-sm h-full">
+            <Card className="backdrop-blur-xl bg-card/50 border border-white/10 shadow-none h-full">
                 <CardHeader className="pb-2">
                     <CardTitle className="flex items-center gap-2 text-lg">
                         <Activity className="h-5 w-5 text-primary" />

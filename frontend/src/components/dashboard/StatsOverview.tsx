@@ -86,7 +86,7 @@ export function StatsOverview({
                     whileHover={{ y: -4 }}
                     transition={{ type: 'spring', stiffness: 400, damping: 10 }}
                 >
-                    <Card className="backdrop-blur-xl bg-card/50 border-2 shadow-sm hover:shadow-md transition-all duration-300 h-full overflow-hidden relative">
+                    <Card className="backdrop-blur-xl bg-card/50 border border-white/10 shadow-none hover:bg-card/60 transition-all duration-300 h-full overflow-hidden relative">
                         <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
                             <CardTitle className="text-sm font-medium text-muted-foreground">
                                 {stat.title}

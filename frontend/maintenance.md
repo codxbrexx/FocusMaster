@@ -1,16 +1,13 @@
 ## Todos Bugs
 reload gose to defult 25 min  not the changed one 
 change to the inactive and cahnged form pomodoro they have to run 
-task  edit delete overleap 
 after relaoding every thing are goes defult 
 
-spotify  page ui error 
 project workng slow
 
 ## logical
 pomodoro session failed to save 
-setting time + botton are not responsive
-pomodoro timer are not able to save to increase time 
+setting time + botton are not responsive 
 
 
 # spotify

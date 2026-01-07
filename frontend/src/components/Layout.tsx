@@ -8,6 +8,7 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import { ReportBugDialog } from './ReportBugDialog';
 import { useTaskStore } from '@/store/useTaskStore';
 import { useHistoryStore } from '@/store/useHistoryStore';
+import { useSettingsStore } from '@/store/useSettingsStore';
 
 
 
@@ -15,10 +16,12 @@ export const Layout = () => {
     const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 768);
     const { fetchTasks } = useTaskStore();
     const { fetchHistory } = useHistoryStore();
+    const { fetchSettings } = useSettingsStore();
 
     useEffect(() => {
         fetchTasks();
         fetchHistory();
+        fetchSettings();
 
         const handleResize = () => {
             if (window.innerWidth < 768) {
@@ -29,7 +32,7 @@ export const Layout = () => {
         };
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
-    }, [fetchTasks, fetchHistory]);
+    }, [fetchTasks, fetchHistory, fetchSettings]);
 
     return (
         <TooltipProvider>

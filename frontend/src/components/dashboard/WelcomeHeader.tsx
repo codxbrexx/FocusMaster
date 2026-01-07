@@ -33,7 +33,7 @@ export function WelcomeHeader({ user, settings, randomQuote, points, badge }: We
                 hidden: { y: 20, opacity: 0 },
                 show: { y: 0, opacity: 1, transition: { type: 'spring', stiffness: 300, damping: 24 } },
             }}
-            className="relative overflow-hidden rounded-3xl backdrop-blur-xl bg-card/50 border-2 border-border/50 p-8 lg:p-10 shadow-sm"
+            className="relative overflow-hidden rounded-3xl backdrop-blur-xl bg-card/50 border border-white/10 p-8 lg:p-10 shadow-none"
         >
             <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
                 <div className="space-y-4 max-w-2xl">

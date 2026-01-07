@@ -204,7 +204,7 @@ export function TaskManager() {
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 0.6, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.95 }}
-                    className="flex items-center justify-between p-4 rounded-lg bg-secondary/30 border border-transparent hover:bg-secondary/40 transition-colors"
+                    className="flex items-center justify-between p-4 rounded-xl bg-card border border-border/40 hover:border-primary/20 transition-all shadow-sm opacity-60 hover:opacity-100"
                   >
                     <div className="flex items-center gap-3">
                       <button onClick={() => handleToggleComplete(task)} className="text-green-600 hover:text-green-500 transition-colors">
