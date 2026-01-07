@@ -75,7 +75,7 @@ export function FocusModeOverlay({
                 ].map((glow, index) => (
                     <div
                         key={index}
-                        className={`absolute rounded-full blur-[150px] animate-pulse-slow ${glow.position} ${glow.size} ${glow.color} ${glow.delay}`}
+                        className={`absolute rounded-full blur-[150px] opacity-40 ${glow.position} ${glow.size} ${glow.color} ${glow.delay}`}
                     />
                 ))}
             </div>
@@ -116,6 +116,20 @@ export function FocusModeOverlay({
             <div className="flex-1 flex flex-col items-center justify-center relative -mt-16">
                 <div className="relative w-[min(85vw,65vh)] h-[min(85vw,65vh)] max-w-[800px] max-h-[800px]">
                     <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                        <defs>
+                            <linearGradient id="gradient-focus" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stopColor="#6366f1" /> {/* Indigo-500 */}
+                                <stop offset="100%" stopColor="#a855f7" /> {/* Purple-500 */}
+                            </linearGradient>
+                            <linearGradient id="gradient-short-break" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stopColor="#14b8a6" /> {/* Teal-500 */}
+                                <stop offset="100%" stopColor="#22c55e" /> {/* Green-500 */}
+                            </linearGradient>
+                            <linearGradient id="gradient-long-break" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stopColor="#3b82f6" /> {/* Blue-500 */}
+                                <stop offset="100%" stopColor="#06b6d4" /> {/* Cyan-500 */}
+                            </linearGradient>
+                        </defs>
                         <circle
                             cx="50"
                             cy="50"
@@ -129,13 +143,14 @@ export function FocusModeOverlay({
                             cx="50"
                             cy="50"
                             r={r}
-                            stroke="currentColor"
+                            stroke={`url(#gradient-${mode === 'short-break' ? 'short-break' : mode === 'long-break' ? 'long-break' : 'focus'})`}
                             strokeWidth="1.5"
                             fill="none"
                             strokeDasharray={c}
                             strokeDashoffset={offset}
                             strokeLinecap="round"
-                            className={`transition-all duration-1000 ease-linear ${mode === 'pomodoro' ? 'text-green-600 inner-shadow-[0_0_20px_rgba(255,255,255,0.3)]' : 'text-blue-400 inner-shadow-[0_0_20px_rgba(255,255,255,0.3)]'}`}
+                            className="transition-all duration-1000 ease-linear shadow-glow-lg"
+                            style={{ filter: `drop-shadow(0 0 10px ${mode === 'pomodoro' ? 'rgba(99, 102, 241, 0.5)' : 'rgba(20, 184, 166, 0.5)'})` }}
                         />
                     </svg>
                     <div className="absolute inset-0 flex flex-col items-center justify-center">

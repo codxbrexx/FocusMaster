@@ -10,9 +10,7 @@ animatation in the pomodoro main page
 project workng slow
 red color for high priority 
 pomodoro remove active page only 
-landing page nav link not working
 clockin out  abter 5 clock  it dose not make page big is go for scrolldown for the clock workig hours 
-taking time to load heap map
 
 ## logical
 pomodoro session failed to save 

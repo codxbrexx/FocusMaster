@@ -50,11 +50,6 @@ export function Login() {
 
   return (
     <div className="min-h-[100dvh] flex items-center justify-center bg-background px-4 relative overflow-hidden">
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-[-10%] left-[-10%] md:top-0 md:left-1/4 w-64 h-64 md:w-96 md:h-96 bg-primary/10 rounded-full blur-3xl opacity-50" />
-        <div className="absolute bottom-[-10%] right-[-10%] md:bottom-0 md:right-1/4 w-64 h-64 md:w-96 md:h-96 bg-blue-500/10 rounded-full blur-3xl opacity-50" />
-      </div>
-
       <Card className="w-full max-w-md border-primary/10 shadow-xl bg-card/50 backdrop-blur-sm relative z-10">
         <CardHeader className="space-y-1 text-center">
           <div className="mx-auto w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-2">

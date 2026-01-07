@@ -12,12 +12,12 @@ export function Register() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const { register, loginAsGuest, logout, googleLogin } = useAuth();
   const navigate = useNavigate();
 
-  // Check for AdBlocker blocking Google Script
   useEffect(() => {
     const timer = setTimeout(() => {
       // @ts-ignore
@@ -31,16 +31,35 @@ export function Register() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    if (!name || !email || !password) {
-      toast.error('Please fill in all fields');
-      setError('Please fill in all fields');
+
+    if (!name || !email || !password || !confirmPassword) {
+      const missingFields = [];
+      if (!name) missingFields.push('Name');
+      if (!email) missingFields.push('Email');
+      if (!password) missingFields.push('Password');
+      if (!confirmPassword) missingFields.push('Confirm Password');
+
+      const errorMsg = `Please fill in all fields: ${missingFields.join(', ')}`;
+      toast.error(errorMsg);
+      setError(errorMsg);
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      toast.error('Passwords do not match');
+      setError('Passwords do not match');
+      return;
+    }
+
+    if (password.length < 6) {
+      toast.error('Password must be at least 6 characters');
+      setError('Password must be at least 6 characters');
       return;
     }
 
     setIsLoading(true);
     try {
       await register(name, email, password);
-      // Since register auto-logs in, we explicitly logout to force manual login flow.
       logout();
       navigate('/login');
     } catch (err: any) {
@@ -108,6 +127,19 @@ export function Register() {
                   className="pl-9"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  disabled={isLoading}
+                />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <div className="relative">
+                <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Input
+                  type="password"
+                  placeholder="Confirm Password"
+                  className="pl-9"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                   disabled={isLoading}
                 />
               </div>

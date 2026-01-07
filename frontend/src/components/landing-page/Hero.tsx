@@ -1,6 +1,7 @@
+
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
 
@@ -36,7 +37,7 @@ export const Hero = () => {
                 {/* Badge */}
                 <motion.div variants={fadeInUp} className="flex justify-center">
                     <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-secondary/50 border border-border/50 text-secondary-foreground text-sm font-medium backdrop-blur-sm">
-                    <span>Welcome to FocusMaster</span>
+                        <span>Welcome to FocusMaster</span>
                     </div>
                 </motion.div>
 
@@ -135,7 +136,7 @@ export const Hero = () => {
                                 <div className="absolute top-6 left-6 h-3 w-32 rounded-full bg-blue-400/30" />
                                 <div className="flex items-end justify-between gap-2 h-24 mt-auto opacity-70">
                                     {[40, 70, 45, 90, 60, 80, 50, 75, 60, 90].map((h, i) => (
-                                        <div key={i} style={{ height: `${h}%` }} className="w-full rounded-t-sm bg-blue-500/40 hover:bg-blue-400/60 transition-colors" />
+                                        <div key={i} style={{ height: `${h}% ` }} className="w-full rounded-t-sm bg-blue-500/40 hover:bg-blue-400/60 transition-colors" />
                                     ))}
                                 </div>
                             </div>
