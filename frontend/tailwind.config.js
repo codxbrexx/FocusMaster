@@ -42,6 +42,8 @@ export default {
           DEFAULT: 'hsl(var(--card) / <alpha-value>)',
           foreground: 'hsl(var(--card-foreground) / <alpha-value>)',
         },
+        accent1: 'var(--accent-1)',
+        accent2: 'var(--accent-2)',
         // Legacy/Custom mappings
         'card-bg': 'var(--bg-surface)',
         'page-bg': 'var(--bg-page)',

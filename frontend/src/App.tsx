@@ -20,6 +20,7 @@ const Calendar = lazy(() => import('./components/Calendar').then(module => ({ de
 const LandingPage = lazy(() => import('./pages/LandingPage').then(module => ({ default: module.LandingPage })));
 const Login = lazy(() => import('./pages/Login').then(module => ({ default: module.Login })));
 const Register = lazy(() => import('./pages/Register').then(module => ({ default: module.Register })));
+const SpotifyCallback = lazy(() => import('./pages/SpotifyCallback').then(module => ({ default: module.SpotifyCallback })));
 
 const queryClient = new QueryClient();
 
@@ -52,6 +53,7 @@ const App = () => {
                   <Route path="/spotify" element={<SpotifyPanel />} />
                   <Route path="/calendar" element={<Calendar />} />
                   <Route path="/settings" element={<Settings />} />
+                  <Route path="/callback" element={<SpotifyCallback />} />
                 </Route>
               </Route>
             </Routes>

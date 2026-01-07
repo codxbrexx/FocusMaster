@@ -3,6 +3,11 @@
 
 @layer base {
   :root {
+    --accent-1: #7C3AED;
+    --accent-2: #06B6D4;
+    --bg-gradient-start: rgba(124, 58, 237, 0.12);
+    --bg-gradient-end: rgba(6, 182, 212, 0.08);
+
     --background: 220 16% 96%;
     --foreground: 224 71% 4%;
 

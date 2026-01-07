@@ -9,63 +9,95 @@ export const Hero = () => {
     const { loginAsGuest } = useAuth();
     const navigate = useNavigate();
 
-    const fadeInUp = {
-        hidden: { opacity: 0, y: 20 },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.5 } } // Removed ease to match types for now
-    };
-
-    const staggerContainer = {
-        hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: {
-                staggerChildren: 0.1,
-                delayChildren: 0.1
-            }
-        }
-    };
-
     return (
-        <header className="relative z-10 container mx-auto px-6 pt-16 pb-24 md:pt-28 md:pb-32 text-center overflow-hidden">
+        <div className="relative min-h-[90vh] flex flex-col items-center justify-center overflow-hidden">
+            {/* Dynamic Background with Reduced Motion Support */}
+            <div className="absolute inset-0 z-0">
+                <div className="absolute inset-0 bg-gradient-to-br from-[var(--bg-gradient-start)] to-[var(--bg-gradient-end)] opacity-70" />
+                <motion.div
+                    className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] bg-accent1/20 rounded-full blur-[100px]"
+                    animate={{
+                        x: [0, 50, 0],
+                        y: [0, 30, 0],
+                        scale: [1, 1.1, 1]
+                    }}
+                    transition={{
+                        duration: 15,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                    }}
+                    style={{ willChange: "transform" }}
+                />
+                <motion.div
+                    className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] bg-accent2/20 rounded-full blur-[100px]"
+                    animate={{
+                        x: [0, -30, 0],
+                        y: [0, -40, 0],
+                        scale: [1, 1.2, 1]
+                    }}
+                    transition={{
+                        duration: 18,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                    }}
+                    style={{ willChange: "transform" }}
+                />
+            </div>
 
-            <motion.div
-                initial="hidden"
-                animate="visible"
-                variants={staggerContainer}
-                className="max-w-4xl mx-auto space-y-8"
-            >
-                {/* Badge */}
-                <motion.div variants={fadeInUp} className="flex justify-center">
-                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-secondary/50 border border-border/50 text-secondary-foreground text-sm font-medium backdrop-blur-sm">
-                        <span>Welcome to FocusMaster</span>
-                    </div>
-                </motion.div>
+            <div className="absolute inset-0 bg-matrix z-0 opacity-20 pointer-events-none" />
 
-                {/* Main Heading */}
-                <motion.div variants={fadeInUp} className="relative">
-                    <h1 className="text-5xl md:text-7xl font-bold font-heading tracking-tight leading-[1.1] text-foreground">
+            <div className="container relative z-10 px-4 md:px-6 text-center">
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
+                    className="space-y-4"
+                >
+                    <motion.div
+                        initial={{ scale: 0.9, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ delay: 0.1, duration: 0.5 }}
+                        className="inline-block"
+                    >
+                        <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-sm font-medium text-white/80 backdrop-blur-md shadow-sm">
+                            <span className="relative flex h-2 w-2">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                            </span>
+                            v2.0 Now Available
+                        </span>
+                    </motion.div>
+
+                    <h1 className="font-heading text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60 pb-2">
                         Master Your <br className="hidden md:block" />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-indigo-400">Focus State</span>
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent1 to-accent2">
+                            Mental Flow
+                        </span>
                     </h1>
+
+                    <p className="mx-auto max-w-[700px] text-lg md:text-xl text-muted-foreground leading-relaxed">
+                        The all-in-one productivity suite for deep work. Fuse tasks, timer, and workflow into a single, distraction-free environment.
+                    </p>
                 </motion.div>
 
-                {/* Subheading */}
-                <motion.p variants={fadeInUp} className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                    The all-in-one workspace designed to eliminate distraction.
-                    Combine tasks, time tracking, and deep work analytics into a single, flowing experience.
-                </motion.p>
-
-                {/* CTA Buttons */}
-                <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3, duration: 0.8 }}
+                    className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8"
+                >
                     <Link to="/register">
-                        <Button size="lg" className="h-12 px-8 text-base rounded-lg shadow-lg hover:shadow-purple-500/15 transition-all duration-300">
-                            Get Started <ArrowRight className="ml-2 w-4 h-4" />
+                        <Button size="lg" className="rounded-full px-8 h-12 text-base font-medium bg-white text-black hover:bg-white/90 shadow-glow-lg transition-all hover:scale-105">
+                            Get Started Free <ArrowRight className="ml-2 w-4 h-4" />
                         </Button>
                     </Link>
+                    <Button size="lg" variant="outline" className="rounded-full px-8 h-12 text-base border-white/10 bg-white/5 hover:bg-white/10 backdrop-blur-sm transition-all hover:scale-105" onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}>
+                        See Features
+                    </Button>
                     <Button
-                        variant="secondary"
+                        variant="ghost"
                         size="lg"
-                        className="h-12 px-8 text-base rounded-lg shadow-lg hover:shadow-purple-500/15 border border-border/50 transition-all duration-300"
+                        className="h-12 px-8 text-base rounded-full hover:bg-white/5 transition-all duration-300 text-white/70 hover:text-white"
                         onClick={async () => {
                             try {
                                 await loginAsGuest();
@@ -79,86 +111,26 @@ export const Hero = () => {
                     </Button>
                 </motion.div>
 
-                {/* Dashboard Preview Mockup */}
                 <motion.div
-                    variants={fadeInUp}
-                    className="mt-20 relative mx-auto max-w-5xl rounded-xl border border-border/40 bg-black/40 shadow-2xl overflow-hidden backdrop-blur-sm"
-                    style={{ perspective: "1000px" }}
+                    initial={{ opacity: 0, scale: 0.8, rotateX: 20 }}
+                    animate={{ opacity: 1, scale: 1, rotateX: 0 }}
+                    transition={{ delay: 0.5, duration: 1, type: "spring" }}
+                    className="mt-16 relative mx-auto max-w-5xl perspective-1000"
                 >
-                    {/* Browser Header */}
-                    <div className="h-10 bg-muted/30 border-b border-white/5 flex items-center px-4 gap-2">
-                        <div className="flex gap-1.5">
-                            <div className="w-3 h-3 rounded-full bg-red-400/20 border border-red-500/30" />
-                            <div className="w-3 h-3 rounded-full bg-yellow-400/20 border border-yellow-500/30" />
-                            <div className="w-3 h-3 rounded-full bg-green-400/20 border border-green-500/30" />
+                    <div className="relative rounded-xl border border-white/10 bg-black/40 backdrop-blur-xl shadow-2xl overflow-hidden aspect-video group">
+                        <div className="absolute inset-0 bg-gradient-to-tr from-accent1/10 to-accent2/10 opacity-50 group-hover:opacity-100 transition-opacity duration-700" />
+                        {/* Placeholder for App Screenshot/Preview */}
+                        <div className="absolute inset-0 flex items-center justify-center">
+                            <p className="text-white/20 font-heading text-2xl font-semibold">FocusMaster Dashboard</p>
                         </div>
-                        <div className="ml-4 h-5 w-64 rounded bg-muted/20 hidden sm:block"></div>
+                        {/* Glass Reflection Effect */}
+                        <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent pointer-events-none" />
                     </div>
 
-                    {/* App Content */}
-                    <div className="pt-10 grid grid-cols-12 gap-0 h-[400px] md:h-[600px] bg-gradient-to-br from-background/95 to-background/80">
-
-                        {/* Fake Sidebar */}
-                        <div className="col-span-1 md:col-span-2 border-r border-white/5 hidden md:flex flex-col p-4 gap-4 bg-muted/10">
-                            <div className="flex items-center gap-2 mb-6 opacity-50">
-                                <div className="w-6 h-6 rounded bg-primary/40" />
-                                <div className="h-2 w-20 rounded bg-white/20" />
-                            </div>
-                            {[1, 2, 3, 4, 5].map(i => (
-                                <div key={i} className="flex items-center gap-3 opacity-30">
-                                    <div className="w-5 h-5 rounded-sm bg-white/20" />
-                                    <div className="h-2 w-16 rounded-full bg-white/10" />
-                                </div>
-                            ))}
-                        </div>
-
-                        {/* Main Content Area */}
-                        <div className="col-span-12 md:col-span-10 p-6 md:p-8 grid grid-cols-12 gap-6 opacity-90 overflow-hidden relative">
-
-                            {/* Stats / Timer Card */}
-                            <div className="col-span-12 md:col-span-5 h-48 rounded-2xl bg-gradient-to-br from-primary/10 to-primary/5 border border-primary/20 p-6 flex flex-col justify-between relative overflow-hidden group">
-                                <div className="absolute inset-0 bg-primary/5 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
-                                <div className="flex items-center justify-between">
-                                    <div className="h-3 w-24 rounded-full bg-primary/30" />
-                                    <div className="w-8 h-8 rounded-full bg-primary/20" />
-                                </div>
-                                <div className="text-4xl md:text-5xl font-mono font-bold tracking-tighter text-foreground/90 mt-4">
-                                    25:00
-                                </div>
-                                <div className="flex gap-2 mt-2">
-                                    <div className="h-8 w-24 rounded-lg bg-primary/40" />
-                                    <div className="h-8 w-8 rounded-lg bg-primary/20" />
-                                </div>
-                            </div>
-
-                            {/* Activity Chart Card */}
-                            <div className="col-span-12 md:col-span-7 h-48 rounded-2xl bg-gradient-to-br from-blue-500/10 to-blue-500/5 border border-blue-500/20 p-6 flex flex-col justify-end gap-2 relative">
-                                <div className="absolute top-6 left-6 h-3 w-32 rounded-full bg-blue-400/30" />
-                                <div className="flex items-end justify-between gap-2 h-24 mt-auto opacity-70">
-                                    {[40, 70, 45, 90, 60, 80, 50, 75, 60, 90].map((h, i) => (
-                                        <div key={i} style={{ height: `${h}% ` }} className="w-full rounded-t-sm bg-blue-500/40 hover:bg-blue-400/60 transition-colors" />
-                                    ))}
-                                </div>
-                            </div>
-
-                            {/* Bottom Section (Task List) */}
-                            <div className="col-span-12 h-64 rounded-2xl bg-gradient-to-br from-zinc-500/10 to-transparent border border-white/10 p-6 flex flex-col gap-4">
-                                <div className="flex items-center justify-between mb-2">
-                                    <div className="h-4 w-32 rounded-full bg-white/20" />
-                                    <div className="h-8 w-8 rounded-lg bg-white/10" />
-                                </div>
-                                {[1, 2, 3].map(i => (
-                                    <div key={i} className="h-12 w-full rounded-xl bg-white/5 border border-white/5 flex items-center px-4 gap-4">
-                                        <div className="w-4 h-4 rounded-full border border-white/20" />
-                                        <div className="h-2 w-48 rounded-full bg-white/10" />
-                                        <div className="ml-auto w-16 h-4 rounded-full bg-white/5" />
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
+                    {/* Glow Effect behind container */}
+                    <div className="absolute -inset-4 bg-gradient-to-r from-accent1 to-accent2 opacity-20 blur-3xl -z-10" />
                 </motion.div>
-            </motion.div>
-        </header>
+            </div>
+        </div>
     );
 };
