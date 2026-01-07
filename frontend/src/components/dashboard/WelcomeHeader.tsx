@@ -70,7 +70,7 @@ export function WelcomeHeader({ user, settings, randomQuote, points, badge }: We
                 </div>
                 <motion.div
                     whileHover={{ scale: 1.02 }}
-                    className="hidden md:flex flex-col items-center justify-center bg-card/20 backdrop-blur-md p-5 rounded-2xl border border-white/5 shadow-lg min-w-[200px] h-full"
+                    className="hidden md:flex flex-col items-center justify-center bg-card/20 backdrop-blur-md p-5 rounded-2xl border border-primary/50 min-w-[200px] h-full"
                 >
                     <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60 mb-3">
                         Current Rank

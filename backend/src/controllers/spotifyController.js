@@ -159,10 +159,40 @@ const pause = asyncHandler(async (req, res) => {
   }
 });
 
+const next = asyncHandler(async (req, res) => {
+  const token = await getValidToken(req.user._id);
+  if (!token) return res.status(401).json({ message: 'No token' });
+
+  try {
+    await axios.post('https://api.spotify.com/v1/me/player/next', {}, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    res.json({ success: true });
+  } catch (error) {
+    res.status(error.response?.status || 500).json({ message: 'Action failed' });
+  }
+});
+
+const previous = asyncHandler(async (req, res) => {
+  const token = await getValidToken(req.user._id);
+  if (!token) return res.status(401).json({ message: 'No token' });
+
+  try {
+    await axios.post('https://api.spotify.com/v1/me/player/previous', {}, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    res.json({ success: true });
+  } catch (error) {
+    res.status(error.response?.status || 500).json({ message: 'Action failed' });
+  }
+});
+
 module.exports = {
   getLoginUrl,
   callback,
   getPlaybackState,
   play,
-  pause
+  pause,
+  next,
+  previous
 };

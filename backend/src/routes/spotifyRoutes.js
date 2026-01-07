@@ -5,7 +5,9 @@ const {
   callback,
   getPlaybackState,
   play,
-  pause
+  pause,
+  next,
+  previous
 } = require('../controllers/spotifyController');
 const { protect } = require('../middleware/authMiddleware');
 
@@ -14,5 +16,7 @@ router.post('/callback', protect, callback);
 router.get('/player', protect, getPlaybackState);
 router.put('/play', protect, play);
 router.put('/pause', protect, pause);
+router.post('/next', protect, next);
+router.post('/prev', protect, previous);
 
 module.exports = router;

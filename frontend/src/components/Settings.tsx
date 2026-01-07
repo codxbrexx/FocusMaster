@@ -28,7 +28,7 @@ export function Settings() {
       className="max-w-4xl mx-auto space-y-8 pb-24"
     >
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center backdrop-blur-lg justify-between gap-4">
         <div>
           <h2 className="text-3xl font-bold tracking-tight">Settings</h2>
           <p className="text-muted-foreground mt-1">Configure your focus environment.</p>
@@ -38,13 +38,13 @@ export function Settings() {
         </Button>
       </div>
 
-      <Tabs defaultValue="timer" className="w-full">
-        <TabsList className="w-full justify-start h-auto p-1 bg-secondary/30 rounded-xl mb-8 overflow-x-auto">
+      <Tabs defaultValue="timer" className="w-full backdrop-blur-lg border border-primary/50 rounded-xl">
+        <TabsList className="w-full justify-start h-auto p-1  rounded-x border-primary/50 mb-8 overflow-x-auto">
           {['timer', 'appearance', 'automation', 'system'].map((tab) => (
             <TabsTrigger
               key={tab}
               value={tab}
-              className="rounded-lg px-6 py-2.5 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground capitalize"
+              className="rounded-lg px-6 py-2.5 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:font-semibold data-[state=active]:capitalize"
             >
               {tab}
             </TabsTrigger>

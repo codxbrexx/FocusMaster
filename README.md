@@ -116,7 +116,14 @@ You need to create `.env` files in both the `backend` and `frontend` directories
     npm run dev
     ```
 
-4.  **Access the App**
+4.  **Running Tests**
+    To run the unit tests for the frontend:
+    ```bash
+    cd frontend
+    npm test
+    ```
+
+5.  **Access the App**
     Open your browser and navigate to `http://localhost:5173` (or the port shown in your terminal).
 
 ## 🤝 Contributing

@@ -27,7 +27,7 @@ export function SystemSettings() {
 
     return (
         <div className="space-y-6">
-            <Card className="border-none shadow-lg bg-card/50 backdrop-blur-sm">
+            <Card className="border-none shadow-none bg-card/50 backdrop-blur-sm">
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                         <Volume2 className="w-5 h-5 text-primary" /> Sound & Feedback
@@ -62,7 +62,7 @@ export function SystemSettings() {
                 </CardContent>
             </Card>
 
-            <Card className="border border-destructive/20 bg-destructive/5 shadow-none">
+            <Card className=" border-none backdrop-blur-lg shadow-none">
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-destructive text-lg">
                         <Trash2 className="w-5 h-5" /> Danger Zone

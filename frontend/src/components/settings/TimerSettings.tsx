@@ -9,7 +9,7 @@ export function TimerSettings() {
     const { settings, updateSettings } = useSettingsStore();
 
     return (
-        <Card className="border-none shadow-lg bg-card/50 backdrop-blur-sm">
+        <Card className="border-none shadow-none bg-card/50">
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                     <Clock className="w-5 h-5 text-primary" /> Timer Duration
@@ -40,7 +40,7 @@ export function TimerSettings() {
                     />
                 </div>
 
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 rounded-xl border bg-secondary/10 mt-4 gap-4 sm:gap-0">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 mt-4 gap-4 sm:gap-0">
                     <div className="flex gap-4 items-center">
                         <div className="p-2 rounded-lg bg-red-500/10 text-red-500 h-fit">
                             <Shield className="w-5 h-5" />

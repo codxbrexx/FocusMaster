@@ -24,7 +24,7 @@ export function AutomationSettings() {
     ];
 
     return (
-        <Card className="border-none shadow-lg bg-card/50 backdrop-blur-sm">
+        <Card className="border-none shadow-none bg-card/50">
             <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                     <Zap className="w-5 h-5 text-primary" /> Workflow
