@@ -52,8 +52,7 @@ export const TimerDisplay = ({
                     strokeDasharray={2 * Math.PI * 45}
                     strokeDashoffset={2 * Math.PI * 45 * (1 - progress / 100)}
                     strokeLinecap="round"
-                    className="transition-all duration-500 ease-linear shadow-glow-lg"
-                    style={{ filter: `drop-shadow(0 0 8px ${mode === 'pomodoro' ? 'rgba(99, 102, 241, 0.4)' : mode === 'short-break' ? 'rgba(34, 197, 94, 0.4)' : 'rgba(6, 182, 212, 0.4)'})` }}
+                    className="transition-all duration-500 ease-linear"
                 />
             </svg>
             <div className="absolute inset-0 flex flex-col items-center justify-center z-10">

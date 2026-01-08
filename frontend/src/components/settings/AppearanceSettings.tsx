@@ -1,9 +1,11 @@
 import { Palette, Moon, Monitor, Shield, Sun, Check } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { useSettingsStore } from '@/store/useSettingsStore';
+import { useTheme } from '@/context/ThemeContext';
 
 export function AppearanceSettings() {
     const { settings, updateSettings } = useSettingsStore();
+    const { setTheme } = useTheme();
 
     const themes = [
         {
@@ -49,7 +51,10 @@ export function AppearanceSettings() {
                     {themes.map((theme) => (
                         <div
                             key={theme.id}
-                            onClick={() => updateSettings({ theme: theme.id as any })}
+                            onClick={() => {
+                                updateSettings({ theme: theme.id as any });
+                                setTheme(theme.id as any);
+                            }}
                             className={`
                 relative cursor-pointer group rounded-xl border-2 transition-all duration-200 overflow-hidden
                 ${settings.theme === theme.id ? 'border-primary ring-2 ring-primary/20 scale-[1.02]' : 'border-transparent hover:border-border'}

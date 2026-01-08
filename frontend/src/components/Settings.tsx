@@ -1,10 +1,8 @@
-import { useEffect } from 'react';
 import { Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useSettingsStore } from '@/store/useSettingsStore';
 
 // Sub-components
 import { TimerSettings } from './settings/TimerSettings';
@@ -13,13 +11,8 @@ import { AutomationSettings } from './settings/AutomationSettings';
 import { SystemSettings } from './settings/SystemSettings';
 
 export function Settings() {
-  const { settings } = useSettingsStore();
 
-  useEffect(() => {
-    const root = window.document.documentElement;
-    root.classList.remove('light', 'dark', 'blue', 'green', 'purple');
-    root.classList.add(settings.theme);
-  }, [settings.theme]);
+
 
   return (
     <motion.div

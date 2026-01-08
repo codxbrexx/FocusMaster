@@ -6,7 +6,6 @@ after relaoding every thing are goes defult
 project workng slow
 
 ## logical
-pomodoro session failed to save 
  
 
 

@@ -107,7 +107,11 @@ export const useHistoryStore = create<HistoryState>((set) => ({
     if (isGuest) {
       const newId = crypto.randomUUID();
       set((state) => {
-        const newSession = { ...session, id: newId };
+        const newSession = {
+          ...session,
+          id: newId,
+          duration: session.duration * 60,
+        };
         const updatedSessions = [newSession, ...state.sessions];
         localStorage.setItem('guest-sessions', JSON.stringify(updatedSessions));
         return { sessions: updatedSessions };
@@ -116,7 +120,6 @@ export const useHistoryStore = create<HistoryState>((set) => ({
     }
 
     try {
-      // Transform frontend session data to backend API format
       const typeMapping: Record<string, string> = {
         'pomodoro': 'focus',
         'short-break': 'shortBreak',
@@ -127,8 +130,8 @@ export const useHistoryStore = create<HistoryState>((set) => ({
         type: typeMapping[session.type] || session.type,
         startTime: session.startTime,
         endTime: session.endTime,
-        duration: session.duration * 60, // Convert minutes to seconds
-        task: session.taskId, // Map taskId to task
+        duration: session.duration * 60,
+        task: session.taskId,
         mood: session.mood,
       };
 

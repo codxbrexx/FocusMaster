@@ -24,7 +24,7 @@ export interface TimerState {
 }
 
 const DEFAULT_DURATIONS = {
-  'pomodoro': 25 * 60,
+  'pomodoro': 5,
   'short-break': 5 * 60,
   'long-break': 15 * 60,
 };
@@ -43,10 +43,6 @@ export const useTimerStore = create<TimerState>((set) => ({
   setLastSessionId: (id) => set({ lastSessionId: id }),
 
   setMode: (mode) => {
-    // When changing mode, we need to know the duration from settings.
-    // However, store is pure. We'll rely on the component (PomodoroTimer) 
-    // or GlobalTimer to update totalDuration if settings change.
-    // For now, use defaults or current totalDuration if mapped.
     set({ mode, isActive: false });
   },
 

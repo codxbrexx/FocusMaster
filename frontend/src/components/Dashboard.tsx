@@ -29,29 +29,35 @@ export function Dashboard() {
   const { settings } = useSettingsStore();
   const { sessions } = useHistoryStore();
 
-  const calculatePoints = () => {
+  const points = useMemo(() => {
     const sessionPoints = sessions.filter((s) => s.type === 'pomodoro').length * 25;
     const taskPoints = tasks.filter((t) => t.isCompleted).length * 10;
     return sessionPoints + taskPoints;
-  };
+  }, [sessions, tasks]);
 
-  const points = calculatePoints();
   const today = new Date().toDateString();
-  const todaySessions = sessions.filter((s) => new Date(s.startTime).toDateString() === today);
-  const todayPomodoros = todaySessions.filter((s) => s.type === 'pomodoro').length;
-  const todayMinutes = Math.floor(todaySessions
-    .filter((s) => s.type === 'pomodoro')
-    .reduce((acc, s) => acc + s.duration, 0) / 60);
 
-  const todayTasks = tasks.filter((t) => !t.isCompleted);
-  const completedToday = tasks.filter(
+  const todaySessions = useMemo(() => sessions.filter((s) => new Date(s.startTime).toDateString() === today), [sessions, today]);
+
+  const todayPomodoros = useMemo(() => todaySessions.filter((s) => s.type === 'pomodoro').length, [todaySessions]);
+
+  const todayMinutes = useMemo(() => Math.floor(
+    todaySessions
+      .filter((s) => s.type === 'pomodoro')
+      .reduce((acc, s) => acc + s.duration, 0) / 60
+  ), [todaySessions]);
+
+  const todayTasks = useMemo(() => tasks.filter((t) => !t.isCompleted), [tasks]);
+
+  const completedToday = useMemo(() => tasks.filter(
     (t) => t.isCompleted && new Date(t.createdAt).toDateString() === today
-  ).length;
+  ).length, [tasks, today]);
 
-  const progressPercentage =
-    settings.dailyGoal > 0 ? Math.min((todayPomodoros / settings.dailyGoal) * 100, 100) : 0;
+  const progressPercentage = useMemo(() =>
+    settings.dailyGoal > 0 ? Math.min((todayPomodoros / settings.dailyGoal) * 100, 100) : 0
+    , [todayPomodoros, settings.dailyGoal]);
 
-  const getBadge = () => {
+  const badge = useMemo(() => {
     if (points >= 800)
       return {
         name: 'Gold Master',
@@ -75,9 +81,7 @@ export function Dashboard() {
       color: 'bg-primary/10 text-primary border-primary/20',
       icon: Target,
     };
-  };
-
-  const badge = getBadge();
+  }, [points]);
 
   const randomQuoteIndex = useMemo(
     () => (user?.name?.length ?? 0) % MOTIVATIONAL_QUOTES.length,
@@ -91,7 +95,7 @@ export function Dashboard() {
     return date.toDateString();
   }, []);
 
-  const getCurrentStreak = () => {
+  const currentStreak = useMemo(() => {
     if (sessions.length === 0) return 0;
     const dates = [...new Set(sessions.map((s) => new Date(s.startTime).toDateString()))];
     const sortedDates = dates.sort((a, b) => new Date(b).getTime() - new Date(a).getTime());
@@ -101,10 +105,9 @@ export function Dashboard() {
       return 0;
     }
 
-    let streak = 0;
-    streak = sortedDates.length > 0 ? 1 : 0;
-    return streak;
-  };
+    // Simple consecutive logic could be improved, but this matches original intent
+    return sortedDates.length > 0 ? 1 : 0;
+  }, [sessions, today, yesterday]);
 
   const container: Variants = {
     hidden: { opacity: 0 },
@@ -116,9 +119,9 @@ export function Dashboard() {
     },
   };
 
-  const averageFocusDuration = sessions.length
+  const averageFocusDuration = useMemo(() => sessions.length
     ? Math.round(todayMinutes / Math.max(todaySessions.length, 1))
-    : 0;
+    : 0, [sessions.length, todayMinutes, todaySessions.length]);
 
   return (
     <motion.div
@@ -140,7 +143,7 @@ export function Dashboard() {
         todayMinutes={todayMinutes}
         dailyGoal={settings.dailyGoal}
         pomodoroDuration={settings.pomodoroDuration}
-        currentStreak={getCurrentStreak()}
+        currentStreak={currentStreak}
         completedToday={completedToday}
         totalTasks={tasks.length}
       />

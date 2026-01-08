@@ -57,29 +57,6 @@ export function FocusModeOverlay({
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-50 bg-matrix flex flex-col overflow-hidden"
         >
-            {/* Background Ambient Glows */}
-            <div className="absolute inset-0 overflow-hidden pointer-events-none -z-10">
-                {[
-                    {
-                        position: 'top-0 left-1/4',
-                        size: 'w-[80vw] h-[80vw]',
-                        color: 'bg-blue-500/10',
-                        delay: '',
-                    },
-                    {
-                        position: 'bottom-0 right-1/4',
-                        size: 'w-[60vw] h-[60vw]',
-                        color: 'bg-indigo-500/10',
-                        delay: 'delay-1000',
-                    },
-                ].map((glow, index) => (
-                    <div
-                        key={index}
-                        className={`absolute rounded-full blur-[150px] opacity-40 ${glow.position} ${glow.size} ${glow.color} ${glow.delay}`}
-                    />
-                ))}
-            </div>
-
             <div className="flex flex-col items-center pt-8 px-6 relative z-10">
                 <Button
                     variant="ghost"
@@ -149,8 +126,7 @@ export function FocusModeOverlay({
                             strokeDasharray={c}
                             strokeDashoffset={offset}
                             strokeLinecap="round"
-                            className="transition-all duration-1000 ease-linear shadow-glow-lg"
-                            style={{ filter: `drop-shadow(0 0 15px ${mode === 'pomodoro' ? 'rgba(99, 102, 241, 0.6)' : mode === 'short-break' ? 'rgba(34, 197, 94, 0.6)' : 'rgba(6, 182, 212, 0.6)'})` }}
+                            className="transition-all duration-1000 ease-linear"
                         />
                     </svg>
                     <div className="absolute inset-0 flex flex-col items-center justify-center">
@@ -191,7 +167,7 @@ export function FocusModeOverlay({
             <motion.div
                 initial={{ y: 100 }}
                 animate={{ y: 0 }}
-                className="w-full border-t border-white/10 pb-8 pt-6 px-6 md:px-12"
+                className="w-full py-4 px-6 md:px-12"
             >
                 <div className="max-w-5xl mx-auto">
                     <div className="flex flex-col md:flex-row gap-8 justify-between items-start md:items-center backdrop-blur-lg bg-background/20 border border-white/10 rounded-xl p-6">

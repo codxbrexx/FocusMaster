@@ -31,7 +31,7 @@ export function PomodoroTimer() {
   const setSelectedTaskId = useTimerStore((state: TimerState) => state.setSelectedTaskId);
 
   // Local state for UI specifics
-  const { sessions } = useHistoryStore();
+  const { sessions, addSession } = useHistoryStore();
 
   // Calculate daily sessions for UI
   const sessionCount = sessions.filter(s => {
@@ -46,19 +46,15 @@ export function PomodoroTimer() {
   const [showMoodModal, setShowMoodModal] = useState(false);
   const [focusMode, setFocusMode] = useState(false);
 
-  // Derived status for UI compatibility
   const status = isActive ? 'running' : (timeLeft < totalDuration && timeLeft > 0 ? 'paused' : 'idle');
 
   const sessionStartTime = useRef<Date | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // Sync settings with timer store
   const { settings } = useSettingsStore();
 
   useEffect(() => {
-    // Only update if timer is not active to avoid disruption
     if (!isActive) {
-      // We need to map settings to totalDuration based on current mode
       let newDuration = settings.pomodoroDuration * 60;
       if (mode === 'short-break') newDuration = settings.shortBreakDuration * 60;
       if (mode === 'long-break') newDuration = settings.longBreakDuration * 60;
@@ -94,13 +90,12 @@ export function PomodoroTimer() {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Ignore keyboard shortcuts if user is typing
       if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement || (e.target as HTMLElement).isContentEditable) {
         return;
       }
 
       if (e.code === 'Space' || e.code === 'Enter') {
-        e.preventDefault(); // Prevent scrolling for Space
+        e.preventDefault();
         if (status === 'running') handlePause();
         else handleStart();
       }
@@ -110,8 +105,35 @@ export function PomodoroTimer() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [status, focusMode, handlePause, handleStart]);
 
-  const savePomodoroSession = (_selectedMood: string) => {
+  // Timer Completion Effect
+  useEffect(() => {
+    if (timeLeft === 0 && mode === 'pomodoro' && !showMoodModal && !isActive) {
+      if (audioRef.current) {
+        audioRef.current.play().catch(console.error);
+      }
+      setShowMoodModal(true);
+    }
+  }, [timeLeft, mode, showMoodModal, isActive]);
+
+  const savePomodoroSession = async (selectedMood: string) => {
+    const sessionDuration = Math.floor(totalDuration / 60);
+
+    // Fallback if sessionStartTime is null (e.g. after refresh)
+    const startTime = sessionStartTime.current || new Date(Date.now() - sessionDuration * 60 * 1000);
+
+    await addSession({
+      type: 'pomodoro',
+      duration: sessionDuration,
+      startTime: startTime,
+      endTime: new Date(),
+      tag: selectedTag,
+      taskId: selectedTaskId !== 'none' ? selectedTaskId : undefined,
+      mood: selectedMood
+    });
+
     setShowMoodModal(false);
+    resetTimer();
+    sessionStartTime.current = null;
   };
 
   const formatTime = (seconds: number) => {

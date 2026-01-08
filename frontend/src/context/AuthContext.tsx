@@ -11,6 +11,7 @@ interface User {
   name: string;
   email: string;
   picture?: string;
+  isGuest?: boolean;
 }
 
 interface AuthContextType {

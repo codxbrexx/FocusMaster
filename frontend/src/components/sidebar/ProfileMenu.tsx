@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -26,25 +26,31 @@ export const ProfileMenu = ({ isOpen }: ProfileMenuProps) => {
 
     const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
     const [showAppearance, setShowAppearance] = useState(false);
+    const containerRef = useRef<HTMLDivElement>(null);
 
     const handleLogout = () => {
         logout();
         navigate('/login');
     };
 
-    return (
-        <div className="relative mt-4 group bg-card/80">
-            {/* Click Outside Handler for Menu */}
-            {isProfileMenuOpen && (
-                <div
-                    className="fixed inset-0 z-[55]"
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        setIsProfileMenuOpen(false);
-                    }}
-                />
-            )}
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+                setIsProfileMenuOpen(false);
+            }
+        };
 
+        if (isProfileMenuOpen) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [isProfileMenuOpen]);
+
+    return (
+        <div ref={containerRef} className="relative mt-4 group bg-card/80">
             <div
                 className={cn(
                     'flex items-center gap-3 p-3 border border-border/50 rounded-2xl transition-all duration-300 cursor-pointer relative z-[60]',
@@ -131,7 +137,7 @@ export const ProfileMenu = ({ isOpen }: ProfileMenuProps) => {
                             {/* Menu Items */}
                             <div className="space-y-0.5 mb-2">
                                 <button
-                                    onClick={() => { navigate('/settings'); setIsProfileMenuOpen(false); }}
+                                    onClick={() => { navigate('/profile'); setIsProfileMenuOpen(false); }}
                                     className="w-full flex items-center gap-3 px-3 py-2 text-sm text-foreground/80 hover:text-foreground hover:bg-accent/50 rounded-md transition-colors text-left group/item"
                                 >
                                     <User className="w-4 h-4 text-muted-foreground group-hover/item:text-primary transition-colors" />
@@ -143,7 +149,7 @@ export const ProfileMenu = ({ isOpen }: ProfileMenuProps) => {
                                     className="w-full flex items-center gap-3 px-3 py-2 text-sm text-foreground/80 hover:text-foreground hover:bg-accent/50 rounded-md transition-colors text-left group/item"
                                 >
                                     <Settings className="w-4 h-4 text-muted-foreground group-hover/item:text-primary transition-colors" />
-                                    <span className="text-foreground">Account</span>
+                                    <span className="text-foreground">Settings</span>
                                 </button>
                             </div>
 

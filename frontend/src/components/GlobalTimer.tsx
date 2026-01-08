@@ -55,66 +55,69 @@ export function GlobalTimer() {
 
     // The Tick Mechanism
     useEffect(() => {
-        const handleComplete = () => {
-            setIsActive(false);
-            if (settings.soundEnabled && audioRef.current) {
-                audioRef.current.play().catch(() => { });
-            }
-
-            const endTime = new Date();
-            const startTime = new Date(endTime.getTime() - (mode === 'pomodoro' ? settings.pomodoroDuration : (mode === 'short-break' ? settings.shortBreakDuration : settings.longBreakDuration)) * 60 * 1000);
-
-            // Save to history
-            addSession({
-                type: mode,
-                duration: (mode === 'pomodoro' ? settings.pomodoroDuration : (mode === 'short-break' ? settings.shortBreakDuration : settings.longBreakDuration)),
-                startTime,
-                endTime,
-                tag: selectedTag,
-                taskId: selectedTaskId === 'none' ? undefined : selectedTaskId,
-                mood: undefined
-            });
-
-            // Determine what finished
-            if (mode === 'pomodoro') {
-                toast.success("Focus Session Complete!", {
-                    description: "Take a break, you earned it.",
-                    duration: 5000,
-                });
-
-                // If auto-start break is on
-                if (settings.autoStartBreak) {
-                    setMode('short-break');
-                    const breakDuration = settings.shortBreakDuration * 60;
-                    setTotalDuration(breakDuration);
-                    setIsActive(true);
-                }
-            } else {
-                toast.info("Break is over!", {
-                    description: "Time to get back to focus.",
-                });
-                if (settings.autoStartPomodoro) {
-                    setMode('pomodoro');
-                    const focusDuration = settings.pomodoroDuration * 60;
-                    setTotalDuration(focusDuration);
-                    setIsActive(true);
-                }
-            }
-        };
-
         let interval: ReturnType<typeof setInterval>;
 
-        if (isActive && timeLeft > 0) {
+        if (isActive) {
             interval = setInterval(() => {
                 tick();
             }, 1000);
-        } else if (isActive && timeLeft === 0) {
-            // Timer finished
-            handleComplete();
         }
 
         return () => clearInterval(interval);
-    }, [isActive, timeLeft, tick, settings, mode, setMode, setTotalDuration, setIsActive, addSession]);
+    }, [isActive, tick]);
+
+    // specific effect for completion
+    useEffect(() => {
+        if (isActive && timeLeft <= 0) {
+            const handleComplete = () => {
+                setIsActive(false);
+                if (settings.soundEnabled && audioRef.current) {
+                    audioRef.current.play().catch(() => { });
+                }
+
+                const endTime = new Date();
+                const startTime = new Date(endTime.getTime() - (mode === 'pomodoro' ? settings.pomodoroDuration : (mode === 'short-break' ? settings.shortBreakDuration : settings.longBreakDuration)) * 60 * 1000);
+
+                // Save to history
+                addSession({
+                    type: mode,
+                    duration: (mode === 'pomodoro' ? settings.pomodoroDuration : (mode === 'short-break' ? settings.shortBreakDuration : settings.longBreakDuration)),
+                    startTime,
+                    endTime,
+                    tag: selectedTag,
+                    taskId: selectedTaskId === 'none' ? undefined : selectedTaskId,
+                    mood: undefined
+                });
+
+                // Determine what finished
+                if (mode === 'pomodoro') {
+                    toast.success("Focus Session Complete!", {
+                        description: "Take a break, you earned it.",
+                        duration: 5000,
+                    });
+
+                    // If auto-start break is on
+                    if (settings.autoStartBreak) {
+                        setMode('short-break');
+                        const breakDuration = settings.shortBreakDuration * 60;
+                        setTotalDuration(breakDuration);
+                        setIsActive(true);
+                    }
+                } else {
+                    toast.info("Break is over!", {
+                        description: "Time to get back to focus.",
+                    });
+                    if (settings.autoStartPomodoro) {
+                        setMode('pomodoro');
+                        const focusDuration = settings.pomodoroDuration * 60;
+                        setTotalDuration(focusDuration);
+                        setIsActive(true);
+                    }
+                }
+            };
+            handleComplete();
+        }
+    }, [timeLeft, isActive, setIsActive, settings, mode, addSession, selectedTag, selectedTaskId, setMode, setTotalDuration]);
 
     return null;
 }

@@ -17,6 +17,7 @@ const Analytics = lazy(() => import('./components/Analytics').then(module => ({ 
 const ClockInOut = lazy(() => import('./components/ClockInOut').then(module => ({ default: module.ClockInOut })));
 const SpotifyPanel = lazy(() => import('./components/SpotifyPanel').then(module => ({ default: module.SpotifyPanel })));
 const Settings = lazy(() => import('./components/Settings').then(module => ({ default: module.Settings })));
+const Profile = lazy(() => import('./components/Profile').then(module => ({ default: module.Profile })));
 const Calendar = lazy(() => import('./components/Calendar').then(module => ({ default: module.Calendar })));
 const LandingPage = lazy(() => import('./pages/LandingPage').then(module => ({ default: module.LandingPage })));
 const Login = lazy(() => import('./pages/Login').then(module => ({ default: module.Login })));
@@ -51,6 +52,7 @@ const App = () => {
                     <Route path="/spotify" element={<SpotifyPanel />} />
                     <Route path="/calendar" element={<Calendar />} />
                     <Route path="/settings" element={<Settings />} />
+                    <Route path="/profile" element={<Profile />} />
                     <Route path="/callback" element={<SpotifyCallback />} />
                   </Route>
                 </Route>
