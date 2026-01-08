@@ -59,7 +59,7 @@ export const DurationInput = ({ label, value, onChange, min = 1, max = 60 }: Dur
                 variant="outline"
                 size="icon"
                 className="h-10 w-10 shrink-0"
-                onClick={() => onChange(Math.min(max, value + 1))}
+                onClick={() => onChange(Math.min(max, Number(value) + 1))}
                 disabled={value >= max}
             >
                 <Plus className="w-4 h-4" />

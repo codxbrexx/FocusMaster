@@ -23,7 +23,7 @@ export function TaskItem({ task, onToggle, onEdit, onDelete }: TaskItemProps) {
             exit={{ opacity: 0, scale: 0.98 }}
             whileHover={{ scale: 1.005 }}
             transition={{ duration: 0.2 }}
-            className={`group relative flex flex-col md:flex-row gap-4 p-4 rounded-xl border-2 backdrop-blur-xl bg-card/50 shadow-sm hover:shadow-md transition-all 
+            className={`group relative flex flex-col md:flex-row gap-4 p-4 rounded-xl border-2 backdrop-blur-xl bg-card/50 shadow-sm hover:shadow-md transition-all hover:z-10 
         ${isHigh ? 'border-l-4 border-l-destructive' : 'border-l-4 border-l-transparent'}`}
         >
             {/* Checkbox */}
@@ -56,7 +56,7 @@ export function TaskItem({ task, onToggle, onEdit, onDelete }: TaskItemProps) {
                     </div>
 
                     {/* Actions (Desktop: visible on hover, Mobile: always visible) */}
-                    <div className="flex items-center gap-1 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+                    <div className="flex items-center gap-2 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity shrink-0 z-20">
                         <Button
                             variant="ghost"
                             size="icon"

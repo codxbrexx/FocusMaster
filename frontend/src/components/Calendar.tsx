@@ -124,7 +124,7 @@ export function Calendar() {
           <h2 className="text-4xl font-bold font-heading tracking-tight text-foreground">
             Calendar
           </h2>
-          <p className="text-muted-foreground mt-1">Plan your Sprints, Reviews, and Deadlines.</p>
+          <p className="text-muted-foreground mt-1">Plan your Schedule, Events, and Goals.</p>
         </div>
 
         <div className="flex items-center gap-4 bg-card/50 backdrop-blur-md p-2 rounded-2xl border border-border shadow-sm">
@@ -215,10 +215,10 @@ export function Calendar() {
                           onClick={(e) => handleEventClick(e, evt)}
                           className={cn(
                             'text-[10px] px-1.5 py-0.5 rounded-[4px] truncate font-medium border hover:scale-[1.02] transition-transform cursor-pointer shadow-sm shrink-0',
-                            evt.category === 'Sprint' ? 'bg-purple-100 dark:bg-purple-500/10 text-purple-700 dark:text-purple-200 border-purple-200 dark:border-purple-500/20' :
-                              evt.category === 'Review' ? 'bg-cyan-100 dark:bg-cyan-500/10 text-cyan-700 dark:text-cyan-200 border-cyan-200 dark:border-cyan-500/20' :
-                                evt.category === 'Deadline' ? 'bg-red-100 dark:bg-red-500/10 text-red-700 dark:text-red-200 border-red-200 dark:border-red-500/20' :
-                                  evt.category === 'Deep Work' ? 'bg-blue-100 dark:bg-blue-500/10 text-blue-700 dark:text-blue-200 border-blue-200 dark:border-blue-500/20' :
+                            evt.category === 'Sprint' ? 'bg-purple-100 dark:bg-purple-500/10 text-black dark:text-purple-500 border-purple-500 dark:border-purple-500/20' :
+                              evt.category === 'Review' ? 'bg-cyan-100 dark:bg-cyan-500/10 text-black dark:text-cyan-500 border-cyan-500 dark:border-cyan-500/20' :
+                                evt.category === 'Deadline' ? 'bg-red-100 dark:bg-red-500/10 text-black dark:text-red-500 border-red-500 dark:border-red-500/20' :
+                                  evt.category === 'Deep Work' ? 'bg-blue-100 dark:bg-blue-500/10 text-black dark:text-blue-500 border-blue-500 dark:border-blue-500/20' :
                                     'bg-muted/50 text-foreground border-border'
                           )}
                         >

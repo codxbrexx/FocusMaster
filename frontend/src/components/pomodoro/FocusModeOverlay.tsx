@@ -150,7 +150,7 @@ export function FocusModeOverlay({
                             strokeDashoffset={offset}
                             strokeLinecap="round"
                             className="transition-all duration-1000 ease-linear shadow-glow-lg"
-                            style={{ filter: `drop-shadow(0 0 10px ${mode === 'pomodoro' ? 'rgba(99, 102, 241, 0.5)' : 'rgba(20, 184, 166, 0.5)'})` }}
+                            style={{ filter: `drop-shadow(0 0 15px ${mode === 'pomodoro' ? 'rgba(99, 102, 241, 0.6)' : mode === 'short-break' ? 'rgba(34, 197, 94, 0.6)' : 'rgba(6, 182, 212, 0.6)'})` }}
                         />
                     </svg>
                     <div className="absolute inset-0 flex flex-col items-center justify-center">
@@ -241,7 +241,7 @@ export function FocusModeOverlay({
                             </div>
                             <div className="h-2 w-full bg-muted rounded-full overflow-hidden border border-border/50">
                                 <div
-                                    className="h-full bg-white rounded-full transition-all duration-1000 shadow-[0_0_10px_rgba(255,255,255,0.5)]"
+                                    className="h-full bg-purple-500 rounded-full transition-all duration-1000 shadow-[0_0_10px_rgba(255,255,255,0.5)]"
                                     style={{ width: `${(sessionCount / 4) * 100}%` }}
                                 />
                             </div>

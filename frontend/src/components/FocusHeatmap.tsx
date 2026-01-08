@@ -113,8 +113,7 @@ export function FocusHeatmap() {
 
                     {/* Modern Legend */}
                     <div className="flex items-center gap-2 text-[10px] text-muted-foreground bg-muted/30 px-3 py-1.5 rounded-full border border-border/50">
-                        <span>Le
-                            ss</span>
+                        <span>Less</span>
                         <div className={`w-2.5 h-2.5 rounded-[2px] ${getIntensityClass(0)}`} />
                         <div className={`w-2.5 h-2.5 rounded-[2px] ${getIntensityClass(1)}`} />
                         <div className={`w-2.5 h-2.5 rounded-[2px] ${getIntensityClass(3)}`} />

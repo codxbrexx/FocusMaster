@@ -24,13 +24,13 @@ export function TimerSettings() {
                         label="Focus"
                         value={settings.pomodoroDuration}
                         onChange={(v) => updateSettings({ pomodoroDuration: v })}
-                        max={90}
+                        max={1000}
                     />
                     <DurationInput
                         label="Short Break"
                         value={settings.shortBreakDuration}
                         onChange={(v) => updateSettings({ shortBreakDuration: v })}
-                        max={15}
+                        max={10}
                     />
                     <DurationInput
                         label="Long Break"

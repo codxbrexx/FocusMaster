@@ -1,13 +1,13 @@
 ## Todos Bugs
 reload gose to defult 25 min  not the changed one 
-change to the inactive and cahnged form pomodoro they have to run 
+ 
 after relaoding every thing are goes defult 
 
 project workng slow
 
 ## logical
 pomodoro session failed to save 
-setting time + botton are not responsive 
+ 
 
 
 # spotify
@@ -27,5 +27,6 @@ topbar comment no use
 date picker 
 sidebar click feature open or hide 
 setting responsive 
+Sidebar profile popover redesign 
 
 

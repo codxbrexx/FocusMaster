@@ -27,7 +27,8 @@ interface HistoryState {
   isLoading: boolean;
 
   fetchHistory: () => Promise<void>;
-  addSession: (session: PomodoroSession) => Promise<void>;
+  addSession: (session: PomodoroSession) => Promise<string | undefined>;
+  updateSession: (id: string, updates: Partial<PomodoroSession>) => Promise<void>;
 
   // Clock In/Out
   clockIn: () => Promise<void>;
@@ -104,13 +105,14 @@ export const useHistoryStore = create<HistoryState>((set) => ({
   addSession: async (session) => {
     const isGuest = localStorage.getItem('isGuest') === 'true';
     if (isGuest) {
+      const newId = crypto.randomUUID();
       set((state) => {
-        const newSession = { ...session, id: crypto.randomUUID() };
+        const newSession = { ...session, id: newId };
         const updatedSessions = [newSession, ...state.sessions];
         localStorage.setItem('guest-sessions', JSON.stringify(updatedSessions));
         return { sessions: updatedSessions };
       });
-      return;
+      return newId;
     }
 
     try {
@@ -131,15 +133,40 @@ export const useHistoryStore = create<HistoryState>((set) => ({
       };
 
       const { data } = await api.post('/sessions', backendSession);
+      const newSession = { ...data, startTime: new Date(data.startTime), endTime: new Date(data.endTime) };
+
       set((state) => ({
         sessions: [
-          { ...data, startTime: new Date(data.startTime), endTime: new Date(data.endTime) },
+          newSession,
           ...state.sessions,
         ],
       }));
+      return newSession._id || newSession.id;
+
     } catch (error) {
       console.error(error);
       toast.error('Failed to save session');
+    }
+  },
+
+  updateSession: async (id, updates) => {
+    const isGuest = localStorage.getItem('isGuest') === 'true';
+    if (isGuest) {
+      set((state) => {
+        const updated = state.sessions.map(s => s.id === id ? { ...s, ...updates } : s);
+        localStorage.setItem('guest-sessions', JSON.stringify(updated));
+        return { sessions: updated };
+      });
+      return;
+    }
+
+    try {
+      await api.patch(`/sessions/${id}`, updates);
+      set((state) => ({
+        sessions: state.sessions.map(s => s.id === id ? { ...s, ...updates } : s) // In simpler implementation, this might not map fields perfectly if backend returns diff structure, but fine for mood.
+      }));
+    } catch (error) {
+      console.error('Failed to update session', error);
     }
   },
 

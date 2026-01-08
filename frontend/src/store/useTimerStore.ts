@@ -2,7 +2,7 @@ import { create } from 'zustand';
 
 export type TimerMode = 'pomodoro' | 'short-break' | 'long-break';
 
-interface TimerState {
+export interface TimerState {
   mode: TimerMode;
   timeLeft: number;
   isActive: boolean;
@@ -17,8 +17,10 @@ interface TimerState {
   setTotalDuration: (duration: number) => void;
   selectedTag: string;
   selectedTaskId: string;
+  lastSessionId?: string;
   setSelectedTag: (tag: string) => void;
   setSelectedTaskId: (id: string) => void;
+  setLastSessionId: (id: string | undefined) => void;
 }
 
 const DEFAULT_DURATIONS = {
@@ -34,9 +36,11 @@ export const useTimerStore = create<TimerState>((set) => ({
   totalDuration: DEFAULT_DURATIONS['pomodoro'],
   selectedTag: 'Study',
   selectedTaskId: 'none',
+  lastSessionId: undefined,
 
   setSelectedTag: (tag) => set({ selectedTag: tag }),
   setSelectedTaskId: (id) => set({ selectedTaskId: id }),
+  setLastSessionId: (id) => set({ lastSessionId: id }),
 
   setMode: (mode) => {
     // When changing mode, we need to know the duration from settings.
