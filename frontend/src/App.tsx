@@ -29,6 +29,9 @@ const SpotifyCallback = lazy(() => import('./pages/SpotifyCallback').then(module
 const AdminShell = lazy(() => import('./admin/components/layout/AdminShell').then(module => ({ default: module.AdminShell })));
 const AdminDashboard = lazy(() => import('./admin/pages/AdminDashboard').then(module => ({ default: module.AdminDashboard })));
 const UserManagement = lazy(() => import('./admin/pages/UserManagement').then(module => ({ default: module.UserManagement })));
+const AuditLogsPage = lazy(() => import('./admin/pages/AuditLogsPage').then(module => ({ default: module.AuditLogsPage })));
+const LiveActivityPage = lazy(() => import('./admin/pages/LiveActivityPage').then(module => ({ default: module.LiveActivityPage })));
+const SystemHealthPage = lazy(() => import('./admin/pages/SystemHealthPage').then(module => ({ default: module.SystemHealthPage })));
 
 const queryClient = new QueryClient();
 
@@ -68,7 +71,9 @@ const App = () => {
                   <Route path="/admin" element={<AdminShell />}>
                     <Route index element={<AdminDashboard />} />
                     <Route path="users" element={<UserManagement />} />
-                    <Route path="live" element={<div className="text-white p-10">Live Traffic (Coming Soon)</div>} />
+                    <Route path="audit" element={<AuditLogsPage />} />
+                    <Route path="live" element={<LiveActivityPage />} />
+                    <Route path="health" element={<SystemHealthPage />} />
                     <Route path="settings" element={<div className="text-white p-10">System Settings (Coming Soon)</div>} />
                   </Route>
                 </Routes>
