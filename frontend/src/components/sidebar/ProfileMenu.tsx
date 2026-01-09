@@ -9,7 +9,8 @@ import {
     Sun,
     Moon,
     Monitor,
-    LogOut
+    LogOut,
+    ShieldCheck
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/context/AuthContext';
@@ -151,6 +152,16 @@ export const ProfileMenu = ({ isOpen }: ProfileMenuProps) => {
                                     <Settings className="w-4 h-4 text-muted-foreground group-hover/item:text-primary transition-colors" />
                                     <span className="text-foreground">Settings</span>
                                 </button>
+
+                                {user?.role === 'admin' && (
+                                    <button
+                                        onClick={() => { navigate('/admin'); setIsProfileMenuOpen(false); }}
+                                        className="w-full flex items-center gap-3 px-3 py-2 text-sm text-amber-500 hover:text-amber-400 hover:bg-amber-500/10 rounded-md transition-colors text-left group/item"
+                                    >
+                                        <ShieldCheck className="w-4 h-4" />
+                                        <span className="font-medium">Admin Panel</span>
+                                    </button>
+                                )}
                             </div>
 
                             <div className="h-px bg-border/50 my-1 mx-2" />

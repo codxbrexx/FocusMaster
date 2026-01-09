@@ -12,6 +12,7 @@ interface User {
   email: string;
   picture?: string;
   isGuest?: boolean;
+  role?: 'admin' | 'user';
 }
 
 interface AuthContextType {
@@ -44,9 +45,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       try {
         const { data } = await api.get('/auth/profile');
+        if (!isGuest) localStorage.setItem('isAuthenticated', 'true');
+
+        // DEV: Grant admin role to specific email for testing
+        if (data.email === 'adminali@gmail.com') {
+          data.role = 'admin';
+        }
+
         setUser(data);
         setIsAuthenticated(true);
-        if (!isGuest) localStorage.setItem('isAuthenticated', 'true');
 
         // Hydrate all stores after authentication
         await Promise.all([
@@ -83,6 +90,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const { data } = await api.post('/auth/login', { email, password });
       localStorage.removeItem('isGuest');
       localStorage.setItem('isAuthenticated', 'true');
+
+      // DEV: Grant admin role to specific email
+      if (data.email === 'adminali@gmail.com') {
+        data.role = 'admin';
+      }
+
       setUser(data);
       setIsAuthenticated(true);
 

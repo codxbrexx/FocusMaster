@@ -16,7 +16,7 @@ import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import { useAdminAuth } from '../../context/AdminAuthContext';
-import { AdminPermission } from '../../config/permissions';
+import type { AdminPermission } from '../../config/permissions';
 
 const ADMIN_MENU: { path: string; label: string; icon: any; permission: AdminPermission }[] = [
     { path: '/admin', label: 'Dashboard', icon: LayoutDashboard, permission: 'VIEW_DASHBOARD' },
