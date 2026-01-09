@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useLivePresence, LiveSession } from '../../context/LivePresenceContext';
+import { useLivePresence, type LiveSession } from '../../context/LivePresenceContext';
 import { Laptop, Smartphone, Tablet, Globe, Ban } from 'lucide-react';
 import { ConfirmationModal } from '../../components/ui/ConfirmationModal';
 import { useAuditLog } from '../../context/AuditLogContext';

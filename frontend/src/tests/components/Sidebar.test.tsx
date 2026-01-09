@@ -23,6 +23,18 @@ vi.mock('@/context/ThemeContext', () => ({
     ThemeProvider: ({ children }: { children: React.ReactNode }) => <div>{children}</div>
 }));
 
+// Mock the DeviceContext
+vi.mock('@/context/DeviceContext', () => ({
+    useDevice: () => ({
+        deviceType: 'desktop',
+        isMobile: false,
+        isTablet: false,
+        isDesktop: true,
+        capabilities: {},
+    }),
+    DeviceProvider: ({ children }: { children: React.ReactNode }) => <div>{children}</div>
+}));
+
 // Mock framer-motion to avoid animation issues in tests
 vi.mock('framer-motion', () => ({
     motion: {
@@ -74,7 +86,7 @@ describe('Sidebar Integration', () => {
         const userSection = screen.getByText('Test User').closest('.cursor-pointer');
         fireEvent.click(userSection!);
 
-        expect(screen.getByText('Account')).toBeVisible();
+        expect(screen.getByText('My Profile')).toBeVisible();
         expect(screen.getByText('Appearance')).toBeVisible();
         fireEvent.click(screen.getByText('Appearance'));
 

@@ -1,4 +1,5 @@
 import { getDeviceType } from '../src/utils/device';
+import { describe, it, expect } from 'vitest';
 
 describe('Device Detection Utility', () => {
     describe('getDeviceType', () => {
