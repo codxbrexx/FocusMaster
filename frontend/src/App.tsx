@@ -5,7 +5,7 @@ import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { Layout } from './components/Layout';
 import { GlobalTimer } from './components/GlobalTimer';
-import { LoadingSpinner } from './components/ui/LoadingSpinner';
+import { LoadingPage } from './components/ui/LoadingPage';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { PublicOnlyRoute } from './components/PublicOnlyRoute';
 
@@ -34,7 +34,7 @@ const App = () => {
         <AuthProvider>
           <GlobalTimer />
           <BrowserRouter>
-            <Suspense fallback={<div className="h-screen w-full flex items-center justify-center bg-background"><LoadingSpinner size={40} /></div>}>
+            <Suspense fallback={<LoadingPage />}>
               <Routes>
                 <Route element={<PublicOnlyRoute />}>
                   <Route path="/" element={<LandingPage />} />
