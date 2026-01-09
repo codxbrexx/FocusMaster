@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'sonner';
-import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
+import { LoadingPage } from '@/components/ui/LoadingPage';
 
 export const SpotifyCallback = () => {
     const [searchParams] = useSearchParams();
@@ -46,7 +46,9 @@ export const SpotifyCallback = () => {
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-matrix text-foreground">
-            <LoadingSpinner size={40} className="mb-4" />
+            <div className="fixed inset-0 z-50">
+                <LoadingPage customMessage="Connecting to Spotify..." />
+            </div>
             <p className="text-lg font-medium text-muted-foreground animate-pulse">Connecting to Spotify...</p>
         </div>
     );
