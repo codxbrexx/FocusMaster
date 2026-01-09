@@ -1,6 +1,7 @@
 import { Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { DeviceProvider } from './context/DeviceContext';
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { Layout } from './components/Layout';
@@ -24,44 +25,59 @@ const Login = lazy(() => import('./pages/Login').then(module => ({ default: modu
 const Register = lazy(() => import('./pages/Register').then(module => ({ default: module.Register })));
 const SpotifyCallback = lazy(() => import('./pages/SpotifyCallback').then(module => ({ default: module.SpotifyCallback })));
 
+// Admin Components
+const AdminShell = lazy(() => import('./admin/components/layout/AdminShell').then(module => ({ default: module.AdminShell })));
+const AdminDashboard = lazy(() => import('./admin/pages/AdminDashboard').then(module => ({ default: module.AdminDashboard })));
+const UserManagement = lazy(() => import('./admin/pages/UserManagement').then(module => ({ default: module.UserManagement })));
+
 const queryClient = new QueryClient();
 
 const App = () => {
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-        <AuthProvider>
-          <GlobalTimer />
-          <BrowserRouter>
-            <Suspense fallback={<LoadingPage />}>
-              <Routes>
-                <Route element={<PublicOnlyRoute />}>
-                  <Route path="/" element={<LandingPage />} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/register" element={<Register />} />
-                </Route>
-
-                <Route element={<ProtectedRoute />}>
-                  <Route element={<Layout />}>
-                    <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/tasks" element={<TaskManager />} />
-                    <Route path="/pomodoro" element={<PomodoroTimer />} />
-                    <Route path="/analytics" element={<Analytics />} />
-                    <Route path="/clock" element={<ClockInOut />} />
-                    <Route path="/spotify" element={<SpotifyPanel />} />
-                    <Route path="/calendar" element={<Calendar />} />
-                    <Route path="/settings" element={<Settings />} />
-                    <Route path="/profile" element={<Profile />} />
-                    <Route path="/callback" element={<SpotifyCallback />} />
+    <DeviceProvider>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+          <AuthProvider>
+            <GlobalTimer />
+            <BrowserRouter>
+              <Suspense fallback={<LoadingPage />}>
+                <Routes>
+                  <Route element={<PublicOnlyRoute />}>
+                    <Route path="/" element={<LandingPage />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
                   </Route>
-                </Route>
-              </Routes>
-            </Suspense>
-          </BrowserRouter>
-        </AuthProvider>
-      </ThemeProvider>
-    </QueryClientProvider>
+
+                  <Route element={<ProtectedRoute />}>
+                    <Route element={<Layout />}>
+                      <Route path="/dashboard" element={<Dashboard />} />
+                      <Route path="/tasks" element={<TaskManager />} />
+                      <Route path="/pomodoro" element={<PomodoroTimer />} />
+                      <Route path="/analytics" element={<Analytics />} />
+                      <Route path="/clock" element={<ClockInOut />} />
+                      <Route path="/spotify" element={<SpotifyPanel />} />
+                      <Route path="/calendar" element={<Calendar />} />
+                      <Route path="/settings" element={<Settings />} />
+                      <Route path="/profile" element={<Profile />} />
+                      <Route path="/callback" element={<SpotifyCallback />} />
+                    </Route>
+                  </Route>
+
+                  {/* ADMIN ROUTES */}
+                  <Route path="/admin" element={<AdminShell />}>
+                    <Route index element={<AdminDashboard />} />
+                    <Route path="users" element={<UserManagement />} />
+                    <Route path="live" element={<div className="text-white p-10">Live Traffic (Coming Soon)</div>} />
+                    <Route path="settings" element={<div className="text-white p-10">System Settings (Coming Soon)</div>} />
+                  </Route>
+                </Routes>
+              </Suspense>
+            </BrowserRouter>
+          </AuthProvider>
+        </ThemeProvider>
+      </QueryClientProvider>
+    </DeviceProvider>
   );
 };
 

@@ -1,10 +1,13 @@
+import { Suspense, lazy } from 'react';
 import { motion } from 'framer-motion';
 import { useHistoryStore } from '@/store/useHistoryStore';
 import { useSettingsStore } from '@/store/useSettingsStore';
 import { AnalyticsStats } from './analytics/AnalyticsStats';
-import { FocusActivityChart } from './analytics/FocusActivityChart';
-import { WeeklyIntensityChart } from './analytics/WeeklyIntensityChart';
-import { CategoryDistributionChart } from './analytics/CategoryDistributionChart';
+import { LoadingSpinner } from './ui/LoadingSpinner'; // Keeping simple spinner for chart placeholders
+
+const FocusActivityChart = lazy(() => import('./analytics/FocusActivityChart').then(m => ({ default: m.FocusActivityChart })));
+const WeeklyIntensityChart = lazy(() => import('./analytics/WeeklyIntensityChart').then(m => ({ default: m.WeeklyIntensityChart })));
+const CategoryDistributionChart = lazy(() => import('./analytics/CategoryDistributionChart').then(m => ({ default: m.CategoryDistributionChart })));
 
 export function Analytics() {
   const { sessions, clockEntries } = useHistoryStore();
@@ -165,9 +168,15 @@ export function Analytics() {
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <FocusActivityChart data={focusBreakData} />
-        <WeeklyIntensityChart data={heatmapData} />
-        <CategoryDistributionChart data={categoryData} colors={COLORS} />
+        <Suspense fallback={<div className="h-[300px] flex items-center justify-center bg-card/50 rounded-xl border border-border/50"><LoadingSpinner /></div>}>
+          <FocusActivityChart data={focusBreakData} />
+        </Suspense>
+        <Suspense fallback={<div className="h-[300px] flex items-center justify-center bg-card/50 rounded-xl border border-border/50"><LoadingSpinner /></div>}>
+          <WeeklyIntensityChart data={heatmapData} />
+        </Suspense>
+        <Suspense fallback={<div className="h-[300px] flex items-center justify-center bg-card/50 rounded-xl border border-border/50"><LoadingSpinner /></div>}>
+          <CategoryDistributionChart data={categoryData} colors={COLORS} />
+        </Suspense>
       </div>
     </motion.div>
   );

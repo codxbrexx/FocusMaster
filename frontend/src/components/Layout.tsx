@@ -9,11 +9,15 @@ import { ReportBugDialog } from './ReportBugDialog';
 import { useTaskStore } from '@/store/useTaskStore';
 import { useHistoryStore } from '@/store/useHistoryStore';
 import { useSettingsStore } from '@/store/useSettingsStore';
+import { useDevice } from '@/context/DeviceContext';
 
 
 
 export const Layout = () => {
-    const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 768);
+    const { deviceType } = useDevice();
+    // Default to open on desktop, closed on mobile/tablet
+    const [sidebarOpen, setSidebarOpen] = useState(deviceType === 'desktop');
+
     const { fetchTasks } = useTaskStore();
     const { fetchHistory } = useHistoryStore();
     const { fetchSettings } = useSettingsStore();
@@ -22,16 +26,6 @@ export const Layout = () => {
         fetchTasks();
         fetchHistory();
         fetchSettings();
-
-        const handleResize = () => {
-            if (window.innerWidth < 768) {
-                setSidebarOpen(false);
-            } else {
-                setSidebarOpen(true);
-            }
-        };
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
     }, [fetchTasks, fetchHistory, fetchSettings]);
 
     return (
@@ -39,7 +33,8 @@ export const Layout = () => {
             <Sonner />
             <div className="min-h-screen flex w-full font-sans text-foreground relative">
                 {/* Mobile Backdrop */}
-                {sidebarOpen && (
+                {/* Mobile Backdrop */}
+                {sidebarOpen && deviceType === 'mobile' && (
                     <div
                         className="fixed inset-0 bg-background/80 backdrop-blur-sm z-30 md:hidden"
                         onClick={() => setSidebarOpen(false)}

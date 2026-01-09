@@ -13,7 +13,7 @@ import {
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useDevice } from '@/context/DeviceContext';
 import { SidebarItem } from './SidebarItem';
 import { ProfileMenu } from './ProfileMenu';
 
@@ -37,58 +37,80 @@ const SIDEBAR_WIDTH_COLLAPSED = 80;
 
 export const Sidebar = ({ open, onOpenChange }: SidebarProps) => {
     const navigate = useNavigate();
-    const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+    const { deviceType } = useDevice();
+    const isMobile = deviceType === 'mobile'; // Tablet treats as desktop (Mini mode support)
 
-    useEffect(() => {
-        const handleResize = () => setIsMobile(window.innerWidth < 768);
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
+    // Desktop: Width animates 280 <-> 80
+    // Mobile:  Width is fixed 280, X animates 0 <-> -100%
+    const sidebarVariants = {
+        desktop: {
+            width: open ? SIDEBAR_WIDTH : SIDEBAR_WIDTH_COLLAPSED,
+            x: 0,
+            opacity: 1
+        },
+        mobileOpen: {
+            width: SIDEBAR_WIDTH,
+            x: 0,
+            opacity: 1
+        },
+        mobileClosed: {
+            width: SIDEBAR_WIDTH,
+            x: '-100%',
+            opacity: 0
+        }
+    };
 
-    const sidebarWidth = open ? SIDEBAR_WIDTH : (isMobile ? 0 : SIDEBAR_WIDTH_COLLAPSED);
+    const currentVariant = isMobile
+        ? (open ? 'mobileOpen' : 'mobileClosed')
+        : 'desktop';
 
     return (
         <motion.aside
             initial={false}
-            animate={{
-                width: sidebarWidth,
-                x: (isMobile && !open) ? -100 : 0
+            animate={currentVariant}
+            variants={sidebarVariants}
+            transition={{
+                type: 'spring',
+                stiffness: 300,
+                damping: 30,
+                opacity: { duration: 0.2 }
             }}
-            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-            onClick={() => onOpenChange(!open)}
             className={cn(
                 'h-screen fixed left-0 top-0 z-40 flex flex-col',
-                'bg-background/60 backdrop-blur-2xl border-r border-white/5',
-                (isMobile && !open) && 'border-none shadow-none'
+                'bg-background/80 backdrop-blur-2xl border-r border-white/10 shadow-lg',
+                isMobile && 'border-none'
             )}
+            onClick={() => !isMobile && onOpenChange(!open)}
         >
             {/* --- HEADER --- */}
             <div
                 className={cn(
-                    "h-24 flex items-center mb-2 relative group transition-all duration-300",
-                    open ? "justify-between px-5" : "justify-center"
+                    "h-28 flex items-center mb-2 relative group transition-all duration-300 z-10",
+                    open ? "justify-between px-6" : "justify-center"
                 )}
-                onClick={(e) => e.stopPropagation()}
             >
                 <div
-                    className="flex items-center gap-4 cursor-pointer"
-                    onClick={() => navigate('/dashboard')}
+                    className="flex items-center gap-5 cursor-pointer"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        navigate('/dashboard');
+                    }}
                 >
-                    <div className="relative shrink-0">
-                        <div className="absolute inset-0 bg-purple-500/20 blur-xl group-hover:bg-purple-500/30 transition-all duration-500" />
+                    <div className="relative shrink-0 flex items-center justify-center">
+                        <div className="absolute inset-0 bg-primary/40 blur-2xl group-hover:bg-primary/50 transition-all duration-500 rounded-full" />
                         <img
                             src="/fmasterlogo.png"
                             alt="FocusMaster"
-                            className="relative w-10 h-10 shadow-2xl transition-transform duration-300 shrink-0 object-contain"
+                            className="relative w-12 h-12 shadow-2xl transition-transform duration-300 shrink-0 object-contain drop-shadow-[0_0_15px_rgba(124,58,237,0.5)]"
                         />
                     </div>
 
                     <AnimatePresence>
                         {open && (
                             <motion.div
-                                initial={{ opacity: 0, x: -10 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                exit={{ opacity: 0, x: -10 }}
+                                initial={{ opacity: 0, x: -10, filter: 'blur(10px)' }}
+                                animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+                                exit={{ opacity: 0, x: -10, filter: 'blur(10px)' }}
                                 transition={{ duration: 0.2 }}
                                 className="flex flex-col"
                             >
@@ -96,7 +118,7 @@ export const Sidebar = ({ open, onOpenChange }: SidebarProps) => {
                                     FocusMaster
                                 </h1>
                                 <div className="flex items-center gap-1.5">
-                                    <p className="text-[10px] text-muted-foreground font-medium font-semibold uppercase tracking-widest">
+                                    <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-[0.2em]">
                                         Pro Workspace
                                     </p>
                                 </div>
@@ -143,18 +165,28 @@ export const Sidebar = ({ open, onOpenChange }: SidebarProps) => {
                 )}
 
                 {MENU_ITEMS.map((item) => (
-                    <SidebarItem key={item.path} item={item} isOpen={open} />
+                    <SidebarItem
+                        key={item.path}
+                        item={item}
+                        isOpen={open}
+                        onClick={() => isMobile && onOpenChange(false)}
+                    />
                 ))}
             </div>
 
             {/* --- FOOTER / PROFILE --- */}
-            <div className="p-4 mt-auto border-t border-border/50 bg-gradient-to-t from-background/80 to-transparent backdrop-blur-sm relative">
+            <div
+                className="p-4 mt-auto border-t border-border/50 bg-gradient-to-t from-background/80 to-transparent backdrop-blur-sm relative"
+                onClick={(e) => e.stopPropagation()}
+            >
                 <SidebarItem
                     item={{ path: '/settings', label: 'Settings', icon: Settings }}
                     isOpen={open}
                 />
 
-                <ProfileMenu isOpen={open} />
+                <div className="mt-2 pt-2 border-t border-primary/50">
+                    <ProfileMenu isOpen={open} />
+                </div>
             </div>
         </motion.aside>
     );

@@ -10,16 +10,20 @@ interface SidebarItemProps {
         icon: LucideIcon;
     };
     isOpen: boolean;
+    onClick?: () => void;
 }
 
-export const SidebarItem = ({ item, isOpen }: SidebarItemProps) => {
+export const SidebarItem = ({ item, isOpen, onClick }: SidebarItemProps) => {
     const Icon = item.icon;
 
     return (
         <NavLink
             to={item.path}
             end={item.path === '/'}
-            onClick={(e) => e.stopPropagation()}
+            onClick={(e) => {
+                e.stopPropagation();
+                onClick?.();
+            }}
             className={({ isActive }) =>
                 cn(
                     'relative flex items-center gap-3.5 px-3.5 py-3 rounded-xl transition-all duration-300 group overflow-hidden',
@@ -56,7 +60,7 @@ export const SidebarItem = ({ item, isOpen }: SidebarItemProps) => {
                     <div className="relative z-10 flex items-center justify-center">
                         <Icon
                             className={cn(
-                                'w-[22px] h-[22px] transition-all duration-300',
+                                'w-6 h-6 transition-all duration-300',
                                 isActive
                                     ? 'text-purple-600 dark:text-purple-400 drop-shadow-sm'
                                     : 'text-muted-foreground/70 group-hover:text-foreground group-hover:scale-110'

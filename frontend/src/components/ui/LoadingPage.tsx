@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useDevice } from '../../context/DeviceContext';
 
 const LOADING_STATES = [
     "Initializing secure environment...",
@@ -19,8 +20,16 @@ interface LoadingPageProps {
 }
 
 export const LoadingPage = ({ customMessage }: LoadingPageProps) => {
+    const { deviceType, capabilities } = useDevice();
     const [statusIndex, setStatusIndex] = useState(0);
     const [quoteIndex, setQuoteIndex] = useState(0);
+
+    // Adjust messages based on device
+    const displayMessage = customMessage || (
+        deviceType === 'mobile'
+            ? "Initializing mobile optimizations..."
+            : "Preparing desktop workspace..."
+    );
 
     useEffect(() => {
         // Cycle states
@@ -92,8 +101,13 @@ export const LoadingPage = ({ customMessage }: LoadingPageProps) => {
                 {/* Status Text - Monospace */}
                 <div className="h-8 flex items-center justify-center w-full overflow-hidden mb-2">
                     <span className="font-mono text-sm text-foreground/80 tracking-wide animate-fade-in key={statusIndex}">
-                        {customMessage || LOADING_STATES[statusIndex]}
+                        {customMessage ? customMessage : (statusIndex === 0 ? displayMessage : LOADING_STATES[statusIndex])}
                     </span>
+                    {capabilities.connection === 'slow' && (
+                        <div className="absolute top-full mt-2 text-xs text-yellow-500 font-medium">
+                            Slow connection detected. Loading optimized assets...
+                        </div>
+                    )}
                 </div>
 
                 {/* Progress Bar Line */}
