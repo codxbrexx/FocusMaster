@@ -62,7 +62,7 @@ Every destructive action is automatically logged.
 
 ## 5. Theming
 
-The dashboard uses a custom "Dark Glass" theme:
-- **Background**: `#0b0f12` (Deep Space)
-- **Accents**: Cyan (`#06b6d4`), Emerald (`#10b981`), Rose (`#f43f5e`).
-- **Glass**: `bg-white/5` with `backdrop-blur`.
+- **Theme**: Uses `hsl(var(--card) / 0.6)` for card backgrounds to match the main dashboard.
+- **Scrollbars**: Custom thin scrollbars (`custom-scrollbar`) for all internal lists.
+- **Sidebar**: Toggle logic matches main app (Top position, `PanelLeft` icons).
+- **Icons**: Lucide React for everything. `Shield` is the admin badge.

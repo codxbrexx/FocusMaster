@@ -22,8 +22,6 @@ export const useAdminMetrics = (timeRange: '7d' | '30d') => {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        setIsLoading(true);
-
         // SIMULATE NETWORK DELAY
         const timer = setTimeout(() => {
             // MOCK DATA GENERATION BASED ON TIME RANGE

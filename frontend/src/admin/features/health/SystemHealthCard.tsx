@@ -36,19 +36,19 @@ export const SystemHealthCard = () => {
 };
 
 const HealthItem = ({ label, value, subValue, icon: Icon, status }: any) => {
-    const statusColor = status === 'healthy' ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20' :
-        status === 'warning' ? 'text-amber-400 bg-amber-500/10 border-amber-500/20' :
-            'text-rose-400 bg-rose-500/10 border-rose-500/20';
+    const statusColor = status === 'healthy' ? 'text-emerald-500 bg-emerald-500/10 border-emerald-500/20' :
+        status === 'warning' ? 'text-amber-500 bg-amber-500/10 border-amber-500/20' :
+            'text-destructive bg-destructive/10 border-destructive/20';
 
     return (
-        <div className="bg-[#0b0f12] border border-white/5 rounded-2xl p-5 flex items-start gap-4 hover:border-white/10 transition-colors">
+        <div className="glass-card p-5 flex items-start gap-4 hover:border-border/60 transition-colors">
             <div className={`p-3 rounded-xl ${statusColor} border`}>
                 <Icon size={20} />
             </div>
             <div>
-                <p className="text-slate-400 text-sm font-medium mb-1">{label}</p>
-                <h4 className="text-xl font-bold text-white mb-1">{value}</h4>
-                <p className="text-xs text-slate-500">{subValue}</p>
+                <p className="text-muted-foreground text-sm font-medium mb-1">{label}</p>
+                <h4 className="text-xl font-bold text-foreground mb-1">{value}</h4>
+                <p className="text-xs text-muted-foreground/80">{subValue}</p>
             </div>
         </div>
     );

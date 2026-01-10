@@ -1,4 +1,4 @@
-import { createContext, useContext, ReactNode, useState } from 'react';
+import { createContext, useContext, type ReactNode, useState } from 'react';
 import { useAdminAuth } from './AdminAuthContext';
 
 export interface AuditLogEntry {
@@ -17,6 +17,7 @@ interface AuditLogContextType {
     logAction: (action: string, details?: string, targetId?: string, targetName?: string) => void;
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 const AuditLogContext = createContext<AuditLogContextType | undefined>(undefined);
 
 export const useAuditLog = () => {
@@ -67,7 +68,6 @@ export const AuditLogProvider = ({ children }: { children: ReactNode }) => {
 
         // Prepend so newest is first
         setLogs(prev => [newEntry, ...prev]);
-        console.log('[AUDIT LOG]', newEntry);
     };
 
     return (

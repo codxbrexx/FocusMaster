@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 
 export interface LiveSession {
     id: string;
@@ -17,6 +17,7 @@ interface LivePresenceContextType {
     kickSession: (sessionId: string) => void;
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 const LivePresenceContext = createContext<LivePresenceContextType | undefined>(undefined);
 
 export const useLivePresence = () => {
@@ -51,20 +52,16 @@ export const LivePresenceProvider = ({ children }: { children: ReactNode }) => {
         setSessions(prev => prev.filter(s => s.id !== sessionId));
     };
 
-    // SIMULATE REAL-TIME EVENTS
-    useEffect(() => {
-        // Initial population
+    useEffect(() => {                                                                                                                                                                                                                                                                                                                       
         setSessions(Array.from({ length: 5 }, generateSession));
 
         const interval = setInterval(() => {
             const random = Math.random();
 
             if (random > 0.7) {
-                // EVENT: User Joined
                 const newSession = generateSession();
                 setSessions(prev => [newSession, ...prev]);
             } else if (random > 0.4) {
-                // EVENT: Page Change (Update existing)
                 setSessions(prev => {
                     if (prev.length === 0) return prev;
                     const idx = Math.floor(Math.random() * prev.length);
@@ -77,14 +74,13 @@ export const LivePresenceProvider = ({ children }: { children: ReactNode }) => {
                     return updated;
                 });
             } else if (random < 0.1) {
-                // EVENT: User Left
                 setSessions(prev => {
                     if (prev.length === 0) return prev;
                     const idx = Math.floor(Math.random() * prev.length);
                     return prev.filter((_, i) => i !== idx);
                 });
             }
-        }, 3000); // Every 3 seconds
+        }, 3000); 
 
         return () => clearInterval(interval);
     }, []);

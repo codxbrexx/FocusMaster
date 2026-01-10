@@ -85,8 +85,7 @@ export function StatsOverview({
                     key={idx}
                     transition={{ type: 'spring', stiffness: 300, damping: 15 }}
                 >                     
-                {/* glow shadow */}
-                    <Card className="backdrop-blur-xl bg-card/60 border border-white/10 shadow-[0_0_15px_rgba(124,58,237,0.5)] hover:shadow-xl hover:shadow-primary/10 transition-all duration-300 h-full overflow-hidden relative group">
+                    <Card className="backdrop-blur-xl bg-card/60 border border-white/10 transition-all duration-300 h-full overflow-hidden relative group">
                         <div className={`absolute inset-0 bg-gradient-to-br ${stat.bg} opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl`} />
                         <CardHeader className="flex flex-row items-center justify-between pb-4 space-y-0 relative z-10 px-6 pt-6">
                             <CardTitle className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">

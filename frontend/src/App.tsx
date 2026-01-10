@@ -32,6 +32,8 @@ const UserManagement = lazy(() => import('./admin/pages/UserManagement').then(mo
 const AuditLogsPage = lazy(() => import('./admin/pages/AuditLogsPage').then(module => ({ default: module.AuditLogsPage })));
 const LiveActivityPage = lazy(() => import('./admin/pages/LiveActivityPage').then(module => ({ default: module.LiveActivityPage })));
 const SystemHealthPage = lazy(() => import('./admin/pages/SystemHealthPage').then(module => ({ default: module.SystemHealthPage })));
+const SystemSettingsPage = lazy(() => import('./admin/pages/SystemSettingsPage').then(module => ({ default: module.SystemSettingsPage })));
+const IssueReportsPage = lazy(() => import('./admin/pages/IssueReportsPage').then(module => ({ default: module.IssueReportsPage })));
 
 const queryClient = new QueryClient();
 
@@ -74,7 +76,8 @@ const App = () => {
                     <Route path="audit" element={<AuditLogsPage />} />
                     <Route path="live" element={<LiveActivityPage />} />
                     <Route path="health" element={<SystemHealthPage />} />
-                    <Route path="settings" element={<div className="text-white p-10">System Settings (Coming Soon)</div>} />
+                    <Route path="support" element={<IssueReportsPage />} />
+                    <Route path="settings" element={<SystemSettingsPage />} />
                   </Route>
                 </Routes>
               </Suspense>

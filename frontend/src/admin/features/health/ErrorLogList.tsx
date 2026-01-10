@@ -9,20 +9,20 @@ const MOCK_ERRORS = [
 
 export const ErrorLogList = () => {
     return (
-        <div className="bg-[#0b0f12] border border-white/5 rounded-2xl overflow-hidden">
-            <div className="px-6 py-4 border-b border-white/5 flex justify-between items-center">
-                <h3 className="font-bold text-white flex items-center gap-2">
-                    <AlertTriangle className="text-rose-500" size={18} />
+        <div className="glass-card rounded-2xl overflow-hidden">
+            <div className="px-6 py-4 border-b border-border/40 flex justify-between items-center bg-secondary/20">
+                <h3 className="font-bold text-foreground flex items-center gap-2">
+                    <AlertTriangle className="text-destructive" size={18} />
                     Recent Exceptions
                 </h3>
-                <span className="text-xs text-slate-500">Last 24 Hours</span>
+                <span className="text-xs text-muted-foreground">Last 24 Hours</span>
             </div>
-            <div className="divide-y divide-white/5">
+            <div className="divide-y divide-border/20 overflow-y-auto max-h-[400px] custom-scrollbar">
                 {MOCK_ERRORS.map((err) => (
-                    <div key={err.id} className="p-4 flex items-start gap-4 hover:bg-white/[0.02] transition-colors">
-                        <div className={`mt-1 ${err.type === 'critical' ? 'text-rose-500' :
-                                err.type === 'warning' ? 'text-amber-500' :
-                                    'text-blue-500'
+                    <div key={err.id} className="p-4 flex items-start gap-4 hover:bg-secondary/40 transition-colors">
+                        <div className={`mt-1 ${err.type === 'critical' ? 'text-destructive' :
+                            err.type === 'warning' ? 'text-amber-500' :
+                                'text-blue-500'
                             }`}>
                             {err.type === 'critical' ? <AlertOctagon size={18} /> :
                                 err.type === 'warning' ? <AlertTriangle size={18} /> :
@@ -30,17 +30,17 @@ export const ErrorLogList = () => {
                         </div>
                         <div className="flex-1">
                             <div className="flex justify-between items-start">
-                                <p className="text-sm font-medium text-slate-200 font-mono">{err.message}</p>
-                                <span className="text-xs text-slate-500 whitespace-nowrap ml-4">{err.time}</span>
+                                <p className="text-sm font-medium text-foreground font-mono">{err.message}</p>
+                                <span className="text-xs text-muted-foreground whitespace-nowrap ml-4">{err.time}</span>
                             </div>
                             <div className="mt-1 flex gap-2">
-                                <span className={`text-[10px] uppercase font-bold px-1.5 py-0.5 rounded ${err.type === 'critical' ? 'bg-rose-500/10 text-rose-400' :
-                                        err.type === 'warning' ? 'bg-amber-500/10 text-amber-400' :
-                                            'bg-blue-500/10 text-blue-400'
+                                <span className={`text-[10px] uppercase font-bold px-1.5 py-0.5 rounded ${err.type === 'critical' ? 'bg-destructive/10 text-destructive' :
+                                    err.type === 'warning' ? 'bg-amber-500/10 text-amber-500' :
+                                        'bg-blue-500/10 text-blue-500'
                                     }`}>
                                     {err.type}
                                 </span>
-                                <span className="text-[10px] bg-white/5 text-slate-400 px-1.5 py-0.5 rounded border border-white/5">
+                                <span className="text-[10px] bg-secondary text-muted-foreground px-1.5 py-0.5 rounded border border-border/50">
                                     Occurrences: {err.count}
                                 </span>
                             </div>

@@ -7,7 +7,8 @@ export type AdminPermission =
     | 'MANAGE_USERS'     // Ban, Edit, Reset
     | 'VIEW_AUDIT_LOGS'
     | 'MANAGE_SYSTEM'    // Settings, Feature Flags
-    | 'MANAGE_BILLING';  // Invoices, Plans
+    | 'MANAGE_BILLING'   // Invoices, Plans
+    | 'VIEW_SUPPORT';    // User Reports
 
 export const ROLE_PERMISSIONS: Record<AdminRole, AdminPermission[]> = {
     'viewer': [
@@ -22,7 +23,8 @@ export const ROLE_PERMISSIONS: Record<AdminRole, AdminPermission[]> = {
         'VIEW_ANALYTICS',
         'VIEW_USERS',
         'MANAGE_USERS',
-        'VIEW_AUDIT_LOGS'
+        'VIEW_AUDIT_LOGS',
+        'VIEW_SUPPORT'
     ],
     'admin': [
         'VIEW_DASHBOARD',
@@ -30,7 +32,8 @@ export const ROLE_PERMISSIONS: Record<AdminRole, AdminPermission[]> = {
         'VIEW_USERS',
         'MANAGE_USERS',
         'VIEW_AUDIT_LOGS',
-        'MANAGE_SYSTEM'
+        'MANAGE_SYSTEM',
+        'VIEW_SUPPORT'
     ],
     'owner': [
         'VIEW_DASHBOARD',
@@ -39,6 +42,7 @@ export const ROLE_PERMISSIONS: Record<AdminRole, AdminPermission[]> = {
         'MANAGE_USERS',
         'VIEW_AUDIT_LOGS',
         'MANAGE_SYSTEM',
-        'MANAGE_BILLING'
+        'MANAGE_BILLING',
+        'VIEW_SUPPORT'
     ]
 };
