@@ -9,11 +9,13 @@ import {
     Settings,
     PanelLeftClose,
     PanelLeftOpen,
+    ShieldCheck
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useDevice } from '@/context/DeviceContext';
+import { useAuth } from '@/context/AuthContext';
 import { SidebarItem } from './SidebarItem';
 import { ProfileMenu } from './ProfileMenu';
 
@@ -38,6 +40,7 @@ const SIDEBAR_WIDTH_COLLAPSED = 80;
 export const Sidebar = ({ open, onOpenChange }: SidebarProps) => {
     const navigate = useNavigate();
     const { deviceType } = useDevice();
+    const { user } = useAuth();
     const isMobile = deviceType === 'mobile'; // Tablet treats as desktop (Mini mode support)
 
     // Desktop: Width animates 280 <-> 80
@@ -129,13 +132,31 @@ export const Sidebar = ({ open, onOpenChange }: SidebarProps) => {
             </div>
 
             {/* --- MENU ITEMS --- */}
-            <div className="flex-1 px-4 space-y-1.5 overflow-y-auto overflow-x-hidden scrollbar-none py-4">
-                {/* Toggle Button as Menu Item */}
+
+            {/* Admin Link */}
+            {user?.role === 'admin' && (
+                <SidebarItem
+                    item={{ path: '/admin', label: 'Admin Panel', icon: ShieldCheck }}
+                    isOpen={open}
+                    onClick={() => isMobile && onOpenChange(false)}
+                />
+            )}
+            <div className="flex-1 px-4 space-y-1.5 overflow-y-auto overflow-x-hidden scrollbar-none">
+                {MENU_ITEMS.map((item) => (
+                    <SidebarItem
+                        key={item.path}
+                        item={item}
+                        isOpen={open}
+                        onClick={() => isMobile && onOpenChange(false)}
+                    />
+                ))}
+
+                {/* Toggle Button Moved to Bottom */}
                 {!isMobile && (
                     <button
                         onClick={() => onOpenChange(!open)}
                         className={cn(
-                            'flex items-center gap-3.5 px-3.5 py-3 rounded-xl transition-all duration-300 group overflow-hidden w-full text-left mb-1.5',
+                            'flex items-center gap-3.5 px-3.5 py-3 rounded-xl transition-all duration-300 group overflow-hidden w-full text-left mt-auto',
                             !open && 'justify-center px-2',
                             'text-muted-foreground hover:text-foreground hover:bg-black/5 dark:hover:bg-white/5'
                         )}
@@ -163,15 +184,6 @@ export const Sidebar = ({ open, onOpenChange }: SidebarProps) => {
                         </AnimatePresence>
                     </button>
                 )}
-
-                {MENU_ITEMS.map((item) => (
-                    <SidebarItem
-                        key={item.path}
-                        item={item}
-                        isOpen={open}
-                        onClick={() => isMobile && onOpenChange(false)}
-                    />
-                ))}
             </div>
 
             {/* --- FOOTER / PROFILE --- */}

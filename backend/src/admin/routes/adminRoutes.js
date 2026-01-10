@@ -7,7 +7,8 @@ const {
     updateUserStatus,
     getAuditLogs,
     getSystemHealth,
-    getFeedback
+    getFeedback,
+    updateFeedbackStatus
 } = require('../controllers/adminController');
 
 // All routes are protected by adminAuth
@@ -19,5 +20,6 @@ router.put('/users/:id/status', updateUserStatus);
 router.get('/audit', getAuditLogs);
 router.get('/health', getSystemHealth);
 router.get('/feedback', getFeedback);
+router.put('/feedback/:id/status', updateFeedbackStatus);
 
 module.exports = router;

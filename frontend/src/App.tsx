@@ -1,5 +1,5 @@
 import { Suspense, lazy } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { DeviceProvider } from './context/DeviceContext';
 import { AuthProvider } from './context/AuthContext';
@@ -72,6 +72,7 @@ const App = () => {
                   {/* ADMIN ROUTES */}
                   <Route path="/admin" element={<AdminShell />}>
                     <Route index element={<AdminDashboard />} />
+                    <Route path="dashboard" element={<Navigate to="/admin" replace />} />
                     <Route path="users" element={<UserManagement />} />
                     <Route path="audit" element={<AuditLogsPage />} />
                     <Route path="live" element={<LiveActivityPage />} />

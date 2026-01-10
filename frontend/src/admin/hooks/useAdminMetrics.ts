@@ -55,8 +55,8 @@ export const useAdminMetrics = (timeRange: '7d' | '30d') => {
                         color: data.kpis.recentErrors === 0 ? 'text-emerald-500' : 'text-rose-500'
                     },
                     {
-                        title: 'Revenue (Est)',
-                        value: '$0.00', // Mock for now
+                        title: 'Revenue',
+                        value: 'N/A', // Not implemented
                         trend: 'Free Tier',
                         trendUp: true,
                         icon: DollarSign,

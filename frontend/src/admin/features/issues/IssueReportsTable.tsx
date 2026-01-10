@@ -42,13 +42,27 @@ export const IssueReportsTable = () => {
         fetchIssues();
     }, []);
 
-    const handleToggleStatus = (id: string) => {
-        // Optimistic Update (Real backend would need a PUT endpoint for status update)
-        // For now we just local toggle as we didn't implement updateFeedbackStatus in backend yet
-        // A complete implementation would require adding that endpoint. 
-        // We will just show a toast for now as user asked to "remove mock data", 
-        // implying reading real data is the priority.
-        toast.info('Status update not fully connected in this demo phase.');
+    const handleToggleStatus = async (id: string) => {
+        try {
+            // Find current status to toggle
+            const issue = issues.find(i => (i._id === id || i.id === id));
+            if (!issue) return;
+
+            const newStatus = normalizeStatus(issue.status) === 'resolved' ? 'open' : 'resolved';
+
+            // Optimistic Update
+            setIssues(prev => prev.map(i =>
+                (i._id === id || i.id === id) ? { ...i, status: newStatus } : i
+            ));
+
+            await adminService.updateFeedbackStatus(id, newStatus);
+            toast.success(`Marked issue as ${newStatus}`);
+        } catch (error) {
+            console.error(error);
+            toast.error('Failed to update status');
+            // Revert on failure
+            fetchIssues();
+        }
     };
 
     const normalizeStatus = (s: string) => {

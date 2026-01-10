@@ -159,11 +159,38 @@ const getFeedback = asyncHandler(async (req, res) => {
     res.json(feedback);
 });
 
+// @desc    Update Feedback Status
+// @route   PUT /api/admin/feedback/:id/status
+// @access  Admin
+const updateFeedbackStatus = asyncHandler(async (req, res) => {
+    const feedback = await Feedback.findById(req.params.id);
+
+    if (!feedback) {
+        res.status(404);
+        throw new Error('Feedback not found');
+    }
+
+    feedback.status = req.body.status || 'resolved';
+    await feedback.save();
+
+    // Log it
+    await AuditLog.create({
+        action: 'FEEDBACK_UPDATE',
+        actorId: req.user._id,
+        actorName: req.user.name,
+        targetId: feedback._id,
+        details: `Marked feedback as ${feedback.status}`
+    });
+
+    res.json(feedback);
+});
+
 module.exports = {
     getDashboardStats,
     getUsers,
     updateUserStatus,
     getAuditLogs,
     getSystemHealth,
-    getFeedback
+    getFeedback,
+    updateFeedbackStatus
 };

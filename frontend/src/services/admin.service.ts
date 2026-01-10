@@ -70,5 +70,10 @@ export const adminService = {
     getFeedback: async () => {
         const { data } = await api.get('/feedback');
         return data;
+    },
+
+    updateFeedbackStatus: async (id: string, status: string) => {
+        const { data } = await api.put(`/feedback/${id}/status`, { status });
+        return data;
     }
 };
