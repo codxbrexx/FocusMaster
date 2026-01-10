@@ -2,13 +2,16 @@ import { Mail, Calendar, Shield, MapPin, Clock } from 'lucide-react';
 
 export interface User {
     id: string;
+    _id?: string; // Backend ID
     name: string;
     email: string;
     role: string;
     status: 'active' | 'suspended' | 'banned';
-    joinedAt: string;
-    lastActive: string;
-    location: string;
+    joinedAt?: string; // Backend: createdAt
+    createdAt?: string;
+    lastActive?: string; // Backend: updatedAt
+    updatedAt?: string;
+    location?: string;
     avatarUrl?: string;
 }
 
@@ -56,28 +59,32 @@ export const UserViewPanel = ({ user }: UserViewPanelProps) => {
                         <Calendar size={14} />
                         <span>Joined</span>
                     </div>
-                    <p className="text-foreground text-sm font-medium">{user.joinedAt}</p>
+                    <p className="text-foreground text-sm font-medium">
+                        {user.joinedAt || (user.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A')}
+                    </p>
                 </div>
                 <div className="p-3 rounded-xl bg-secondary/30 border border-border/50 space-y-1">
                     <div className="flex items-center gap-2 text-muted-foreground text-xs">
                         <Clock size={14} />
                         <span>Last Active</span>
                     </div>
-                    <p className="text-foreground text-sm font-medium">{user.lastActive}</p>
+                    <p className="text-foreground text-sm font-medium">
+                        {user.lastActive || (user.updatedAt ? new Date(user.updatedAt).toLocaleDateString() : 'N/A')}
+                    </p>
                 </div>
                 <div className="p-3 rounded-xl bg-secondary/30 border border-border/50 space-y-1">
                     <div className="flex items-center gap-2 text-muted-foreground text-xs">
                         <Shield size={14} />
                         <span>Security Level</span>
                     </div>
-                    <p className="text-foreground text-sm font-medium">Standard (2FA Off)</p>
+                    <p className="text-foreground text-sm font-medium">Standard</p>
                 </div>
                 <div className="p-3 rounded-xl bg-secondary/30 border border-border/50 space-y-1">
                     <div className="flex items-center gap-2 text-muted-foreground text-xs">
                         <MapPin size={14} />
                         <span>Location</span>
                     </div>
-                    <p className="text-foreground text-sm font-medium">{user.location}</p>
+                    <p className="text-foreground text-sm font-medium">{user.location || 'Unknown'}</p>
                 </div>
             </div>
         </div>

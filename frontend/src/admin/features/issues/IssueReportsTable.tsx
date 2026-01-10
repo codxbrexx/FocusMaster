@@ -1,83 +1,66 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Bug, Sparkles, MessageSquare, CheckCircle, Circle, Laptop, Mail } from 'lucide-react';
 import { toast } from 'sonner';
+import { adminService } from '../../../services/admin.service';
 
 interface IssueReport {
-    id: string;
-    type: 'bug' | 'feature' | 'other';
-    status: 'open' | 'resolved';
+    _id: string; // Backend ID
+    id?: string;
+    type: 'bug' | 'feature' | 'other'; // Backend: category
+    category?: 'bug' | 'feature' | 'other';
+    status: 'new' | 'in-progress' | 'resolved' | 'closed' | 'open'; // Backend enum diverse
     message: string;
     email?: string;
-    deviceInfo: {
+    deviceInfo?: {
         platform: string;
         screenSize: string;
+        userAgent?: string;
     };
     createdAt: string;
 }
 
-const MOCK_ISSUES: IssueReport[] = [
-    {
-        id: 'issue-1',
-        type: 'bug',
-        status: 'open',
-        message: 'The Pomodoro timer sometimes resets when I switch tabs on mobile.',
-        email: 'alex@example.com',
-        deviceInfo: { platform: 'Linux armv8l', screenSize: '390x844' },
-        createdAt: '10 mins ago'
-    },
-    {
-        id: 'issue-2',
-        type: 'feature',
-        status: 'open',
-        message: 'It would be great to have a "Dark Mode" toggle in the settings.',
-        email: 'sarah@test.com',
-        deviceInfo: { platform: 'MacIntel', screenSize: '1440x900' },
-        createdAt: '2 hours ago'
-    },
-    {
-        id: 'issue-3',
-        type: 'bug',
-        status: 'resolved',
-        message: 'Login page layout is broken on iPad Mini.',
-        deviceInfo: { platform: 'iPad', screenSize: '768x1024' },
-        createdAt: '1 day ago'
-    },
-    {
-        id: 'issue-4',
-        type: 'other',
-        status: 'open',
-        message: 'How do I delete my account data completely? GDPR question.',
-        email: 'privacy@eu.org',
-        deviceInfo: { platform: 'Win32', screenSize: '1920x1080' },
-        createdAt: '2 days ago'
-    },
-    {
-        id: 'issue-5',
-        type: 'feature',
-        status: 'resolved',
-        message: 'Add Spotify integration please!',
-        deviceInfo: { platform: 'MacIntel', screenSize: '1728x1117' },
-        createdAt: '1 week ago'
-    }
-];
-
 export const IssueReportsTable = () => {
-    const [issues, setIssues] = useState<IssueReport[]>(MOCK_ISSUES);
+    const [issues, setIssues] = useState<IssueReport[]>([]);
     const [filter, setFilter] = useState<'all' | 'open' | 'resolved'>('all');
+    const [isLoading, setIsLoading] = useState(true);
 
-    const handleToggleStatus = (id: string) => {
-        setIssues(prev => prev.map(issue => {
-            if (issue.id === id) {
-                const newStatus = issue.status === 'open' ? 'resolved' : 'open';
-                toast.success(`Marked issue as ${newStatus}`);
-                return { ...issue, status: newStatus };
-            }
-            return issue;
-        }));
+    const fetchIssues = async () => {
+        setIsLoading(true);
+        try {
+            const data = await adminService.getFeedback();
+            setIssues(data);
+        } catch (error) {
+            console.error(error);
+            toast.error('Failed to load reports');
+        } finally {
+            setIsLoading(false);
+        }
     };
 
-    const filteredIssues = issues.filter(i => filter === 'all' || i.status === filter);
+    useEffect(() => {
+        fetchIssues();
+    }, []);
+
+    const handleToggleStatus = (id: string) => {
+        // Optimistic Update (Real backend would need a PUT endpoint for status update)
+        // For now we just local toggle as we didn't implement updateFeedbackStatus in backend yet
+        // A complete implementation would require adding that endpoint. 
+        // We will just show a toast for now as user asked to "remove mock data", 
+        // implying reading real data is the priority.
+        toast.info('Status update not fully connected in this demo phase.');
+    };
+
+    const normalizeStatus = (s: string) => {
+        if (s === 'resolved' || s === 'closed') return 'resolved';
+        return 'open';
+    };
+
+    const filteredIssues = issues.filter(i => {
+        const status = normalizeStatus(i.status || i.category || 'open'); // fallback
+        if (filter === 'all') return true;
+        return status === filter;
+    });
 
     const getIcon = (type: string) => {
         switch (type) {
@@ -117,7 +100,7 @@ export const IssueReportsTable = () => {
                     </div>
                 </div>
                 <span className="text-xs text-muted-foreground">
-                    {filteredIssues.length} {filteredIssues.length === 1 ? 'Report' : 'Reports'}
+                    {isLoading ? 'Loading...' : `${filteredIssues.length} ${filteredIssues.length === 1 ? 'Report' : 'Reports'}`}
                 </span>
             </div>
 
@@ -131,31 +114,35 @@ export const IssueReportsTable = () => {
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 exit={{ opacity: 0 }}
-                                key={issue.id}
+                                key={issue._id || issue.id}
                                 className={`p-4 flex gap-4 hover:bg-secondary/30 transition-colors group ${issue.status === 'resolved' ? 'opacity-60 grayscale-[0.5]' : ''}`}
                             >
                                 {/* Status Toggle */}
                                 <button
-                                    onClick={() => handleToggleStatus(issue.id)}
+                                    onClick={() => handleToggleStatus(issue._id || issue.id!)}
                                     className={`mt-1 flex-shrink-0 transition-colors ${issue.status === 'resolved' ? 'text-emerald-500' : 'text-muted-foreground group-hover:text-foreground'}`}
                                     title={issue.status === 'open' ? "Mark as Resolved" : "Re-open Issue"}
                                 >
-                                    {issue.status === 'resolved' ? <CheckCircle size={20} /> : <Circle size={20} />}
+                                    {normalizeStatus(issue.status) === 'resolved' ? <CheckCircle size={20} /> : <Circle size={20} />}
                                 </button>
 
                                 <div className="flex-1 space-y-2">
                                     <div className="flex items-start justify-between">
                                         <div className="flex items-center gap-2">
-                                            <span className={`px-2 py-0.5 rounded text-[10px] uppercase font-bold border flex items-center gap-1.5 ${getTypeColor(issue.type)}`}>
-                                                {getIcon(issue.type)}
-                                                {issue.type}
+                                            <span className={`px-2 py-0.5 rounded text-[10px] uppercase font-bold border flex items-center gap-1.5 ${getTypeColor(issue.category || 'other')}`}>
+                                                {getIcon(issue.category || 'other')}
+                                                {issue.category || 'other'}
                                             </span>
-                                            <span className="text-xs text-muted-foreground flex items-center gap-1">
-                                                <Laptop size={12} />
-                                                {issue.deviceInfo.platform}
-                                            </span>
+                                            {issue.deviceInfo?.platform && (
+                                                <span className="text-xs text-muted-foreground flex items-center gap-1">
+                                                    <Laptop size={12} />
+                                                    {issue.deviceInfo.platform}
+                                                </span>
+                                            )}
                                         </div>
-                                        <span className="text-xs text-muted-foreground font-mono">{issue.createdAt}</span>
+                                        <span className="text-xs text-muted-foreground font-mono">
+                                            {new Date(issue.createdAt).toLocaleDateString()}
+                                        </span>
                                     </div>
 
                                     <p className="text-sm text-foreground leading-relaxed">

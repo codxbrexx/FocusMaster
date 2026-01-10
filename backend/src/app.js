@@ -15,7 +15,7 @@ const seedRoutes = require('./routes/seedRoutes');
 const feedbackRoutes = require('./routes/feedbackRoutes');
 
 const app = express();
-app.set('trust proxy', 1); 
+app.set('trust proxy', 1);
 
 // Middleware
 app.use((req, res, next) => {
@@ -28,17 +28,17 @@ const allowedOrigins = (process.env.FRONTEND_URLS || process.env.FRONTEND_URL ||
 app.use(cors({
   origin: (origin, callback) => {
     if (!origin) return callback(null, true);
-    
+
     const isAllowed = allowedOrigins.indexOf(origin) !== -1;
-    
+
     const isVercel = origin.endsWith('.vercel.app');
-    
+
     const isLocal = origin.includes('localhost') || origin.includes('127.0.0.1');
 
     if (isAllowed || isVercel || isLocal) {
       callback(null, true);
     } else {
-      console.log('CORS blocked origin:', origin); 
+      console.log('CORS blocked origin:', origin);
       callback(new Error('Not allowed by CORS'));
     }
   },
@@ -56,8 +56,9 @@ app.use('/api/clock', workLogRoutes);
 app.use('/api/spotify', spotifyRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/llm', llmRoutes);
-app.use('/api/seed', seedRoutes); 
+app.use('/api/seed', seedRoutes);
 app.use('/api/feedback', feedbackRoutes);
+app.use('/api/admin', require('./admin/routes/adminRoutes'));
 
 app.get(['/favicon.ico', '/favicon.png'], (req, res) => res.status(204).end());
 

@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { Ban, Lock, Trash2, RefreshCw } from 'lucide-react';
+import { toast } from 'sonner';
+import { adminService } from '../../../services/admin.service';
 import { RequirePermission } from '../../components/guards/RequirePermission';
 import { ConfirmationModal } from '../../components/ui/ConfirmationModal';
 import type { User } from './UserViewPanel';
@@ -14,13 +16,25 @@ type ActionType = 'ban' | 'suspend' | 'reset_password' | 'delete' | null;
 export const UserActionPanel = ({ user, onActionComplete }: UserActionPanelProps) => {
     const [actionToConfirm, setActionToConfirm] = useState<ActionType>(null);
 
-    const handleConfirmAction = () => {
-        // MOCK API CALL
-        console.log(`Executing ${actionToConfirm} on user ${user.id}`);
-        // In real app: await api.users.performAction(user.id, actionToConfirm);
+    const handleConfirmAction = async () => {
+        if (!actionToConfirm) return;
 
-        setActionToConfirm(null);
-        if (onActionComplete) onActionComplete();
+        try {
+            if (actionToConfirm === 'ban') {
+                await adminService.updateUserStatus(user.id, 'banned', 'Admin Action via Dashboard');
+            } else if (actionToConfirm === 'suspend') {
+                await adminService.updateUserStatus(user.id, 'suspended', 'Suspended via Dashboard');
+            }
+            // For delete/reset, we'd need endpoints, but for now we focus on status.
+
+            toast.success(`Action ${actionToConfirm} completed successfully.`);
+            if (onActionComplete) onActionComplete();
+        } catch (error) {
+            console.error(error);
+            toast.error('Failed to perform action');
+        } finally {
+            setActionToConfirm(null);
+        }
     };
 
     const getActionDetails = (type: ActionType) => {

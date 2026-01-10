@@ -21,26 +21,42 @@ const userSchema = mongoose.Schema(
       required: true,
     },
     settings: {
-        theme: { type: String, default: 'light' },
-        autoStartSession: { type: Boolean, default: false },
-        autoStartBreak: { type: Boolean, default: false },
-        motivationalQuotes: { type: Boolean, default: true },
-        focusDuration: { type: Number, default: 25 },
-        shortBreakDuration: { type: Number, default: 5 },
-        longBreakDuration: { type: Number, default: 15 },
-        dailyGoal: { type: Number, default: 8 },
-        soundEnabled: { type: Boolean, default: true },
-        strictMode: { type: Boolean, default: false },
+      theme: { type: String, default: 'light' },
+      autoStartSession: { type: Boolean, default: false },
+      autoStartBreak: { type: Boolean, default: false },
+      motivationalQuotes: { type: Boolean, default: true },
+      focusDuration: { type: Number, default: 25 },
+      shortBreakDuration: { type: Number, default: 5 },
+      longBreakDuration: { type: Number, default: 15 },
+      dailyGoal: { type: Number, default: 8 },
+      soundEnabled: { type: Boolean, default: true },
+      strictMode: { type: Boolean, default: false },
     },
     points: {
-        type: Number,
-        default: 0
+      type: Number,
+      default: 0
     },
     badges: [{ type: String }],
     isGuest: {
       type: Boolean,
       default: false,
     },
+    role: {
+      type: String,
+      enum: ['user', 'admin'],
+      default: 'user',
+      required: true
+    },
+    status: {
+      type: String,
+      enum: ['active', 'banned', 'suspended'],
+      default: 'active',
+      index: true
+    },
+    banReason: {
+      type: String,
+      select: false // Do not return by default
+    }
   },
   {
     timestamps: true,

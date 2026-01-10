@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Users, Clock, AlertTriangle, DollarSign } from 'lucide-react';
+import { adminService, type DashboardStats } from '../../services/admin.service';
 
 export interface KPI {
     title: string;
@@ -22,65 +23,65 @@ export const useAdminMetrics = (timeRange: '7d' | '30d') => {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        // SIMULATE NETWORK DELAY
-        const timer = setTimeout(() => {
-            // MOCK DATA GENERATION BASED ON TIME RANGE
-            const isWeek = timeRange === '7d';
+        const fetchStats = async () => {
+            setIsLoading(true);
+            try {
+                const data: DashboardStats = await adminService.getDashboardStats();
 
-            setKpis([
-                {
-                    title: 'Live Users',
-                    value: isWeek ? '1,245' : '1,500', // Just diversifying numbers
-                    trend: isWeek ? '+12.5% from last hour' : '+5% avg',
-                    trendUp: true,
-                    icon: Users,
-                    color: 'text-cyan-500'
-                },
-                {
-                    title: 'Total Sessions',
-                    value: isWeek ? '45,231' : '182,042',
-                    trend: isWeek ? '+4.3% vs last week' : '+12% vs last month',
-                    trendUp: true,
-                    icon: Clock,
-                    color: 'text-purple-500'
-                },
-                {
-                    title: 'Error Rate',
-                    value: isWeek ? '0.42%' : '0.38%',
-                    trend: isWeek ? '-0.05% improvement' : 'Stable',
-                    trendUp: true, // "Up" here means good (green), logic handled in UI usually, but label says improvement
-                    icon: AlertTriangle,
-                    color: 'text-rose-500'
-                },
-                {
-                    title: 'Revenue (Est)',
-                    value: isWeek ? '$12,450' : '$48,201',
-                    trend: isWeek ? '+8.1% vs last week' : '+15% vs last month',
-                    trendUp: true,
-                    icon: DollarSign,
-                    color: 'text-emerald-500'
-                }
-            ]);
+                // Transform API Data to UI format
+                setKpis([
+                    {
+                        title: 'Total Users',
+                        value: data.kpis.totalUsers.toLocaleString(),
+                        trend: 'Active Today: ' + data.kpis.activeToday,
+                        trendUp: true,
+                        icon: Users,
+                        color: 'text-cyan-500'
+                    },
+                    {
+                        title: 'Total Sessions',
+                        value: data.kpis.totalSessions.toLocaleString(),
+                        trend: '+--%', // Real trend requires previous period comparison (skipped for now)
+                        trendUp: true,
+                        icon: Clock,
+                        color: 'text-purple-500'
+                    },
+                    {
+                        title: 'System Health',
+                        value: data.kpis.recentErrors === 0 ? 'Healthy' : 'Degraded',
+                        trend: `${data.kpis.recentErrors} errors (24h)`,
+                        trendUp: data.kpis.recentErrors === 0,
+                        icon: AlertTriangle,
+                        color: data.kpis.recentErrors === 0 ? 'text-emerald-500' : 'text-rose-500'
+                    },
+                    {
+                        title: 'Revenue (Est)',
+                        value: '$0.00', // Mock for now
+                        trend: 'Free Tier',
+                        trendUp: true,
+                        icon: DollarSign,
+                        color: 'text-amber-500'
+                    }
+                ]);
 
-            // Generate Chart Data
-            const days = isWeek ? 7 : 30;
-            const data: TrafficPoint[] = [];
-            const now = new Date();
+                // Map Traffic Data
+                const traffic = data.traffic.map(t => ({
+                    name: new Date(t.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+                    visitors: t.visitors,
+                    sessions: t.sessions
+                }));
+                // Fill in gaps if needed, but basic mapping works
+                setTrafficData(traffic);
 
-            for (let i = days; i >= 0; i--) {
-                const date = new Date(now);
-                date.setDate(date.getDate() - i);
-                data.push({
-                    name: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-                    visitors: Math.floor(Math.random() * 500) + 1000,
-                    sessions: Math.floor(Math.random() * 800) + 1500,
-                });
+            } catch (error) {
+                console.error('Failed to fetch admin stats:', error);
+                // Fallback to empty or error state? Keeping previous mock not ideal.
+            } finally {
+                setIsLoading(false);
             }
-            setTrafficData(data);
-            setIsLoading(false);
-        }, 800); // 800ms delay
+        };
 
-        return () => clearTimeout(timer);
+        fetchStats();
     }, [timeRange]);
 
     return { kpis, trafficData, isLoading };
