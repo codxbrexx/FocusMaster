@@ -56,6 +56,18 @@ const userSchema = mongoose.Schema(
     banReason: {
       type: String,
       select: false // Do not return by default
+    },
+    emailOTP: {
+      type: String,
+      select: false
+    },
+    emailOTPExpires: {
+      type: Date,
+      select: false
+    },
+    newEmail: {
+      type: String,
+      select: false
     }
   },
   {

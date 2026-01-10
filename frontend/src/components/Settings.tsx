@@ -9,6 +9,8 @@ import { TimerSettings } from './settings/TimerSettings';
 import { AppearanceSettings } from './settings/AppearanceSettings';
 import { AutomationSettings } from './settings/AutomationSettings';
 import { SystemSettings } from './settings/SystemSettings';
+import { ProfileSettings } from './settings/ProfileSettings';
+import { AccountSettings } from './settings/AccountSettings';
 
 export function Settings() {
 
@@ -31,9 +33,9 @@ export function Settings() {
         </Button>
       </div>
 
-      <Tabs defaultValue="timer" className="w-full backdrop-blur-lg border border-primary/50 rounded-xl">
+      <Tabs defaultValue="profile" className="w-full backdrop-blur-lg border border-primary/50 rounded-xl">
         <TabsList className="w-full justify-start h-auto p-1  rounded-x border-primary/50 mb-8 overflow-x-auto">
-          {['timer', 'appearance', 'automation', 'system'].map((tab) => (
+          {['profile', 'account', 'timer', 'appearance', 'automation', 'system'].map((tab) => (
             <TabsTrigger
               key={tab}
               value={tab}
@@ -45,6 +47,10 @@ export function Settings() {
         </TabsList>
 
         <div className="space-y-6">
+          <TabsContent value="profile">
+            <ProfileSettings />
+          </TabsContent>
+
           <TabsContent value="timer">
             <TimerSettings />
           </TabsContent>
@@ -59,6 +65,10 @@ export function Settings() {
 
           <TabsContent value="system">
             <SystemSettings />
+          </TabsContent>
+
+          <TabsContent value="account">
+            <AccountSettings />
           </TabsContent>
         </div>
       </Tabs>
