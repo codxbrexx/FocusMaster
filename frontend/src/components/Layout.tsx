@@ -11,10 +11,13 @@ import { useHistoryStore } from '@/store/useHistoryStore';
 import { useSettingsStore } from '@/store/useSettingsStore';
 import { useDevice } from '@/context/DeviceContext';
 
+import { useMediaQuery } from '@/hooks/useMediaQuery';
+
 export const Layout = () => {
   const { deviceType } = useDevice();
+  const isScreenSmall = useMediaQuery('(max-width: 1023px)');
   // Default to open on desktop, closed on mobile/tablet
-  const [sidebarOpen, setSidebarOpen] = useState(deviceType === 'desktop');
+  const [sidebarOpen, setSidebarOpen] = useState(deviceType === 'desktop' && !isScreenSmall);
 
   const { fetchTasks } = useTaskStore();
   const { fetchHistory } = useHistoryStore();
@@ -32,9 +35,9 @@ export const Layout = () => {
       <div className="min-h-screen flex w-full font-sans text-foreground relative">
         {/* Mobile Backdrop */}
         {/* Mobile Backdrop */}
-        {sidebarOpen && deviceType === 'mobile' && (
+        {sidebarOpen && (deviceType === 'mobile' || deviceType === 'tablet' || isScreenSmall) && (
           <div
-            className="fixed inset-0 bg-background/80 backdrop-blur-sm z-30 md:hidden"
+            className="fixed inset-0 bg-background/80 backdrop-blur-sm z-30 lg:hidden"
             onClick={() => setSidebarOpen(false)}
           />
         )}
@@ -42,7 +45,7 @@ export const Layout = () => {
         <Sidebar open={sidebarOpen} onOpenChange={setSidebarOpen} />
 
         <div
-          className={`flex-1 flex flex-col transition-all duration-300 ml-0 ${sidebarOpen ? 'md:ml-72' : 'md:ml-20'}`}
+          className={`flex-1 flex flex-col transition-all duration-300 ml-0 ${sidebarOpen ? 'lg:ml-72' : 'lg:ml-20'}`}
         >
           <TopBar onMenuClick={() => setSidebarOpen(true)} />
 

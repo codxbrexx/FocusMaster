@@ -12,6 +12,7 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useDevice } from '@/context/DeviceContext';
@@ -41,7 +42,8 @@ export const Sidebar = ({ open, onOpenChange }: SidebarProps) => {
   const navigate = useNavigate();
   const { deviceType } = useDevice();
   const { user } = useAuth();
-  const isMobile = deviceType === 'mobile'; // Tablet treats as desktop (Mini mode support)
+  const isScreenSmall = useMediaQuery('(max-width: 1023px)');
+  const isMobile = deviceType === 'mobile' || deviceType === 'tablet' || isScreenSmall;
 
   // Desktop: Width animates 280 <-> 80
   // Mobile:  Width is fixed 280, X animates 0 <-> -100%

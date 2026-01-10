@@ -40,7 +40,7 @@ export function TopBar({ onMenuClick }: TopBarProps) {
         <Button
           variant="ghost"
           size="icon"
-          className="md:hidden -ml-2 text-muted-foreground"
+          className="lg:hidden -ml-2 text-muted-foreground"
           onClick={onMenuClick}
         >
           <Menu className="w-6 h-6" />
@@ -53,25 +53,6 @@ export function TopBar({ onMenuClick }: TopBarProps) {
             {formatDate(currentTime)}
           </div>
         </div>
-
-        {/* Navigation - Centered relative to the remaining space or left aligned next to time */}
-        {/* <nav className="hidden md:flex items-center gap-1 ml-4 bg-secondary/30 p-1 rounded-full border border-border/50">
-          {navItems.map((item) => (
-            <button
-              key={item.id}
-              onClick={() => onViewChange(item.id as View)}
-              className={cn(
-                "flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ease-in-out",
-                currentView === item.id 
-                  ? "bg-primary text-primary-foreground shadow-md" 
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
-              )}
-            >
-              <item.icon className={cn("w-4 h-4", currentView === item.id && "fill-current")} />
-              <span className="hidden lg:inline">{item.label}</span>
-            </button>
-          ))}
-        </nav> */}
       </div>
 
       <div className="flex items-center gap-3">
