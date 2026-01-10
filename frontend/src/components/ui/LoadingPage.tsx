@@ -8,12 +8,6 @@ const LOADING_STATES = [
   'Preparing your dashboard...',
 ];
 
-const QUOTES = [
-  'Focus is the key to all high performance.',
-  'The way to get started is to quit talking and begin doing.',
-  'Productivity is never an accident.',
-  'Effectiveness is doing the right things.',
-];
 
 interface LoadingPageProps {
   customMessage?: string;
@@ -22,7 +16,6 @@ interface LoadingPageProps {
 export const LoadingPage = ({ customMessage }: LoadingPageProps) => {
   const { deviceType, capabilities } = useDevice();
   const [statusIndex, setStatusIndex] = useState(0);
-  const [quoteIndex, setQuoteIndex] = useState(0);
 
   // Adjust messages based on device
   const displayMessage =
@@ -37,14 +30,8 @@ export const LoadingPage = ({ customMessage }: LoadingPageProps) => {
       setStatusIndex((prev) => (prev < LOADING_STATES.length - 1 ? prev + 1 : prev));
     }, 800);
 
-    // Cycle quotes
-    const quoteInterval = setInterval(() => {
-      setQuoteIndex((prev) => (prev + 1) % QUOTES.length);
-    }, 4000);
-
     return () => {
       clearInterval(statusInterval);
-      clearInterval(quoteInterval);
     };
   }, []);
 
@@ -78,8 +65,8 @@ export const LoadingPage = ({ customMessage }: LoadingPageProps) => {
               strokeLinecap="round"
               className="origin-center animate-[spin_1.5s_linear_infinite]"
               style={{
-                strokeDasharray: 251, // 2 * PI * 40
-                strokeDashoffset: 60, // Partial circle
+                strokeDasharray: 251, 
+                strokeDashoffset: 60, 
               }}
             />
             {/* Gradient Definition */}
@@ -119,16 +106,6 @@ export const LoadingPage = ({ customMessage }: LoadingPageProps) => {
             className="h-full bg-gradient-to-r from-primary to-accent animate-[width_3s_ease-in-out_forwards] w-0"
             style={{ animationName: 'growWidth' }}
           />
-        </div>
-
-        {/* Quote */}
-        <div className="h-10 relative flex items-center justify-center max-w-xs px-4">
-          <p
-            key={quoteIndex}
-            className="text-xs text-muted-foreground/50 font-light italic animate-[fadeUp_0.5s_ease-out]"
-          >
-            "{QUOTES[quoteIndex]}"
-          </p>
         </div>
       </div>
 

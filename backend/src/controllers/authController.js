@@ -257,12 +257,9 @@ const resetUserStats = asyncHandler(async (req, res) => {
     // BUT usually sessions are separate.
     // Let's assume for MVP we just reset the fields we know about on User.
     // If I need to delete sessions from a separate collection, I need that Model.
-    // I will add a TODO to clear separate sessions collection if strictly required, 
-    // but for now I'll clear user-bound stats.
 
-    // Actually, looking at `Profile.tsx`, it uses `useHistoryStore`. 
-    // If the backend has a `Session` model, we should clear it.
-    // I'll check if `Session` model exists in `src/models`.
+
+
 
     res.status(200).json({
       _id: user._id,

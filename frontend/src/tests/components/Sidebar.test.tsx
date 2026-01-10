@@ -3,7 +3,23 @@ import { Sidebar } from '@/components/sidebar/Sidebar';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from '@/context/AuthContext';
 import { ThemeProvider } from '@/context/ThemeContext';
-import { vi, describe, it, expect } from 'vitest';
+import { vi, describe, it, expect, beforeAll } from 'vitest';
+
+beforeAll(() => {
+  Object.defineProperty(window, 'matchMedia', {
+    writable: true,
+    value: (query: string) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: () => { }, // Deprecated
+      removeListener: () => { }, // Deprecated
+      addEventListener: () => { },
+      removeEventListener: () => { },
+      dispatchEvent: () => false,
+    }),
+  });
+});
 
 // Mock the AuthContext
 vi.mock('@/context/AuthContext', () => ({

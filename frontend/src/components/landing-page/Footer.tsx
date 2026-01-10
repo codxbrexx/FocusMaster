@@ -17,7 +17,6 @@ export const Footer = () => {
           </p>
           <span className="hidden md:block text-muted-foreground/30">|</span>
           <p className="text-xs text-muted-foreground">
-            {/* // build by codxbrexx */}
             build by{' '}
             <a
               href="https://github.com/codxbrexx"

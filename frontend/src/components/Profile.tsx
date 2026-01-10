@@ -97,13 +97,12 @@ export function Profile() {
       animate={{ opacity: 1, y: 0 }}
       className="max-w-6xl mx-auto space-y-8 pb-24"
     >
-      {/* --- Professional Header --- */}
       <div className="relative rounded-3xl overflow-hidden bg-card/50 backdrop-blur-xl border border-border/50 shadow-sm group">
         {/* Cover Image Area */}
-        <div className="h-56 bg-gradient-to-br from-indigo-600/20 via-primary/10 to-purple-900/20 relative overflow-hidden">
-          <div className="absolute inset-0 bg-[url('/grain.png')] opacity-30 mix-blend-overlay" />
-          <div className="absolute top-0 right-0 w-96 h-96 bg-primary/20 rounded-full blur-[100px] -mr-20 -mt-20 mix-blend-screen animate-pulse" />
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-indigo-500/20 rounded-full blur-[80px] -ml-10 -mb-10 mix-blend-screen" />
+        <div className="h-40 bg-gradient-to-r from-zinc-900 via-slate-900 to-indigo-950 relative overflow-hidden backdrop-blur-3xl">
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-500/10 rounded-full blur-[120px] -mr-32 -mt-32 mix-blend-screen animate-pulse" />
+          <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-purple-500/10 rounded-full blur-[100px] -ml-20 -mb-20 mix-blend-screen" />
         </div>
 
         {/* Profile Content */}
@@ -111,47 +110,49 @@ export function Profile() {
           <div className="flex flex-col md:flex-row items-center md:items-end -mt-16 gap-6">
             {/* Avatar */}
             <div className="relative group/avatar">
-              <div className="w-32 h-32 rounded-2xl border-[6px] border-card bg-card shadow-2xl overflow-hidden relative z-10">
+              <div className="w-36 h-36 rounded-2xl border-[6px] border-background bg-background shadow-xl overflow-hidden relative z-10 ring-1 ring-border/20">
                 <img
                   src={user?.picture || '/profilelogo.png'}
                   alt={user?.name}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover/avatar:scale-110"
                 />
               </div>
-              <div className="absolute -bottom-1 -right-1 z-20 bg-background p-1 rounded-xl border border-border shadow-sm">
-                <div className="w-4 h-4 rounded-full bg-emerald-500 animate-pulse ring-2 ring-emerald-500/20" />
+              <div className="absolute bottom-2 -right-2 z-20 bg-background p-1.5 rounded-full shadow-sm ring-1 ring-border/10">
+                <div className="w-4 h-4 rounded-full bg-emerald-500 border-2 border-emerald-500" />
               </div>
             </div>
 
             {/* Text Info */}
             <div className="flex-1 min-w-0 pb-2 text-center md:text-left">
-              <div className="flex items-center justify-center md:justify-start gap-3">
-                <h1 className="text-3xl font-bold tracking-tight text-foreground">
+              <div className="flex items-center justify-center md:justify-start gap-4">
+                <h1 className="text-4xl font-bold tracking-tight text-foreground/90 font-display">
                   {user?.name || 'Guest User'}
                 </h1>
                 {user?.role === 'admin' && (
-                  <span className="px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-500 text-[10px] font-bold uppercase tracking-wider border border-indigo-500/20">
+                  <span className="px-2.5 py-1 rounded-md bg-indigo-500/20 text-indigo-400 text-[10px] font-bold uppercase tracking-wider border border-indigo-500/20 shadow-[0_0_15px_rgba(99,102,241,0.2)]">
                     Admin
                   </span>
                 )}
               </div>
 
-              <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 mt-2 text-sm text-muted-foreground">
-                <div className="flex items-center gap-1.5">
-                  <Mail className="w-3.5 h-3.5" />
+              <div className="flex flex-wrap items-center justify-center md:justify-start gap-5 mt-3 text-sm text-muted-foreground/80 font-medium">
+                <div className="flex items-center gap-2 hover:text-foreground transition-colors">
+                  <div className="p-1 rounded bg-muted/50"><Mail className="w-3.5 h-3.5" /></div>
                   <span>{user?.email || 'No email provided'}</span>
                 </div>
-                <div className="hidden md:block w-1 h-1 rounded-full bg-border" />
-                <div className="flex items-center gap-1.5">
-                  <Calendar className="w-3.5 h-3.5" />
+                <div className="hidden md:block w-px h-4 bg-border" />
+                <div className="flex items-center gap-2 hover:text-foreground transition-colors">
+                  <div className="p-1 rounded bg-muted/50"><Calendar className="w-3.5 h-3.5" /></div>
                   <span>
                     Joined{' '}
                     {new Date().toLocaleDateString(undefined, { month: 'long', year: 'numeric' })}
                   </span>
                 </div>
-                <div className="hidden md:block w-1 h-1 rounded-full bg-border" />
+
+                {/* Badge */}
+                <div className="hidden md:block w-px h-4 bg-border" />
                 <div
-                  className={`flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium border ${isGuest ? 'bg-orange-500/10 text-orange-500 border-orange-500/20' : 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20'}`}
+                  className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wide border shadow-sm ${isGuest ? 'bg-orange-500/10 text-orange-400 border-orange-500/20' : 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20 shadow-[0_0_10px_rgba(16,185,129,0.1)]'}`}
                 >
                   {isGuest ? 'Guest' : 'Pro Member'}
                 </div>
@@ -159,15 +160,15 @@ export function Profile() {
             </div>
 
             {/* Actions */}
-            <div className="flex items-center gap-3 pb-2 w-full md:w-auto justify-center">
+            <div className="flex items-center gap-3 pb-2 w-full md:w-auto justify-center md:justify-end">
               <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
                 <DialogTrigger asChild>
-                  <button className="flex items-center gap-2 px-4 py-2 rounded-xl bg-primary text-primary-foreground font-medium shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all hover:-translate-y-0.5 active:translate-y-0">
+                  <button className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-primary-foreground font-medium shadow-sm hover:bg-primary/90 transition-all active:scale-[0.98]">
                     <Edit3 className="w-4 h-4" />
                     <span>Edit Profile</span>
                   </button>
                 </DialogTrigger>
-                <DialogContent className="max-w-xl max-h-[85vh] overflow-y-auto">
+                <DialogContent className="max-w-xl max-h-[85vh] overflow-y-auto backdrop-blur-lg bg-white/5 dark:bg-black/20">
                   <DialogHeader>
                     <DialogTitle>Edit Profile</DialogTitle>
                     <DialogDescription>
@@ -180,7 +181,7 @@ export function Profile() {
                 </DialogContent>
               </Dialog>
 
-              <div className="h-10 w-px bg-border/50 hidden md:block mx-1" />
+              <div className="h-10 w-px bg-border/50 hidden md:block mx-2" />
 
               <button className="p-2.5 rounded-xl hover:bg-muted/80 transition-colors border border-transparent hover:border-border text-muted-foreground hover:text-foreground">
                 <MoreHorizontal className="w-5 h-5" />

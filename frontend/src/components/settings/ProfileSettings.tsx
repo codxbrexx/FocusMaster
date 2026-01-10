@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { toast } from 'sonner';
 import { User, Mail, Lock, Save, Shield, Loader2, Eye, EyeOff } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 import { useAuth } from '@/context/AuthContext';
 import api from '@/services/api';
@@ -11,7 +12,7 @@ import api from '@/services/api';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Accordion,
   AccordionContent,
@@ -137,180 +138,212 @@ export const ProfileSettings = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6 pb-20 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <header className="flex items-center gap-4 mb-8 px-6">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">Account Settings</h1>
-          <p className="text-muted-foreground">Manage your credentials and profile preferences</p>
-        </div>
-      </header>
+    <div className="max-w-5xl mx-auto space-y-8 pb-20">
 
-      <form onSubmit={handleSubmit(onUpdateProfile)} className="space-y-6">
-        {/* Account Details */}
-        <Card className="overflow-hidden border-border/50 shadow-md">
-          <CardHeader className="bg-muted/30">
-            <CardTitle className="text-lg flex items-center gap-2">
-              <User className="w-5 h-5 text-primary" /> Personal Information
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="grid gap-6 pt-6 sm:grid-cols-2">
-            <div className="space-y-2">
-              <Label htmlFor="name">Full Name</Label>
-              <Input
-                id="name"
-                {...register('name')}
-                className={cn('bg-background', errors.name && 'border-destructive')}
-              />
-              {errors.name && <p className="text-xs text-destructive">{errors.name.message}</p>}
-            </div>
+      <div className="grid gap-8">
+        <form onSubmit={handleSubmit(onUpdateProfile)} className="space-y-8">
 
-            <div className="space-y-2">
-              <Label htmlFor="email">Email Address</Label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                <Input
-                  id="email"
-                  type="email"
-                  {...register('email')}
-                  disabled={isOtpSent}
-                  className={cn('pl-10', isEmailChanged && 'border-orange-400 ring-orange-400/20')}
-                />
+          {/* Personal Information Card */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+          >
+            <Card className="overflow-hidden border-border/40 shadow-sm hover:shadow-md transition-shadow duration-300 bg-card/60 backdrop-blur-sm">
+              <CardHeader className="border-b border-border/40 bg-muted/20 px-6 py-4">
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-lg font-semibold flex items-center gap-2">
+                    <User className="w-5 h-5 text-primary" /> Personal Information
+                  </CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent className="grid gap-6 p-6 sm:grid-cols-2">
+                <div className="space-y-2.5">
+                  <Label htmlFor="name" className="text-sm font-medium text-muted-foreground">Full Name</Label>
+                  <div className="relative group">
+                    <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors duration-200" />
+                    <Input
+                      id="name"
+                      {...register('name')}
+                      className={cn(
+                        "pl-10 h-11 bg-background/50 transition-all duration-200 focus:bg-background border-border/50 focus:border-primary/50",
+                        errors.name && "border-destructive focus:border-destructive"
+                      )}
+                      placeholder="Enter your name"
+                    />
+                  </div>
+                  {errors.name && <p className="text-xs text-destructive font-medium ml-1">{errors.name.message}</p>}
+                </div>
+
+                <div className="space-y-2.5">
+                  <Label htmlFor="email" className="text-sm font-medium text-muted-foreground">Email Address</Label>
+                  <div className="relative group">
+                    <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors duration-200" />
+                    <Input
+                      id="email"
+                      type="email"
+                      {...register('email')}
+                      disabled={isOtpSent}
+                      className={cn(
+                        "pl-10 h-11 bg-background/50 transition-all duration-200 focus:bg-background border-border/50 focus:border-primary/50",
+                        isEmailChanged && "border-amber-500/50 ring-2 ring-amber-500/10"
+                      )}
+                    />
+                  </div>
+
+                  {isEmailChanged && !isOtpSent && (
+                    <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }}>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        className="w-full mt-2 h-9 text-amber-600 hover:text-amber-700 hover:bg-amber-50 border border-amber-200/50"
+                        onClick={handleSendOtp}
+                        disabled={sendingOtp}
+                      >
+                        {sendingOtp ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Shield className="w-4 h-4 mr-2" />}
+                        Verify Email Change
+                      </Button>
+                    </motion.div>
+                  )}
+
+                  {isOtpSent && (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      className="mt-3 p-4 rounded-xl border border-primary/20 bg-primary/5 space-y-3"
+                    >
+                      <Label className="text-xs uppercase tracking-wider font-bold text-primary/80">Verification Code</Label>
+                      <Input
+                        maxLength={6}
+                        value={otp}
+                        onChange={(e) => setOtp(e.target.value)}
+                        className="text-center tracking-[0.5em] font-mono text-lg h-12 bg-background shadow-inner border-primary/20"
+                        placeholder="000000"
+                      />
+                      <div className="flex gap-2 pt-1">
+                        <Button type="button" variant="ghost" className="flex-1 h-9" onClick={() => setIsOtpSent(false)}>Cancel</Button>
+                        <Button type="button" className="flex-1 h-9" onClick={handleVerifyOtp} disabled={verifyingOtp || otp.length < 6}>
+                          {verifyingOtp ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Confirm'}
+                        </Button>
+                      </div>
+                    </motion.div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          {/* Security Card */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="sticky bottom-4 z-20"
+          >
+            <Card className="overflow-hidden border-border/40 shadow-sm hover:shadow-md transition-shadow duration-300 bg-card/60 backdrop-blur-sm">
+              <CardHeader className="border-b border-border/40 bg-muted/20 px-6 py-4">
+                <CardTitle className="text-lg font-semibold flex items-center gap-2">
+                  <Shield className="w-5 h-5 text-primary" /> Security & Password
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-0">
+                <Accordion type="single" collapsible className="w-full">
+                  <AccordionItem value="password-change" className="border-none">
+                    <AccordionTrigger className="px-6 py-4 hover:bg-muted/30 transition-colors data-[state=open]:bg-muted/30">
+                      <div className="flex items-center gap-3 text-sm font-medium">
+                        <div className="p-2 rounded-lg bg-primary/10 text-primary">
+                          <Lock className="w-4 h-4" />
+                        </div>
+                        <div className="flex flex-col items-start gap-0.5">
+                          <span className="text-foreground">Change Password</span>
+                          <span className="text-xs text-muted-foreground font-normal">Update your account password regularly</span>
+                        </div>
+                      </div>
+                    </AccordionTrigger>
+                    <AccordionContent className="px-6 pb-6 pt-2">
+                      <div className="grid gap-5 pt-2 sm:grid-cols-2">
+                        <div className="sm:col-span-2 space-y-2">
+                          <Label className="text-xs font-semibold uppercase text-muted-foreground">Current Password</Label>
+                          <Input
+                            type="password"
+                            {...register('currentPassword')}
+                            className="bg-primary/50"
+                            placeholder="Enter current password to authorize changes"
+                          />
+                          {errors.currentPassword && <p className="text-xs text-destructive">{errors.currentPassword.message}</p>}
+                        </div>
+                        <div className="space-y-2">
+                          <Label className="text-xs font-semibold uppercase text-muted-foreground">New Password</Label>
+                          <div className="relative">
+                            <Input
+                              type={showPassword ? 'text' : 'password'}
+                              {...register('newPassword')}
+                              className="bg-primary/50 pr-10"
+                              placeholder="Min. 6 characters"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => setShowPassword(!showPassword)}
+                              className="absolute right-3 top-2.5 text-muted-foreground hover:text-primary transition-colors"
+                            >
+                              {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                            </button>
+                          </div>
+                          {errors.newPassword && <p className="text-xs text-destructive">{errors.newPassword.message}</p>}
+                        </div>
+                        <div className="space-y-2">
+                          <Label className="text-xs font-semibold uppercase text-muted-foreground">Confirm New Password</Label>
+                          <Input
+                            type="password"
+                            {...register('confirmPassword')}
+                            className="bg-background/50"
+                            placeholder="Re-enter new password"
+                          />
+                          {errors.confirmPassword && <p className="text-xs text-destructive">{errors.confirmPassword.message}</p>}
+                        </div>
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+
+          {/* Sticky Action Footer */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="bottom-4 z-20"
+          >
+            <div className="rounded-xl border border-border/60 bg-background/80 backdrop-blur-md p-4 flex justify-between items-center">
+              <div className="flex items-center gap-2">
+                <div className={cn("w-2.5 h-2.5 rounded-full animate-pulse", isDirty ? "bg-amber-500" : "bg-emerald-500")} />
+                <p className="text-sm font-medium text-muted-foreground">
+                  {isDirty ? 'Unsaved changes' : 'All systems normal'}
+                </p>
               </div>
-
-              {/* OTP Flow UI */}
-              {isEmailChanged && !isOtpSent && (
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  className="w-full mt-2 border-orange-200 bg-orange-50 text-orange-700 hover:bg-orange-100"
-                  onClick={handleSendOtp}
-                  disabled={sendingOtp}
-                >
-                  {sendingOtp ? (
+              <div className="flex gap-3">
+                {isDirty && (
+                  <Button type="button" variant="ghost" onClick={() => reset()} disabled={isSubmitting}>
+                    Discard
+                  </Button>
+                )}
+                <Button disabled={isSubmitting || !isDirty} type="submit" className="min-w-[120px] shadow-lg shadow-primary/20">
+                  {isSubmitting ? (
                     <Loader2 className="w-4 h-4 animate-spin mr-2" />
                   ) : (
-                    <Shield className="w-4 h-4 mr-2" />
+                    <Save className="w-4 h-4 mr-2" />
                   )}
-                  Verify New Email
+                  Save Changes
                 </Button>
-              )}
-
-              {isOtpSent && (
-                <div className="mt-4 p-4 rounded-xl border border-primary/20 bg-primary/5 space-y-3 animate-in zoom-in-95">
-                  <Label className="text-xs uppercase tracking-wider font-bold">
-                    Verification Code
-                  </Label>
-                  <Input
-                    maxLength={6}
-                    value={otp}
-                    onChange={(e) => setOtp(e.target.value)}
-                    className="text-center tracking-[0.5em] font-mono text-lg h-12"
-                    placeholder="000000"
-                  />
-                  <div className="flex gap-2">
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      className="flex-1"
-                      onClick={() => setIsOtpSent(false)}
-                    >
-                      Cancel
-                    </Button>
-                    <Button
-                      type="button"
-                      className="flex-1"
-                      onClick={handleVerifyOtp}
-                      disabled={verifyingOtp || otp.length < 6}
-                    >
-                      {verifyingOtp ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Confirm'}
-                    </Button>
-                  </div>
-                </div>
-              )}
+              </div>
             </div>
-          </CardContent>
-        </Card>
-
-        {/* Security Section */}
-        <Card className="border-border/50 shadow-md">
-          <CardHeader className="bg-muted/30">
-            <CardTitle className="text-lg flex items-center gap-2">
-              <Shield className="w-5 h-5 text-primary" /> Security & Password
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="pt-6">
-            <Accordion type="single" collapsible>
-              <AccordionItem value="password-change" className="border-none">
-                <AccordionTrigger className="px-4 bg-background border rounded-lg hover:no-underline">
-                  <div className="flex items-center gap-3">
-                    <Lock className="w-4 h-4 text-muted-foreground" />
-                    <span>Update Password</span>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent className="space-y-4 pt-6 px-1">
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <div className="space-y-2 sm:col-span-2">
-                      <Label>Current Password</Label>
-                      <Input
-                        type="password"
-                        {...register('currentPassword')}
-                        placeholder="Required for changes"
-                      />
-                      {errors.currentPassword && (
-                        <p className="text-xs text-destructive">{errors.currentPassword.message}</p>
-                      )}
-                    </div>
-                    <div className="space-y-2">
-                      <Label>New Password</Label>
-                      <div className="relative">
-                        <Input
-                          type={showPassword ? 'text' : 'password'}
-                          {...register('newPassword')}
-                        />
-                        <button
-                          type="button"
-                          onClick={() => setShowPassword(!showPassword)}
-                          className="absolute right-3 top-3 text-muted-foreground"
-                        >
-                          {showPassword ? (
-                            <EyeOff className="w-4 h-4" />
-                          ) : (
-                            <Eye className="w-4 h-4" />
-                          )}
-                        </button>
-                      </div>
-                      {errors.newPassword && (
-                        <p className="text-xs text-destructive">{errors.newPassword.message}</p>
-                      )}
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Confirm New Password</Label>
-                      <Input type="password" {...register('confirmPassword')} />
-                      {errors.confirmPassword && (
-                        <p className="text-xs text-destructive">{errors.confirmPassword.message}</p>
-                      )}
-                    </div>
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-          </CardContent>
-          <CardFooter className="bg-muted/10 border-t p-6 flex justify-between items-center">
-            <p className="text-xs text-muted-foreground">
-              {isDirty ? 'You have unsaved changes' : 'Account is up to date'}
-            </p>
-            <Button disabled={isSubmitting || !isDirty} type="submit" className="min-w-[140px]">
-              {isSubmitting ? (
-                <Loader2 className="w-4 h-4 animate-spin mr-2" />
-              ) : (
-                <Save className="w-4 h-4 mr-2" />
-              )}
-              Save Changes
-            </Button>
-          </CardFooter>
-        </Card>
-      </form>
+          </motion.div>
+        </form>
+      </div>
     </div>
   );
 };
