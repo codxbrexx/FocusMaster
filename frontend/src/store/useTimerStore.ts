@@ -24,7 +24,7 @@ export interface TimerState {
 }
 
 const DEFAULT_DURATIONS = {
-  'pomodoro': 5,
+  pomodoro: 5,
   'short-break': 5 * 60,
   'long-break': 15 * 60,
 };
@@ -54,15 +54,17 @@ export const useTimerStore = create<TimerState>((set) => ({
 
   toggleTimer: () => set((state) => ({ isActive: !state.isActive })),
 
-  resetTimer: () => set((state) => ({
-    isActive: false,
-    timeLeft: state.totalDuration
-  })),
+  resetTimer: () =>
+    set((state) => ({
+      isActive: false,
+      timeLeft: state.totalDuration,
+    })),
 
-  tick: () => set((state) => {
-    if (state.timeLeft <= 0) {
-      return { isActive: false, timeLeft: 0 };
-    }
-    return { timeLeft: state.timeLeft - 1 };
-  }),
+  tick: () =>
+    set((state) => {
+      if (state.timeLeft <= 0) {
+        return { isActive: false, timeLeft: 0 };
+      }
+      return { timeLeft: state.timeLeft - 1 };
+    }),
 }));

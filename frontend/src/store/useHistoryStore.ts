@@ -34,7 +34,6 @@ interface HistoryState {
   clockIn: () => Promise<void>;
   clockOut: (breakTime: number, notes?: string) => Promise<void>;
 
-
   addClockEntry: (entry: Omit<ClockEntry, 'id'>) => Promise<void>; // Used for Clock In
   updateClockEntry: (id: string, updates: Partial<ClockEntry>) => Promise<void>; // Used for Clock Out
 }
@@ -75,9 +74,9 @@ export const useHistoryStore = create<HistoryState>((set) => ({
       ]);
 
       const typeMappingReverse: Record<string, 'pomodoro' | 'short-break' | 'long-break'> = {
-        'focus': 'pomodoro',
-        'shortBreak': 'short-break',
-        'longBreak': 'long-break',
+        focus: 'pomodoro',
+        shortBreak: 'short-break',
+        longBreak: 'long-break',
       };
 
       set({
@@ -121,7 +120,7 @@ export const useHistoryStore = create<HistoryState>((set) => ({
 
     try {
       const typeMapping: Record<string, string> = {
-        'pomodoro': 'focus',
+        pomodoro: 'focus',
         'short-break': 'shortBreak',
         'long-break': 'longBreak',
       };
@@ -136,16 +135,16 @@ export const useHistoryStore = create<HistoryState>((set) => ({
       };
 
       const { data } = await api.post('/sessions', backendSession);
-      const newSession = { ...data, startTime: new Date(data.startTime), endTime: new Date(data.endTime) };
+      const newSession = {
+        ...data,
+        startTime: new Date(data.startTime),
+        endTime: new Date(data.endTime),
+      };
 
       set((state) => ({
-        sessions: [
-          newSession,
-          ...state.sessions,
-        ],
+        sessions: [newSession, ...state.sessions],
       }));
       return newSession._id || newSession.id;
-
     } catch (error) {
       console.error(error);
       toast.error('Failed to save session');
@@ -156,7 +155,7 @@ export const useHistoryStore = create<HistoryState>((set) => ({
     const isGuest = localStorage.getItem('isGuest') === 'true';
     if (isGuest) {
       set((state) => {
-        const updated = state.sessions.map(s => s.id === id ? { ...s, ...updates } : s);
+        const updated = state.sessions.map((s) => (s.id === id ? { ...s, ...updates } : s));
         localStorage.setItem('guest-sessions', JSON.stringify(updated));
         return { sessions: updated };
       });
@@ -166,7 +165,7 @@ export const useHistoryStore = create<HistoryState>((set) => ({
     try {
       await api.patch(`/sessions/${id}`, updates);
       set((state) => ({
-        sessions: state.sessions.map(s => s.id === id ? { ...s, ...updates } : s) // In simpler implementation, this might not map fields perfectly if backend returns diff structure, but fine for mood.
+        sessions: state.sessions.map((s) => (s.id === id ? { ...s, ...updates } : s)), // In simpler implementation, this might not map fields perfectly if backend returns diff structure, but fine for mood.
       }));
     } catch (error) {
       console.error('Failed to update session', error);
@@ -214,7 +213,6 @@ export const useHistoryStore = create<HistoryState>((set) => ({
         };
         set((state) => ({ clockEntries: [newEntry, ...state.clockEntries] }));
         toast.success('Clocked in successfully');
-
       } catch (error: any) {
         toast.error(error.response?.data?.message || 'Failed to clock in');
         throw error;
@@ -248,10 +246,10 @@ export const useHistoryStore = create<HistoryState>((set) => ({
           clockEntries: state.clockEntries.map((e) =>
             e.id === id
               ? {
-                ...e,
-                clockOut: new Date(data.endTime),
-                breakTime: data.breakTime,
-              }
+                  ...e,
+                  clockOut: new Date(data.endTime),
+                  breakTime: data.breakTime,
+                }
               : e
           ),
         }));

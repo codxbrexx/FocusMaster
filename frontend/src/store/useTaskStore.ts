@@ -17,7 +17,6 @@ export interface Task {
   createdAt: string;
 }
 
-
 interface TaskState {
   tasks: Task[];
   isLoading: boolean;

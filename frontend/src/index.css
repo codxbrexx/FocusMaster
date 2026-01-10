@@ -3,8 +3,8 @@
 
 @layer base {
   :root {
-    --accent-1: #7C3AED;
-    --accent-2: #06B6D4;
+    --accent-1: #7c3aed;
+    --accent-2: #06b6d4;
     --bg-gradient-start: rgba(124, 58, 237, 0.12);
     --bg-gradient-end: rgba(6, 182, 212, 0.08);
 
@@ -213,7 +213,11 @@
 
   .bg-matrix {
     background-color: var(--matrix-bg) !important;
-    background-image: radial-gradient(circle, var(--matrix-dot) 1.5px, transparent 1.5px) !important;
+    background-image: radial-gradient(
+      circle,
+      var(--matrix-dot) 1.5px,
+      transparent 1.5px
+    ) !important;
     background-size: 32px 32px;
     background-position: center;
     background-repeat: repeat;
@@ -240,17 +244,21 @@
 
 @layer components {
   .focus-gradient {
-    background-image: linear-gradient(to bottom right,
-        hsl(var(--background)),
-        hsl(var(--card)),
-        hsl(var(--accent) / 0.3));
+    background-image: linear-gradient(
+      to bottom right,
+      hsl(var(--background)),
+      hsl(var(--card)),
+      hsl(var(--accent) / 0.3)
+    );
   }
 
   .glass-card {
     backdrop-filter: blur(40px);
     -webkit-backdrop-filter: blur(40px);
     border: 1px solid hsl(var(--border) / 0.4);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    box-shadow:
+      0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06);
   }
 
   .glass-panel {
@@ -292,10 +300,12 @@
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
-    background-image: linear-gradient(to right,
-        hsl(var(--primary)),
-        hsl(var(--accent-foreground)),
-        hsl(var(--primary)));
+    background-image: linear-gradient(
+      to right,
+      hsl(var(--primary)),
+      hsl(var(--accent-foreground)),
+      hsl(var(--primary))
+    );
   }
 
   .scrollbar-hide {
@@ -326,7 +336,6 @@
 }
 
 @keyframes float {
-
   0%,
   100% {
     transform: translateY(0px);

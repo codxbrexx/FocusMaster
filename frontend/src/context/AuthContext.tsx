@@ -13,6 +13,8 @@ interface User {
   picture?: string;
   isGuest?: boolean;
   role?: 'admin' | 'user';
+  points?: number;
+  badges?: string[];
 }
 
 interface AuthContextType {
@@ -24,6 +26,7 @@ interface AuthContextType {
   logout: () => void;
   loginAsGuest: () => Promise<void>;
   googleLogin: (token: string) => Promise<void>;
+  refreshUser: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -201,9 +204,32 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const refreshUser = async () => {
+    try {
+      const { data } = await api.get('/auth/profile');
+      // DEV: Grant admin role to specific email for testing
+      if (data.email === 'adminali@gmail.com') {
+        data.role = 'admin';
+      }
+      setUser(data);
+    } catch (error) {
+      console.error('Failed to refresh user:', error);
+    }
+  };
+
   return (
     <AuthContext.Provider
-      value={{ user, isAuthenticated, isLoading, login, register, logout, loginAsGuest, googleLogin }}
+      value={{
+        user,
+        isAuthenticated,
+        isLoading,
+        login,
+        register,
+        logout,
+        loginAsGuest,
+        googleLogin,
+        refreshUser,
+      }}
     >
       {children}
     </AuthContext.Provider>

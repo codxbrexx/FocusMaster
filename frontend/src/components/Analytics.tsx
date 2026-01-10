@@ -5,9 +5,17 @@ import { useSettingsStore } from '@/store/useSettingsStore';
 import { AnalyticsStats } from './analytics/AnalyticsStats';
 import { LoadingSpinner } from './ui/LoadingSpinner'; // Keeping simple spinner for chart placeholders
 
-const FocusActivityChart = lazy(() => import('./analytics/FocusActivityChart').then(m => ({ default: m.FocusActivityChart })));
-const WeeklyIntensityChart = lazy(() => import('./analytics/WeeklyIntensityChart').then(m => ({ default: m.WeeklyIntensityChart })));
-const CategoryDistributionChart = lazy(() => import('./analytics/CategoryDistributionChart').then(m => ({ default: m.CategoryDistributionChart })));
+const FocusActivityChart = lazy(() =>
+  import('./analytics/FocusActivityChart').then((m) => ({ default: m.FocusActivityChart }))
+);
+const WeeklyIntensityChart = lazy(() =>
+  import('./analytics/WeeklyIntensityChart').then((m) => ({ default: m.WeeklyIntensityChart }))
+);
+const CategoryDistributionChart = lazy(() =>
+  import('./analytics/CategoryDistributionChart').then((m) => ({
+    default: m.CategoryDistributionChart,
+  }))
+);
 
 export function Analytics() {
   const { sessions, clockEntries } = useHistoryStore();
@@ -83,12 +91,14 @@ export function Analytics() {
 
     return last7Days.map((dateStr) => {
       const daySessions = sessions.filter((s) => new Date(s.startTime).toDateString() === dateStr);
-      const focus = Math.floor(daySessions
-        .filter((s) => s.type === 'pomodoro')
-        .reduce((acc, s) => acc + s.duration, 0) / 60);
-      const breaks = Math.floor(daySessions
-        .filter((s) => s.type !== 'pomodoro')
-        .reduce((acc, s) => acc + s.duration, 0) / 60);
+      const focus = Math.floor(
+        daySessions.filter((s) => s.type === 'pomodoro').reduce((acc, s) => acc + s.duration, 0) /
+          60
+      );
+      const breaks = Math.floor(
+        daySessions.filter((s) => s.type !== 'pomodoro').reduce((acc, s) => acc + s.duration, 0) /
+          60
+      );
 
       const date = new Date(dateStr);
       const dayName = date.toLocaleDateString('en-US', { weekday: 'short' });
@@ -168,13 +178,31 @@ export function Analytics() {
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Suspense fallback={<div className="h-[300px] flex items-center justify-center bg-card/50 rounded-xl border border-border/50"><LoadingSpinner /></div>}>
+        <Suspense
+          fallback={
+            <div className="h-[300px] flex items-center justify-center bg-card/50 rounded-xl border border-border/50">
+              <LoadingSpinner />
+            </div>
+          }
+        >
           <FocusActivityChart data={focusBreakData} />
         </Suspense>
-        <Suspense fallback={<div className="h-[300px] flex items-center justify-center bg-card/50 rounded-xl border border-border/50"><LoadingSpinner /></div>}>
+        <Suspense
+          fallback={
+            <div className="h-[300px] flex items-center justify-center bg-card/50 rounded-xl border border-border/50">
+              <LoadingSpinner />
+            </div>
+          }
+        >
           <WeeklyIntensityChart data={heatmapData} />
         </Suspense>
-        <Suspense fallback={<div className="h-[300px] flex items-center justify-center bg-card/50 rounded-xl border border-border/50"><LoadingSpinner /></div>}>
+        <Suspense
+          fallback={
+            <div className="h-[300px] flex items-center justify-center bg-card/50 rounded-xl border border-border/50">
+              <LoadingSpinner />
+            </div>
+          }
+        >
           <CategoryDistributionChart data={categoryData} colors={COLORS} />
         </Suspense>
       </div>

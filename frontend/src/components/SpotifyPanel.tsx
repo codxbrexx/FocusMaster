@@ -9,7 +9,7 @@ import {
   Volume2,
   ListMusic,
   LogOut,
-  ExternalLink
+  ExternalLink,
 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -17,7 +17,6 @@ import { Slider } from '@/components/ui/slider';
 import { Badge } from '@/components/ui/badge';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
-
 
 interface Track {
   name: string;
@@ -35,7 +34,6 @@ interface PlaybackState {
   item: Track | null;
   progress_ms: number;
 }
-
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
@@ -73,7 +71,7 @@ export function SpotifyPanel() {
         }
       }
     } catch (error) {
-      console.error("Spotify check failed", error);
+      console.error('Spotify check failed', error);
       setIsConnected(false);
     } finally {
       setLoading(false);
@@ -87,28 +85,18 @@ export function SpotifyPanel() {
         setPlaybackState(res.data);
       } else {
         // Spotify returns 204 if nothing is playing/active
-        setPlaybackState(prev => prev ? { ...prev, is_playing: false } : null);
+        setPlaybackState((prev) => (prev ? { ...prev, is_playing: false } : null));
       }
     } catch (error) {
-      console.error("Fetch playback failed", error);
+      console.error('Fetch playback failed', error);
     }
   };
 
   const fetchPlaylists = async () => {
     try {
-      // You might need to add a route for this in backend if not using direct access token from frontend.
-      // IF we stored access token in cookie/backend only, we need a proxy route.
-      // Assuming we need to add a route or use a stored token.
-      // FOR NOW: Let's assume we add a proxy route or this feature waits for backend update.
-      // EDIT: Based on plan, we implemented basic auth. 
-      // Let's TRY to hit a proxy route if exists, or skip.
-      // Since user asked for playlists, I'll stub the fetch with a TODO or mock if API missing.
-      // BUT, to be robust, let's assume we can add a simple proxy or mock data for now to not break UI.
-
-      // MOCKING Playlists for Visual Demo until Backend Proxy specific for Playlists is verified
-      // Real apps would call GET /api/spotify/playlists
+      // Future implementation: Fetch playlists from backend proxy
     } catch (error) {
-      console.error("Fetch playlists failed", error);
+      console.error('Fetch playlists failed', error);
     }
   };
 
@@ -138,21 +126,20 @@ export function SpotifyPanel() {
             clearInterval(pollInterval);
             setIsConnected(true);
             setPlaybackState(check.data.item ? check.data : null);
-            toast.success("Spotify Connected Successfully!");
+            toast.success('Spotify Connected Successfully!');
             // Fetch usage data
             fetchPlaybackState();
           }
-        } catch (e) {
+        } catch {
           // Keep polling
         }
       }, 2000);
 
       // Stop polling after 5 minutes (user abandoned)
       setTimeout(() => clearInterval(pollInterval), 300000);
-
-    } catch (error) {
+    } catch {
       if (authWindow) authWindow.close();
-      toast.error("Failed to initialize Spotify login");
+      toast.error('Failed to initialize Spotify login');
     }
   };
 
@@ -161,9 +148,9 @@ export function SpotifyPanel() {
     try {
       const endpoint = playbackState.is_playing ? 'pause' : 'play';
       await axios.put(`${API_URL}/spotify/${endpoint}`, {}, { withCredentials: true });
-      setPlaybackState(prev => prev ? { ...prev, is_playing: !prev.is_playing } : null);
-    } catch (error) {
-      toast.error("Premium required or no active device found");
+      setPlaybackState((prev) => (prev ? { ...prev, is_playing: !prev.is_playing } : null));
+    } catch {
+      toast.error('Premium required or no active device found');
     }
   };
 
@@ -174,7 +161,10 @@ export function SpotifyPanel() {
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
-  if (loading) return <div className="p-10 text-center animate-pulse text-muted-foreground">Loading Spotify...</div>;
+  if (loading)
+    return (
+      <div className="p-10 text-center animate-pulse text-muted-foreground">Loading Spotify...</div>
+    );
 
   return (
     <motion.div
@@ -187,10 +177,18 @@ export function SpotifyPanel() {
           <h2 className="text-3xl font-bold font-heading tracking-tight flex items-center gap-2">
             <Music className="w-8 h-8 text-primary" /> Spotify Integration
           </h2>
-          <p className="text-muted-foreground">Control your focus soundtrack directly from the dashboard.</p>
+          <p className="text-muted-foreground">
+            Control your focus soundtrack directly from the dashboard.
+          </p>
         </div>
         {isConnected && (
-          <Button variant="ghost" className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors" onClick={() => {/* Implement disconnect logic later if needed */ }}>
+          <Button
+            variant="ghost"
+            className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
+            onClick={() => {
+              /* Implement disconnect logic later if needed */
+            }}
+          >
             <LogOut className="w-4 h-4 mr-2" /> Disconnect
           </Button>
         )}
@@ -211,10 +209,12 @@ export function SpotifyPanel() {
                 <div className="w-24 h-24 rounded-full bg-gradient-to-br from-accent-1/20 to-accent-2/20 flex items-center justify-center mb-6 shadow-glow border border-white/5">
                   <Music className="w-12 h-12 text-primary" />
                 </div>
-                <h3 className="text-3xl font-bold mb-4 font-heading bg-clip-text text-transparent bg-gradient-to-r from-white to-white/70">Soundtrack Your Flow</h3>
+                <h3 className="text-3xl font-bold mb-4 font-heading bg-clip-text text-transparent bg-gradient-to-r from-white to-white/70">
+                  Soundtrack Your Flow
+                </h3>
                 <p className="text-muted-foreground mb-10 text-lg leading-relaxed">
-                  Connect your Spotify Premium account to access playlists, control playback,
-                  and sync music with your deep work sessions.
+                  Connect your Spotify Premium account to access playlists, control playback, and
+                  sync music with your deep work sessions.
                 </p>
                 <Button
                   onClick={handleLogin}
@@ -263,15 +263,19 @@ export function SpotifyPanel() {
                     <div className="flex-1 p-6 md:p-8 flex flex-col justify-center">
                       <div className="space-y-2 mb-8">
                         {playbackState?.is_playing && (
-                          <Badge variant="outline" className="text-accent-2 border-accent-2/30 bg-accent-2/10 mb-2 px-3 py-1">
+                          <Badge
+                            variant="outline"
+                            className="text-accent-2 border-accent-2/30 bg-accent-2/10 mb-2 px-3 py-1"
+                          >
                             Now Playing
                           </Badge>
                         )}
                         <h2 className="text-4xl font-bold font-heading tracking-tight truncate text-transparent bg-clip-text bg-gradient-to-r from-white to-white/60">
-                          {playbackState?.item?.name || "No Track Playing"}
+                          {playbackState?.item?.name || 'No Track Playing'}
                         </h2>
                         <p className="text-xl text-muted-foreground truncate font-medium">
-                          {playbackState?.item?.artists.map(a => a.name).join(', ') || "Start music in Spotify app"}
+                          {playbackState?.item?.artists.map((a) => a.name).join(', ') ||
+                            'Start music in Spotify app'}
                         </p>
                       </div>
 
@@ -280,7 +284,11 @@ export function SpotifyPanel() {
                         <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
                           <div
                             className="h-full bg-gradient-to-r from-accent-1 to-accent-2 transition-all duration-1000 ease-linear shadow-[0_0_10px_rgba(124,58,237,0.5)]"
-                            style={{ width: playbackState?.item ? `${(playbackState.progress_ms / playbackState.item.duration_ms) * 100}%` : '0%' }}
+                            style={{
+                              width: playbackState?.item
+                                ? `${(playbackState.progress_ms / playbackState.item.duration_ms) * 100}%`
+                                : '0%',
+                            }}
                           />
                         </div>
                         <div className="flex justify-between text-xs font-medium text-muted-foreground">
@@ -295,7 +303,9 @@ export function SpotifyPanel() {
                           variant="outline"
                           size="icon"
                           className="h-12 w-12 rounded-full border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 transition-all"
-                          onClick={() => axios.post(`${API_URL}/spotify/prev`, {}, { withCredentials: true })}
+                          onClick={() =>
+                            axios.post(`${API_URL}/spotify/prev`, {}, { withCredentials: true })
+                          }
                         >
                           <SkipBack className="w-5 h-5 text-white/80" />
                         </Button>
@@ -315,7 +325,9 @@ export function SpotifyPanel() {
                           variant="outline"
                           size="icon"
                           className="h-12 w-12 rounded-full border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 transition-all"
-                          onClick={() => axios.post(`${API_URL}/spotify/next`, {}, { withCredentials: true })}
+                          onClick={() =>
+                            axios.post(`${API_URL}/spotify/next`, {}, { withCredentials: true })
+                          }
                         >
                           <SkipForward className="w-5 h-5 text-white/80" />
                         </Button>
@@ -343,10 +355,12 @@ export function SpotifyPanel() {
                   <div className="p-3 rounded-full bg-white/5 mb-4">
                     <ListMusic className="w-8 h-8 text-accent-2/80" />
                   </div>
-                  <h4 className="text-lg font-medium text-white/90 font-heading">Playlists Coming Soon</h4>
+                  <h4 className="text-lg font-medium text-white/90 font-heading">
+                    Playlists Coming Soon
+                  </h4>
                   <p className="text-sm text-muted-foreground max-w-sm mt-2">
-                    We are enhancing the playlist selection to sync directly with your library.
-                    For now, please select your focus playlist in the Spotify app.
+                    We are enhancing the playlist selection to sync directly with your library. For
+                    now, please select your focus playlist in the Spotify app.
                   </p>
                 </CardContent>
               </Card>
@@ -357,4 +371,3 @@ export function SpotifyPanel() {
     </motion.div>
   );
 }
-

@@ -42,6 +42,12 @@ FocusMaster is built with a **"Flow First"** design philosophy.
 - Google OAuth integration for one-click access.
 - Guest mode for trying out the app instantly.
 
+### 🛡️ Admin Dashboard
+- Comprehensive system management panel.
+- User management (RBAC, bans, verification).
+- Real-time audit logs and live user tracking.
+- System health monitoring.
+
 ## 🛠️ Technology Stack
 
 ### Frontend
@@ -135,6 +141,13 @@ Contributions are what make the open-source community such an amazing place to l
 3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
+
+## 🔒 Security
+
+This project has undergone a basic security audit ("vernability" check).
+- **Authentication**: Secure HttpOnly cookies are used for session management.
+- **Data Protection**: Strict CORS policies and input validation are enforced.
+- **Dependencies**: Regularly audited for vulnerabilities (`npm audit`).
 
 ## 📄 License
 

@@ -41,7 +41,8 @@ export function Login() {
       await login(email, password);
       navigate('/dashboard');
     } catch (err: any) {
-      const errorMessage = err.response?.data?.message || 'Login failed. Please check your credentials.';
+      const errorMessage =
+        err.response?.data?.message || 'Login failed. Please check your credentials.';
       setError(errorMessage);
     } finally {
       setIsLoading(false);
@@ -92,7 +93,11 @@ export function Login() {
               </div>
             </div>
 
-            <Button type="submit" className="w-full h-12 md:h-10 text-base md:text-sm font-semibold shadow-lg border-dashed border-2 hover:border-solid hover:border-purple-500/50 shadow-primary/20 hover:shadow-primary/40 transition-all duration-300" disabled={isLoading}>
+            <Button
+              type="submit"
+              className="w-full h-12 md:h-10 text-base md:text-sm font-semibold shadow-lg border-dashed border-2 hover:border-solid hover:border-purple-500/50 shadow-primary/20 hover:shadow-primary/40 transition-all duration-300"
+              disabled={isLoading}
+            >
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Signing in...

@@ -6,7 +6,18 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
-import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, addMonths, subMonths, parseISO, isAfter, isBefore } from 'date-fns';
+import {
+  format,
+  startOfMonth,
+  endOfMonth,
+  eachDayOfInterval,
+  isSameDay,
+  addMonths,
+  subMonths,
+  parseISO,
+  isAfter,
+  isBefore,
+} from 'date-fns';
 import { CalendarEventDialog } from './calendar/CalendarEventDialog';
 import { toast } from 'sonner';
 
@@ -26,7 +37,7 @@ export function Calendar() {
     queryFn: async () => {
       const res = await axios.get(`${API_URL}/tasks`, { withCredentials: true });
       return res.data;
-    }
+    },
   });
 
   // Create Mutation
@@ -39,20 +50,22 @@ export function Calendar() {
       queryClient.invalidateQueries({ queryKey: ['tasks'] });
       toast.success('Event scheduled successfully');
       setIsDialogOpen(false);
-    }
+    },
   });
 
   // Update Mutation
   const updateMutation = useMutation({
     mutationFn: async (updatedEvent: any) => {
-      const res = await axios.put(`${API_URL}/tasks/${updatedEvent._id}`, updatedEvent, { withCredentials: true });
+      const res = await axios.put(`${API_URL}/tasks/${updatedEvent._id}`, updatedEvent, {
+        withCredentials: true,
+      });
       return res.data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tasks'] });
       toast.success('Event updated');
       setIsDialogOpen(false);
-    }
+    },
   });
 
   // Delete Mutation
@@ -64,7 +77,7 @@ export function Calendar() {
       queryClient.invalidateQueries({ queryKey: ['tasks'] });
       toast.success('Event deleted');
       setIsDialogOpen(false);
-    }
+    },
   });
 
   const handlePrevMonth = () => setCurrentDate(subMonths(currentDate, 1));
@@ -109,7 +122,11 @@ export function Calendar() {
       const end = task.deadline ? parseISO(task.deadline) : start;
 
       // Check if 'date' is within the start-end range (inclusive)
-      return (isSameDay(date, start) || isSameDay(date, end) || (isAfter(date, start) && isBefore(date, end)));
+      return (
+        isSameDay(date, start) ||
+        isSameDay(date, end) ||
+        (isAfter(date, start) && isBefore(date, end))
+      );
     });
   };
 
@@ -140,7 +157,11 @@ export function Calendar() {
         </div>
 
         <Button
-          onClick={() => { setSelectedDate(new Date()); setEditingEvent(null); setIsDialogOpen(true); }}
+          onClick={() => {
+            setSelectedDate(new Date());
+            setEditingEvent(null);
+            setIsDialogOpen(true);
+          }}
           className="hidden md:flex bg-primary hover:bg-primary/90 text-primary-foreground shadow-glow"
         >
           <Plus className="w-4 h-4 mr-2" /> Add Event
@@ -169,10 +190,7 @@ export function Calendar() {
             <div className="grid grid-cols-7 auto-rows-[110px]">
               {/* Empty padding cells */}
               {paddingDays.map((_, i) => (
-                <div
-                  key={`empty-${i}`}
-                  className="border-b border-r border-border bg-muted/20"
-                />
+                <div key={`empty-${i}`} className="border-b border-r border-border bg-muted/20" />
               ))}
 
               {/* Calendar Days */}
@@ -196,7 +214,9 @@ export function Calendar() {
                       <span
                         className={cn(
                           'text-[11px] font-medium w-6 h-6 flex items-center justify-center rounded-full transition-colors',
-                          isToday ? 'bg-primary text-primary-foreground shadow-glow-sm' : 'text-muted-foreground group-hover:text-foreground'
+                          isToday
+                            ? 'bg-primary text-primary-foreground shadow-glow-sm'
+                            : 'text-muted-foreground group-hover:text-foreground'
                         )}
                       >
                         {format(day, 'd')}
@@ -215,11 +235,15 @@ export function Calendar() {
                           onClick={(e) => handleEventClick(e, evt)}
                           className={cn(
                             'text-[10px] px-1.5 py-0.5 rounded-[4px] truncate font-medium border hover:scale-[1.02] transition-transform cursor-pointer shadow-sm shrink-0',
-                            evt.category === 'Sprint' ? 'bg-purple-100 dark:bg-purple-500/10 text-black dark:text-purple-500 border-purple-500 dark:border-purple-500/20' :
-                              evt.category === 'Review' ? 'bg-cyan-100 dark:bg-cyan-500/10 text-black dark:text-cyan-500 border-cyan-500 dark:border-cyan-500/20' :
-                                evt.category === 'Deadline' ? 'bg-red-100 dark:bg-red-500/10 text-black dark:text-red-500 border-red-500 dark:border-red-500/20' :
-                                  evt.category === 'Deep Work' ? 'bg-blue-100 dark:bg-blue-500/10 text-black dark:text-blue-500 border-blue-500 dark:border-blue-500/20' :
-                                    'bg-muted/50 text-foreground border-border'
+                            evt.category === 'Sprint'
+                              ? 'bg-purple-100 dark:bg-purple-500/10 text-black dark:text-purple-500 border-purple-500 dark:border-purple-500/20'
+                              : evt.category === 'Review'
+                                ? 'bg-cyan-100 dark:bg-cyan-500/10 text-black dark:text-cyan-500 border-cyan-500 dark:border-cyan-500/20'
+                                : evt.category === 'Deadline'
+                                  ? 'bg-red-100 dark:bg-red-500/10 text-black dark:text-red-500 border-red-500 dark:border-red-500/20'
+                                  : evt.category === 'Deep Work'
+                                    ? 'bg-blue-100 dark:bg-blue-500/10 text-black dark:text-blue-500 border-blue-500 dark:border-blue-500/20'
+                                    : 'bg-muted/50 text-foreground border-border'
                           )}
                         >
                           {evt.title}

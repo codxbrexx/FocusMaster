@@ -14,55 +14,55 @@ vi.mock('@/context/AuthContext', () => ({ useAuth: vi.fn() }));
 
 // Mock Child Components to simplify Dashboard test
 vi.mock('@/components/FocusHeatmap', () => ({
-    FocusHeatmap: () => <div data-testid="focus-heatmap">Heatmap</div>
+  FocusHeatmap: () => <div data-testid="focus-heatmap">Heatmap</div>,
 }));
 vi.mock('@/components/dashboard/WelcomeHeader', () => ({
-    WelcomeHeader: ({ user }: any) => <div>Welcome {user?.name}</div>
+  WelcomeHeader: ({ user }: any) => <div>Welcome {user?.name}</div>,
 }));
 vi.mock('@/components/dashboard/StatsOverview', () => ({
-    StatsOverview: () => <div>Stats Overview</div>
+  StatsOverview: () => <div>Stats Overview</div>,
 }));
 vi.mock('@/components/dashboard/PriorityTasks', () => ({
-    PriorityTasks: () => <div>Priority Tasks</div>
+  PriorityTasks: () => <div>Priority Tasks</div>,
 }));
 vi.mock('@/components/dashboard/DailyOverviewChart', () => ({
-    DailyOverviewChart: () => <div>Chart</div>
+  DailyOverviewChart: () => <div>Chart</div>,
 }));
 
 // Mock framer-motion
 vi.mock('framer-motion', () => ({
-    motion: {
-        div: ({ children, className }: any) => <div className={className}>{children}</div>,
-    },
+  motion: {
+    div: ({ children, className }: any) => <div className={className}>{children}</div>,
+  },
 }));
 
 describe('Dashboard', () => {
-    beforeEach(() => {
-        vi.clearAllMocks();
+  beforeEach(() => {
+    vi.clearAllMocks();
 
-        (useAuth as any).mockReturnValue({
-            user: { name: 'Test User' },
-        });
-
-        (useTaskStore as any).mockReturnValue({
-            tasks: [],
-        });
-
-        (useSettingsStore as any).mockReturnValue({
-            settings: { dailyGoal: 4, pomodoroDuration: 25 },
-        });
-
-        (useHistoryStore as any).mockReturnValue({
-            sessions: [],
-        });
+    (useAuth as any).mockReturnValue({
+      user: { name: 'Test User' },
     });
 
-    it('renders dashboard components', () => {
-        render(<Dashboard />);
-        expect(screen.getByText('Welcome Test User')).toBeInTheDocument();
-        expect(screen.getByText('Stats Overview')).toBeInTheDocument();
-        expect(screen.getByText('Priority Tasks')).toBeInTheDocument();
-        expect(screen.getByText('Chart')).toBeInTheDocument();
-        expect(screen.getByTestId('focus-heatmap')).toBeInTheDocument();
+    (useTaskStore as any).mockReturnValue({
+      tasks: [],
     });
+
+    (useSettingsStore as any).mockReturnValue({
+      settings: { dailyGoal: 4, pomodoroDuration: 25 },
+    });
+
+    (useHistoryStore as any).mockReturnValue({
+      sessions: [],
+    });
+  });
+
+  it('renders dashboard components', () => {
+    render(<Dashboard />);
+    expect(screen.getByText('Welcome Test User')).toBeInTheDocument();
+    expect(screen.getByText('Stats Overview')).toBeInTheDocument();
+    expect(screen.getByText('Priority Tasks')).toBeInTheDocument();
+    expect(screen.getByText('Chart')).toBeInTheDocument();
+    expect(screen.getByTestId('focus-heatmap')).toBeInTheDocument();
+  });
 });

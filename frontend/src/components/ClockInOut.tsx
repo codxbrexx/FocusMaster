@@ -20,7 +20,8 @@ export function ClockInOut() {
   const today = new Date().toLocaleDateString('en-CA');
   const selectedDateStr = selectedDate.toLocaleDateString('en-CA');
   const todayEntry = clockEntries.find((e) => !e.clockOut);
-  const isToday = selectedDate.getDate() === new Date().getDate() &&
+  const isToday =
+    selectedDate.getDate() === new Date().getDate() &&
     selectedDate.getMonth() === new Date().getMonth() &&
     selectedDate.getFullYear() === new Date().getFullYear();
 
@@ -115,11 +116,7 @@ export function ClockInOut() {
 
   return (
     <div className="max-w-7xl mx-auto space-y-6 p-4 md:p-6 pb-20">
-      <DateNavigator
-        selectedDate={selectedDate}
-        changeDate={changeDate}
-        isToday={isToday}
-      />
+      <DateNavigator selectedDate={selectedDate} changeDate={changeDate} isToday={isToday} />
 
       {/* Main Clock Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

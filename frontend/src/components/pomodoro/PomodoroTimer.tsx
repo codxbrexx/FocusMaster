@@ -34,19 +34,25 @@ export function PomodoroTimer() {
   const { sessions, addSession } = useHistoryStore();
 
   // Calculate daily sessions for UI
-  const sessionCount = sessions.filter(s => {
+  const sessionCount = sessions.filter((s) => {
     const today = new Date();
     const sDate = new Date(s.startTime);
-    return sDate.getDate() === today.getDate() &&
+    return (
+      sDate.getDate() === today.getDate() &&
       sDate.getMonth() === today.getMonth() &&
       sDate.getFullYear() === today.getFullYear() &&
-      s.type === 'pomodoro';
+      s.type === 'pomodoro'
+    );
   }).length;
 
   const [showMoodModal, setShowMoodModal] = useState(false);
   const [focusMode, setFocusMode] = useState(false);
 
-  const status = isActive ? 'running' : (timeLeft < totalDuration && timeLeft > 0 ? 'paused' : 'idle');
+  const status = isActive
+    ? 'running'
+    : timeLeft < totalDuration && timeLeft > 0
+      ? 'paused'
+      : 'idle';
 
   const sessionStartTime = useRef<Date | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -90,7 +96,11 @@ export function PomodoroTimer() {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement || (e.target as HTMLElement).isContentEditable) {
+      if (
+        e.target instanceof HTMLInputElement ||
+        e.target instanceof HTMLTextAreaElement ||
+        (e.target as HTMLElement).isContentEditable
+      ) {
         return;
       }
 
@@ -111,7 +121,7 @@ export function PomodoroTimer() {
       if (audioRef.current) {
         audioRef.current.play().catch(console.error);
       }
-      setShowMoodModal(true);
+      setTimeout(() => setShowMoodModal(true), 0);
     }
   }, [timeLeft, mode, showMoodModal, isActive]);
 
@@ -119,7 +129,8 @@ export function PomodoroTimer() {
     const sessionDuration = Math.floor(totalDuration / 60);
 
     // Fallback if sessionStartTime is null (e.g. after refresh)
-    const startTime = sessionStartTime.current || new Date(Date.now() - sessionDuration * 60 * 1000);
+    const startTime =
+      sessionStartTime.current || new Date(Date.now() - sessionDuration * 60 * 1000);
 
     await addSession({
       type: 'pomodoro',
@@ -128,7 +139,7 @@ export function PomodoroTimer() {
       endTime: new Date(),
       tag: selectedTag,
       taskId: selectedTaskId !== 'none' ? selectedTaskId : undefined,
-      mood: selectedMood
+      mood: selectedMood,
     });
 
     setShowMoodModal(false);
@@ -184,7 +195,6 @@ export function PomodoroTimer() {
 
         <CardContent className="p-8 md:p-12">
           <div className="flex flex-col items-center justify-center">
-
             <ModeSelector mode={mode} setMode={setMode} resetTimer={resetTimer} />
 
             <TimerDisplay
@@ -210,7 +220,6 @@ export function PomodoroTimer() {
               setSelectedTag={setSelectedTag}
               sessionCount={sessionCount}
             />
-
           </div>
         </CardContent>
       </Card>

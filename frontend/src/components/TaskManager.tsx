@@ -147,7 +147,10 @@ export function TaskManager() {
             editingTaskId={editingTaskId}
             handleSubmit={handleSubmit}
             categories={CATEGORIES}
-            onCancel={() => { setIsAdding(false); resetForm(); }}
+            onCancel={() => {
+              setIsAdding(false);
+              resetForm();
+            }}
           />
         </AnimatePresence>
 
@@ -207,7 +210,10 @@ export function TaskManager() {
                     className="flex items-center justify-between p-4 rounded-xl bg-card border border-border/40 hover:border-primary/20 transition-all shadow-sm opacity-60 hover:opacity-100"
                   >
                     <div className="flex items-center gap-3">
-                      <button onClick={() => handleToggleComplete(task)} className="text-green-600 hover:text-green-500 transition-colors">
+                      <button
+                        onClick={() => handleToggleComplete(task)}
+                        className="text-green-600 hover:text-green-500 transition-colors"
+                      >
                         <CheckCircle2 className="w-5 h-5" />
                       </button>
                       <span className="line-through text-muted-foreground font-medium">
