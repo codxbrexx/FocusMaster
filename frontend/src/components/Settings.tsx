@@ -1,4 +1,4 @@
-import { Check, User, UserCog, Timer, Palette, Zap, Monitor } from 'lucide-react';
+import { Check, UserCog, Timer, Palette, Zap, Monitor } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
@@ -9,12 +9,10 @@ import { TimerSettings } from './settings/TimerSettings';
 import { AppearanceSettings } from './settings/AppearanceSettings';
 import { AutomationSettings } from './settings/AutomationSettings';
 import { SystemSettings } from './settings/SystemSettings';
-import { ProfileSettings } from './settings/ProfileSettings';
 import { AccountSettings } from './settings/AccountSettings';
 
 export function Settings() {
   const tabs = [
-    { id: 'profile', label: 'Profile', icon: User },
     { id: 'account', label: 'Account', icon: UserCog },
     { id: 'timer', label: 'Timer', icon: Timer },
     { id: 'appearance', label: 'Appearance', icon: Palette },
@@ -44,7 +42,7 @@ export function Settings() {
       </div>
 
       <Tabs
-        defaultValue="profile"
+        defaultValue="account"
         className="w-full backdrop-blur-lg border border-primary/50 rounded-xl"
       >
         <TabsList className="w-full justify-start h-auto p-1 rounded-xl border-primary/50 mb-8 overflow-x-auto bg-background/50">
@@ -64,10 +62,6 @@ export function Settings() {
         </TabsList>
 
         <div className="space-y-6">
-          <TabsContent value="profile">
-            <ProfileSettings />
-          </TabsContent>
-
           <TabsContent value="account">
             <AccountSettings />
           </TabsContent>

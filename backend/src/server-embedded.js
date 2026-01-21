@@ -1,18 +1,18 @@
-const { MongoMemoryServer } = require('mongodb-memory-server');
-const mongoose = require('mongoose');
-require('dotenv').config();
-const app = require('./app');
+const { MongoMemoryServer } = require("mongodb-memory-server");
+const mongoose = require("mongoose");
+require("dotenv").config();
+const app = require("./app");
 
-const PORT = 5000; 
+const PORT = 5000;
 
 const startServer = async () => {
   try {
     // Start In-Memory MongoDB
-    console.log('Starting embedded MongoDB...');
+    console.log("Starting embedded MongoDB...");
     const mongod = await MongoMemoryServer.create({
-        instance: {
-            port: 27017,         
-      }
+      instance: {
+        port: 27017,
+      },
     });
     const uri = mongod.getUri();
     console.log(`MongoMemoryServer started at ${uri}`);

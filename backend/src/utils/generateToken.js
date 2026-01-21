@@ -1,30 +1,35 @@
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 
 const generateToken = (res, userId, req = null) => {
   const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
-    expiresIn: '30d',
+    expiresIn: "30d",
   });
 
   let isLocal = false;
-  
+
   if (req) {
-      const host = req.get('host') || '';
-      const origin = req.get('origin') || '';
-      
-      if (host.includes('localhost') || host.includes('127.0.0.1') || 
-          origin.includes('localhost') || origin.includes('127.0.0.1')) {
-          isLocal = true;
-      }
-  }
+    const host = req.get("host") || "";
+    const origin = req.get("origin") || "";
 
-  if (process.env.npm_lifecycle_event === 'dev') {
+    if (
+      host.includes("localhost") ||
+      host.includes("127.0.0.1") ||
+      origin.includes("localhost") ||
+      origin.includes("127.0.0.1")
+    ) {
       isLocal = true;
+    }
   }
 
-  const secure = process.env.NODE_ENV !== 'development' && !isLocal;
-  const sameSite = (process.env.NODE_ENV !== 'development' && !isLocal) ? 'none' : 'lax';
+  if (process.env.npm_lifecycle_event === "dev") {
+    isLocal = true;
+  }
 
-  res.cookie('jwt', token, {
+  const secure = process.env.NODE_ENV !== "development" && !isLocal;
+  const sameSite =
+    process.env.NODE_ENV !== "development" && !isLocal ? "none" : "lax";
+
+  res.cookie("jwt", token, {
     httpOnly: true,
     secure: secure,
     sameSite: sameSite,

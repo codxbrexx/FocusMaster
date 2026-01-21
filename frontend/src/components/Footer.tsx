@@ -1,5 +1,5 @@
-import { Github, Linkedin } from "lucide-react";
-import { ReportBugDialog } from "./ReportBugDialog";
+import { Github, Linkedin } from 'lucide-react';
+import { ReportBugDialog } from './ReportBugDialog';
 
 export const Footer = () => {
   return (

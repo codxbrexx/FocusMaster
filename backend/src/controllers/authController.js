@@ -1,9 +1,8 @@
-const asyncHandler = require('express-async-handler');
-const User = require('../models/User');
-const generateToken = require('../utils/generateToken');
-const { OAuth2Client } = require('google-auth-library');
+const asyncHandler = require("express-async-handler");
+const User = require("../models/User");
+const generateToken = require("../utils/generateToken");
+const { OAuth2Client } = require("google-auth-library");
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
-
 
 // @desc    Auth user/set token
 // @route   POST /api/auth/login
@@ -25,7 +24,7 @@ const authUser = asyncHandler(async (req, res) => {
     });
   } else {
     res.status(401);
-    throw new Error('Invalid email or password');
+    throw new Error("Invalid email or password");
   }
 });
 
@@ -35,25 +34,28 @@ const authUser = asyncHandler(async (req, res) => {
 const loginGuest = asyncHandler(async (req, res) => {
   let user;
 
-  if (req.body && req.body.guestId && req.body.guestId.match(/^[0-9a-fA-F]{24}$/)) {
+  if (
+    req.body &&
+    req.body.guestId &&
+    req.body.guestId.match(/^[0-9a-fA-F]{24}$/)
+  ) {
     try {
       user = await User.findById(req.body.guestId);
-    } catch (e) {
-    }
+    } catch (e) {}
   }
 
   // If no user found (or no ID provided), create new one
   if (!user) {
-    const guestId = require('crypto').randomBytes(4).toString('hex');
+    const guestId = require("crypto").randomBytes(4).toString("hex");
     const name = `Guest ${guestId}`;
     const email = `guest_${guestId}_${Date.now()}@temp.focusmaster`;
-    const password = require('crypto').randomBytes(10).toString('hex');
+    const password = require("crypto").randomBytes(10).toString("hex");
 
     user = await User.create({
       name,
       email,
       password,
-      isGuest: true
+      isGuest: true,
     });
   }
 
@@ -63,7 +65,7 @@ const loginGuest = asyncHandler(async (req, res) => {
     _id: user._id,
     name: user.name,
     email: user.email,
-    isGuest: user.isGuest
+    isGuest: user.isGuest,
   });
 });
 
@@ -84,7 +86,7 @@ const googleLogin = asyncHandler(async (req, res) => {
     let user = await User.findOne({ email });
 
     if (!user) {
-      const randomPassword = require('crypto').randomBytes(16).toString('hex');
+      const randomPassword = require("crypto").randomBytes(16).toString("hex");
 
       user = await User.create({
         name,
@@ -104,10 +106,9 @@ const googleLogin = asyncHandler(async (req, res) => {
       picture: user.picture,
       isGuest: user.isGuest,
     });
-
   } catch (error) {
     res.status(401);
-    throw new Error('Google authentication failed: ' + error.message);
+    throw new Error("Google authentication failed: " + error.message);
   }
 });
 
@@ -121,7 +122,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
   if (userExists) {
     res.status(400);
-    throw new Error('User already exists');
+    throw new Error("User already exists");
   }
 
   const user = await User.create({
@@ -139,7 +140,7 @@ const registerUser = asyncHandler(async (req, res) => {
     });
   } else {
     res.status(400);
-    throw new Error('Invalid user data');
+    throw new Error("Invalid user data");
   }
 });
 
@@ -147,11 +148,11 @@ const registerUser = asyncHandler(async (req, res) => {
 // @route   POST /api/auth/logout
 // @access  Public
 const logoutUser = asyncHandler(async (req, res) => {
-  res.cookie('jwt', '', {
+  res.cookie("jwt", "", {
     httpOnly: true,
     expires: new Date(0),
   });
-  res.status(200).json({ message: 'User logged out' });
+  res.status(200).json({ message: "User logged out" });
 });
 
 // @desc    Get user profile
@@ -190,7 +191,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     if (req.body.settings) {
       const newSettings = {
         ...(user.settings ? user.settings.toObject() : {}),
-        ...req.body.settings
+        ...req.body.settings,
       };
       user.settings = newSettings;
     }
@@ -205,7 +206,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     });
   } else {
     res.status(404);
-    throw new Error('User not found');
+    throw new Error("User not found");
   }
 });
 
@@ -218,20 +219,20 @@ const deleteUserAccount = asyncHandler(async (req, res) => {
   if (user) {
     // Delete associated data if necessary (e.g. sessions, tasks, history)
     // For now, we rely on cascading deletes or manual cleanup if models have references.
-    // Since we don't have explicit cascading set up in Mongoose schemas for everything, 
+    // Since we don't have explicit cascading set up in Mongoose schemas for everything,
     // we assume simpler deletion for now or future enhancement.
 
     await User.deleteOne({ _id: user._id });
 
-    res.cookie('jwt', '', {
+    res.cookie("jwt", "", {
       httpOnly: true,
       expires: new Date(0),
     });
 
-    res.status(200).json({ message: 'User deleted successfully' });
+    res.status(200).json({ message: "User deleted successfully" });
   } else {
     res.status(404);
-    throw new Error('User not found');
+    throw new Error("User not found");
   }
 });
 
@@ -248,30 +249,17 @@ const resetUserStats = asyncHandler(async (req, res) => {
     // Potentially other stats if stored on user model
     await user.save();
 
-    // Delete History/Sessions
-    // Assuming we have a Session or FocusSession model. 
-    // Based on previous file reads, we haven't explicitly seen the Session model import here, 
-    // but the task view showed `useHistoryStore` on frontend.
-    // Let's check imports. We need to import the Session model if it exists separately.
-    // If sessions are stored on User (embedded), then `user.save()` above handles it if we cleared it.
-    // BUT usually sessions are separate.
-    // Let's assume for MVP we just reset the fields we know about on User.
-    // If I need to delete sessions from a separate collection, I need that Model.
-
-
-
-
     res.status(200).json({
       _id: user._id,
       name: user.name,
       email: user.email,
       settings: user.settings,
       points: 0,
-      badges: []
+      badges: [],
     });
   } else {
     res.status(404);
-    throw new Error('User not found');
+    throw new Error("User not found");
   }
 });
 
@@ -284,19 +272,19 @@ const sendEmailOTP = asyncHandler(async (req, res) => {
 
   if (!user) {
     res.status(404);
-    throw new Error('User not found');
+    throw new Error("User not found");
   }
 
   if (!newEmail) {
     res.status(400);
-    throw new Error('New email is required');
+    throw new Error("New email is required");
   }
 
   // Check if email already taken
   const emailExists = await User.findOne({ email: newEmail });
   if (emailExists) {
     res.status(400);
-    throw new Error('Email already in use');
+    throw new Error("Email already in use");
   }
 
   // Generate 6 digit OTP
@@ -317,7 +305,9 @@ const sendEmailOTP = asyncHandler(async (req, res) => {
   console.log(`OTP CODE: ${otp}`);
   console.log(`----------------------------------------`);
 
-  res.status(200).json({ message: 'OTP sent to new email (Check server console)' });
+  res
+    .status(200)
+    .json({ message: "OTP sent to new email (Check server console)" });
 });
 
 // @desc    Verify Email OTP
@@ -325,26 +315,28 @@ const sendEmailOTP = asyncHandler(async (req, res) => {
 // @access  Private
 const verifyEmailOTP = asyncHandler(async (req, res) => {
   const { otp } = req.body;
-  const user = await User.findById(req.user._id).select('+emailOTP +emailOTPExpires +newEmail');
+  const user = await User.findById(req.user._id).select(
+    "+emailOTP +emailOTPExpires +newEmail",
+  );
 
   if (!user) {
     res.status(404);
-    throw new Error('User not found');
+    throw new Error("User not found");
   }
 
   if (!user.emailOTP || !user.emailOTPExpires || !user.newEmail) {
     res.status(400);
-    throw new Error('No OTP requested');
+    throw new Error("No OTP requested");
   }
 
   if (Date.now() > user.emailOTPExpires) {
     res.status(400);
-    throw new Error('OTP expired');
+    throw new Error("OTP expired");
   }
 
   if (user.emailOTP !== otp) {
     res.status(400);
-    throw new Error('Invalid OTP');
+    throw new Error("Invalid OTP");
   }
 
   // Update Email

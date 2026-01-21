@@ -1,10 +1,10 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const feedbackSchema = mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      ref: "User",
       required: false,
     },
     email: {
@@ -17,25 +17,25 @@ const feedbackSchema = mongoose.Schema(
     },
     category: {
       type: String,
-      enum: ['bug', 'feature', 'other'],
-      default: 'other',
+      enum: ["bug", "feature", "other"],
+      default: "other",
     },
     status: {
       type: String,
-      enum: ['new', 'in-progress', 'resolved', 'closed'],
-      default: 'new',
+      enum: ["new", "in-progress", "resolved", "closed"],
+      default: "new",
     },
     deviceInfo: {
-        userAgent: String,
-        platform: String,
-        screenSize: String,
-    }
+      userAgent: String,
+      platform: String,
+      screenSize: String,
+    },
   },
   {
     timestamps: true,
-  }
+  },
 );
 
-const Feedback = mongoose.model('Feedback', feedbackSchema);
+const Feedback = mongoose.model("Feedback", feedbackSchema);
 
 module.exports = Feedback;

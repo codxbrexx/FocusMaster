@@ -23,18 +23,21 @@ This is the React-based frontend for **FocusMaster**, built with TypeScript, Vit
 ## 💻 Development
 
 ### Prerequisites
+
 - Node.js v18+
 - Backend server running on port 5000
 
 ### Setup
 
 1. **Install Dependencies**
+
    ```bash
    npm install
    ```
 
 2. **Environment Variables**
    Create a `.env` file:
+
    ```env
    VITE_API_URL=http://localhost:5000/api
    VITE_GOOGLE_CLIENT_ID=your_google_client_id
@@ -48,6 +51,7 @@ This is the React-based frontend for **FocusMaster**, built with TypeScript, Vit
 ### 🧪 Testing
 
 We use **Vitest** and **React Testing Library**.
+
 ```bash
 npm test
 ```

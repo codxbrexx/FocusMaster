@@ -1,6 +1,6 @@
-const asyncHandler = require('express-async-handler');
-const axios = require('axios');
-const SpotifyToken = require('../models/SpotifyToken');
+const asyncHandler = require("express-async-handler");
+const axios = require("axios");
+const SpotifyToken = require("../models/SpotifyToken");
 
 const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
 const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
@@ -10,7 +10,8 @@ const REDIRECT_URI = process.env.SPOTIFY_REDIRECT_URI;
 // @route   GET /api/spotify/login
 // @access  Private
 const getLoginUrl = asyncHandler(async (req, res) => {
-  const scopes = 'user-read-playback-state user-modify-playback-state user-read-currently-playing playlist-read-private';
+  const scopes =
+    "user-read-playback-state user-modify-playback-state user-read-currently-playing playlist-read-private";
   const url = `https://accounts.spotify.com/authorize?response_type=code&client_id=${CLIENT_ID}&scope=${encodeURIComponent(scopes)}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}`;
   res.json({ url });
 });
@@ -23,16 +24,26 @@ const callback = asyncHandler(async (req, res) => {
   const REDIRECT_URI = process.env.SPOTIFY_REDIRECT_URI;
 
   try {
-    const response = await axios.post('https://accounts.spotify.com/api/token', new URLSearchParams({
-      grant_type: 'authorization_code',
-      code,
-      redirect_uri: REDIRECT_URI,
-    }), {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': 'Basic ' + (Buffer.from(process.env.SPOTIFY_CLIENT_ID + ':' + process.env.SPOTIFY_CLIENT_SECRET).toString('base64'))
-      }
-    });
+    const response = await axios.post(
+      "https://accounts.spotify.com/api/token",
+      new URLSearchParams({
+        grant_type: "authorization_code",
+        code,
+        redirect_uri: REDIRECT_URI,
+      }),
+      {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          Authorization:
+            "Basic " +
+            Buffer.from(
+              process.env.SPOTIFY_CLIENT_ID +
+                ":" +
+                process.env.SPOTIFY_CLIENT_SECRET,
+            ).toString("base64"),
+        },
+      },
+    );
 
     const { access_token, refresh_token, expires_in } = response.data;
 
@@ -42,33 +53,33 @@ const callback = asyncHandler(async (req, res) => {
       {
         user: req.user._id,
         accessToken: access_token,
-        refreshToken: refresh_token, // Also saving here for backup/logic, but cookie is primary for security if strict
+        refreshToken: refresh_token,
         expiresIn: expires_in,
-        expiresAt: new Date(Date.now() + expires_in * 1000)
+        expiresAt: new Date(Date.now() + expires_in * 1000),
       },
-      { upsert: true, new: true }
+      { upsert: true, new: true },
     );
 
     // Set HTTP-Only Cookie for Refresh Token (Security Best Practice)
     if (refresh_token) {
-      res.cookie('spotify_refresh_token', refresh_token, {
+      res.cookie("spotify_refresh_token", refresh_token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        maxAge: 30 * 24 * 60 * 60 * 1000,
       });
     }
 
     res.json({
       success: true,
-      message: 'Spotify Connected',
+      message: "Spotify Connected",
       access_token,
-      expires_in
+      expires_in,
     });
   } catch (error) {
-    console.error('Spotify Auth Error:', error.response?.data || error.message);
+    console.error("Spotify Auth Error:", error.response?.data || error.message);
     res.status(400);
-    throw new Error('Failed to authenticate with Spotify');
+    throw new Error("Failed to authenticate with Spotify");
   }
 });
 
@@ -79,15 +90,21 @@ const getValidToken = async (userId) => {
 
   if (new Date() >= tokenDoc.expiresAt) {
     try {
-      const response = await axios.post('https://accounts.spotify.com/api/token', new URLSearchParams({
-        grant_type: 'refresh_token',
-        refresh_token: tokenDoc.refreshToken,
-      }), {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'Authorization': 'Basic ' + (Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64'))
-        }
-      });
+      const response = await axios.post(
+        "https://accounts.spotify.com/api/token",
+        new URLSearchParams({
+          grant_type: "refresh_token",
+          refresh_token: tokenDoc.refreshToken,
+        }),
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            Authorization:
+              "Basic " +
+              Buffer.from(CLIENT_ID + ":" + CLIENT_SECRET).toString("base64"),
+          },
+        },
+      );
 
       const { access_token, expires_in } = response.data;
       tokenDoc.accessToken = access_token;
@@ -96,7 +113,7 @@ const getValidToken = async (userId) => {
       await tokenDoc.save();
       return access_token;
     } catch (error) {
-      console.error('Error refreshing token', error.response?.data || error);
+      console.error("Error refreshing token", error.response?.data || error);
       return null;
     }
   }
@@ -113,8 +130,8 @@ const getPlaybackState = asyncHandler(async (req, res) => {
   }
 
   try {
-    const response = await axios.get('https://api.spotify.com/v1/me/player', {
-      headers: { 'Authorization': `Bearer ${token}` }
+    const response = await axios.get("https://api.spotify.com/v1/me/player", {
+      headers: { Authorization: `Bearer ${token}` },
     });
 
     if (response.status === 204) {
@@ -123,7 +140,9 @@ const getPlaybackState = asyncHandler(async (req, res) => {
 
     res.json({ ...response.data, connected: true });
   } catch (error) {
-    res.status(error.response?.status || 500).json({ message: 'Spotify API error' });
+    res
+      .status(error.response?.status || 500)
+      .json({ message: "Spotify API error" });
   }
 });
 
@@ -132,58 +151,82 @@ const getPlaybackState = asyncHandler(async (req, res) => {
 // @access  Private
 const play = asyncHandler(async (req, res) => {
   const token = await getValidToken(req.user._id);
-  if (!token) return res.status(401).json({ message: 'No token' });
+  if (!token) return res.status(401).json({ message: "No token" });
 
   try {
-    await axios.put('https://api.spotify.com/v1/me/player/play', {}, {
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
+    await axios.put(
+      "https://api.spotify.com/v1/me/player/play",
+      {},
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      },
+    );
     res.json({ success: true });
   } catch (error) {
     //  console.error(error.response?.data);
-    res.status(error.response?.status || 500).json({ message: 'Action failed' });
+    res
+      .status(error.response?.status || 500)
+      .json({ message: "Action failed" });
   }
 });
 
 const pause = asyncHandler(async (req, res) => {
   const token = await getValidToken(req.user._id);
-  if (!token) return res.status(401).json({ message: 'No token' });
+  if (!token) return res.status(401).json({ message: "No token" });
 
   try {
-    await axios.put('https://api.spotify.com/v1/me/player/pause', {}, {
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
+    await axios.put(
+      "https://api.spotify.com/v1/me/player/pause",
+      {},
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      },
+    );
     res.json({ success: true });
   } catch (error) {
-    res.status(error.response?.status || 500).json({ message: 'Action failed' });
+    res
+      .status(error.response?.status || 500)
+      .json({ message: "Action failed" });
   }
 });
 
 const next = asyncHandler(async (req, res) => {
   const token = await getValidToken(req.user._id);
-  if (!token) return res.status(401).json({ message: 'No token' });
+  if (!token) return res.status(401).json({ message: "No token" });
 
   try {
-    await axios.post('https://api.spotify.com/v1/me/player/next', {}, {
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
+    await axios.post(
+      "https://api.spotify.com/v1/me/player/next",
+      {},
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      },
+    );
     res.json({ success: true });
   } catch (error) {
-    res.status(error.response?.status || 500).json({ message: 'Action failed' });
+    res
+      .status(error.response?.status || 500)
+      .json({ message: "Action failed" });
   }
 });
 
 const previous = asyncHandler(async (req, res) => {
   const token = await getValidToken(req.user._id);
-  if (!token) return res.status(401).json({ message: 'No token' });
+  if (!token) return res.status(401).json({ message: "No token" });
 
   try {
-    await axios.post('https://api.spotify.com/v1/me/player/previous', {}, {
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
+    await axios.post(
+      "https://api.spotify.com/v1/me/player/previous",
+      {},
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      },
+    );
     res.json({ success: true });
   } catch (error) {
-    res.status(error.response?.status || 500).json({ message: 'Action failed' });
+    res
+      .status(error.response?.status || 500)
+      .json({ message: "Action failed" });
   }
 });
 
@@ -194,5 +237,5 @@ module.exports = {
   play,
   pause,
   next,
-  previous
+  previous,
 };

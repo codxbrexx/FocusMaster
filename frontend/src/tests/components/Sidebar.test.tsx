@@ -12,10 +12,10 @@ beforeAll(() => {
       matches: false,
       media: query,
       onchange: null,
-      addListener: () => { }, // Deprecated
-      removeListener: () => { }, // Deprecated
-      addEventListener: () => { },
-      removeEventListener: () => { },
+      addListener: () => {}, // Deprecated
+      removeListener: () => {}, // Deprecated
+      addEventListener: () => {},
+      removeEventListener: () => {},
       dispatchEvent: () => false,
     }),
   });

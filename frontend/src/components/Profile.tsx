@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { useHistoryStore } from '@/store/useHistoryStore';
 import { motion } from 'framer-motion';
@@ -15,21 +15,12 @@ import {
 } from 'lucide-react';
 import { FocusHeatmap } from './FocusHeatmap';
 import { format } from 'date-fns';
-import {
-  Dialog,
-  DialogContent,
-  DialogTrigger,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from '@/components/ui/dialog';
-import { ProfileSettings } from './settings/ProfileSettings';
 import { getLevelInfo, getProgressPercent } from '@/utils/levelUtils';
 
 export function Profile() {
   const { user } = useAuth();
   const { sessions } = useHistoryStore();
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const navigate = useNavigate();
 
   // Stats Calculations
   const totalSessions = sessions.filter((s) => s.type === 'pomodoro').length;
@@ -137,12 +128,16 @@ export function Profile() {
 
               <div className="flex flex-wrap items-center justify-center md:justify-start gap-5 mt-3 text-sm text-muted-foreground/80 font-medium">
                 <div className="flex items-center gap-2 hover:text-foreground transition-colors">
-                  <div className="p-1 rounded bg-muted/50"><Mail className="w-3.5 h-3.5" /></div>
+                  <div className="p-1 rounded bg-muted/50">
+                    <Mail className="w-3.5 h-3.5" />
+                  </div>
                   <span>{user?.email || 'No email provided'}</span>
                 </div>
                 <div className="hidden md:block w-px h-4 bg-border" />
                 <div className="flex items-center gap-2 hover:text-foreground transition-colors">
-                  <div className="p-1 rounded bg-muted/50"><Calendar className="w-3.5 h-3.5" /></div>
+                  <div className="p-1 rounded bg-muted/50">
+                    <Calendar className="w-3.5 h-3.5" />
+                  </div>
                   <span>
                     Joined{' '}
                     {new Date().toLocaleDateString(undefined, { month: 'long', year: 'numeric' })}
@@ -161,25 +156,13 @@ export function Profile() {
 
             {/* Actions */}
             <div className="flex items-center gap-3 pb-2 w-full md:w-auto justify-center md:justify-end">
-              <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-                <DialogTrigger asChild>
-                  <button className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-primary-foreground font-medium shadow-sm hover:bg-primary/90 transition-all active:scale-[0.98]">
-                    <Edit3 className="w-4 h-4" />
-                    <span>Edit Profile</span>
-                  </button>
-                </DialogTrigger>
-                <DialogContent className="max-w-xl max-h-[85vh] overflow-y-auto backdrop-blur-lg bg-white/5 dark:bg-black/20">
-                  <DialogHeader>
-                    <DialogTitle>Edit Profile</DialogTitle>
-                    <DialogDescription>
-                      Update your personal details and account settings.
-                    </DialogDescription>
-                  </DialogHeader>
-                  <div className="pt-4">
-                    <ProfileSettings />
-                  </div>
-                </DialogContent>
-              </Dialog>
+              <button
+                onClick={() => navigate('/profile/edit')}
+                className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-primary-foreground font-medium shadow-sm hover:bg-primary/90 transition-all active:scale-[0.98]"
+              >
+                <Edit3 className="w-4 h-4" />
+                <span>Edit Profile</span>
+              </button>
 
               <div className="h-10 w-px bg-border/50 hidden md:block mx-2" />
 

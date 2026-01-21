@@ -1,5 +1,5 @@
-const asyncHandler = require('express-async-handler');
-const Feedback = require('../models/Feedback');
+const asyncHandler = require("express-async-handler");
+const Feedback = require("../models/Feedback");
 
 // @desc    Create a new feedback/bug report
 // @route   POST /api/feedback
@@ -9,13 +9,13 @@ const createFeedback = asyncHandler(async (req, res) => {
 
   if (!message) {
     res.status(400);
-    throw new Error('Message is required');
+    throw new Error("Message is required");
   }
 
   const feedbackData = {
     message,
-    category: category || 'other',
-    deviceInfo
+    category: category || "other",
+    deviceInfo,
   };
 
   if (req.user) {
@@ -30,7 +30,7 @@ const createFeedback = asyncHandler(async (req, res) => {
   res.status(201).json({
     success: true,
     data: feedback,
-    message: 'Feedback submitted successfully',
+    message: "Feedback submitted successfully",
   });
 });
 

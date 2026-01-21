@@ -1,16 +1,16 @@
 {
-    "name": "FocusMaster",
-    "short_name": "FocusMaster",
-    "start_url": "/",
-    "display": "standalone",
-    "background_color": "#09090b",
-    "theme_color": "#09090b",
-    "orientation": "portrait",
-    "icons": [
-        {
-            "src": "/fmasterlogo.png",
-            "sizes": "192x192 512x512",
-            "type": "image/png"
-        }
-    ]
+  "name": "FocusMaster",
+  "short_name": "FocusMaster",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#09090b",
+  "theme_color": "#09090b",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/fmasterlogo.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png"
+    }
+  ]
 }

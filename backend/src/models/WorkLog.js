@@ -1,11 +1,11 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const workLogSchema = mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: 'User',
+      ref: "User",
     },
     startTime: {
       type: Date,
@@ -15,11 +15,11 @@ const workLogSchema = mongoose.Schema(
       type: Date,
     },
     duration: {
-      type: Number, 
+      type: Number,
     },
     breakTime: {
-      type: Number, 
-      default: 0
+      type: Number,
+      default: 0,
     },
     notes: {
       type: String,
@@ -27,9 +27,9 @@ const workLogSchema = mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
-const WorkLog = mongoose.model('WorkLog', workLogSchema);
+const WorkLog = mongoose.model("WorkLog", workLogSchema);
 
 module.exports = WorkLog;

@@ -37,6 +37,9 @@ const Settings = lazy(() =>
 const Profile = lazy(() =>
   import('./components/Profile').then((module) => ({ default: module.Profile }))
 );
+const EditProfilePage = lazy(() =>
+  import('./pages/EditProfilePage').then((module) => ({ default: module.EditProfilePage }))
+);
 const Calendar = lazy(() =>
   import('./components/Calendar').then((module) => ({ default: module.Calendar }))
 );
@@ -108,6 +111,7 @@ const App = () => {
                       <Route path="/calendar" element={<Calendar />} />
                       <Route path="/settings" element={<Settings />} />
                       <Route path="/profile" element={<Profile />} />
+                      <Route path="/profile/edit" element={<EditProfilePage />} />
                       <Route path="/callback" element={<SpotifyCallback />} />
                     </Route>
                   </Route>

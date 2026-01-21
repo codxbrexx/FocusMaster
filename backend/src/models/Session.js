@@ -1,19 +1,19 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const sessionSchema = mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: 'User',
+      ref: "User",
     },
     task: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Task',
+      ref: "Task",
     },
     type: {
       type: String,
-      enum: ['focus', 'shortBreak', 'longBreak'],
+      enum: ["focus", "shortBreak", "longBreak"],
       required: true,
     },
     startTime: {
@@ -29,7 +29,7 @@ const sessionSchema = mongoose.Schema(
     },
     mood: {
       type: String,
-      enum: ['happy', 'neutral', 'sad', 'focused', 'distracted'],
+      enum: ["happy", "neutral", "sad", "focused", "distracted"],
     },
     completed: {
       type: Boolean,
@@ -38,9 +38,9 @@ const sessionSchema = mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
-const Session = mongoose.model('Session', sessionSchema);
+const Session = mongoose.model("Session", sessionSchema);
 
 module.exports = Session;

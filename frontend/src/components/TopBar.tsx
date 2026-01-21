@@ -1,5 +1,15 @@
 import { useState, useEffect } from 'react';
-import { Menu, User, Settings, LogOut, Sun, Moon, Monitor, ShieldCheck, Palette } from 'lucide-react';
+import {
+  Menu,
+  User,
+  Settings,
+  LogOut,
+  Sun,
+  Moon,
+  Monitor,
+  ShieldCheck,
+  Palette,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
 import { useTheme } from '@/context/ThemeContext';
@@ -89,7 +99,10 @@ export function TopBar({ onMenuClick }: TopBarProps) {
                 <div className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 border-2 border-background rounded-full"></div>
               </div>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56 bg-card/95 backdrop-blur-xl border-border/50">
+            <DropdownMenuContent
+              align="end"
+              className="w-56 bg-card/95 backdrop-blur-xl border-border/50"
+            >
               <DropdownMenuLabel className="font-normal">
                 <div className="flex flex-col space-y-1">
                   <p className="text-sm font-medium leading-none">{user?.name || 'Guest User'}</p>

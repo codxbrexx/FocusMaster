@@ -8,7 +8,6 @@ const LOADING_STATES = [
   'Preparing your dashboard...',
 ];
 
-
 interface LoadingPageProps {
   customMessage?: string;
 }
@@ -65,8 +64,8 @@ export const LoadingPage = ({ customMessage }: LoadingPageProps) => {
               strokeLinecap="round"
               className="origin-center animate-[spin_1.5s_linear_infinite]"
               style={{
-                strokeDasharray: 251, 
-                strokeDashoffset: 60, 
+                strokeDasharray: 251,
+                strokeDashoffset: 60,
               }}
             />
             {/* Gradient Definition */}

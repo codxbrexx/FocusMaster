@@ -130,4 +130,4 @@ export function WelcomeHeader({ user, settings, randomQuote, points }: WelcomeHe
       <div className="absolute bottom-0 left-0 -ml-32 -mb-32 w-80 h-80 bg-purple-500/5 rounded-full blur-3xl opacity-50" />
     </motion.div>
   );
-    }
+}

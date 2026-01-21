@@ -1,11 +1,11 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const spotifyTokenSchema = mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: 'User',
+      ref: "User",
     },
     accessToken: {
       type: String,
@@ -16,8 +16,8 @@ const spotifyTokenSchema = mongoose.Schema(
       required: true,
     },
     expiresIn: {
-        type: Number,
-        required: true
+      type: Number,
+      required: true,
     },
     expiresAt: {
       type: Date,
@@ -26,9 +26,9 @@ const spotifyTokenSchema = mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
-const SpotifyToken = mongoose.model('SpotifyToken', spotifyTokenSchema);
+const SpotifyToken = mongoose.model("SpotifyToken", spotifyTokenSchema);
 
 module.exports = SpotifyToken;

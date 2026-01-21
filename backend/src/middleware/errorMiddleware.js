@@ -8,16 +8,16 @@ const errorHandler = (err, req, res, next) => {
   let statusCode = res.statusCode === 200 ? 500 : res.statusCode;
   let message = err.message;
 
-  if (err.name === 'CastError' && err.kind === 'ObjectId') {
+  if (err.name === "CastError" && err.kind === "ObjectId") {
     statusCode = 404;
-    message = 'Resource not found';
+    message = "Resource not found";
   }
 
-  console.error('[Error Middleware Caught]:', err); 
+  console.error("[Error Middleware Caught]:", err);
 
   res.status(statusCode).json({
     message,
-    stack: err.stack, 
+    stack: err.stack,
   });
 };
 

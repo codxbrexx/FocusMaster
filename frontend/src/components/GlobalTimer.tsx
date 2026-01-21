@@ -78,19 +78,19 @@ export function GlobalTimer() {
       const handleComplete = () => {
         setIsActive(false);
         if (settings.soundEnabled && audioRef.current) {
-          audioRef.current.play().catch(() => { });
+          audioRef.current.play().catch(() => {});
         }
 
         const endTime = new Date();
         const startTime = new Date(
           endTime.getTime() -
-          (mode === 'pomodoro'
-            ? settings.pomodoroDuration
-            : mode === 'short-break'
-              ? settings.shortBreakDuration
-              : settings.longBreakDuration) *
-          60 *
-          1000
+            (mode === 'pomodoro'
+              ? settings.pomodoroDuration
+              : mode === 'short-break'
+                ? settings.shortBreakDuration
+                : settings.longBreakDuration) *
+              60 *
+              1000
         );
 
         // Save to history

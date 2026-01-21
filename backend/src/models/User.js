@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
+const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
 
 const userSchema = mongoose.Schema(
   {
@@ -14,14 +14,14 @@ const userSchema = mongoose.Schema(
     },
     picture: {
       type: String,
-      default: 'https://github.com/shadcn.png'
+      default: "https://github.com/shadcn.png",
     },
     password: {
       type: String,
       required: true,
     },
     settings: {
-      theme: { type: String, default: 'light' },
+      theme: { type: String, default: "light" },
       autoStartSession: { type: Boolean, default: false },
       autoStartBreak: { type: Boolean, default: false },
       motivationalQuotes: { type: Boolean, default: true },
@@ -34,7 +34,7 @@ const userSchema = mongoose.Schema(
     },
     points: {
       type: Number,
-      default: 0
+      default: 0,
     },
     badges: [{ type: String }],
     isGuest: {
@@ -43,44 +43,44 @@ const userSchema = mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ['user', 'admin'],
-      default: 'user',
-      required: true
+      enum: ["user", "admin"],
+      default: "user",
+      required: true,
     },
     status: {
       type: String,
-      enum: ['active', 'banned', 'suspended'],
-      default: 'active',
-      index: true
+      enum: ["active", "banned", "suspended"],
+      default: "active",
+      index: true,
     },
     banReason: {
       type: String,
-      select: false // Do not return by default
+      select: false, // Do not return by default
     },
     emailOTP: {
       type: String,
-      select: false
+      select: false,
     },
     emailOTPExpires: {
       type: Date,
-      select: false
+      select: false,
     },
     newEmail: {
       type: String,
-      select: false
-    }
+      select: false,
+    },
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-userSchema.pre('save', async function () {
-  if (!this.isModified('password')) {
+userSchema.pre("save", async function () {
+  if (!this.isModified("password")) {
     return;
   }
 
@@ -88,6 +88,6 @@ userSchema.pre('save', async function () {
   this.password = await bcrypt.hash(this.password, salt);
 });
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model("User", userSchema);
 
 module.exports = User;
