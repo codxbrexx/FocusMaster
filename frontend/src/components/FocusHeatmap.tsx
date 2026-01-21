@@ -165,11 +165,7 @@ export function FocusHeatmap() {
                             <TooltipTrigger asChild>
                               <div
                                 style={{ width: CELL_SIZE, height: CELL_SIZE }}
-                                className={`
-                                                                    rounded-[3px] transition-all duration-300
-                                                                    hover:scale-125 hover:z-10
-                                                                    ${getIntensityClass(count)}
-                                                                `}
+                                className={`rounded-[3px] transition-all duration-300 hover:scale-125 hover:z-10 ${getIntensityClass(count)}`}
                               />
                             </TooltipTrigger>
                             <TooltipContent

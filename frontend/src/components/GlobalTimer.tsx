@@ -7,7 +7,6 @@ import { toast } from 'sonner';
 export function GlobalTimer() {
   const {
     isActive,
-    tick,
     timeLeft,
     mode,
     setIsActive,
@@ -26,7 +25,6 @@ export function GlobalTimer() {
 
   useEffect(() => {
     const audio = new Audio();
-    // Simple beep base64 or file path
     audio.src =
       'data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YTxvT19vT19vT19vT19vT19vT19vT19vT19vT19vT19vT19vT19vT19vT19vT19vT19vT19vT19vT19vT19vT18=';
     audioRef.current = audio;
@@ -34,9 +32,6 @@ export function GlobalTimer() {
 
   // Sync settings with store when mode changes
   useEffect(() => {
-    // This effect ensures if settings change, we update the duration
-    // But ONLY if the timer is NOT running or if we specifically reset it.
-    // For now, let's just use it to initialize correct duration when mode switches.
     const durationMap = {
       pomodoro: settings.pomodoroDuration * 60,
       'short-break': settings.shortBreakDuration * 60,
@@ -58,13 +53,24 @@ export function GlobalTimer() {
     let interval: ReturnType<typeof setInterval>;
 
     if (isActive) {
+      const endTime = Date.now() + timeLeft * 1000;
+
       interval = setInterval(() => {
-        tick();
+        const now = Date.now();
+        const secondsRemaining = Math.ceil((endTime - now) / 1000);
+
+        const { setTimeLeft } = useTimerStore.getState();
+
+        if (secondsRemaining <= 0) {
+          setTimeLeft(0);
+        } else {
+          setTimeLeft(secondsRemaining);
+        }
       }, 1000);
     }
 
     return () => clearInterval(interval);
-  }, [isActive, tick]);
+  }, [isActive]);
 
   // specific effect for completion
   useEffect(() => {
@@ -72,19 +78,19 @@ export function GlobalTimer() {
       const handleComplete = () => {
         setIsActive(false);
         if (settings.soundEnabled && audioRef.current) {
-          audioRef.current.play().catch(() => {});
+          audioRef.current.play().catch(() => { });
         }
 
         const endTime = new Date();
         const startTime = new Date(
           endTime.getTime() -
-            (mode === 'pomodoro'
-              ? settings.pomodoroDuration
-              : mode === 'short-break'
-                ? settings.shortBreakDuration
-                : settings.longBreakDuration) *
-              60 *
-              1000
+          (mode === 'pomodoro'
+            ? settings.pomodoroDuration
+            : mode === 'short-break'
+              ? settings.shortBreakDuration
+              : settings.longBreakDuration) *
+          60 *
+          1000
         );
 
         // Save to history

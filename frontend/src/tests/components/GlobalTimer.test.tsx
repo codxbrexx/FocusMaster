@@ -6,7 +6,11 @@ import { useSettingsStore } from '@/store/useSettingsStore';
 import { useHistoryStore } from '@/store/useHistoryStore';
 import { toast } from 'sonner';
 
-vi.mock('@/store/useTimerStore', () => ({ useTimerStore: vi.fn() }));
+vi.mock('@/store/useTimerStore', () => {
+  const store = vi.fn();
+  (store as any).getState = vi.fn();
+  return { useTimerStore: store };
+});
 vi.mock('@/store/useSettingsStore', () => ({ useSettingsStore: vi.fn() }));
 vi.mock('@/store/useHistoryStore', () => ({ useHistoryStore: vi.fn() }));
 vi.mock('sonner', () => ({ toast: { success: vi.fn(), info: vi.fn() } }));
@@ -26,11 +30,13 @@ describe('GlobalTimer', () => {
   const mockSetMode = vi.fn();
   const mockSetTotalDuration = vi.fn();
   const mockAddSession = vi.fn();
+  const mockSetTimeLeft = vi.fn();
 
   beforeEach(() => {
     vi.clearAllMocks();
     vi.useFakeTimers();
 
+    // Mock hook return value
     (useTimerStore as any).mockReturnValue({
       isActive: false,
       tick: mockTick,
@@ -42,6 +48,12 @@ describe('GlobalTimer', () => {
       setMode: mockSetMode,
       selectedTag: 'Work',
       selectedTaskId: '1',
+      setTimeLeft: mockSetTimeLeft,
+    });
+
+    // Mock getState return value for non-hook usage
+    (useTimerStore.getState as any).mockReturnValue({
+      setTimeLeft: mockSetTimeLeft,
     });
 
     (useSettingsStore as any).mockReturnValue({
@@ -77,7 +89,7 @@ describe('GlobalTimer', () => {
       vi.advanceTimersByTime(1000);
     });
 
-    expect(mockTick).toHaveBeenCalled();
+    expect(mockSetTimeLeft).toHaveBeenCalled();
   });
 
   it('completes timer and adds session', () => {
