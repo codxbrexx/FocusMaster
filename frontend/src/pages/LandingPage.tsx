@@ -8,7 +8,7 @@ import { Footer } from '@/components/landing-page/Footer';
 
 export const LandingPage = () => {
   return (
-    <div className="min-h-screen bg-matrix text-foreground overflow-hidden selection:bg-primary/30">
+    <div className="min-h-screen bg-matrix text-foreground overflow-x-hidden selection:bg-primary/30">
       <Navbar />
       <Hero />
       <FeaturesGrid />

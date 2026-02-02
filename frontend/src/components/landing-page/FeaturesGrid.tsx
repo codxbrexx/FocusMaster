@@ -18,12 +18,12 @@ const FeatureCard = ({
     viewport={{ once: true }}
     transition={{ duration: 0.5, delay: delay }}
     whileHover={{ y: -5 }}
-    className="p-6 rounded-2xl bg-card/40 border border-border/50 hover:bg-card/60 hover:border-primary/20 backdrop-blur-sm transition-all group"
+    className="p-5 sm:p-6 rounded-xl sm:rounded-2xl bg-card/40 border border-border/50 hover:bg-card/60 hover:border-primary/20 backdrop-blur-sm transition-all group"
   >
-    <div className="mb-4 p-3 rounded-xl bg-background/50 w-fit group-hover:scale-110 transition-transform duration-300">
+    <div className="mb-3 sm:mb-4 p-2.5 sm:p-3 rounded-lg sm:rounded-xl bg-background/50 w-fit group-hover:scale-110 transition-transform duration-300">
       {icon}
     </div>
-    <h3 className="text-xl font-semibold mb-2 text-card-foreground">{title}</h3>
+    <h3 className="text-lg sm:text-xl font-semibold mb-2 text-card-foreground">{title}</h3>
     <p className="text-muted-foreground text-sm leading-relaxed">{description}</p>
   </motion.div>
 );
@@ -32,22 +32,22 @@ export const FeaturesGrid = () => {
   return (
     <section
       id="features"
-      className="relative z-10 container mx-auto px-6 py-24 border-t border-border/40"
+      className="relative z-10 container mx-auto px-4 sm:px-6 py-16 sm:py-20 md:py-24 border-t border-border/40"
     >
-      <div className="text-center mb-16 space-y-4">
+      <div className="text-center mb-12 sm:mb-16 space-y-3 sm:space-y-4">
         <h2
-          className="text-3xl md:text-5xl font-heading font-bold bg-clip-text 
-                    text-transparent bg-purple-400"
+          className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold bg-clip-text 
+                    text-transparent bg-purple-400 px-4"
         >
           Your All-in-One Productivity Ecosystem
         </h2>
-        <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+        <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto px-4">
           Stop switching apps. FocusMaster combines scientifically-proven tools to keep you in the
           flow state.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         <FeatureCard
           icon={<Timer className="w-6 h-6 text-blue-400" />}
           title="Smart Focus Timer"

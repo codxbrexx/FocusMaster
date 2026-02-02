@@ -2,27 +2,22 @@ import { Github, Twitter, Linkedin } from 'lucide-react';
 
 export const Footer = () => {
   return (
-    <footer className="relative z-10 border-t border-white/5 bg-background/20 backdrop-blur-lg py-8">
-      <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+    <footer className="relative z-10 border-t border-white/5 bg-background/20 backdrop-blur-lg py-6 sm:py-8">
+      <div className="container mx-auto px-4 sm:px-6 flex flex-col md:flex-row justify-between items-center gap-4 sm:gap-6">
         {/* Brand & Copyright */}
-        <div className="flex flex-col md:flex-row items-center gap-4 text-center md:text-left">
+        <div className="flex flex-col md:flex-row items-center gap-3 sm:gap-4 text-center md:text-left">
           <div className="flex items-center gap-2 opacity-90">
             <img src="/fmasterlogo.png" alt="Logo" className="w-6 h-6 rounded-md shadow-sm" />
-            <span className="font-bold text-sm tracking-wide">FocusMaster</span>
+            <span className="font-bold text-sm sm:text-base tracking-wide">FocusMaster</span>
           </div>
           <span className="hidden md:block text-muted-foreground/30">|</span>
-          <p className="text-xs text-muted-foreground">
-            © {new Date().getFullYear()} FocusMaster.{' '}
-            <span className="hidden sm:inline">All rights reserved.</span>
-          </p>
-          <span className="hidden md:block text-muted-foreground/30">|</span>
-          <p className="text-xs text-muted-foreground">
-            build by{' '}
+          <p className="text-xs sm:text-sm text-muted-foreground">
+              build by{' '}
             <a
               href="https://github.com/codxbrexx"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-primary hover:text-purple-500"
+              className="text-primary hover:text-purple-500 transition-colors"
             >
               codxbrexx
             </a>
@@ -30,7 +25,7 @@ export const Footer = () => {
         </div>
 
         {/* Socials & Links */}
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-4 sm:gap-6">
           <div className="flex gap-4">
             <SocialLink href="#" icon={<Twitter className="w-4 h-4" />} label="Twitter" />
             <SocialLink
@@ -64,7 +59,7 @@ const SocialLink = ({
     target="_blank"
     rel="noopener noreferrer"
     aria-label={label}
-    className="text-muted-foreground hover:text-primary transition-colors hover:scale-110 active:scale-95 duration-200"
+    className="text-muted-foreground hover:text-primary transition-colors hover:scale-110 active:scale-95 duration-200 p-2 hover:bg-white/10 rounded-lg"
   >
     {icon}
   </a>
