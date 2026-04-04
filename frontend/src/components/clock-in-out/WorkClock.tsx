@@ -1,6 +1,5 @@
-import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { LogIn, LogOut } from 'lucide-react';
+import { LogIn, LogOut, Pause } from 'lucide-react';
 import type { ClockEntry } from '@/store/useHistoryStore';
 
 interface WorkClockProps {
@@ -9,6 +8,7 @@ interface WorkClockProps {
   todayTotal: { hours: number; minutes: number; seconds: number };
   onClockIn: () => void;
   onClockOut: () => void;
+  onBreak?: () => void;
 }
 
 export function WorkClock({
@@ -17,115 +17,112 @@ export function WorkClock({
   todayTotal,
   onClockIn,
   onClockOut,
+  onBreak,
 }: WorkClockProps) {
+  const timeString = `${String(todayTotal.hours).padStart(2, '0')}:${String(todayTotal.minutes).padStart(2, '0')}:${String(todayTotal.seconds).padStart(2, '0')}`;
+
   return (
-    <Card className="border-2 backdrop-blur-xl bg-gradient-to-br from-card/80 via-card/50 to-card/80 shadow-x overflow-hidden relative">
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/10"></div>
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      {/* Main Time Display - Hero Section */}
+      <div className="lg:col-span-2 relative overflow-hidden rounded-xl bg-surface-container-low border border-outline-variant/10 p-10 flex flex-col justify-between min-h-[360px]">
+        {/* Ambient Glow Background */}
+        <div className="absolute -top-20 -right-20 w-80 h-80 bg-primary/10 blur-[100px] rounded-full"></div>
 
-      <CardContent className="relative z-10 pt-8 pb-8">
-        <div className="flex flex-col items-center justify-center space-y-6">
-          <div className="relative w-64 h-64 sm:w-72 sm:h-72">
-            <svg className="w-full h-full transform -rotate-90">
-              <defs>
-                <linearGradient id="clockGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#22c55e" stopOpacity="0.8" />
-                  <stop offset="100%" stopColor="#16a34a" stopOpacity="1" />
-                </linearGradient>
-              </defs>
+        <div className="relative z-10">
+          {/* Status Indicator */}
+          <div className="flex items-center gap-3 mb-8">
+            <div className="w-3 h-3 bg-primary rounded-full animate-pulse shadow-[0_0_10px_rgba(92,253,128,0.8)]"></div>
+            <span className="text-primary font-label tracking-widest uppercase text-xs font-bold">
+              {todayEntry && isToday ? 'Currently Clocked In' : 'Ready to Clock In'}
+            </span>
+          </div>
 
-              {[...Array(60)].map((_, i) => {
-                const angle = (i * 6 * Math.PI) / 180;
-                const isHourMark = i % 5 === 0;
-                const outerRadius = 136;
-                const innerRadius = isHourMark ? 126 : 130;
-                const x1 = 144 + outerRadius * Math.cos(angle);
-                const y1 = 144 + outerRadius * Math.sin(angle);
-                const x2 = 144 + innerRadius * Math.cos(angle);
-                const y2 = 144 + innerRadius * Math.sin(angle);
+          {/* Large Time Display */}
+          <div className="flex flex-col mb-8">
+            <span className="text-on-surface-variant font-label uppercase tracking-[0.2em] mb-2 text-xs">
+              {todayEntry && isToday ? 'Elapsed Professional Time' : 'Total Time'}
+            </span>
+            <h3 className="font-headline text-[4rem] sm:text-[5rem] lg:text-[6rem] font-bold leading-none tracking-tighter text-on-background">
+              {todayEntry && isToday ? timeString.slice(0, 5) : '00:00'}
+              <span className="text-primary/50 text-2xl sm:text-3xl ml-2 tracking-normal font-medium">
+                :{todayEntry && isToday ? timeString.slice(6) : '00'}
+              </span>
+            </h3>
+          </div>
+        </div>
 
-                return (
-                  <line
-                    key={i}
-                    x1={x1}
-                    y1={y1}
-                    x2={x2}
-                    y2={y2}
-                    stroke="currentColor"
-                    strokeWidth={isHourMark ? '2' : '1'}
-                    className="text-muted-foreground/30"
-                  />
-                );
-              })}
+        {/* Action Buttons */}
+        {isToday && (
+          <div className="relative z-10 flex flex-col sm:flex-row items-center gap-4">
+            {todayEntry ? (
+              <>
+                <Button
+                  onClick={onClockOut}
+                  className="px-10 py-5 bg-primary text-on-primary-container font-headline font-bold text-lg rounded-xl flex items-center gap-3 transition-transform duration-150 border border-primary/20"
+                >
+                  <LogOut className="w-6 h-6" />
+                  Clock Out
+                </Button>
+                <Button
+                  onClick={onBreak}
+                  variant="outline"
+                  className="px-8 py-5 border border-outline-variant/30 text-secondary font-headline font-bold text-lg rounded-xl flex items-center gap-3 hover:bg-secondary/5 transition-all"
+                >
+                  <Pause className="w-5 h-5" />
+                  Take a Break
+                </Button>
+              </>
+            ) : (
+              <Button
+                onClick={onClockIn}
+                className="px-10 py-5 bg-primary text-on-primary-container font-headline font-bold text-lg rounded-xl flex items-center gap-3 transition-transform duration-150 active:scale-95 shadow-lg shadow-primary/20"
+              >
+                <LogIn className="w-6 h-6" />
+                Clock In
+              </Button>
+            )}
+          </div>
+        )}
+      </div>
 
-              {/* Background circle */}
-              <circle
-                cx="144"
-                cy="144"
-                r="110"
-                stroke="currentColor"
-                strokeWidth="8"
-                fill="none"
-                className="text-muted/10"
-              />
-
-              {/* Progress circle */}
-              {todayEntry && isToday && (
-                <circle
-                  cx="144"
-                  cy="144"
-                  r="110"
-                  stroke="url(#clockGradient)"
-                  strokeWidth="8"
-                  fill="none"
-                  strokeDasharray={`${2 * Math.PI * 110}`}
-                  strokeDashoffset={`${2 * Math.PI * 110 * (1 - (todayTotal.hours % 24) / 24)}`}
-                  className="transition-all duration-1000"
-                  strokeLinecap="round"
-                />
-              )}
-            </svg>
-
-            {/* Center content */}
-            <div className="absolute inset-0 flex items-center justify-center flex-col">
-              <div className="text-center space-y-1">
-                <p className="text-xs text-muted-foreground uppercase tracking-wider">
-                  {todayEntry && isToday ? 'Time at Work' : 'Left Time'}
-                </p>
-                <div className="text-xl sm:text-2xl tabular-nums text-green-500">
-                  {todayEntry && isToday
-                    ? `${String(todayTotal.hours).padStart(2, '0')}h ${String(todayTotal.minutes).padStart(2, '0')}m ${String(todayTotal.seconds).padStart(2, '0')}s`
-                    : 'Online'}
-                </div>
+      {/* Side Card: Daily Pulse - Corner Position */}
+      <div className="lg:col-span-1 flex flex-col gap-4">
+        <div className="bg-surface-container-highest/40 backdrop-blur-md rounded-xl p-8 border border-outline-variant/10 flex-1 flex flex-col justify-center">
+          <h4 className="text-on-surface-variant font-label uppercase tracking-widest text-xs mb-6">Daily Pulse</h4>
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <span className="text-on-surface/80 text-sm">Session Duration</span>
+              <span className="font-headline font-medium text-lg text-secondary-design">
+                {todayEntry && isToday
+                  ? `${String(Math.floor((new Date().getTime() - new Date(todayEntry.clockIn).getTime()) / (1000 * 60))).padStart(2, '0')} min`
+                  : '--:-- --'}
+              </span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-on-surface/80 text-sm">Status</span>
+              <span className="font-headline font-medium text-lg text-tertiary">
+                {todayEntry && isToday && todayEntry.clockOut ? 'Clocked Out' : todayEntry ? 'Online' : 'Offline'}
+              </span>
+            </div>
+            <div className="pt-4 border-t border-outline-variant/10">
+              <div className="flex items-center justify-between text-sm text-on-surface-variant mb-2">
+                <span>Daily Progress</span>
+                <span>
+                  {todayEntry && isToday ? `${Math.min(Math.floor((todayTotal.hours / 8) * 100), 100)}%` : '0%'}
+                </span>
+              </div>
+              <div className="h-1.5 w-full bg-surface-container-high rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-primary rounded-full transition-all duration-500"
+                  style={{
+                    width: `${todayEntry && isToday ? Math.min((todayTotal.hours / 8) * 100, 100) : 0}%`,
+                  }}
+                ></div>
               </div>
             </div>
           </div>
-
-          {/* Clock In/Out Buttons */}
-          {isToday && (
-            <div className="flex flex-col sm:flex-row gap-3 w-full max-w-md">
-              <Button
-                size="lg"
-                onClick={onClockIn}
-                disabled={!!todayEntry}
-                className="flex-1 h-14 border-2 border-gray-500/20 text-base gap-3 shadow-green-500/15 hover:shadow-x hover:border-purple-500/20 transition-radius disabled:opacity-50"
-              >
-                <LogIn className="w-5 h-5" />
-                Clock In
-              </Button>
-              <Button
-                size="lg"
-                onClick={onClockOut}
-                disabled={!todayEntry}
-                variant="secondary"
-                className="flex-1 h-14 border-2 border-gray-500/20 text-base gap-3 shadow-red-500/15 hover:shadow-x hover:border-red-500/20 transition-radius disabled:opacity-40"
-              >
-                <LogOut className="w-5 h-5" />
-                Clock Out
-              </Button>
-            </div>
-          )}
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

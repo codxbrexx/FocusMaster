@@ -18,7 +18,7 @@ export function InfoPanel({ todayEntry, isToday, todayTotal, selectedDayEntries 
   };
 
   return (
-    <Card className="border-2 backdrop-blur-xl bg-card/50">
+    <Card className="border border-border/50 backdrop-blur-xl bg-card/50 shadow-none">
       <CardContent className="pt-6 space-y-6">
         <div>
           <p className="text-sm text-muted-foreground uppercase tracking-wider mb-2">

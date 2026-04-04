@@ -68,6 +68,53 @@
     /* DEFAULT MATRIX (Charcoal) */
     --matrix-bg: #0c0c0e;
     --matrix-dot: #27272a;
+
+    /* Material Design 3 Colors - Dark Theme */
+    --surface: #060e20;
+    --surface-dim: #060e20;
+    --surface-bright: #1f2b49;
+    --surface-container-lowest: #000000;
+    --surface-container-low: #091328;
+    --surface-container: #0f1930;
+    --surface-container-high: #141f38;
+    --surface-container-highest: #192540;
+    --on-surface: #dee5ff;
+    --on-surface-variant: #a3aac4;
+
+    --primary-design: #5cfd80;
+    --on-primary: #005d22;
+    --on-primary-container: #003711;
+    --primary-container: #02c953;
+    --on-primary-fixed: #004819;
+    --on-primary-fixed-variant: #006827;
+
+    --secondary-design: #8197ff;
+    --on-secondary: #001661;
+    --on-secondary-fixed: #002691;
+    --secondary-container: #124af0;
+    --secondary-fixed: #c7cfff;
+    --on-secondary-fixed-variant: #003cd6;
+    --secondary-dim: #3e65ff;
+
+    --tertiary: #d277ff;
+    --on-tertiary: #380052;
+    --on-tertiary-fixed: #2b0041;
+    --on-tertiary-fixed-variant: #5e0087;
+    --tertiary-container: #bf5af2;
+    --on-tertiary-container: #000000;
+    --tertiary-fixed: #dd94ff;
+    --tertiary-dim: #d277ff;
+
+    --error: #ff6e84;
+    --on-error: #490013;
+    --error-container: #a70138;
+    --on-error-container: #ffb2b9;
+
+    --outline: #6d758c;
+    --outline-variant: #40485d;
+    --inverse-surface: #faf8ff;
+    --inverse-on-surface: #4d556b;
+    --inverse-primary: #006e2a;
   }
 
   /* SHARED DARK VARS */

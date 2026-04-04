@@ -11,7 +11,7 @@ interface DateNavigatorProps {
 
 export function DateNavigator({ selectedDate, changeDate, isToday }: DateNavigatorProps) {
   return (
-    <Card className="border-2 backdrop-blur-xl bg-card/50">
+    <Card className="border border-border/50 backdrop-blur-xl bg-card/50 shadow-none">
       <CardContent className="pt-6">
         <div className="flex items-center justify-between">
           <Button

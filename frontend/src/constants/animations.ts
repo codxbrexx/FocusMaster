@@ -20,31 +20,28 @@ export const SPRING_SMOOTH_BOUNCY = {
 
 
 export const DURATIONS = {
-  quick: 0.15,        // Exit/collapse animations
-  normal: 0.2,        // Quick interactions (expand, icon changes)
-  moderate: 0.35,     // Modal/dropdown entrance
-  standard: 0.5,      // Page section entrance
-  slow: 0.8,          // Large container entrance
-  verySlow: 1.5,      // Progress bars, complex visual transitions
+  quick: 0.15,
+  normal: 0.2,
+  moderate: 0.35,
+  standard: 0.5,
+  slow: 0.8,
+  verySlow: 1.5,
 } as const;
 
 export const STAGGER = {
-  contact: 0.05,  // Tight spacing for list items
-  standard: 0.08, // Default container stagger
-  loose: 0.1,     // Loose spacing for major sections
+  contact: 0.05,
+  standard: 0.08,
+  loose: 0.1,
 } as const;
 
 
 export const EASING = {
-  easeOut: [0.16, 1, 0.3, 1],  // Standard ease-out
-  circOut: 'circOut',            // Circular easing for progress animations
-  easeInOut: 'easeInOut',        // Smooth both directions
+  easeOut: [0.16, 1, 0.3, 1],
+  circOut: 'circOut',
+  easeInOut: 'easeInOut',
 } as const;
 
-/**
- * Fade + Slide Up entrance
- * Used for: Hero text, form inputs, card sections
- */
+
 export const fadeInUp: Variants = {
   hidden: { opacity: 0, y: 20 },
   show: { opacity: 1, y: 0 },

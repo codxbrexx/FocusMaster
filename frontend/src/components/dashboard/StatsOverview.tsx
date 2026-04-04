@@ -31,7 +31,8 @@ export function StatsOverview({
       label: 'sessions',
       sub: `Goal: ${dailyGoal}`,
       icon: Target,
-      color: 'text-gray-500',
+      color: 'text-blue-500',
+      bg: 'bg-blue-500/10',
       progress: progressPercentage,
     },
     {
@@ -40,7 +41,8 @@ export function StatsOverview({
       label: 'hours',
       sub: 'Total today',
       icon: Clock,
-      color: 'text-gray-500',
+      color: 'text-purple-500',
+      bg: 'bg-purple-500/10',
       progress: Math.min((todayMinutes / (dailyGoal * pomodoroDuration)) * 100, 100),
     },
     {
@@ -49,7 +51,8 @@ export function StatsOverview({
       label: 'days',
       sub: 'Keep it up!',
       icon: Flame,
-      color: 'text-gray-500',
+      color: 'text-orange-500',
+      bg: 'bg-orange-500/10',
       progress: Math.min(currentStreak * 10, 100),
     },
     {
@@ -58,7 +61,8 @@ export function StatsOverview({
       label: 'tasks',
       sub: 'Great work!',
       icon: CheckCircle2,
-      color: 'text-gray-500',
+      color: 'text-green-500',
+      bg: 'bg-green-500/10',
       progress: totalTasks > 0 ? (completedToday / totalTasks) * 100 : 0,
     },
   ];

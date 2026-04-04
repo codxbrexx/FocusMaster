@@ -67,6 +67,23 @@ export function ClockInOut() {
     });
   };
 
+  const handleBreak = () => {
+    if (!todayEntry) {
+      toast.error('Not clocked in', {
+        description: 'You need to clock in first',
+      });
+      return;
+    }
+
+    updateClockEntry(todayEntry.id, {
+      breakTime: (todayEntry.breakTime || 0) + 5,
+    });
+
+    toast.success('Break Started', {
+      description: 'Take 5 minutes to recharge',
+    });
+  };
+
   const getTodayTotalHours = () => {
     const todayEntries = clockEntries.filter((e) => e.date === today);
     let total = todayEntries.reduce((acc, entry) => {
@@ -118,29 +135,29 @@ export function ClockInOut() {
     <div className="max-w-7xl mx-auto space-y-6 p-4 md:p-6 pb-20">
       <DateNavigator selectedDate={selectedDate} changeDate={changeDate} isToday={isToday} />
 
-      {/* Main Clock Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <WorkClock
+      {/* Main Work Clock Section - Full Width with Internal Grid */}
+      <WorkClock
+        todayEntry={todayEntry}
+        isToday={isToday}
+        todayTotal={todayTotal}
+        onClockIn={handleClockIn}
+        onClockOut={handleClockOut}
+        onBreak={handleBreak}
+      />
+
+      {/* Info Panel & Timeline - Side by Side Below */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <InfoPanel
           todayEntry={todayEntry}
           isToday={isToday}
           todayTotal={todayTotal}
-          onClockIn={handleClockIn}
-          onClockOut={handleClockOut}
+          selectedDayEntries={selectedDayEntries}
         />
 
-        {/* Info Panel & Timeline */}
-        <div className="space-y-4">
-          <InfoPanel
-            todayEntry={todayEntry}
-            isToday={isToday}
-            todayTotal={todayTotal}
-            selectedDayEntries={selectedDayEntries}
-          />
-
-          <WorkTimeline entries={selectedDayEntries} />
-        </div>
+        <WorkTimeline entries={selectedDayEntries} />
       </div>
 
+      {/* Stats Grid - Full Width */}
       <StatsGrid
         isToday={isToday}
         todayTotal={todayTotal}
