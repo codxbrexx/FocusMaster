@@ -29,7 +29,7 @@ export function PriorityTasks({ tasks }: PriorityTasksProps) {
       }}
       className="lg:col-span-2 h-full"
     >
-      <Card className="h-full backdrop-blur-xl bg-card/50 border border-white/10 shadow-none flex flex-col">
+      <Card className="h-full backdrop-blur-xl bg-card/50 border border-border/50 shadow-none flex flex-col">
         <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-border/40">
           <div className="space-y-1">
             <CardTitle className="text-lg flex items-center gap-2">
@@ -42,7 +42,7 @@ export function PriorityTasks({ tasks }: PriorityTasksProps) {
             variant="ghost"
             size="sm"
             onClick={() => navigate('/tasks')}
-            className="gap-1 hover:bg-primary/5 text-primary w-full sm:w-auto justify-center"
+            className="gap-1 text-primary w-full sm:w-auto justify-center"
           >
             View All <ArrowRight className="h-4 w-4" />
           </Button>
@@ -66,7 +66,7 @@ export function PriorityTasks({ tasks }: PriorityTasksProps) {
               {tasks.slice(0, 4).map((task) => (
                 <div
                   key={task._id}
-                  className="group flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 p-4 rounded-xl bg-card hover:bg-accent/40 border border-border/40 hover:border-primary/20 transition-all shadow-sm"
+                  className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 p-4 rounded-xl bg-card/30 border border-border/40 transition-all shadow-sm"
                 >
                   <div className="flex items-center gap-3 w-full sm:w-auto">
                     <div

@@ -31,8 +31,7 @@ export function StatsOverview({
       label: 'sessions',
       sub: `Goal: ${dailyGoal}`,
       icon: Target,
-      color: 'text-blue-500',
-      bg: 'bg-blue-500/10',
+      color: 'text-gray-500',
       progress: progressPercentage,
     },
     {
@@ -41,8 +40,7 @@ export function StatsOverview({
       label: 'hours',
       sub: 'Total today',
       icon: Clock,
-      color: 'text-green-500',
-      bg: 'bg-green-500/10',
+      color: 'text-gray-500',
       progress: Math.min((todayMinutes / (dailyGoal * pomodoroDuration)) * 100, 100),
     },
     {
@@ -51,8 +49,7 @@ export function StatsOverview({
       label: 'days',
       sub: 'Keep it up!',
       icon: Flame,
-      color: 'text-orange-500',
-      bg: 'bg-orange-500/10',
+      color: 'text-gray-500',
       progress: Math.min(currentStreak * 10, 100),
     },
     {
@@ -61,8 +58,7 @@ export function StatsOverview({
       label: 'tasks',
       sub: 'Great work!',
       icon: CheckCircle2,
-      color: 'text-purple-500',
-      bg: 'bg-purple-500/10',
+      color: 'text-gray-500',
       progress: totalTasks > 0 ? (completedToday / totalTasks) * 100 : 0,
     },
   ];
@@ -73,19 +69,16 @@ export function StatsOverview({
         hidden: { y: 20, opacity: 0 },
         show: { y: 0, opacity: 1, transition: { type: 'spring', stiffness: 300, damping: 24 } },
       }}
-      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
+      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
     >
       {stats.map((stat, idx) => (
         <motion.div key={idx} transition={{ type: 'spring', stiffness: 300, damping: 24 }}>
-          <Card className="backdrop-blur-xl bg-card/60 border border-white/10 transition-all duration-300 h-full overflow-hidden relative group">
-            <div
-              className={`absolute inset-0 bg-gradient-to-br ${stat.bg} opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl`}
-            />
+          <Card className="backdrop-blur-xl bg-card/60 border border-border/50 transition-all duration-300 h-full overflow-hidden relative shadow-none">
             <CardHeader className="flex flex-row items-center justify-between pb-4 space-y-0 relative z-10 px-6 pt-6">
               <CardTitle className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
                 {stat.title}
               </CardTitle>
-              <div className={`p-2.5 rounded-xl ${stat.bg} shadow-inner`}>
+              <div className={`p-2.5 rounded-xl ${stat.bg}`}>
                 <stat.icon className={`h-5 w-5 ${stat.color}`} />
               </div>
             </CardHeader>

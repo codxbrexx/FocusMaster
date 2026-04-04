@@ -68,7 +68,7 @@ export function DailyOverviewChart({
           <div className="space-y-4">
             <div className="flex items-center justify-between p-3 rounded-lg bg-background border border-border/50">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-blue-500/10 rounded-md text-blue-500">
+                <div className="p-2 bg-blue-500/10 rounded-md text-gray-500">
                   <Target className="w-4 h-4" />
                 </div>
                 <div>
@@ -82,7 +82,7 @@ export function DailyOverviewChart({
 
             <div className="flex items-center justify-between p-3 rounded-lg bg-background border border-border/50">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-purple-500/10 rounded-md text-purple-500">
+                <div className="p-2 bg-purple-500/10 rounded-md text-gray-500">
                   <Clock className="w-4 h-4" />
                 </div>
                 <div>

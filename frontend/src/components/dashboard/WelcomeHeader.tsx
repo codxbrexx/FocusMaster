@@ -30,17 +30,16 @@ export function WelcomeHeader({ user, settings, randomQuote, points }: WelcomeHe
         hidden: { y: 20, opacity: 0 },
         show: { y: 0, opacity: 1, transition: { type: 'spring', stiffness: 300, damping: 24 } },
       }}
-      className="relative overflow-hidden rounded-3xl backdrop-blur-xl bg-card/50 border border-border/50 p-8 lg:p-10 transition-all duration-300 border group"
+      className="relative overflow-hidden rounded-3xl backdrop-blur-xl bg-card/50 border border-border/50 p-8 lg:p-10 transition-all duration-300"
     >
       <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
         <div className="space-y-4 max-w-2xl">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium mb-2 border border-primary/20">
-            <Zap className="w-3 h-3 fill-current" />
-            <span>Productivity Boost Active</span>
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 text-primary text-xs font-medium mb-2 border border-primary/20">
+            <span>Welcome to Focus Master</span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground">
+          <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">
             {getTimeGreeting()},{' '}
-            <span className="text-transparent bg-clip-text bg-purple-600">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-purple-400">
               {user?.name || 'Focus Master'}
             </span>
           </h1>
@@ -51,7 +50,7 @@ export function WelcomeHeader({ user, settings, randomQuote, points }: WelcomeHe
             <Button
               onClick={() => navigate('/pomodoro')}
               size="lg"
-              className="rounded-full px-8 bg-background/50 hover:bg-background/80 border border-white/10 hover:border-purple-500"
+              className="rounded-full px-8 bg-background/50 border border-border/50"
             >
               <Target className="mr-2 h-5 w-5" /> Start Session
             </Button>
@@ -59,7 +58,7 @@ export function WelcomeHeader({ user, settings, randomQuote, points }: WelcomeHe
               onClick={() => navigate('/tasks')}
               variant="outline"
               size="lg"
-              className="rounded-full px-8 bg-background/50 hover:bg-background/80"
+              className="rounded-full px-8"
             >
               View Tasks
             </Button>
@@ -68,16 +67,12 @@ export function WelcomeHeader({ user, settings, randomQuote, points }: WelcomeHe
 
         {/* Rank Card */}
         <motion.div
-          className={`hidden md:flex flex-col justify-between p-6 rounded-xl border min-w-[280px] h-full relative overflow-hidden transition-all duration-500 ${currentLevel.bg} ${currentLevel.border} shadow-lg group cursor-pointer`}
+          className={`hidden md:flex flex-col justify-between p-6 rounded-xl border min-w-[280px] h-full relative overflow-hidden transition-all duration-500 ${currentLevel.bg} ${currentLevel.border} shadow-lg`}
         >
-          <div
-            className={`absolute -inset-1 blur-2xl opacity-20 group-hover:opacity-40 transition-opacity duration-500 bg-gradient-to-br ${currentLevel.gradient}`}
-          />
-
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-[200%]  transition-transform duration-1000 ease-in-out z-20" />
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-[200%] transition-transform duration-1000 ease-in-out z-20" />
 
           <div
-            className={`absolute inset-0 opacity-20 bg-gradient-to-br ${currentLevel.gradient} transition-opacity duration-500 group-hover:opacity-30`}
+            className={`absolute inset-0 opacity-20 bg-gradient-to-br ${currentLevel.gradient}`}
           />
           <div className="absolute inset-0 bg-black/20 backdrop-blur-[1px]" />
 
@@ -96,7 +91,7 @@ export function WelcomeHeader({ user, settings, randomQuote, points }: WelcomeHe
 
           <div className="relative z-10 mb-6">
             <div
-              className={`text-5xl font-black tracking-tighter leading-none ${currentLevel.color} drop-shadow-lg filter group-hover:brightness-125 transition-all duration-300`}
+              className={`text-5xl font-black tracking-tighter leading-none ${currentLevel.color} drop-shadow-lg filter transition-all duration-300`}
             >
               {currentLevel.name}
             </div>
