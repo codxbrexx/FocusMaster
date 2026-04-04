@@ -106,12 +106,9 @@
     --input: 240 5.9% 90%;
     --ring: 240 10% 3.9%;
 
-    /* White Matrix with Black Dot */
+    /* White Matrix with Light Gradients */
     --matrix-bg: #ffffff;
     --matrix-dot: #e4e4e7;
-
-    --matrix-bg: #ffffff;
-    --matrix-dot: #000000;
 
     /* Light Charts */
     --chart-1: 12 76% 61%;
@@ -125,6 +122,13 @@
     --warning-foreground: 0 0% 100%;
     --shadow-glow: 0 0 40px rgba(0, 0, 0, 0.1);
     --shadow-glow-lg: 0 0 80px rgba(0, 0, 0, 0.15);
+  }
+
+  .light body {
+    background-image:
+      radial-gradient(circle at 15% 30%, rgba(147, 51, 234, 0.06) 0%, transparent 40%),
+      radial-gradient(circle at 85% 70%, rgba(59, 130, 246, 0.06) 0%, transparent 40%),
+      radial-gradient(circle at 50% 50%, rgba(147, 51, 234, 0.03) 0%, transparent 35%);
   }
 
   .dark {
@@ -153,6 +157,13 @@
     --matrix-dot: #27272a;
   }
 
+  .dark body {
+    background-image:
+      radial-gradient(circle at 15% 30%, rgba(124, 58, 237, 0.08) 0%, transparent 40%),
+      radial-gradient(circle at 85% 70%, rgba(6, 182, 212, 0.08) 0%, transparent 40%),
+      radial-gradient(circle at 50% 50%, rgba(124, 58, 237, 0.04) 0%, transparent 35%);
+  }
+
   .blue {
     /* Navy Matrix */
     --background: 222 47% 11%;
@@ -177,6 +188,13 @@
 
     --matrix-bg: #020617;
     --matrix-dot: #1e293b;
+  }
+
+  .blue body {
+    background-image:
+      radial-gradient(circle at 15% 30%, rgba(59, 130, 246, 0.1) 0%, transparent 40%),
+      radial-gradient(circle at 85% 70%, rgba(34, 197, 232, 0.1) 0%, transparent 40%),
+      radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.05) 0%, transparent 35%);
   }
 
   .green {
@@ -204,6 +222,13 @@
     --matrix-bg: #020905;
     --matrix-dot: #064e3b;
   }
+
+  .green body {
+    background-image:
+      radial-gradient(circle at 15% 30%, rgba(34, 197, 94, 0.1) 0%, transparent 40%),
+      radial-gradient(circle at 85% 70%, rgba(16, 185, 129, 0.1) 0%, transparent 40%),
+      radial-gradient(circle at 50% 50%, rgba(34, 197, 94, 0.05) 0%, transparent 35%);
+  }
 }
 
 @layer base {
@@ -213,21 +238,16 @@
 
   .bg-matrix {
     background-color: var(--matrix-bg) !important;
-    background-image: radial-gradient(circle,
-        var(--matrix-dot) 1.5px,
-        transparent 1.5px) !important;
-    background-size: 32px 32px;
-    background-position: center;
-    background-repeat: repeat;
   }
 
   body {
     background-color: var(--matrix-bg);
-    background-image: radial-gradient(circle, var(--matrix-dot) 1.5px, transparent 1.5px);
-    background-size: 32px 32px;
-    background-position: center;
-    background-repeat: repeat;
+    background-image:
+      radial-gradient(circle at 15% 30%, rgba(124, 58, 237, 0.08) 0%, transparent 40%),
+      radial-gradient(circle at 85% 70%, rgba(6, 182, 212, 0.08) 0%, transparent 40%),
+      radial-gradient(circle at 50% 50%, rgba(124, 58, 237, 0.04) 0%, transparent 35%);
     background-attachment: fixed;
+    background-size: 100% 100%;
     color: hsl(var(--foreground));
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
@@ -302,6 +322,64 @@
         hsl(var(--primary)),
         hsl(var(--accent-foreground)),
         hsl(var(--primary)));
+  }
+
+  /* Pomodoro Timer Animations */
+  @keyframes pulse-glow {
+    0%, 100% {
+      box-shadow: 0 0 20px hsl(var(--primary) / 0.4), inset 0 0 20px hsl(var(--primary) / 0.1);
+    }
+    50% {
+      box-shadow: 0 0 40px hsl(var(--primary) / 0.6), inset 0 0 30px hsl(var(--primary) / 0.2);
+    }
+  }
+
+  @keyframes flow-gradient {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
+  @keyframes timer-pulse {
+    0%, 100% {
+      filter: drop-shadow(0 0 20px rgba(124, 58, 237, 0.4));
+    }
+    50% {
+      filter: drop-shadow(0 0 40px rgba(124, 58, 237, 0.7));
+    }
+  }
+
+  @keyframes subtle-scale {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.02);
+    }
+  }
+
+  .pomodoro-running {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  .pomodoro-bg-active {
+    background-image:
+      radial-gradient(circle at 15% 30%, rgba(124, 58, 237, 0.15) 0%, transparent 40%),
+      radial-gradient(circle at 85% 70%, rgba(6, 182, 212, 0.15) 0%, transparent 40%),
+      radial-gradient(circle at 50% 50%, rgba(124, 58, 237, 0.08) 0%, transparent 35%);
+    background-size: 200% 200%;
+    animation: flow-gradient 6s ease infinite;
+  }
+
+  .focus-mode-timer-active {
+    animation: timer-pulse 2s ease-in-out infinite;
+  }
+
+  .focus-mode-active {
+    animation: subtle-scale 3s ease-in-out infinite;
   }
 
   .scrollbar-hide {

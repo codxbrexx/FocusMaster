@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { useEffect } from 'react';
 import { ArrowLeft, Brain, Coffee, Armchair } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -54,6 +55,19 @@ export function FocusModeOverlay({
   const c = 2 * Math.PI * r;
   const offset = c - (progress / 100) * c;
 
+  // Background animation effect - active when timer is running
+  useEffect(() => {
+    if (status === 'running') {
+      document.body.classList.add('pomodoro-bg-active');
+    } else {
+      document.body.classList.remove('pomodoro-bg-active');
+    }
+
+    return () => {
+      document.body.classList.remove('pomodoro-bg-active');
+    };
+  }, [status]);
+
   return (
     <motion.div
       layoutId="focus-mode-container"
@@ -97,7 +111,7 @@ export function FocusModeOverlay({
       </div>
 
       <div className="flex-1 flex flex-col items-center justify-center relative -mt-16">
-        <div className="relative w-[min(85vw,65vh)] h-[min(85vw,65vh)] max-w-[800px] max-h-[800px]">
+        <div className={`relative w-[min(85vw,65vh)] h-[min(85vw,65vh)] max-w-[800px] max-h-[800px] ${status === 'running' ? 'focus-mode-timer-active' : ''}`}>
           <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
             <defs>
               <linearGradient id="gradient-focus" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -136,10 +150,10 @@ export function FocusModeOverlay({
             />
           </svg>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-[min(18vw,12vh)] font-bold tabular-nums tracking-tighter leading-none select-none text-foreground/90">
+            <span className={`text-[min(18vw,12vh)] font-bold tabular-nums tracking-tighter leading-none select-none text-foreground/90 transition-all ${status === 'running' ? 'focus-mode-active' : ''}`}>
               {formatTime(timeLeft)}
             </span>
-            <span className="text-[min(4vw,2vh)] text-muted-foreground/60 font-medium uppercase tracking-[0.2em] mt-4">
+            <span className={`text-[min(4vw,2vh)] text-muted-foreground/60 font-medium uppercase tracking-[0.2em] mt-4 transition-all ${status === 'running' ? 'text-primary/80' : ''}`}>
               {status === 'paused' ? 'PAUSED' : mode === 'pomodoro' ? 'FOCUS TIME' : 'BREAK TIME'}
             </span>
 

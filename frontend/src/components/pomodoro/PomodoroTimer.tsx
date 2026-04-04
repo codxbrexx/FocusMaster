@@ -125,6 +125,19 @@ export function PomodoroTimer() {
     }
   }, [timeLeft, mode, showMoodModal, isActive]);
 
+  // Background animation effect - only active when timer is running
+  useEffect(() => {
+    if (isActive) {
+      document.body.classList.add('pomodoro-bg-active');
+    } else {
+      document.body.classList.remove('pomodoro-bg-active');
+    }
+
+    return () => {
+      document.body.classList.remove('pomodoro-bg-active');
+    };
+  }, [isActive]);
+
   const savePomodoroSession = async (selectedMood: string) => {
     const sessionDuration = Math.floor(totalDuration / 60);
 

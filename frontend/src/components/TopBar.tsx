@@ -151,6 +151,7 @@ export function TopBar({ onMenuClick }: TopBarProps) {
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: 'auto', opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
+                    transition={{ type: 'spring', stiffness: 300, damping: 24, duration: 0.2 }}
                     className="overflow-hidden px-1"
                   >
                     <div className="grid grid-cols-3 gap-1 bg-muted/30 p-1 mb-2 mt-1 rounded-lg">

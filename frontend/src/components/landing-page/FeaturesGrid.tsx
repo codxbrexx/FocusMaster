@@ -52,37 +52,37 @@ export const FeaturesGrid = () => {
           icon={<Timer className="w-6 h-6 text-blue-400" />}
           title="Smart Focus Timer"
           description="Advanced Pomodoro engine with customizable intervals, auto-start breaks, and immersive soundscapes."
-          delay={0.1}
+          delay={0.05}
         />
         <FeatureCard
           icon={<ListTodo className="w-6 h-6 text-green-400" />}
           title="Seamless Task Management"
           description="Organize projects with Kanban boards. Drag, drop, and prioritize tasks without leaving your focus zone."
-          delay={0.2}
+          delay={0.1}
         />
         <FeatureCard
           icon={<BarChart2 className="w-6 h-6 text-purple-400" />}
           title="Deep Work Analytics"
           description="Visualize your productivity. Track heatmaps, session trends, and daily performance scores."
-          delay={0.3}
+          delay={0.15}
         />
         <FeatureCard
           icon={<Music2 className="w-6 h-6 text-pink-400" />}
           title="Embedded Spotify Player"
           description="Curate your environment. Control your favorite focus playlists directly from the dashboard."
-          delay={0.4}
+          delay={0.2}
         />
         <FeatureCard
           icon={<Clock className="w-6 h-6 text-yellow-400" />}
           title="Effortless Time Tracking"
           description="Log your hours automatically. Clock in, clock out, and generate detailed reports for your clients."
-          delay={0.5}
+          delay={0.25}
         />
         <FeatureCard
           icon={<Shield className="w-6 h-6 text-cyan-400" />}
           title="Private & Secure"
           description="Your data is yours. We use bank-grade encryption and secure authentication to keep your work safe."
-          delay={0.6}
+          delay={0.3}
         />
       </div>
     </section>

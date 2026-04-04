@@ -43,7 +43,7 @@ export const SidebarItem = ({ item, isOpen, onClick }: SidebarItemProps) => {
                 layoutId="sidebar-active-bg"
                 className="absolute inset-0 bg-gradient-to-r from-purple-500/10 via-purple-500/5 to-transparent rounded-xl"
                 initial={false}
-                transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 24 }}
               />
 
               {/* Left Active Pill Indicator */}

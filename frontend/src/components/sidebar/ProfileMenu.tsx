@@ -84,6 +84,7 @@ export const ProfileMenu = ({ isOpen }: ProfileMenuProps) => {
               initial={{ opacity: 0, width: 0 }}
               animate={{ opacity: 1, width: 'auto' }}
               exit={{ opacity: 0, width: 0 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 24, duration: 0.2 }}
               className="flex-1 overflow-hidden min-w-0"
             >
               <p className="text-sm font-semibold truncate text-foreground text-left">
@@ -127,6 +128,7 @@ export const ProfileMenu = ({ isOpen }: ProfileMenuProps) => {
               initial={{ opacity: 0, y: 10, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 10, scale: 0.95 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 24, duration: 0.2 }}
               className={cn(
                 'bg-black/45 backdrop-blur-[50px] border border-border/50 p-2 rounded-xl shadow-2xl overflow-hidden transition-all duration-300 text-popover-foreground',
                 isOpen ? 'w-full' : 'w-64'
@@ -216,6 +218,7 @@ export const ProfileMenu = ({ isOpen }: ProfileMenuProps) => {
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: 'auto', opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
+                      transition={{ type: 'spring', stiffness: 300, damping: 24, duration: 0.2 }}
                       className="overflow-hidden"
                     >
                       <div className="grid grid-cols-3 gap-1 bg-muted/30 p-1 mx-2 mb-2 mt-1 rounded-lg">

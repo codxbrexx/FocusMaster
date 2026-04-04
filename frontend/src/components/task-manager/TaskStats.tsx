@@ -67,7 +67,7 @@ export function TaskStats({
             <motion.div
               initial={{ width: 0 }}
               animate={{ width: `${progress}%` }}
-              transition={{ duration: 1, ease: 'easeOut' }}
+              transition={{ duration: 1.5, ease: 'circOut' }}
               className="h-full bg-blue-500 rounded-full"
             />
           </div>
