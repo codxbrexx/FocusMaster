@@ -76,7 +76,7 @@ export function StatsOverview({
       className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
     >
       {stats.map((stat, idx) => (
-        <motion.div key={idx} transition={{ type: 'spring', stiffness: 300, damping: 15 }}>
+        <motion.div key={idx} transition={{ type: 'spring', stiffness: 300, damping: 24 }}>
           <Card className="backdrop-blur-xl bg-card/60 border border-white/10 transition-all duration-300 h-full overflow-hidden relative group">
             <div
               className={`absolute inset-0 bg-gradient-to-br ${stat.bg} opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl`}

@@ -75,7 +75,7 @@ export const Sidebar = ({ open, onOpenChange }: SidebarProps) => {
       transition={{
         type: 'spring',
         stiffness: 300,
-        damping: 30,
+        damping: 24,
         opacity: { duration: 0.2 },
       }}
       className={cn(

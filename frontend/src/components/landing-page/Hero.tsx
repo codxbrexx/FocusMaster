@@ -4,22 +4,23 @@ import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { useAuth } from '@/context/AuthContext';
+import { fadeInUp, containerStagger, transitionModerate } from '@/constants/animations';
 
 export const Hero = () => {
   const { loginAsGuest } = useAuth();
   const navigate = useNavigate();
 
-  const fadeInUp = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+  const fadeInUpModified = {
+    hidden: fadeInUp.hidden,
+    visible: { ...fadeInUp.show, transition: transitionModerate },
   };
 
-  const staggerContainer = {
-    hidden: { opacity: 0 },
+  const staggerContainerModified = {
+    hidden: containerStagger.hidden,
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
+        staggerChildren: 0.08,
         delayChildren: 0.1,
       },
     },
@@ -30,16 +31,16 @@ export const Hero = () => {
       <motion.div
         initial="hidden"
         animate="visible"
-        variants={staggerContainer}
+        variants={staggerContainerModified}
         className="max-w-4xl mx-auto space-y-6 sm:space-y-8"
       >
-        <motion.div variants={fadeInUp} className="flex justify-center">
+        <motion.div variants={fadeInUpModified} className="flex justify-center">
           <div className="inline-flex items-center gap-2 px-3 py-1 sm:px-4 sm:py-1.5 rounded-full bg-secondary/50 border border-border/50 text-secondary-foreground text-xs sm:text-sm font-medium backdrop-blur-sm">
             <span>Welcome to FocusMaster</span>
           </div>
         </motion.div>
 
-        <motion.div variants={fadeInUp} className="relative">
+        <motion.div variants={fadeInUpModified} className="relative">
           <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold font-heading tracking-tight leading-[1.1] text-foreground px-2">
             Master Your <br className="hidden md:block" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-indigo-400">
@@ -49,7 +50,7 @@ export const Hero = () => {
         </motion.div>
 
         <motion.p
-          variants={fadeInUp}
+          variants={fadeInUpModified}
           className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed px-4"
         >
           The all-in-one workspace designed to eliminate distraction. Combine tasks, time tracking,
@@ -57,7 +58,7 @@ export const Hero = () => {
         </motion.p>
 
         <motion.div
-          variants={fadeInUp}
+          variants={fadeInUpModified}
           className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 pt-2 sm:pt-4 px-4 sm:px-0"
         >
           <Link to="/register" className="w-full sm:w-auto">
@@ -87,7 +88,7 @@ export const Hero = () => {
         </motion.div>
 
         <motion.div
-          variants={fadeInUp}
+          variants={fadeInUpModified}
           className="mt-12 sm:mt-16 md:mt-20 relative mx-auto max-w-5xl rounded-xl border border-border/40 bg-black/40 shadow-2xl overflow-hidden backdrop-blur-sm"
           style={{ perspective: '1000px' }}
         >

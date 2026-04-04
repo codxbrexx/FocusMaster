@@ -36,8 +36,8 @@ export const BottomMobileNav = () => {
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{
                     type: 'spring',
-                    stiffness: 400,
-                    damping: 30,
+                    stiffness: 300,
+                    damping: 24,
                   }}
                 />
               )}

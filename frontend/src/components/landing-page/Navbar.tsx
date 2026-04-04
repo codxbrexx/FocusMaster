@@ -30,7 +30,7 @@ export const Navbar = () => {
       <motion.nav
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.35 }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled
           ? 'bg-background/80 backdrop-blur-md border-b border-white/10 shadow-lg'
           : 'bg-transparent border-b border-transparent'

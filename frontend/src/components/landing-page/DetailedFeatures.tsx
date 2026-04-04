@@ -10,7 +10,7 @@ export const DetailedFeatures = () => {
           initial={{ opacity: 0, x: -50 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.5 }}
           className="lg:w-1/2 space-y-4 sm:space-y-6"
         >
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 text-blue-400 text-xs sm:text-sm font-medium">
@@ -36,7 +36,7 @@ export const DetailedFeatures = () => {
           initial={{ opacity: 0, x: 50 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.5 }}
           className="lg:w-1/2 p-6 sm:p-8 rounded-xl sm:rounded-2xl bg-gradient-to-br from-blue-500/5 to-transparent border border-blue-500/20"
         >
           <div className="aspect-video rounded-lg sm:rounded-xl bg-blue-500/10 flex items-center justify-center border border-blue-500/10">
