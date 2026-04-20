@@ -3,6 +3,11 @@ const User = require("../models/User");
 const generateToken = require("../utils/generateToken");
 const { OAuth2Client } = require("google-auth-library");
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+const bcrypt = require("bcryptjs");
+
+const OTP_EXPIRY_MS = 10 * 60 * 1000;
+const OTP_ATTEMPT_WINDOW_MS = 60 * 60 * 1000;
+const MAX_OTP_ATTEMPTS = 3;
 
 // @desc    Auth user/set token
 // @route   POST /api/auth/login
@@ -289,10 +294,13 @@ const sendEmailOTP = asyncHandler(async (req, res) => {
 
   // Generate 6 digit OTP
   const otp = Math.floor(100000 + Math.random() * 900000).toString();
+  const otpHash = await bcrypt.hash(otp, 10);
+  const now = new Date();
 
-  // Save to user (in production, hash this!)
-  user.emailOTP = otp;
-  user.emailOTPExpires = Date.now() + 10 * 60 * 1000; // 10 minutes
+  user.emailOTP = otpHash;
+  user.emailOTPExpires = new Date(now.getTime() + OTP_EXPIRY_MS);
+  user.emailOTPAttempts = 0;
+  user.emailOTPAttemptWindowStartedAt = now;
   user.newEmail = newEmail;
 
   await user.save();
@@ -316,7 +324,7 @@ const sendEmailOTP = asyncHandler(async (req, res) => {
 const verifyEmailOTP = asyncHandler(async (req, res) => {
   const { otp } = req.body;
   const user = await User.findById(req.user._id).select(
-    "+emailOTP +emailOTPExpires +newEmail",
+    "+emailOTP +emailOTPExpires +emailOTPAttempts +emailOTPAttemptWindowStartedAt +newEmail",
   );
 
   if (!user) {
@@ -329,12 +337,41 @@ const verifyEmailOTP = asyncHandler(async (req, res) => {
     throw new Error("No OTP requested");
   }
 
+  const now = Date.now();
+  const attemptWindowStartedAt = user.emailOTPAttemptWindowStartedAt
+    ? new Date(user.emailOTPAttemptWindowStartedAt).getTime()
+    : now;
+
+  if (now - attemptWindowStartedAt >= OTP_ATTEMPT_WINDOW_MS) {
+    user.emailOTPAttempts = 0;
+    user.emailOTPAttemptWindowStartedAt = new Date(now);
+  }
+
+  if ((user.emailOTPAttempts || 0) >= MAX_OTP_ATTEMPTS) {
+    res.status(429);
+    throw new Error("Too many OTP verification attempts. Try again in an hour.");
+  }
+
   if (Date.now() > user.emailOTPExpires) {
+    user.emailOTP = undefined;
+    user.emailOTPExpires = undefined;
+    user.emailOTPAttempts = 0;
+    user.emailOTPAttemptWindowStartedAt = undefined;
+    user.newEmail = undefined;
+    await user.save();
     res.status(400);
     throw new Error("OTP expired");
   }
 
-  if (user.emailOTP !== otp) {
+  const isValidOTP = await user.matchEmailOTP(otp);
+
+  if (!isValidOTP) {
+    user.emailOTPAttempts = (user.emailOTPAttempts || 0) + 1;
+    if (!user.emailOTPAttemptWindowStartedAt) {
+      user.emailOTPAttemptWindowStartedAt = new Date(now);
+    }
+    await user.save();
+
     res.status(400);
     throw new Error("Invalid OTP");
   }
@@ -343,6 +380,8 @@ const verifyEmailOTP = asyncHandler(async (req, res) => {
   user.email = user.newEmail;
   user.emailOTP = undefined;
   user.emailOTPExpires = undefined;
+  user.emailOTPAttempts = 0;
+  user.emailOTPAttemptWindowStartedAt = undefined;
   user.newEmail = undefined;
 
   await user.save();

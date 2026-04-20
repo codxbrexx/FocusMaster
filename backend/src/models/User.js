@@ -65,6 +65,15 @@ const userSchema = mongoose.Schema(
       type: Date,
       select: false,
     },
+    emailOTPAttempts: {
+      type: Number,
+      default: 0,
+      select: false,
+    },
+    emailOTPAttemptWindowStartedAt: {
+      type: Date,
+      select: false,
+    },
     newEmail: {
       type: String,
       select: false,
@@ -77,6 +86,14 @@ const userSchema = mongoose.Schema(
 
 userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
+};
+
+userSchema.methods.matchEmailOTP = async function (enteredOTP) {
+  if (!this.emailOTP) {
+    return false;
+  }
+
+  return bcrypt.compare(enteredOTP, this.emailOTP);
 };
 
 userSchema.pre("save", async function () {
