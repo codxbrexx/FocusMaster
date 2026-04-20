@@ -178,7 +178,32 @@ const sessionQuerySchema = z
   })
   .strict();
 
+const adminUsersQuerySchema = z
+  .object({
+    page: z.coerce.number().int().min(1).max(1000).optional(),
+    search: optionalTrimmedString(120),
+    role: z.enum(["user", "admin"]).optional(),
+    status: z.enum(["active", "banned", "suspended"]).optional(),
+  })
+  .strict();
+
+const adminUserStatusBodySchema = z
+  .object({
+    status: z.enum(["active", "banned", "suspended"]),
+    banReason: optionalTrimmedString(500),
+  })
+  .strict();
+
+const adminFeedbackStatusBodySchema = z
+  .object({
+    status: z.enum(["new", "in-progress", "resolved", "closed"]),
+  })
+  .strict();
+
 module.exports = {
+  adminFeedbackStatusBodySchema,
+  adminUserStatusBodySchema,
+  adminUsersQuerySchema,
   authSchemas,
   feedbackBodySchema,
   idParamSchema,
