@@ -3,6 +3,7 @@ const router = express.Router();
 const { createFeedback } = require("../controllers/feedbackController");
 const { validate } = require("../middleware/validateMiddleware");
 const { feedbackBodySchema } = require("../validation/schemas");
+const { sanitizeBody } = require("../middleware/sanitizeMiddleware");
 
 const { protect } = require("../middleware/authMiddleware");
 const { apiLimiter } = require("../middleware/rateLimitMiddleware");
@@ -25,6 +26,7 @@ router.post(
     }
   },
   apiLimiter,
+  sanitizeBody(),
   validate({ body: feedbackBodySchema }),
   createFeedback,
 );

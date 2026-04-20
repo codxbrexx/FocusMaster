@@ -7,6 +7,7 @@ const {
 } = require("../controllers/workLogController");
 const { protect } = require("../middleware/authMiddleware");
 const { apiLimiter } = require("../middleware/rateLimitMiddleware");
+const { sanitizeBody } = require("../middleware/sanitizeMiddleware");
 const { validate } = require("../middleware/validateMiddleware");
 const { workLogStopSchema } = require("../validation/schemas");
 
@@ -15,6 +16,7 @@ router.post(
   "/stop",
   protect,
   apiLimiter,
+  sanitizeBody(),
   validate({ body: workLogStopSchema }),
   stopClock,
 );
