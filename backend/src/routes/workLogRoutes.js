@@ -6,11 +6,18 @@ const {
   getWorkLogs,
 } = require("../controllers/workLogController");
 const { protect } = require("../middleware/authMiddleware");
+const { apiLimiter } = require("../middleware/rateLimitMiddleware");
 const { validate } = require("../middleware/validateMiddleware");
 const { workLogStopSchema } = require("../validation/schemas");
 
-router.post("/start", protect, startClock);
-router.post("/stop", protect, validate({ body: workLogStopSchema }), stopClock);
-router.get("/logs", protect, getWorkLogs);
+router.post("/start", protect, apiLimiter, startClock);
+router.post(
+  "/stop",
+  protect,
+  apiLimiter,
+  validate({ body: workLogStopSchema }),
+  stopClock,
+);
+router.get("/logs", protect, apiLimiter, getWorkLogs);
 
 module.exports = router;

@@ -7,6 +7,7 @@ const {
   deleteTask,
 } = require("../controllers/taskController");
 const { protect } = require("../middleware/authMiddleware");
+const { apiLimiter } = require("../middleware/rateLimitMiddleware");
 const { validate } = require("../middleware/validateMiddleware");
 const {
   idParamSchema,
@@ -16,15 +17,16 @@ const {
 
 router
   .route("/")
-  .get(protect, getTasks)
-  .post(protect, validate({ body: taskBodySchema }), createTask);
+  .get(protect, apiLimiter, getTasks)
+  .post(protect, apiLimiter, validate({ body: taskBodySchema }), createTask);
 router
   .route("/:id")
   .put(
     protect,
+    apiLimiter,
     validate({ params: idParamSchema, body: taskUpdateBodySchema }),
     updateTask,
   )
-  .delete(protect, validate({ params: idParamSchema }), deleteTask);
+  .delete(protect, apiLimiter, validate({ params: idParamSchema }), deleteTask);
 
 module.exports = router;

@@ -9,6 +9,7 @@ const {
   getSessionStats,
 } = require("../controllers/sessionController");
 const { protect } = require("../middleware/authMiddleware");
+const { apiLimiter } = require("../middleware/rateLimitMiddleware");
 const { validate } = require("../middleware/validateMiddleware");
 const {
   idParamSchema,
@@ -19,17 +20,18 @@ const {
 
 router
   .route("/")
-  .get(protect, validate({ query: sessionQuerySchema }), getSessions)
-  .post(protect, validate({ body: sessionBodySchema }), createSession);
-router.get("/stats", protect, getSessionStats);
+  .get(protect, apiLimiter, validate({ query: sessionQuerySchema }), getSessions)
+  .post(protect, apiLimiter, validate({ body: sessionBodySchema }), createSession);
+router.get("/stats", protect, apiLimiter, getSessionStats);
 router
   .route("/:id")
-  .get(protect, validate({ params: idParamSchema }), getSession)
+  .get(protect, apiLimiter, validate({ params: idParamSchema }), getSession)
   .patch(
     protect,
+    apiLimiter,
     validate({ params: idParamSchema, body: sessionUpdateBodySchema }),
     updateSession,
   )
-  .delete(protect, validate({ params: idParamSchema }), deleteSession);
+  .delete(protect, apiLimiter, validate({ params: idParamSchema }), deleteSession);
 
 module.exports = router;

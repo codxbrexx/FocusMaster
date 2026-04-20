@@ -5,6 +5,7 @@ const { validate } = require("../middleware/validateMiddleware");
 const { feedbackBodySchema } = require("../validation/schemas");
 
 const { protect } = require("../middleware/authMiddleware");
+const { apiLimiter } = require("../middleware/rateLimitMiddleware");
 
 router.post(
   "/",
@@ -23,6 +24,7 @@ router.post(
       next();
     }
   },
+  apiLimiter,
   validate({ body: feedbackBodySchema }),
   createFeedback,
 );

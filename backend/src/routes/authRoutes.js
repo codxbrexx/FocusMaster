@@ -15,31 +15,52 @@ const {
   verifyEmailOTP,
 } = require("../controllers/authController");
 const { protect } = require("../middleware/authMiddleware");
+const {
+  apiLimiter,
+  authLimiter,
+} = require("../middleware/rateLimitMiddleware");
 const { validate } = require("../middleware/validateMiddleware");
 const { authSchemas } = require("../validation/schemas");
 
-router.post("/register", validate({ body: authSchemas.register }), registerUser);
-router.post("/login", validate({ body: authSchemas.login }), authUser);
-router.post("/guest", validate({ body: authSchemas.guest }), loginGuest);
-router.post("/google", validate({ body: authSchemas.google }), googleLogin);
-router.post("/logout", logoutUser);
+router.post(
+  "/register",
+  authLimiter,
+  validate({ body: authSchemas.register }),
+  registerUser,
+);
+router.post("/login", authLimiter, validate({ body: authSchemas.login }), authUser);
+router.post("/guest", authLimiter, validate({ body: authSchemas.guest }), loginGuest);
+router.post(
+  "/google",
+  authLimiter,
+  validate({ body: authSchemas.google }),
+  googleLogin,
+);
+router.post("/logout", apiLimiter, logoutUser);
 router
   .route("/profile")
-  .get(protect, getUserProfile)
-  .put(protect, validate({ body: authSchemas.profileUpdate }), updateUserProfile)
-  .delete(protect, deleteUserAccount);
+  .get(protect, apiLimiter, getUserProfile)
+  .put(
+    protect,
+    apiLimiter,
+    validate({ body: authSchemas.profileUpdate }),
+    updateUserProfile,
+  )
+  .delete(protect, apiLimiter, deleteUserAccount);
 
-router.route("/profile/stats").delete(protect, resetUserStats);
+router.route("/profile/stats").delete(protect, apiLimiter, resetUserStats);
 
 router.post(
   "/otp/send",
   protect,
+  apiLimiter,
   validate({ body: authSchemas.otpSend }),
   sendEmailOTP,
 );
 router.put(
   "/otp/verify",
   protect,
+  apiLimiter,
   validate({ body: authSchemas.otpVerify }),
   verifyEmailOTP,
 );
