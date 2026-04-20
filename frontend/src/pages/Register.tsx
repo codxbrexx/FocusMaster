@@ -4,15 +4,40 @@ import { GoogleLogin } from '@react-oauth/google';
 import { useAuth } from '../context/AuthContext';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../components/ui/card';
-import { User, ArrowRight, Lock, Mail, Loader2 } from 'lucide-react';
+import { User, Lock, Mail, Loader2, Eye, EyeOff, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { toast } from 'sonner';
+
+// Password strength indicator
+const PasswordStrengthIndicator = ({ password }: { password: string }) => {
+  const getStrength = () => {
+    if (password.length < 6) return 'weak';
+    if (password.length < 10) return 'fair';
+    if (password.length >= 12 && /[A-Z]/.test(password) && /[0-9]/.test(password)) return 'strong';
+    return 'fair';
+  };
+
+  const strength = getStrength();
+  const colors = {
+    weak: 'bg-red-500',
+    fair: 'bg-yellow-500',
+    strong: 'bg-green-500',
+  };
+
+  return (
+    <div className="flex gap-2 items-center mt-2">
+      <div className={`h-1 flex-1 rounded-full ${colors[strength]}`} />
+      <span className="text-xs text-gray-500 capitalize">{strength}</span>
+    </div>
+  );
+};
 
 export function Register() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const { register, loginAsGuest, logout, googleLogin } = useAuth();
@@ -70,137 +95,209 @@ export function Register() {
     }
   };
 
+  const passwordsMatch = password && confirmPassword && password === confirmPassword;
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background px-4">
-      <Card className="w-full max-w-md border-primary/10 shadow-xl bg-card/50 backdrop-blur-sm relative z-10">
-        <CardHeader className="space-y-1 text-center">
-          <div className="mx-auto w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-2">
-            <User className="w-6 h-6 text-primary" />
+    <div className="flex h-[100dvh] w-full bg-white overflow-hidden">
+      {/* Left side - Image (hidden on mobile) */}
+      <div className="w-full hidden md:flex items-center justify-center bg-gray-50">
+        <img
+          className="w-full h-full object-cover"
+          src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=800&fit=crop"
+          alt="Get started with FocusMaster"
+        />
+      </div>
+
+      {/* Right side - Form */}
+      <div className="w-full flex flex-col items-center justify-center px-6 md:px-0 overflow-y-auto">
+        <div className="w-full md:w-96 max-w-md py-8">
+          {/* Header */}
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-gray-900">Create an account</h1>
+            <p className="text-sm text-gray-600 mt-2">Join FocusMaster and start mastering your time</p>
           </div>
-          <CardTitle className="text-2xl font-bold">Create an account</CardTitle>
-          <CardDescription>Enter your information to get started</CardDescription>
-        </CardHeader>
-        <CardContent>
+
+          {/* Error Message */}
           {error && (
-            <div className="mb-4 p-3 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive text-sm font-medium text-center transition-all animate-in fade-in slide-in-from-top-1">
+            <div className="mb-4 p-4 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm">
               {error}
             </div>
           )}
+
+          {/* Google Login Button */}
+          <div className="flex justify-center mb-6">
+            <GoogleLogin
+              onSuccess={(credentialResponse) => {
+                if (credentialResponse.credential) {
+                  googleLogin(credentialResponse.credential);
+                  navigate('/dashboard');
+                }
+              }}
+              onError={() => {
+                setError('Google Login Failed');
+              }}
+              text="signup_with"
+            />
+          </div>
+
+          {/* Divider */}
+          <div className="flex items-center gap-3 mb-6">
+            <div className="flex-1 h-px bg-gray-200"></div>
+            <span className="text-xs text-gray-500">or sign up with email</span>
+            <div className="flex-1 h-px bg-gray-200"></div>
+          </div>
+
+          {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
+            {/* Full Name Field */}
+            <div>
+              <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                Full Name
+              </label>
               <div className="relative">
-                <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <User className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                 <Input
+                  id="name"
                   type="text"
-                  placeholder="Full Name"
-                  className="pl-9"
+                  placeholder="Name"
+                  className="pl-10 h-11 border border-gray-300 bg-white text-gray-900 placeholder:text-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   disabled={isLoading}
                 />
               </div>
             </div>
-            <div className="space-y-2">
+
+            {/* Email Field */}
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                Email
+              </label>
               <div className="relative">
-                <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                 <Input
+                  id="email"
                   type="email"
                   placeholder="name@example.com"
-                  className="pl-9"
+                  className="pl-10 h-11 border border-gray-300 bg-white text-gray-900 placeholder:text-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   disabled={isLoading}
                 />
               </div>
             </div>
-            <div className="space-y-2">
+
+            {/* Password Field */}
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+                Password
+              </label>
               <div className="relative">
-                <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                 <Input
-                  type="password"
-                  placeholder="Password"
-                  className="pl-9"
+                  id="password"
+                  type={isPasswordVisible ? 'text' : 'password'}
+                  placeholder="••••••••"
+                  className="pl-10 pr-10 h-11 border border-gray-300 bg-white text-gray-900 placeholder:text-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   disabled={isLoading}
                 />
+                <button
+                  type="button"
+                  onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+                  className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
+                  tabIndex={-1}
+                >
+                  {isPasswordVisible ? (
+                    <EyeOff className="h-4 w-4" />
+                  ) : (
+                    <Eye className="h-4 w-4" />
+                  )}
+                </button>
               </div>
+              {password && <PasswordStrengthIndicator password={password} />}
             </div>
-            <div className="space-y-2">
+
+            {/* Confirm Password Field */}
+            <div>
+              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-2">
+                Confirm Password
+              </label>
               <div className="relative">
-                <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                 <Input
-                  type="password"
-                  placeholder="Confirm Password"
-                  className="pl-9"
+                  id="confirmPassword"
+                  type={isConfirmPasswordVisible ? 'text' : 'password'}
+                  placeholder="••••••••"
+                  className="pl-10 pr-10 h-11 border border-gray-300 bg-white text-gray-900 placeholder:text-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   disabled={isLoading}
                 />
+                <button
+                  type="button"
+                  onClick={() => setIsConfirmPasswordVisible(!isConfirmPasswordVisible)}
+                  className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
+                  tabIndex={-1}
+                >
+                  {isConfirmPasswordVisible ? (
+                    <EyeOff className="h-4 w-4" />
+                  ) : (
+                    <Eye className="h-4 w-4" />
+                  )}
+                </button>
               </div>
+              {passwordsMatch && (
+                <div className="flex items-center gap-2 text-xs text-green-600 mt-2">
+                  <CheckCircle2 className="h-3 w-3" />
+                  Passwords match
+                </div>
+              )}
             </div>
 
-            <Button
+            {/* Create Account Button */}
+            <button
               type="submit"
-              className="w-full border-dashed border-2 hover:border-solid hover:border-purple-500/50"
+              className="w-full h-11 mt-6 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={isLoading}
             >
               {isLoading ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Creating account...
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Creating account...
                 </>
               ) : (
                 <>
-                  Create Account <ArrowRight className="ml-2 h-4 w-4" />
+                  Create Account
+                  <ArrowRight className="h-4 w-4" />
                 </>
               )}
-            </Button>
+            </button>
 
-            <div className="relative my-4">
-              <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t" />
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
-              </div>
-            </div>
-
-            <div className="flex justify-center mb-4">
-              <GoogleLogin
-                onSuccess={(credentialResponse) => {
-                  if (credentialResponse.credential) {
-                    googleLogin(credentialResponse.credential);
-                    navigate('/dashboard');
-                  }
-                }}
-                onError={() => {
-                  setError('Google Login Failed');
-                }}
-                text="signup_with"
-              />
-            </div>
-
-            <Button
+            {/* Start as Guest Button */}
+            <button
               type="button"
-              variant="outline"
-              className="w-full border-dashed border-2 hover:border-solid hover:border-purple-500/50"
+              className="w-full h-11 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors"
               onClick={() => {
                 loginAsGuest();
                 navigate('/');
               }}
+              disabled={isLoading}
             >
               Start as Guest
-            </Button>
+            </button>
           </form>
 
-          <div className="mt-6 text-center text-sm text-muted-foreground">
+          {/* Sign In Link */}
+          <p className="text-center text-sm text-gray-600 mt-6">
             Already have an account?{' '}
-            <Link to="/login" className="text-primary hover:underline font-medium">
+            <Link to="/login" className="text-blue-600 hover:text-blue-700 font-medium">
               Sign in
             </Link>
-          </div>
-        </CardContent>
-      </Card>
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
