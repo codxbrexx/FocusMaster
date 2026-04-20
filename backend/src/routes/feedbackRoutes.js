@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const { createFeedback } = require("../controllers/feedbackController");
+const { validate } = require("../middleware/validateMiddleware");
+const { feedbackBodySchema } = require("../validation/schemas");
 
 const { protect } = require("../middleware/authMiddleware");
 
@@ -21,6 +23,7 @@ router.post(
       next();
     }
   },
+  validate({ body: feedbackBodySchema }),
   createFeedback,
 );
 

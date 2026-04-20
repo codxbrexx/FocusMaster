@@ -10,9 +10,16 @@ const {
   previous,
 } = require("../controllers/spotifyController");
 const { protect } = require("../middleware/authMiddleware");
+const { validate } = require("../middleware/validateMiddleware");
+const { spotifyCallbackSchema } = require("../validation/schemas");
 
 router.get("/login", protect, getLoginUrl);
-router.post("/callback", protect, callback);
+router.post(
+  "/callback",
+  protect,
+  validate({ body: spotifyCallbackSchema }),
+  callback,
+);
 router.get("/player", protect, getPlaybackState);
 router.put("/play", protect, play);
 router.put("/pause", protect, pause);

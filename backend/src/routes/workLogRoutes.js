@@ -6,9 +6,11 @@ const {
   getWorkLogs,
 } = require("../controllers/workLogController");
 const { protect } = require("../middleware/authMiddleware");
+const { validate } = require("../middleware/validateMiddleware");
+const { workLogStopSchema } = require("../validation/schemas");
 
 router.post("/start", protect, startClock);
-router.post("/stop", protect, stopClock);
+router.post("/stop", protect, validate({ body: workLogStopSchema }), stopClock);
 router.get("/logs", protect, getWorkLogs);
 
 module.exports = router;
