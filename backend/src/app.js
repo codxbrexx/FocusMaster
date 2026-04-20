@@ -1,7 +1,9 @@
 const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const crypto = require("crypto");
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
+const logger = require("./utils/logger");
 
 // Route imports
 const authRoutes = require("./routes/authRoutes");
@@ -19,7 +21,15 @@ app.set("trust proxy", 1);
 
 // Middleware
 app.use((req, res, next) => {
-  console.log(`[Request Debug] ${req.method} ${req.url}`);
+  req.id = crypto.randomUUID();
+  res.setHeader("X-Request-Id", req.id);
+
+  logger.info("Incoming request", {
+    requestId: req.id,
+    method: req.method,
+    path: req.originalUrl,
+  });
+
   next();
 });
 
