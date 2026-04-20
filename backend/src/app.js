@@ -19,6 +19,17 @@ const feedbackRoutes = require("./routes/feedbackRoutes");
 const app = express();
 app.set("trust proxy", 1);
 
+const isProduction = process.env.NODE_ENV === "production";
+const defaultDevOrigins = ["http://localhost:5173", "http://127.0.0.1:5173"];
+const configuredOrigins = (
+  process.env.FRONTEND_URLS ||
+  process.env.FRONTEND_URL ||
+  (isProduction ? "" : defaultDevOrigins.join(","))
+)
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
 // Middleware
 app.use((req, res, next) => {
   req.id = crypto.randomUUID();
@@ -33,31 +44,18 @@ app.use((req, res, next) => {
   next();
 });
 
-const allowedOrigins = (
-  process.env.FRONTEND_URLS ||
-  process.env.FRONTEND_URL ||
-  "http://localhost:5173"
-)
-  .split(",")
-  .map((s) => s.trim())
-  .filter(Boolean);
-
 app.use(
   cors({
     origin: (origin, callback) => {
       if (!origin) return callback(null, true);
 
-      const isAllowed = allowedOrigins.indexOf(origin) !== -1;
-
-      const isVercel = origin.endsWith(".vercel.app");
-
-      const isLocal =
-        origin.includes("localhost") || origin.includes("127.0.0.1");
-
-      if (isAllowed || isVercel || isLocal) {
+      if (configuredOrigins.includes(origin)) {
         callback(null, true);
       } else {
-        console.log("CORS blocked origin:", origin);
+        logger.warn("CORS blocked origin", {
+          origin,
+          allowedOrigins: configuredOrigins,
+        });
         callback(new Error("Not allowed by CORS"));
       }
     },
