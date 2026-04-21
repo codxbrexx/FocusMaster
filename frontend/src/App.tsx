@@ -46,6 +46,9 @@ const Calendar = lazy(() =>
 const LandingPage = lazy(() =>
   import('./pages/LandingPage').then((module) => ({ default: module.LandingPage }))
 );
+const LandingPageModern = lazy(() =>
+  import('./pages/LandingPageModern').then((module) => ({ default: module.LandingPageModern }))
+);
 const Login = lazy(() => import('./pages/Login').then((module) => ({ default: module.Login })));
 const Register = lazy(() =>
   import('./pages/Register').then((module) => ({ default: module.Register }))
@@ -96,6 +99,7 @@ const App = () => {
                 <Routes>
                   <Route element={<PublicOnlyRoute />}>
                     <Route path="/" element={<LandingPage />} />
+                    <Route path="/landing-modern" element={<LandingPageModern />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
                   </Route>

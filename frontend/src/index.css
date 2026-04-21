@@ -454,6 +454,33 @@
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background: hsl(var(--muted-foreground) / 0.5);
   }
+
+  /* Three.js Canvas Styling */
+  canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  .r3f-container {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  /* Loading animation for stats */
+  @keyframes loading-slide {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  .animate-loading {
+    animation: loading-slide 1.5s ease-in-out infinite;
+  }
 }
 
 @keyframes float {

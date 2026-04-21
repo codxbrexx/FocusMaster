@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
 import { useAuth } from '../context/AuthContext';
-import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { User, Lock, Mail, Loader2, Eye, EyeOff, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { toast } from 'sonner';
@@ -103,7 +102,7 @@ export function Register() {
       <div className="w-full hidden md:flex items-center justify-center bg-gray-50">
         <img
           className="w-full h-full object-cover"
-          src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=800&fit=crop"
+          src="https://images.unsplash.com/photo-1776083760576-b238808ec1b1?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
           alt="Get started with FocusMaster"
         />
       </div>

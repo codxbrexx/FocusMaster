@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDevice } from '../../context/DeviceContext';
+import loaderSvg from '@/assets/loader.svg';
 
 const LOADING_STATES = [
   'Initializing secure environment...',
@@ -40,47 +41,9 @@ export const LoadingPage = ({ customMessage }: LoadingPageProps) => {
       <div className="absolute inset-0 bg-matrix opacity-20 pointer-events-none" />
 
       <div className="relative flex flex-col items-center max-w-sm w-full p-6 text-center z-10">
-        {/* CSS-Only Spinner */}
+        {/* Loader SVG */}
         <div className="relative w-20 h-20 mb-8">
-          <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
-            {/* Track */}
-            <circle
-              cx="50"
-              cy="50"
-              r="40"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="4"
-              className="text-muted/20"
-            />
-            {/* Animated Ring using CSS Dashoffset */}
-            <circle
-              cx="50"
-              cy="50"
-              r="40"
-              fill="none"
-              stroke="url(#gradient)"
-              strokeWidth="4"
-              strokeLinecap="round"
-              className="origin-center animate-[spin_1.5s_linear_infinite]"
-              style={{
-                strokeDasharray: 251,
-                strokeDashoffset: 60,
-              }}
-            />
-            {/* Gradient Definition */}
-            <defs>
-              <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="1" />
-                <stop offset="100%" stopColor="hsl(var(--accent))" stopOpacity="1" />
-              </linearGradient>
-            </defs>
-          </svg>
-
-          {/* Inner Pulse Icon */}
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-3 h-3 bg-primary rounded-full shadow-[0_0_15px_hsl(var(--primary))] animate-pulse" />
-          </div>
+          <img src={loaderSvg} alt="Loading" className="w-full h-full" />
         </div>
 
         {/* Status Text - Monospace */}

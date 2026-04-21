@@ -1,17 +1,23 @@
-import { Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import loaderSvg from '@/assets/loader.svg';
 
 interface LoadingSpinnerProps {
   className?: string;
   size?: number;
+  message?: string;
 }
 
-export function LoadingSpinner({ className, size = 24 }: LoadingSpinnerProps) {
+export function LoadingSpinner({ className, size = 24, message = 'Loading...' }: LoadingSpinnerProps) {
   return (
     <div className="flex items-center justify-center w-full h-full min-h-[100px]">
       <div className="flex flex-col items-center gap-2">
-        <Loader2 className={cn('animate-spin text-primary', className)} size={size} />
-        <p className="text-xs text-muted-foreground animate-pulse">Loading...</p>
+        <img
+          src={loaderSvg}
+          alt="Loading"
+          style={{ width: size, height: size }}
+          className={cn('', className)}
+        />
+        <p className="text-xs text-muted-foreground">{message}</p>
       </div>
     </div>
   );
