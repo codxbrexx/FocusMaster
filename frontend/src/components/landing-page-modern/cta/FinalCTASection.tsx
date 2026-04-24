@@ -63,7 +63,7 @@ export const FinalCTASection = () => {
           transition={{ duration: 0.6, delay: 0.2 }}
           viewport={{ once: true }}
         >
-          No credit card required • 14-day free trial • Cancel anytime
+           • Trusted YourSelf
         </motion.p>
       </div>
 

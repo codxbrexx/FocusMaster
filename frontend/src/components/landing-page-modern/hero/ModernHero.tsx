@@ -1,6 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { FloatingText } from './FloatingText';
 import { CTAOverlay } from './CTAOverlay';
 import { InfoCardsGrid } from './InfoCardsGrid';
@@ -18,47 +17,34 @@ export const ModernHero = () => {
       {/* Content Overlay */}
       <div className="relative z-10 w-full flex flex-col md:flex-row p-8 md:p-14 lg:p-20 min-h-screen items-center md:items-stretch gap-10 md:gap-0">
         {/* Left Side - Text Content */}
-        <motion.div
+        <div
           className="flex-1 min-w-0 flex flex-col justify-between pb-12 md:pb-8 w-full md:w-1/2"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
         >
           {/* Header Badge */}
-          <motion.div
-            className="flex items-center gap-3"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.1, duration: 0.5 }}
+          <div
+            className="flex items-center gap-3 p-3"
           >
             <div className="relative w-2.5 h-2.5 bg-indigo-500 rounded-full" />
             <span className="font-mono text-[11px] font-bold text-slate-300 tracking-[0.2em] uppercase">
               FOCUSMASTER PRO
             </span>
-          </motion.div>
+          </div>
 
           {/* Floating Text */}
           <FloatingText />
 
           {/* CTA Buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-          >
+          <div>
             <CTAOverlay />
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
 
         {/* Right Side - Info Cards */}
-        <motion.div
+        <div
           className="w-full md:w-1/2 flex items-center justify-end"
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.2, duration: 0.5 }}
         >
           <InfoCardsGrid />
-        </motion.div>
+        </div>
       </div>
 
       {/* Subtle grid pattern overlay */}

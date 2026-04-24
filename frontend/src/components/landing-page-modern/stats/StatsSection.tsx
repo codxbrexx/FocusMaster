@@ -12,13 +12,13 @@ import { StatCard } from './StatCard';
 const stats = [
   {
     icon: Clock,
-    value: 10000,
+    value: 0.1,
     label: 'Hours Tracked',
     suffix: '+',
   },
   {
     icon: Users,
-    value: 5000,
+    value: 0.1,
     label: 'Active Users',
     suffix: '+',
   },

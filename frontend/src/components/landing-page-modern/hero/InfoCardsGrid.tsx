@@ -50,18 +50,18 @@ export const InfoCardsGrid = () => {
         return (
           <motion.div
             key={index}
-            className="info-card glass-panel p-6 rounded-xl border border-slate-700 hover:border-indigo-500/50 transition-colors"
+            className="info-card glass-panel p-6 rounded-xl border border-white/10 hover:border-white/20 transition-colors"
             whileHover={{ y: -4 }}
           >
             <div className="flex items-start gap-4">
-              <div className="p-3 bg-indigo-500/10 rounded-lg">
-                <Icon className="w-5 h-5 text-indigo-400" />
+              <div className="p-3 bg-white/5 rounded-lg">
+                <Icon className="w-5 h-5 text-purple-400" />
               </div>
               <div>
                 <h3 className="text-sm font-bold text-white mb-1">
                   {card.title}
                 </h3>
-                <p className="text-xs text-slate-400 leading-relaxed">
+                <p className="text-xs text-white/50 leading-relaxed">
                   {card.description}
                 </p>
               </div>

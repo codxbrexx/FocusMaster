@@ -1,33 +1,8 @@
-import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import gsap from 'gsap';
 
 export const FloatingText = () => {
-  const textRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!textRef.current) return;
-
-    // GSAP animation: blur to clear + scale
-    gsap.fromTo(
-      textRef.current,
-      { filter: 'blur(30px)', opacity: 0, scale: 1.02 },
-      { filter: 'blur(0px)', opacity: 1, scale: 1, duration: 2.2, ease: 'expo.out' }
-    );
-
-    // Continuous floating animation
-    gsap.to(textRef.current, {
-      y: -10,
-      duration: 3,
-      ease: 'sine.inOut',
-      repeat: -1,
-      yoyo: true,
-    });
-  }, []);
-
   return (
     <motion.div
-      ref={textRef}
       className="max-w-4xl lg:-translate-y-8 pr-12"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}

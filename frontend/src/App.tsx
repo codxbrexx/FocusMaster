@@ -43,9 +43,6 @@ const EditProfilePage = lazy(() =>
 const Calendar = lazy(() =>
   import('./components/Calendar').then((module) => ({ default: module.Calendar }))
 );
-const LandingPage = lazy(() =>
-  import('./pages/LandingPage').then((module) => ({ default: module.LandingPage }))
-);
 const LandingPageModern = lazy(() =>
   import('./pages/LandingPageModern').then((module) => ({ default: module.LandingPageModern }))
 );
@@ -98,8 +95,7 @@ const App = () => {
               <Suspense fallback={<LoadingPage />}>
                 <Routes>
                   <Route element={<PublicOnlyRoute />}>
-                    <Route path="/" element={<LandingPage />} />
-                    <Route path="/landing-modern" element={<LandingPageModern />} />
+                    <Route path="/" element={<LandingPageModern />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
                   </Route>
