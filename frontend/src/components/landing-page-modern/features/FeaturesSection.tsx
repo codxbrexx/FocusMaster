@@ -104,13 +104,6 @@ export const FeaturesSection = () => {
           );
         })}
       </div>
-      {!showAll && (
-        <div className="text-center mt-16">
-          <Button onClick={() => setShowAll(true)} variant="outline" size="lg">
-            Show All Features
-          </Button>
-        </div>
-      )}
     </section>
   );
 };

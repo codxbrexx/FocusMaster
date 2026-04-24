@@ -1,36 +1,47 @@
 import { motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Zap, BarChart3, FolderKanban } from 'lucide-react';
+
+const benefits = [
+  {
+    icon: Zap,
+    text: 'Boost Productivity',
+    description: 'Leverage proven techniques to enhance your focus and efficiency.',
+  },
+  {
+    icon: BarChart3,
+    text: 'Gain Insights',
+    description: 'Understand your work patterns with powerful, visual analytics.',
+  },
+  {
+    icon: FolderKanban,
+    text: 'Stay Organized',
+    description: 'Manage tasks and projects seamlessly to keep your workflow clear.',
+  },
+];
 
 export const CTAOverlay = () => {
-  const navigate = useNavigate();
-
   return (
-    <div className="flex flex-col gap-6">
-      <motion.button
-        onClick={() => navigate('/register')}
-        className="w-fit flex items-center gap-6 group relative"
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-      >
-        <div className="w-14 h-14 rounded-full border-2 border-orange-500 bg-orange-500/10 flex items-center justify-center group-hover:bg-orange-500 transition-all duration-500 overflow-hidden">
-          <ArrowRight className="w-5 h-5 text-orange-500 group-hover:text-white transition-colors duration-500" />
-        </div>
-        <span className="font-mono text-[11px] font-bold text-white uppercase tracking-[0.2em]">
-          Reclaim Your Focus
-        </span>
-      </motion.button>
-
-      <motion.button
-        onClick={() => window.open('https://demo.focusmaster.dev', '_blank')}
-        className="w-fit flex items-center gap-4 group"
-        whileHover={{ scale: 1.02 }}
-      >
-        <span className="font-mono text-[11px] font-bold text-slate-400 group-hover:text-slate-200 uppercase tracking-[0.2em] transition-colors">
-          Watch Demo
-        </span>
-        <div className="w-px h-4 bg-slate-600 group-hover:bg-slate-400 transition-colors" />
-      </motion.button>
+    <div className="mt-12">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
+        {benefits.map((benefit, index) => {
+          const Icon = benefit.icon;
+          return (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.2 }}
+              className="flex flex-col items-center p-4 rounded-lg"
+            >
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/10 mb-4 border border-white/10">
+                <Icon className="h-8 w-8 text-indigo-400" />
+              </div>
+              <h3 className="text-lg font-semibold text-white">{benefit.text}</h3>
+              <p className="mt-1 text-sm text-slate-400">{benefit.description}</p>
+            </motion.div>
+          );
+        })}
+      </div>
     </div>
   );
 };
