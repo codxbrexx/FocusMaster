@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { useState } from 'react';
 import {
   Zap,
   BarChart3,
@@ -7,6 +8,7 @@ import {
   Target,
   Shield,
 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 const features = [
   {
@@ -42,33 +44,37 @@ const features = [
 ];
 
 export const FeaturesSection = () => {
+  const [showAll, setShowAll] = useState(false);
+  const visibleFeatures = showAll ? features : features.slice(0, 3);
+
   return (
-    <section className="relative w-full bg-[#0f0f1e] py-20 md:py-32 lg:py-40 px-4 md:px-8 lg:px-20">
+    <section className="relative w-full bg-[#0A0A14] py-20 md:py-32 lg:py-40 px-4 md:px-8 lg:px-20">
+      <div className="absolute inset-0 bg-[url('/grid.svg')] bg-repeat opacity-5"></div>
       {/* Section Header */}
       <motion.div
-        className="mx-auto max-w-6xl mb-16"
+        className="mx-auto max-w-6xl mb-16 text-center"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
         viewport={{ once: true }}
       >
         <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-4 leading-tight">
-          Powerful Features
+          Unlock Your Potential
         </h2>
-        <p className="text-slate-300 text-lg md:text-xl max-w-2xl">
-          Everything you need to achieve deep focus and maximize your productivity.
+        <p className="text-slate-300 text-lg md:text-xl max-w-2xl mx-auto">
+          FocusMaster provides the tools you need to eliminate distractions and perform at your best.
         </p>
       </motion.div>
 
       {/* Features Grid */}
       <div className="mx-auto max-w-6xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {features.map((feature, index) => {
+        {visibleFeatures.map((feature, index) => {
           const Icon = feature.icon;
           return (
             <motion.div
               key={index}
-              className="p-8 rounded-xl border border-slate-700 hover:border-indigo-500/50 bg-slate-900/20 transition-all hover:shadow-lg hover:bg-slate-900/40"
-              whileHover={{ y: -4 }}
+              className="p-8 rounded-xl border border-slate-800 bg-slate-900/30 transition-all group relative overflow-hidden"
+              whileHover={{ y: -5, boxShadow: '0 10px 30px -10px rgba(79, 70, 229, 0.3)' }}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{
@@ -77,30 +83,34 @@ export const FeaturesSection = () => {
               }}
               viewport={{ once: true }}
             >
+              <div className="absolute -top-2 -right-2 w-24 h-24 bg-indigo-500/10 rounded-full blur-2xl group-hover:w-32 group-hover:h-32 transition-all duration-300"></div>
               {/* Icon */}
-              <div className="mb-4">
-                <div className="w-12 h-12 rounded-lg bg-indigo-500/15 flex items-center justify-center">
-                  <Icon className="w-6 h-6 text-indigo-400" />
+              <div className="mb-6 relative z-10">
+                <div className="w-14 h-14 rounded-lg bg-indigo-500/20 flex items-center justify-center border border-indigo-500/30">
+                  <Icon className="w-7 h-7 text-indigo-400" />
                 </div>
               </div>
 
               {/* Title */}
-              <h3 className="text-xl font-bold text-white mb-2">
+              <h3 className="text-xl font-bold text-white mb-3 relative z-10">
                 {feature.title}
               </h3>
 
               {/* Description */}
-              <p className="text-slate-400 leading-relaxed">
+              <p className="text-slate-400 leading-relaxed relative z-10">
                 {feature.description}
               </p>
             </motion.div>
           );
         })}
       </div>
-
-      {/* Decorative elements */}
-      <div className="absolute top-0 left-0 w-96 h-96 bg-indigo-500/5 rounded-full blur-3xl -z-10" />
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-indigo-600/5 rounded-full blur-3xl -z-10" />
+      {!showAll && (
+        <div className="text-center mt-16">
+          <Button onClick={() => setShowAll(true)} variant="outline" size="lg">
+            Show All Features
+          </Button>
+        </div>
+      )}
     </section>
   );
 };

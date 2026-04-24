@@ -6,9 +6,22 @@ import { InfoCardsGrid } from './InfoCardsGrid';
 
 export const ModernHero = () => {
   return (
-    <section className="relative min-h-screen w-full bg-[#0f0f1e] flex flex-col overflow-hidden selection:bg-indigo-500 selection:text-white">
-      {/* Professional Gradient Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#0f0f1e] via-[#1a1a2e] to-[#0f0f1e] pointer-events-none" />
+    <section className="relative min-h-screen w-full bg-black flex flex-col overflow-hidden selection:bg-indigo-500 selection:text-white">
+      {/* Video Background */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
+        {/* Placeholder for a video background. Replace with your video file. */}
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-cover"
+          poster="data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=" // Dark placeholder
+        >
+          {/* <source src="/path-to-your-video.mp4" type="video/mp4" /> */}
+        </video>
+        <div className="absolute inset-0 bg-black/60 pointer-events-none" />
+      </div>
 
       {/* Subtle radial glow accent */}
       <div className="absolute top-1/3 left-1/4 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />

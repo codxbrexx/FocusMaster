@@ -8,6 +8,7 @@ import { TestimonialsSection } from '../components/landing-page-modern/testimoni
 import { FinalCTASection } from '../components/landing-page-modern/cta/FinalCTASection';
 import { FooterSection } from '../components/landing-page-modern/footer/FooterSection';
 import { Loader } from '../components/ui/Loader';
+import Header from '../components/landing-page-modern/header/Header';
 
 const LoadingFallback = () => (
   <div className="min-h-screen w-full bg-[#020202] flex items-center justify-center">
@@ -21,14 +22,17 @@ export function LandingPageModern() {
   return (
     <div className="min-h-screen bg-[#0f0f1e] text-foreground overflow-x-hidden selection:bg-indigo-500 selection:text-white">
       <Suspense fallback={<LoadingFallback />}>
-        <ModernHero />
-        <FeaturesSection />
-        <DetailedFeaturesSection />
-        <HowItWorksSection />
-        <StatsSection />
-        <TestimonialsSection />
-        <FinalCTASection />
-        <FooterSection />
+        <Header />
+        <main className="pt-16 bg-black">
+          <ModernHero />
+          <FeaturesSection />
+          <DetailedFeaturesSection />
+          <HowItWorksSection />
+          <StatsSection />
+          <TestimonialsSection />
+          <FinalCTASection />
+          <FooterSection />
+        </main>
       </Suspense>
     </div>
   );

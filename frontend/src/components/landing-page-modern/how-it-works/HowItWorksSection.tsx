@@ -35,71 +35,58 @@ const steps = [
 
 export const HowItWorksSection = () => {
   return (
-    <section className="relative w-full bg-[#0f0f1e] py-20 md:py-32 lg:py-40 px-4 md:px-8 lg:px-20">
+    <section className="relative w-full bg-[#0A0A14] py-20 md:py-32 lg:py-40 px-4 md:px-8 lg:px-20">
+      <div className="absolute inset-0 bg-dot-pattern opacity-5"></div>
       {/* Section Header */}
       <motion.div
-        className="mx-auto max-w-6xl mb-16"
+        className="mx-auto max-w-6xl mb-20 text-center"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
         viewport={{ once: true }}
       >
         <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-4 leading-tight">
-          How It Works
+          Simple Steps to Success
         </h2>
-        <p className="text-slate-300 text-lg md:text-xl max-w-2xl">
-          Get started in minutes and begin your journey to peak productivity.
+        <p className="text-slate-300 text-lg md:text-xl max-w-2xl mx-auto">
+          A streamlined process designed for immediate impact on your productivity.
         </p>
       </motion.div>
 
-      {/* Steps Grid */}
-      <div className="mx-auto max-w-6xl">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {steps.map((step, index) => {
-            const Icon = step.icon;
-            return (
+      {/* Steps Timeline */}
+      <div className="relative mx-auto max-w-4xl">
+        <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-slate-700/50 hidden md:block"></div>
+        {steps.map((step, index) => {
+          const Icon = step.icon;
+          const isEven = index % 2 === 0;
+          return (
+            <div key={index} className={`relative mb-12 md:mb-20 flex justify-center items-center`}>
               <motion.div
-                key={index}
-                className="relative p-8 rounded-xl border border-slate-700 hover:border-indigo-500/50 bg-slate-900/20 transition-all hover:shadow-lg hover:bg-slate-900/40"
-                whileHover={{ y: -4 }}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{
-                  duration: 0.5,
-                  delay: index * 0.1,
-                }}
+                className={`w-full md:w-1/2 ${isEven ? 'md:pr-12' : 'md:pl-12'} ${isEven ? 'md:text-right' : 'md:text-left'}`}
+                initial={{ opacity: 0, x: isEven ? -50 : 50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
                 viewport={{ once: true }}
               >
-                {/* Step number badge */}
-                <div className="absolute -top-4 -left-4 w-10 h-10 rounded-full bg-indigo-500 flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">{step.number}</span>
-                </div>
-
-                {/* Icon */}
-                <div className="mb-6 mt-2">
-                  <div className="w-14 h-14 rounded-lg bg-indigo-500/15 flex items-center justify-center">
-                    <Icon className="w-7 h-7 text-indigo-400" />
+                <div className="p-8 rounded-xl border border-slate-800 bg-slate-900/40 backdrop-blur-sm relative group">
+                  <div className={`absolute top-1/2 -translate-y-1/2 ${isEven ? '-right-4' : '-left-4'} w-8 h-8 rounded-full bg-indigo-500 border-4 border-[#0A0A14] hidden md:block`}></div>
+                  <div className="mb-4">
+                    <div className={`inline-flex w-12 h-12 rounded-lg bg-indigo-500/15 items-center justify-center border border-indigo-500/30`}>
+                      <Icon className="w-6 h-6 text-indigo-400" />
+                    </div>
                   </div>
+                  <h3 className="text-2xl font-bold text-white mb-3">
+                    {step.title}
+                  </h3>
+                  <p className="text-slate-400 leading-relaxed">
+                    {step.description}
+                  </p>
                 </div>
-
-                {/* Title */}
-                <h3 className="text-xl font-bold text-white mb-2">
-                  {step.title}
-                </h3>
-
-                {/* Description */}
-                <p className="text-slate-400 leading-relaxed">
-                  {step.description}
-                </p>
               </motion.div>
-            );
-          })}
-        </div>
+            </div>
+          );
+        })}
       </div>
-
-      {/* Decorative elements */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-500/5 rounded-full blur-3xl -z-10" />
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-indigo-600/5 rounded-full blur-3xl -z-10" />
     </section>
   );
 };
