@@ -21,7 +21,7 @@ export const TestimonialCard: FC<TestimonialProps> = ({
 }) => {
   return (
     <motion.div
-      className="glass-panel p-8 rounded-xl border border-white/10 hover:border-white/20 transition-all h-full"
+      className="glass-panel p-8 rounded-xl border border-slate-700 hover:border-indigo-500/50 transition-all h-full"
       whileHover={{ y: -4 }}
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
@@ -33,18 +33,18 @@ export const TestimonialCard: FC<TestimonialProps> = ({
         {Array.from({ length: rating }).map((_, i) => (
           <Star
             key={i}
-            className="w-4 h-4 fill-yellow-400 text-yellow-400"
+            className="w-4 h-4 fill-yellow-500 text-yellow-500"
           />
         ))}
       </div>
 
       {/* Quote */}
-      <p className="text-white/80 text-base leading-relaxed mb-6 italic">
+      <p className="text-slate-300 text-base leading-relaxed mb-6 italic">
         "{quote}"
       </p>
 
       {/* Author */}
-      <div className="flex items-center gap-4 border-t border-white/10 pt-4">
+      <div className="flex items-center gap-4 border-t border-slate-700 pt-4">
         <img
           src={avatar}
           alt={name}
@@ -52,7 +52,7 @@ export const TestimonialCard: FC<TestimonialProps> = ({
         />
         <div className="flex-1">
           <h3 className="font-semibold text-white text-sm">{name}</h3>
-          <p className="text-xs text-white/60">
+          <p className="text-xs text-slate-400">
             {role}
             {company && ` at ${company}`}
           </p>

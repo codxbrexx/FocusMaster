@@ -96,7 +96,7 @@ export const TestimonialsSection = () => {
   const scrollNext = () => emblaApi?.scrollNext();
 
   return (
-    <section className="relative w-full bg-[#020202] py-20 md:py-32 lg:py-40 px-4 md:px-8 lg:px-20">
+    <section className="relative w-full bg-[#0f0f1e] py-20 md:py-32 lg:py-40 px-4 md:px-8 lg:px-20">
       {/* Section Header */}
       <motion.div
         className="mx-auto max-w-6xl mb-16"
@@ -108,7 +108,7 @@ export const TestimonialsSection = () => {
         <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-4 leading-tight">
           Loved by Professionals
         </h2>
-        <p className="text-white/60 text-lg md:text-xl max-w-2xl">
+        <p className="text-slate-300 text-lg md:text-xl max-w-2xl">
           Discover how FocusMaster is transforming the way people work and
           achieve their goals.
         </p>
@@ -139,8 +139,8 @@ export const TestimonialsSection = () => {
                 onClick={() => emblaApi?.scrollTo(index)}
                 className={`w-2 h-2 rounded-full transition-all ${
                   index === selectedIndex
-                    ? 'bg-purple-600 w-8'
-                    : 'bg-white/20 hover:bg-white/40'
+                    ? 'bg-indigo-500 w-8'
+                    : 'bg-slate-600 hover:bg-slate-500'
                 }`}
               />
             ))}
@@ -150,7 +150,7 @@ export const TestimonialsSection = () => {
           <div className="flex gap-3">
             <motion.button
               onClick={scrollPrev}
-              className="p-3 rounded-full border border-white/20 hover:border-white/40 text-white transition-all"
+              className="p-3 rounded-full border border-slate-700 hover:border-indigo-500/50 text-slate-400 hover:text-indigo-400 transition-all"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -158,7 +158,7 @@ export const TestimonialsSection = () => {
             </motion.button>
             <motion.button
               onClick={scrollNext}
-              className="p-3 rounded-full border border-white/20 hover:border-white/40 text-white transition-all"
+              className="p-3 rounded-full border border-slate-700 hover:border-indigo-500/50 text-slate-400 hover:text-indigo-400 transition-all"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -169,8 +169,8 @@ export const TestimonialsSection = () => {
       </div>
 
       {/* Decorative elements */}
-      <div className="absolute top-1/2 left-0 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl -z-10 -translate-y-1/2" />
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl -z-10" />
+      <div className="absolute top-1/2 left-0 w-96 h-96 bg-indigo-500/5 rounded-full blur-3xl -z-10 -translate-y-1/2" />
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-indigo-600/5 rounded-full blur-3xl -z-10" />
     </section>
   );
 };

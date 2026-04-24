@@ -28,7 +28,7 @@ export const StatCard: FC<StatCardProps> = ({
   return (
     <motion.div
       ref={elementRef}
-      className="glass-panel p-6 sm:p-7 rounded-xl border border-white/10 hover:border-white/20 transition-all hover:scale-105"
+      className="glass-panel p-6 sm:p-7 rounded-xl border border-slate-700 hover:border-indigo-500/50 transition-all hover:shadow-lg"
       whileHover={{ y: -4 }}
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -37,8 +37,8 @@ export const StatCard: FC<StatCardProps> = ({
     >
       {/* Icon */}
       <div className="mb-4">
-        <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500/20 to-cyan-500/20 flex items-center justify-center">
-          <Icon className="w-6 h-6 text-purple-400" />
+        <div className="w-10 h-10 rounded-lg bg-indigo-500/15 flex items-center justify-center">
+          <Icon className="w-6 h-6 text-indigo-400" />
         </div>
       </div>
 
@@ -49,21 +49,21 @@ export const StatCard: FC<StatCardProps> = ({
             {formatValue(displayValue)}
           </span>
           {suffix && (
-            <span className="text-sm text-white/60 font-medium">{suffix}</span>
+            <span className="text-sm text-slate-400 font-medium">{suffix}</span>
           )}
         </div>
       </div>
 
       {/* Label */}
-      <p className="text-xs sm:text-sm text-white/60 font-medium uppercase tracking-[0.1em]">
+      <p className="text-xs sm:text-sm text-slate-400 font-medium uppercase tracking-[0.1em]">
         {label}
       </p>
 
       {/* Loading bar (animates while counter is counting) */}
       {displayValue < value && (
-        <div className="mt-3 h-1 w-full bg-white/5 rounded-full overflow-hidden">
+        <div className="mt-3 h-1 w-full bg-slate-700 rounded-full overflow-hidden">
           <div
-            className="h-full bg-gradient-to-r from-purple-500 to-cyan-500 animate-loading"
+            className="h-full bg-indigo-500 animate-loading"
             style={{
               width: `${(displayValue / value) * 100}%`,
             }}

@@ -60,8 +60,8 @@ export const CTAOverlay = () => {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
       >
-        <div className="w-14 h-14 rounded-full border border-white/15 flex items-center justify-center group-hover:bg-white transition-all duration-500 overflow-hidden">
-          <ArrowRight className="w-5 h-5 text-white group-hover:text-black transition-colors duration-500" />
+        <div className="w-14 h-14 rounded-full border-2 border-orange-500 bg-orange-500/10 flex items-center justify-center group-hover:bg-orange-500 transition-all duration-500 overflow-hidden">
+          <ArrowRight className="w-5 h-5 text-orange-500 group-hover:text-white transition-colors duration-500" />
         </div>
         <span className="font-mono text-[11px] font-bold text-white uppercase tracking-[0.2em]">
           Reclaim Your Focus
@@ -73,10 +73,10 @@ export const CTAOverlay = () => {
         className="w-fit flex items-center gap-4 group"
         whileHover={{ scale: 1.02 }}
       >
-        <span className="font-mono text-[11px] font-bold text-white/60 group-hover:text-white uppercase tracking-[0.2em] transition-colors">
+        <span className="font-mono text-[11px] font-bold text-slate-400 group-hover:text-slate-200 uppercase tracking-[0.2em] transition-colors">
           Watch Demo
         </span>
-        <div className="w-px h-4 bg-white/20 group-hover:bg-white transition-colors" />
+        <div className="w-px h-4 bg-slate-600 group-hover:bg-slate-400 transition-colors" />
       </motion.button>
     </div>
   );

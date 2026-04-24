@@ -15,16 +15,13 @@ const LoadingFallback = () => (
 
 export function LandingPageModern() {
   return (
-    <div className="min-h-screen bg-[#020202] text-foreground overflow-x-hidden selection:bg-white selection:text-black">
+    <div className="min-h-screen bg-[#0f0f1e] text-foreground overflow-x-hidden selection:bg-indigo-500 selection:text-white">
       <Suspense fallback={<LoadingFallback />}>
         <ModernHero />
         <StatsSection />
         <TestimonialsSection />
         <FinalCTASection />
       </Suspense>
-
-      {/* Decorative mesh pattern overlay */}
-      <div className="pointer-events-none fixed inset-0 bento-mask opacity-5 z-[100]" />
     </div>
   );
 }

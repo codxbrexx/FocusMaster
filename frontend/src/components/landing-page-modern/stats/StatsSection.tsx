@@ -50,7 +50,7 @@ const stats = [
 
 export const StatsSection = () => {
   return (
-    <section className="relative w-full bg-[#020202] py-20 md:py-32 lg:py-40 px-4 md:px-8 lg:px-20">
+    <section className="relative w-full bg-[#0f0f1e] py-20 md:py-32 lg:py-40 px-4 md:px-8 lg:px-20">
       {/* Section Header */}
       <motion.div
         className="mx-auto max-w-6xl mb-16"
@@ -62,7 +62,7 @@ export const StatsSection = () => {
         <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-4 leading-tight">
           By The Numbers
         </h2>
-        <p className="text-white/60 text-lg md:text-xl max-w-2xl">
+        <p className="text-slate-300 text-lg md:text-xl max-w-2xl">
           Join thousands of professionals who have transformed their productivity
           with FocusMaster.
         </p>
@@ -87,8 +87,8 @@ export const StatsSection = () => {
       </div>
 
       {/* Decorative elements */}
-      <div className="absolute top-0 left-0 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl -z-10" />
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl -z-10" />
+      <div className="absolute top-0 left-0 w-96 h-96 bg-indigo-500/5 rounded-full blur-3xl -z-10" />
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-indigo-600/5 rounded-full blur-3xl -z-10" />
     </section>
   );
 };
