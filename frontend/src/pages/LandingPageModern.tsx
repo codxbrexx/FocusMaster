@@ -20,7 +20,7 @@ const LoadingFallback = () => (
 
 export function LandingPageModern() {
   return (
-    <div className="min-h-screen bg-[#0f0f1e] text-foreground overflow-x-hidden selection:bg-indigo-500 selection:text-white">
+    <div className="dark min-h-screen bg-[#0f0f1e] text-white overflow-x-hidden selection:bg-indigo-500 selection:text-white">
       <Suspense fallback={<LoadingFallback />}>
         <Header />
         <main>

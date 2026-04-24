@@ -21,7 +21,7 @@ export const TestimonialCard: FC<TestimonialProps> = ({
 }) => {
   return (
     <motion.div
-      className="glass-panel p-8 rounded-xl border border-slate-700 hover:border-indigo-500/50 transition-all h-full"
+      className="glass-panel bg-slate-950/75 p-8 rounded-xl border border-slate-700 hover:border-indigo-500/50 transition-all h-full"
       whileHover={{ y: -4 }}
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
@@ -39,7 +39,7 @@ export const TestimonialCard: FC<TestimonialProps> = ({
       </div>
 
       {/* Quote */}
-      <p className="text-slate-300 text-base leading-relaxed mb-6 italic">
+      <p className="text-slate-200 text-base leading-relaxed mb-6 italic">
         "{quote}"
       </p>
 
@@ -52,7 +52,7 @@ export const TestimonialCard: FC<TestimonialProps> = ({
         />
         <div className="flex-1">
           <h3 className="font-semibold text-white text-sm">{name}</h3>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-slate-300">
             {role}
             {company && ` at ${company}`}
           </p>

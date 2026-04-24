@@ -28,7 +28,7 @@ export const StatCard: FC<StatCardProps> = ({
   return (
     <motion.div
       ref={elementRef}
-      className="glass-panel p-6 sm:p-7 rounded-xl border border-slate-700 hover:border-indigo-500/50 transition-all hover:shadow-lg"
+      className="glass-panel bg-slate-950/75 p-6 sm:p-7 rounded-xl border border-slate-700 hover:border-indigo-500/50 transition-all hover:shadow-lg"
       whileHover={{ y: -4 }}
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -49,13 +49,13 @@ export const StatCard: FC<StatCardProps> = ({
             {formatValue(displayValue)}
           </span>
           {suffix && (
-            <span className="text-sm text-slate-400 font-medium">{suffix}</span>
+            <span className="text-sm text-slate-300 font-medium">{suffix}</span>
           )}
         </div>
       </div>
 
       {/* Label */}
-      <p className="text-xs sm:text-sm text-slate-400 font-medium uppercase tracking-[0.1em]">
+      <p className="text-xs sm:text-sm text-slate-300 font-medium uppercase tracking-widest">
         {label}
       </p>
 
