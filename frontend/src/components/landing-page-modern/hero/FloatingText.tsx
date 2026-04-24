@@ -7,7 +7,7 @@ export const FloatingText = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
-      <h1 className="text-[clamp(3.5rem,9.5vw,11.5rem)] font-black leading-[0.87] tracking-tighter text-white uppercase">
+      <h1 className="text-6xl md:text-8xl font-black leading-[0.87] tracking-tighter text-white uppercase">
         Transform Your <br />
         <span
           className="bg-gradient-to-r from-indigo-500 via-indigo-600 to-indigo-500 bg-clip-text text-transparent"

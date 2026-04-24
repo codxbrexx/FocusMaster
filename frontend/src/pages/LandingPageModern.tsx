@@ -23,13 +23,19 @@ export function LandingPageModern() {
     <div className="min-h-screen bg-[#0f0f1e] text-foreground overflow-x-hidden selection:bg-indigo-500 selection:text-white">
       <Suspense fallback={<LoadingFallback />}>
         <Header />
-        <main className="pt-16 bg-black">
+        <main>
           <ModernHero />
-          <FeaturesSection />
+          <div id="features">
+            <FeaturesSection />
+          </div>
           <DetailedFeaturesSection />
-          <HowItWorksSection />
+          <div id="how-it-works">
+            <HowItWorksSection />
+          </div>
           <StatsSection />
-          <TestimonialsSection />
+          <div id="testimonials">
+            <TestimonialsSection />
+          </div>
           <FinalCTASection />
           <FooterSection />
         </main>

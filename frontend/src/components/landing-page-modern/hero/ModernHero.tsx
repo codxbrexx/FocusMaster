@@ -15,10 +15,9 @@ export const ModernHero = () => {
           loop
           muted
           playsInline
-          className="w-full h-full object-cover"
-          poster="data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=" // Dark placeholder
+          className="w-full h-full object-cover opacity-65"
         >
-          {/* <source src="/path-to-your-video.mp4" type="video/mp4" /> */}
+          <source src="/fmhero.mp4" type="video/mp4" />
         </video>
         <div className="absolute inset-0 bg-black/60 pointer-events-none" />
       </div>
@@ -35,12 +34,10 @@ export const ModernHero = () => {
         >
           {/* Header Badge */}
           <div
-            className="flex items-center gap-3 p-3"
+            className="flex items-center gap-3 p-3 pb-10 md:pb-6 lg:pb-8"
           >
-            <div className="relative w-2.5 h-2.5 bg-indigo-500 rounded-full" />
-            <span className="font-mono text-[11px] font-bold text-slate-300 tracking-[0.2em] uppercase">
-              FOCUSMASTER PRO
-            </span>
+   
+
           </div>
 
           {/* Floating Text */}
