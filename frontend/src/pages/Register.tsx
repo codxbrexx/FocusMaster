@@ -97,7 +97,7 @@ export function Register() {
   const passwordsMatch = password && confirmPassword && password === confirmPassword;
 
   return (
-    <div className="flex h-[100dvh] w-full bg-white overflow-hidden">
+    <div className="flex h-[100dvh] w-full bg-black overflow-hidden">
       {/* Left side - Image (hidden on mobile) */}
       <div className="w-full hidden md:flex items-center justify-center bg-gray-50">
         <img
@@ -108,17 +108,16 @@ export function Register() {
       </div>
 
       {/* Right side - Form */}
-      <div className="w-full flex flex-col items-center justify-center px-6 md:px-0 overflow-y-auto">
-        <div className="w-full md:w-96 max-w-md py-8">
+      <div className="w-full flex flex-col items-center justify-center px-6 md:px-0 bg-dot-pattern">
+        <div className="w-full md:w-[420px] max-w-md p-8 rounded-xl bg-black/80 backdrop-blur-lg ">
           {/* Header */}
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900">Create an account</h1>
-            <p className="text-sm text-gray-600 mt-2">Join FocusMaster and start mastering your time</p>
+          <div className="mb-8 text-center">
+            <h1 className="text-4xl font-bold text-white">Create an Account</h1>
           </div>
 
           {/* Error Message */}
           {error && (
-            <div className="mb-4 p-4 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm">
+            <div className="mb-4 p-3 rounded-lg bg-red-900/50 border border-red-500/30 text-red-400 text-sm">
               {error}
             </div>
           )}
@@ -135,16 +134,19 @@ export function Register() {
               onError={() => {
                 setError('Google Login Failed');
               }}
-              text="signup_with"
+              theme="filled_black"
+              shape="circle"
+              useOneTap
             />
           </div>
 
           {/* Divider */}
           <div className="flex items-center gap-3 mb-6">
-            <div className="flex-1 h-px bg-gray-200"></div>
-            <span className="text-xs text-gray-500">or sign up with email</span>
-            <div className="flex-1 h-px bg-gray-200"></div>
+            <div className="flex-1 h-px bg-slate-700"></div>
+            <span className="text-xs text-slate-500">or sign up with email</span>
+            <div className="flex-1 h-px bg-slate-700"></div>
           </div>
+
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">

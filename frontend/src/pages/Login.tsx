@@ -49,7 +49,7 @@ export function Login() {
   };
 
   return (
-    <div className="flex h-[100dvh] w-full bg-white">
+    <div className="flex h-[100dvh] w-full bg-gradient-to-br from-[#0a0a0a] to-[#020202]">
       {/* Left side - Image (hidden on mobile) */}
       <div className="w-full hidden md:flex items-center justify-center bg-gray-50">
         <img
@@ -63,14 +63,14 @@ export function Login() {
       <div className="w-full flex flex-col items-center justify-center px-6 md:px-0">
         <div className="w-full md:w-96 max-w-md">
           {/* Header */}
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900">Welcome back</h1>
-            <p className="text-sm text-gray-600 mt-2">Sign in to your account to continue</p>
+          <div className="mb-8 text-center">
+            <h1 className="text-4xl font-bold text-white">Welcome Back</h1>
+            <p className="text-sm text-slate-400 mt-2">Sign in to unlock your focus.</p>
           </div>
 
           {/* Error Message */}
           {error && (
-            <div className="mb-4 p-4 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm">
+            <div className="mb-4 p-3 rounded-lg bg-red-900/50 border border-red-500/30 text-red-400 text-sm">
               {error}
             </div>
           )}
@@ -87,16 +87,19 @@ export function Login() {
               onError={() => {
                 setError('Google Login Failed');
               }}
+              theme="filled_black"
+              shape="circle"
               useOneTap
             />
           </div>
 
           {/* Divider */}
           <div className="flex items-center gap-3 mb-6">
-            <div className="flex-1 h-px bg-gray-200"></div>
-            <span className="text-xs text-gray-500">or sign in with email</span>
-            <div className="flex-1 h-px bg-gray-200"></div>
+            <div className="flex-1 h-px bg-slate-700"></div>
+            <span className="text-xs text-slate-500">or sign in with email</span>
+            <div className="flex-1 h-px bg-slate-700"></div>
           </div>
+
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">

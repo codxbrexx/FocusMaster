@@ -55,7 +55,7 @@ const Header = () => {
             <Button className='hover:underline hover:text-white hover:scale-105 ' variant="ghost" asChild>
               <a href="/login">Login</a>
             </Button>
-            <Button asChild className="border border-gray-100 hover:bg-indigo-300 text-white">
+            <Button asChild className="border border-gray-100 hover:bg-indigo-300 text-white hover:text-black hover:scale-105">
               <a href="/register">Sign Up</a>
             </Button>
           </div>
