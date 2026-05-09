@@ -41,6 +41,7 @@ yarn-error.log*
 *.sln
 *.sw?
 .DS_Store
+issues/
 
 # Testing
 coverage/
