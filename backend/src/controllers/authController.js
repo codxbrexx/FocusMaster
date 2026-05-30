@@ -81,18 +81,27 @@ const googleLogin = asyncHandler(async (req, res) => {
       audience: process.env.GOOGLE_CLIENT_ID,
     });
 
-    const { name, email, picture } = ticket.getPayload();
+    const { name, email, picture, sub: googleId } = ticket.getPayload();
 
     let user = await User.findOne({ email });
 
-    if (!user) {
+    if (user) {
+      // User exists, update googleId and picture if not set
+      if (!user.googleId) {
+        user.googleId = googleId;
+      }
+      if (!user.picture) {
+        user.picture = picture;
+      }
+      await user.save();
+    } else {
+      // User does not exist, create a new one
       const randomPassword = require("crypto").randomBytes(16).toString("hex");
-
       user = await User.create({
         name,
         email,
         password: randomPassword,
-        googleId: ticket.getUserId(),
+        googleId: googleId,
         picture: picture,
       });
     }
@@ -107,8 +116,9 @@ const googleLogin = asyncHandler(async (req, res) => {
       isGuest: user.isGuest,
     });
   } catch (error) {
+    console.error("Google authentication error:", error);
     res.status(401);
-    throw new Error("Google authentication failed: " + error.message);
+    throw new Error("Google authentication failed. Please try again.");
   }
 });
 
@@ -117,6 +127,11 @@ const googleLogin = asyncHandler(async (req, res) => {
 // @access  Public
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
+
+  if (!name || !email || !password) {
+    res.status(400);
+    throw new Error("Please provide name, email, and password");
+  }
 
   const userExists = await User.findOne({ email });
 
