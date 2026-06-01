@@ -13,6 +13,7 @@ const analyticsRoutes = require("./routes/analyticsRoutes");
 const llmRoutes = require("./routes/llmRoutes");
 const seedRoutes = require("./routes/seedRoutes");
 const feedbackRoutes = require("./routes/feedbackRoutes");
+const gdprRoutes = require("./routes/gdprRoutes");
 
 const app = express();
 app.set("trust proxy", 1);
@@ -68,6 +69,7 @@ app.use("/api/analytics", analyticsRoutes);
 app.use("/api/llm", llmRoutes);
 app.use("/api/seed", seedRoutes);
 app.use("/api/feedback", feedbackRoutes);
+app.use("/api/gdpr", gdprRoutes);
 app.use("/api/admin", require("./admin/routes/adminRoutes"));
 
 app.get(["/favicon.ico", "/favicon.png"], (req, res) => res.status(204).end());

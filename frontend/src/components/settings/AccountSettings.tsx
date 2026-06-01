@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { Trash2, RefreshCw, AlertTriangle } from 'lucide-react';
+import { Trash2, RefreshCw, AlertTriangle, Download } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import api from '@/services/api';
 import { Button } from '@/components/ui/button';
@@ -42,8 +42,44 @@ export const AccountSettings = () => {
         <div className="p-6 bg-muted/20 flex items-center gap-2">
           <AlertTriangle className="w-4 h-4 text-orange-500" />
           <h3 className="text-sm font-medium uppercase tracking-wider text-muted-foreground">
-            Danger Zone
+            Danger Zone & Data Privacy
           </h3>
+        </div>
+
+        {/* Row 0: Export Data */}
+        <div className="p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-muted/10 transition-colors">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2 text-foreground font-medium">
+              <Download className="w-4 h-4 text-blue-500" />
+              <span>Export My Data</span>
+            </div>
+            <p className="text-sm text-muted-foreground max-w-lg">
+              Download a complete JSON export of your personal data, tasks, sessions, and feedback.
+            </p>
+          </div>
+
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={async () => {
+              try {
+                const response = await api.get('/gdpr/export', { responseType: 'blob' });
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', 'focusmaster-data.json');
+                document.body.appendChild(link);
+                link.click();
+                link.parentNode?.removeChild(link);
+                toast.success('Data exported successfully');
+              } catch (error) {
+                toast.error('Failed to export data');
+              }
+            }}
+            className="shrink-0 hover:text-blue-700 border"
+          >
+            Export (JSON)
+          </Button>
         </div>
 
         {/* Row 1: Reset Statistics */}
@@ -118,7 +154,7 @@ const DeleteAccountDialog = () => {
   const handleDelete = async () => {
     setIsLoading(true);
     try {
-      await api.delete('/auth/profile');
+      await api.delete('/gdpr/delete');
       toast.success('Account deleted successfully');
       logout();
     } catch (error: any) {

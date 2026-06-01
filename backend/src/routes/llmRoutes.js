@@ -1,6 +1,6 @@
 const express = require("express");
 const asyncHandler = require("express-async-handler");
-const rateLimit = require('express-rate-limit');
+const { rateLimit, ipKeyGenerator } = require('express-rate-limit');
 const { protect } = require("../middleware/authMiddleware");
 const { generate } = require("../services/llmService");
 
@@ -18,7 +18,7 @@ const ALLOWED_MODELS = [
 const llmLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, 
   max: 100, 
-  keyGenerator: (req) => (req.user && req.user._id ? req.user._id.toString() : req.ip),
+  keyGenerator: (req) => (req.user && req.user._id ? req.user._id.toString() : ipKeyGenerator(req)),
   standardHeaders: true,
   legacyHeaders: false,
   handler: (req, res) => {
