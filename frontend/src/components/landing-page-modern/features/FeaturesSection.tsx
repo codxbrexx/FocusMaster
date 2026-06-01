@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion';
-import { useState } from 'react';
 import {
   Zap,
   BarChart3,
@@ -8,7 +7,6 @@ import {
   Target,
   Shield,
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 
 const features = [
   {
@@ -44,8 +42,7 @@ const features = [
 ];
 
 export const FeaturesSection = () => {
-  const [showAll, setShowAll] = useState(false);
-  const visibleFeatures = showAll ? features : features.slice(0, 3);
+  const visibleFeatures = features;
 
   return (
     <section className="relative w-full bg-[#0A0A14] py-20 md:py-32 lg:py-40 px-4 md:px-8 lg:px-20">

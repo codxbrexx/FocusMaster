@@ -82,6 +82,10 @@ const IssueReportsPage = lazy(() =>
   import('./admin/pages/IssueReportsPage').then((module) => ({ default: module.IssueReportsPage }))
 );
 
+const CookieSettings = lazy(() => import('./pages/CookieSettings').then((m) => ({ default: m.CookieSettings })));
+const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy').then((m) => ({ default: m.PrivacyPolicy })));
+const TermsOfService = lazy(() => import('./pages/TermsOfService').then((m) => ({ default: m.TermsOfService })));
+import { CookieConsentBanner } from './components/CookieConsentBanner';
 const queryClient = new QueryClient();
 
 const App = () => {
@@ -91,6 +95,7 @@ const App = () => {
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
           <AuthProvider>
             <GlobalTimer />
+            <CookieConsentBanner />
             <BrowserRouter>
               <Suspense fallback={<LoadingPage />}>
                 <Routes>
@@ -99,6 +104,10 @@ const App = () => {
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
                   </Route>
+
+                  <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                  <Route path="/terms-of-service" element={<TermsOfService />} />
+                  <Route path="/cookie-settings" element={<CookieSettings />} />
 
                   <Route element={<ProtectedRoute />}>
                     <Route element={<Layout />}>

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import api from '@/lib/api'; // assuming api is in lib
+import api from '@/services/api';
 
 export function CookieConsentBanner() {
   const [isVisible, setIsVisible] = useState(false);
