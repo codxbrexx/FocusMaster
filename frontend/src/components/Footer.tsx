@@ -21,7 +21,11 @@ export const Footer = () => {
           </span>
         </div>
 
-        <div className="flex items-center gap-4 order-1 md:order-2">
+        <div className="flex items-center gap-4 order-1 md:order-2 flex-wrap justify-center">
+          <a href="/privacy-policy" className="hover:text-primary transition-colors">Privacy</a>
+          <a href="/terms-of-service" className="hover:text-primary transition-colors">Terms</a>
+          <a href="/cookie-settings" className="hover:text-primary transition-colors">Cookies</a>
+          <div className="h-4 w-px bg-border/60" />
           <ReportBugDialog />
           <div className="h-4 w-px bg-border/60" />
           <a

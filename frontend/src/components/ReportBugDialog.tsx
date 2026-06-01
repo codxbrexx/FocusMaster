@@ -30,6 +30,7 @@ export function ReportBugDialog() {
   const [message, setMessage] = useState('');
   const [category, setCategory] = useState('bug');
   const [email, setEmail] = useState('');
+  const [includeDeviceInfo, setIncludeDeviceInfo] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,11 +45,11 @@ export function ReportBugDialog() {
         message,
         category,
         email,
-        deviceInfo: {
+        deviceInfo: includeDeviceInfo ? {
           userAgent: navigator.userAgent,
           platform: navigator.platform,
           screenSize: `${window.innerWidth}x${window.innerHeight}`,
-        },
+        } : null,
       });
       toast.success('Thanks for your feedback! We will look into it.');
       setOpen(false);
@@ -162,17 +163,25 @@ export function ReportBugDialog() {
             </div>
           </div>
 
-          {/* System Info (Implicit) */}
+          {/* System Info Opt-in */}
           <div className="rounded-lg bg-white/5 border border-white/5 p-3 flex items-start gap-3">
             <Laptop className="w-4 h-4 text-white/40 mt-0.5" />
-            <div className="space-y-1">
-              <p className="text-xs font-medium text-white/70">
-                System Information will be included
-              </p>
-              <p className="text-[10px] text-white/30">
-                Browser: {navigator.userAgent.split(')')[0]}) • Screen: {window.innerWidth}x
-                {window.innerHeight}
-              </p>
+            <div className="space-y-2 flex-1">
+              <label className="flex items-center gap-2 text-sm text-white/90 cursor-pointer">
+                <input
+                  type="checkbox"
+                  className="rounded border-white/20 bg-black/50 accent-red-500 w-4 h-4"
+                  checked={includeDeviceInfo}
+                  onChange={(e) => setIncludeDeviceInfo(e.target.checked)}
+                />
+                Include System Information to help us debug
+              </label>
+              {includeDeviceInfo && (
+                <p className="text-[10px] text-white/30 pl-6">
+                  Browser: {navigator.userAgent.split(')')[0]}) • Screen: {window.innerWidth}x
+                  {window.innerHeight}
+                </p>
+              )}
             </div>
           </div>
 
