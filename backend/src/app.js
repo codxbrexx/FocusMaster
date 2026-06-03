@@ -1,7 +1,9 @@
 const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const crypto = require("crypto");
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
+const logger = require("./utils/logger");
 
 // Route imports
 const authRoutes = require("./routes/authRoutes");
@@ -18,46 +20,52 @@ const gdprRoutes = require("./routes/gdprRoutes");
 const app = express();
 app.set("trust proxy", 1);
 
-// Middleware
-app.use((req, res, next) => {
-  console.log(`[Request Debug] ${req.method} ${req.url}`);
-  next();
-});
-
-const allowedOrigins = (
+const isProduction = process.env.NODE_ENV === "production";
+const defaultDevOrigins = ["http://localhost:5173", "http://127.0.0.1:5173"];
+const configuredOrigins = (
   process.env.FRONTEND_URLS ||
   process.env.FRONTEND_URL ||
-  "http://localhost:5173"
+  (isProduction ? "" : defaultDevOrigins.join(","))
 )
   .split(",")
-  .map((s) => s.trim())
+  .map((origin) => origin.trim())
   .filter(Boolean);
+
+// Middleware
+app.use((req, res, next) => {
+  req.id = crypto.randomUUID();
+  res.setHeader("X-Request-Id", req.id);
+
+  logger.info("Incoming request", {
+    requestId: req.id,
+    method: req.method,
+    path: req.originalUrl,
+  });
+
+  next();
+});
 
 app.use(
   cors({
     origin: (origin, callback) => {
       if (!origin) return callback(null, true);
 
-      const isAllowed = allowedOrigins.indexOf(origin) !== -1;
-
-      const isVercel = origin.endsWith(".vercel.app");
-
-      const isLocal =
-        origin.includes("localhost") || origin.includes("127.0.0.1");
-
-      if (isAllowed || isVercel || isLocal) {
+      if (configuredOrigins.includes(origin)) {
         callback(null, true);
       } else {
-        console.log("CORS blocked origin:", origin);
+        logger.warn("CORS blocked origin", {
+          origin,
+          allowedOrigins: configuredOrigins,
+        });
         callback(new Error("Not allowed by CORS"));
       }
     },
     credentials: true,
   }),
 );
-app.use(express.json());
+app.use(express.json({ limit: "1mb" }));
 app.use(cookieParser());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true, limit: "1mb" }));
 
 // Routes
 app.use("/api/auth", authRoutes);

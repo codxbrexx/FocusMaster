@@ -1,4 +1,5 @@
 const asyncHandler = require("express-async-handler");
+const mongoose = require("mongoose");
 const User = require("../../models/User");
 const Session = require("../../models/Session");
 const AuditLog = require("../../models/AuditLog");

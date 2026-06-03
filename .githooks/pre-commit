@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+staged_files="$(git diff --cached --name-only)"
+
+if echo "$staged_files" | grep -Eq '(^|/)\.env($|(\.(local|development|test|production)(\.local)?)$)'; then
+  echo "Blocked commit: staged .env file detected."
+  echo "Use .env.example for templates and store real secrets in your secret manager."
+  exit 1
+fi
