@@ -1,6 +1,7 @@
 const express = require("express");
 const asyncHandler = require("express-async-handler");
 const { generate } = require("../services/llmService");
+const { protect } = require("../middleware/authMiddleware");
 const { apiLimiter } = require("../middleware/rateLimitMiddleware");
 const { validate } = require("../middleware/validateMiddleware");
 const { llmBodySchema } = require("../validation/schemas");
@@ -8,8 +9,10 @@ const { llmBodySchema } = require("../validation/schemas");
 const router = express.Router();
 
 // POST /api/llm
+// requires valid JWT, rate-limited per user, body validated
 router.post(
   "/",
+  protect,
   apiLimiter,
   validate({ body: llmBodySchema }),
   asyncHandler(async (req, res) => {
