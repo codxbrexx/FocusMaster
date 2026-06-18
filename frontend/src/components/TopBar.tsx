@@ -63,7 +63,7 @@ export function TopBar({ onMenuClick }: TopBarProps) {
   };
 
   return (
-    <header className="h-20 border-b border-border/40 bg-card/50 backdrop-blur-xl px-4 md:px-8 flex items-center justify-between sticky top-0 z-30 shadow-sm">
+    <header className="h-20 border-b border-border/40 bg-card/80 backdrop-blur-lg px-4 md:px-8 flex items-center justify-between sticky top-0 z-30 shadow-sm">
       <div className="flex items-center gap-4">
         <Button
           variant="ghost"

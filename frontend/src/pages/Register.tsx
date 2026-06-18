@@ -280,9 +280,16 @@ export function Register() {
             <button
               type="button"
               className="w-full h-11 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors"
-              onClick={() => {
-                loginAsGuest();
-                navigate('/');
+              onClick={async () => {
+                try {
+                  setIsLoading(true);
+                  await loginAsGuest();
+                  navigate('/dashboard');
+                } catch (err) {
+                  // Handled
+                } finally {
+                  setIsLoading(false);
+                }
               }}
               disabled={isLoading}
             >

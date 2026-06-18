@@ -98,7 +98,7 @@ const authSchemas = {
     .strict(),
   guest: z
     .object({
-      guestId: objectId.optional(),
+      guestId: objectId.nullable().optional(),
     })
     .strict(),
   google: z

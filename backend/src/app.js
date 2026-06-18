@@ -50,7 +50,11 @@ app.use(
     origin: (origin, callback) => {
       if (!origin) return callback(null, true);
 
-      if (configuredOrigins.includes(origin)) {
+      if (
+        configuredOrigins.includes(origin) ||
+        origin.startsWith("http://localhost:") ||
+        origin.startsWith("http://127.0.0.1:")
+      ) {
         callback(null, true);
       } else {
         logger.warn("CORS blocked origin", {

@@ -179,7 +179,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // client-side "sticky" session ID to resume data
       const savedId = localStorage.getItem('guest_id');
 
-      const { data } = await api.post('/auth/guest', { guestId: savedId });
+      const { data } = await api.post('/auth/guest', { guestId: savedId || undefined });
 
       // Save ID for next time
       localStorage.setItem('guest_id', data._id);

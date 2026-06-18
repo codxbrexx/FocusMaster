@@ -80,7 +80,7 @@ export const Sidebar = ({ open, onOpenChange }: SidebarProps) => {
       }}
       className={cn(
         'h-screen fixed left-0 top-0 z-40 flex flex-col',
-        'bg-background/80 backdrop-blur-3xl border-r border-white/10 shadow-2xl',
+        'bg-background border-r border-white/10 shadow-2xl',
         isMobile && 'border-none w-full max-w-[85vw]'
       )}
       onClick={() => !isMobile && onOpenChange(!open)}
@@ -194,7 +194,7 @@ export const Sidebar = ({ open, onOpenChange }: SidebarProps) => {
 
       {/* --- FOOTER / PROFILE --- */}
       <div
-        className="p-4 mt-auto border-t border-border/50 bg-gradient-to-t from-background/80 to-transparent backdrop-blur-sm relative"
+        className="p-4 mt-auto border-t border-border/50 bg-background relative"
         onClick={(e) => e.stopPropagation()}
       >
         <SidebarItem
