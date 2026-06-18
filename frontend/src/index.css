@@ -171,12 +171,7 @@
     --shadow-glow-lg: 0 0 80px rgba(0, 0, 0, 0.15);
   }
 
-  .light body {
-    background-image:
-      radial-gradient(circle at 15% 30%, rgba(147, 51, 234, 0.06) 0%, transparent 40%),
-      radial-gradient(circle at 85% 70%, rgba(59, 130, 246, 0.06) 0%, transparent 40%),
-      radial-gradient(circle at 50% 50%, rgba(147, 51, 234, 0.03) 0%, transparent 35%);
-  }
+
 
   .dark {
     /* Charcoal Matrix */
@@ -204,12 +199,7 @@
     --matrix-dot: #27272a;
   }
 
-  .dark body {
-    background-image:
-      radial-gradient(circle at 15% 30%, rgba(124, 58, 237, 0.08) 0%, transparent 40%),
-      radial-gradient(circle at 85% 70%, rgba(6, 182, 212, 0.08) 0%, transparent 40%),
-      radial-gradient(circle at 50% 50%, rgba(124, 58, 237, 0.04) 0%, transparent 35%);
-  }
+
 
   .blue {
     /* Navy Matrix */
@@ -237,12 +227,7 @@
     --matrix-dot: #1e293b;
   }
 
-  .blue body {
-    background-image:
-      radial-gradient(circle at 15% 30%, rgba(59, 130, 246, 0.1) 0%, transparent 40%),
-      radial-gradient(circle at 85% 70%, rgba(34, 197, 232, 0.1) 0%, transparent 40%),
-      radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.05) 0%, transparent 35%);
-  }
+
 
   .green {
     /* Forest Matrix */
@@ -270,12 +255,7 @@
     --matrix-dot: #064e3b;
   }
 
-  .green body {
-    background-image:
-      radial-gradient(circle at 15% 30%, rgba(34, 197, 94, 0.1) 0%, transparent 40%),
-      radial-gradient(circle at 85% 70%, rgba(16, 185, 129, 0.1) 0%, transparent 40%),
-      radial-gradient(circle at 50% 50%, rgba(34, 197, 94, 0.05) 0%, transparent 35%);
-  }
+
 }
 
 @layer base {
@@ -289,12 +269,6 @@
 
   body {
     background-color: var(--matrix-bg);
-    background-image:
-      radial-gradient(circle at 15% 30%, rgba(124, 58, 237, 0.08) 0%, transparent 40%),
-      radial-gradient(circle at 85% 70%, rgba(6, 182, 212, 0.08) 0%, transparent 40%),
-      radial-gradient(circle at 50% 50%, rgba(124, 58, 237, 0.04) 0%, transparent 35%);
-    background-attachment: fixed;
-    background-size: 100% 100%;
     color: hsl(var(--foreground));
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
