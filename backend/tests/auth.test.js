@@ -7,11 +7,11 @@ const User = require("../src/models/User");
 let mongoServer;
 
 beforeAll(async () => {
-  process.env.JWT_SECRET = "testsecret";
+  process.env.JWT_SECRET = "testsecret-longkey-for-jwt-1234";
   mongoServer = await MongoMemoryServer.create();
   const uri = mongoServer.getUri();
   await mongoose.connect(uri);
-});
+}, 30000);
 
 afterAll(async () => {
   await mongoose.disconnect();

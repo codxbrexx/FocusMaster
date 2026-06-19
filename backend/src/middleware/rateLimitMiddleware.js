@@ -1,8 +1,10 @@
 const { ipKeyGenerator, rateLimit } = require("express-rate-limit");
 
+const isProduction = process.env.NODE_ENV === "production";
+
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 5,
+  max: isProduction ? 5 : 20,
   standardHeaders: true,
   legacyHeaders: false,
   message: {

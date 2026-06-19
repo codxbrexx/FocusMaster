@@ -39,7 +39,7 @@ export function Register() {
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-  const { register, loginAsGuest, logout, googleLogin } = useAuth();
+  const { register, loginAsGuest, googleLogin } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -75,17 +75,28 @@ export function Register() {
       return;
     }
 
-    if (password.length < 6) {
-      toast.error('Password must be at least 6 characters');
-      setError('Password must be at least 6 characters');
+    if (password.length < 8) {
+      toast.error('Password must be at least 8 characters');
+      setError('Password must be at least 8 characters');
+      return;
+    }
+
+    if (!/[A-Za-z]/.test(password)) {
+      toast.error('Password must include at least one letter');
+      setError('Password must include at least one letter');
+      return;
+    }
+
+    if (!/\d/.test(password)) {
+      toast.error('Password must include at least one number');
+      setError('Password must include at least one number');
       return;
     }
 
     setIsLoading(true);
     try {
       await register(name, email, password);
-      logout();
-      navigate('/login');
+      navigate('/dashboard');
     } catch (err: any) {
       const errorMessage = err.response?.data?.message || 'Registration failed';
       setError(errorMessage);
@@ -125,10 +136,14 @@ export function Register() {
           {/* Google Login Button */}
           <div className="flex justify-center mb-6">
             <GoogleLogin
-              onSuccess={(credentialResponse) => {
+              onSuccess={async (credentialResponse) => {
                 if (credentialResponse.credential) {
-                  googleLogin(credentialResponse.credential);
-                  navigate('/dashboard');
+                  try {
+                    await googleLogin(credentialResponse.credential);
+                    navigate('/dashboard');
+                  } catch {
+                    setError('Google sign-up failed. Please try again.');
+                  }
                 }
               }}
               onError={() => {

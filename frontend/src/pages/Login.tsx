@@ -78,10 +78,14 @@ export function Login() {
           {/* Google Login Button */}
           <div className="flex justify-center mb-6">
             <GoogleLogin
-              onSuccess={(credentialResponse) => {
+              onSuccess={async (credentialResponse) => {
                 if (credentialResponse.credential) {
-                  googleLogin(credentialResponse.credential);
-                  navigate('/dashboard');
+                  try {
+                    await googleLogin(credentialResponse.credential);
+                    navigate('/dashboard');
+                  } catch {
+                    setError('Google login failed. Please try again.');
+                  }
                 }
               }}
               onError={() => {

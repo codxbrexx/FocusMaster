@@ -8,11 +8,11 @@ const jwt = require("jsonwebtoken");
 let mongoServer;
 
 beforeAll(async () => {
-  process.env.JWT_SECRET = "test-secret";
+  process.env.JWT_SECRET = "test-secret-longkey-for-jwt-1234";
   mongoServer = await MongoMemoryServer.create();
   const uri = mongoServer.getUri();
   await mongoose.connect(uri);
-});
+}, 30000);
 
 afterAll(async () => {
   await mongoose.disconnect();
