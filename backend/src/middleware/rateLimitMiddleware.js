@@ -4,7 +4,7 @@ const isProduction = process.env.NODE_ENV === "production";
 
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: isProduction ? 5 : 20,
+  max: isProduction ? 5 : 1000,
   standardHeaders: true,
   legacyHeaders: false,
   message: {
@@ -14,7 +14,7 @@ const authLimiter = rateLimit({
 
 const apiLimiter = rateLimit({
   windowMs: 60 * 1000,
-  max: 100,
+  max: isProduction ? 100 : 1000,
   standardHeaders: true,
   legacyHeaders: false,
   keyGenerator: (req) => req.user?._id?.toString() || ipKeyGenerator(req.ip),

@@ -26,8 +26,9 @@ test.describe('Public Pages', () => {
 
 test.describe('Protected Route Redirects', () => {
   test.beforeEach(async ({ page }) => {
+    // Go to a simple public page that doesn't redirect
+    await page.goto('/privacy-policy');
     // Clear auth state
-    await page.goto('/login');
     await page.evaluate(() => {
       localStorage.clear();
     });
@@ -54,7 +55,13 @@ test.describe('Protected Route Redirects', () => {
 
 test.describe('Authenticated Route Access (Guest)', () => {
   test.beforeEach(async ({ page }) => {
-    // Login as guest first
+    // Go to a simple public page that doesn't redirect
+    await page.goto('/privacy-policy');
+    // Clear auth state to ensure we start unauthenticated
+    await page.evaluate(() => {
+      localStorage.clear();
+    });
+    // Go to login page
     await page.goto('/login');
     await dismissCookieBanner(page);
     await page.getByRole('button', { name: /continue as guest/i }).click();

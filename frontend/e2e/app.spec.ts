@@ -2,7 +2,13 @@ import { test, expect, dismissCookieBanner } from './fixtures';
 
 test.describe('Dashboard (Guest Mode)', () => {
   test.beforeEach(async ({ page }) => {
-    // Login as guest
+    // Go to a simple public page that doesn't redirect
+    await page.goto('/privacy-policy');
+    // Clear auth state to ensure we start unauthenticated
+    await page.evaluate(() => {
+      localStorage.clear();
+    });
+    // Go to login page
     await page.goto('/login');
     await dismissCookieBanner(page);
     await page.getByRole('button', { name: /continue as guest/i }).click();
