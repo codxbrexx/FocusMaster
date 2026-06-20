@@ -54,15 +54,20 @@ export const FooterSection = () => {
 
         {/* Bottom Section */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500">
-          <p>© 2024 FocusMaster. All rights reserved.</p>
+          <p>© 2025 FocusMaster. All rights reserved.</p>
           <div className="flex gap-6">
-            <a href="#" className="hover:text-slate-300 transition-colors">
+            <a href="/privacy-policy" className="hover:text-slate-300 transition-colors">
               Privacy Policy
             </a>
-            <a href="#" className="hover:text-slate-300 transition-colors">
+            <a href="/terms-of-service" className="hover:text-slate-300 transition-colors">
               Terms of Service
             </a>
-            <a href="#" className="hover:text-slate-300 transition-colors">
+            <a
+              href="https://github.com/codxbrexx"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-slate-300 transition-colors"
+            >
               Contact
             </a>
           </div>

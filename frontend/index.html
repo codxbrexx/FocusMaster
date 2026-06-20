@@ -2,19 +2,116 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/jpeg" href="/fmasterlogo.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+    <!-- PRIMARY SEO META TAGS                                        -->
+    <title>FocusMaster — Pomodoro Timer, Task Manager & Productivity Dashboard</title>
+    <meta
+      name="description"
+      content="FocusMaster is a free productivity app with a built-in Pomodoro timer, task manager, analytics dashboard, calendar, and Spotify integration. Stay focused and get more done."
+    />
+    <meta
+      name="keywords"
+      content="pomodoro timer, task manager, productivity app, focus timer, work timer, time management, to-do list, productivity dashboard, deep work, focus mode"
+    />
+    <meta name="author" content="FocusMaster" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+
+    <!-- Canonical URL — REPLACE with your real production domain -->
+    <link rel="canonical" href="https://focusmaster-tau.vercel.app/" />
+
+    <!-- OPEN GRAPH (Facebook, LinkedIn, Discord, WhatsApp)           -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="FocusMaster" />
+    <meta property="og:title" content="FocusMaster — Pomodoro Timer, Task Manager & Productivity Dashboard" />
+    <meta
+      property="og:description"
+      content="Boost your productivity with FocusMaster. Built-in Pomodoro timer, smart task manager, focus analytics, and Spotify integration — all in one free app."
+    />
+    <!-- REPLACE the URL below with your real domain -->
+    <meta property="og:url" content="https://focusmaster-tau.vercel.app/" />
+    <meta property="og:image" content="https://focusmaster-tau.vercel.app/fmasterlogo.png" />
+    <meta property="og:image:alt" content="FocusMaster — Productivity Dashboard" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- TWITTER / X CARD                                             -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="FocusMaster — Pomodoro Timer, Task Manager & Productivity Dashboard" />
+    <meta
+      name="twitter:description"
+      content="Boost your productivity with FocusMaster. Built-in Pomodoro timer, smart task manager, focus analytics, and Spotify integration."
+    />
+    <meta name="twitter:image" content="https://focusmaster-tau.vercel.app/fmasterlogo.png" />
+    <meta name="twitter:image:alt" content="FocusMaster — Productivity Dashboard" />
+    <!-- Add your Twitter handle if you have one: -->
+    <!-- <meta name="twitter:site" content="@focusmaster" /> -->
+
+    <!-- PWA & ICONS                                                  -->
+    <link rel="icon" type="image/png" href="/fmasterlogo.png" />
+    <link rel="apple-touch-icon" href="/fmasterlogo.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="FocusMaster" />
+    <meta name="application-name" content="FocusMaster" />
+    <meta name="theme-color" content="#09090b" />
+    <meta name="msapplication-TileColor" content="#09090b" />
+
+    <!-- GOOGLE FONTS — PRECONNECT + FONT LOAD                       -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
-    <title>FocusMaster</title>
-    <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="theme-color" content="#09090b" />
-    <link rel="manifest" href="/manifest.json" />
+
+    <!-- JSON-LD STRUCTURED DATA (Rich Snippets)                     -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "FocusMaster",
+        "applicationCategory": "ProductivityApplication",
+        "applicationSubCategory": "TimeManagementApplication",
+        "operatingSystem": "Web, iOS, Android",
+        "browserRequirements": "Requires a modern browser with JavaScript enabled",
+        "description": "FocusMaster is a productivity web app featuring a Pomodoro timer, task manager, analytics dashboard, calendar, clock-in/out tracker, and Spotify integration to help you stay focused and productive.",
+        "url": "https://focusmaster-tau.vercel.app",
+        "image": "https://focusmaster-tau.vercel.app/fmasterlogo.png",
+        "screenshot": "https://focusmaster-tau.vercel.app/dash_admin.png",
+        "softwareVersion": "1.0.0",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "featureList": [
+          "Pomodoro Timer",
+          "Task Manager",
+          "Analytics Dashboard",
+          "Calendar",
+          "Clock In/Out Tracker",
+          "Spotify Integration",
+          "Focus Mode",
+          "Productivity Reports"
+        ]
+      }
+    </script>
+
+    <!-- JSON-LD: WEBSITE (enables Google Sitelinks Search Box)      -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "FocusMaster",
+        "url": "https://focusmaster-tau.vercel.app",
+        "description": "Free productivity app with Pomodoro timer, task manager, analytics, and more.",
+        "inLanguage": "en-US"
+      }
+    </script>
   </head>
 
   <body>

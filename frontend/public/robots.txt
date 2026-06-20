@@ -1,0 +1,31 @@
+# robots.txt — FocusMaster
+# https://focusmaster-tau.vercel.app
+
+User-agent: *
+
+# Allow all public-facing pages
+Allow: /$
+Allow: /login
+Allow: /register
+Allow: /privacy-policy
+Allow: /terms-of-service
+Allow: /cookie-settings
+
+# Block authenticated app routes (Googlebot can't access them anyway)
+Disallow: /dashboard
+Disallow: /pomodoro
+Disallow: /tasks
+Disallow: /analytics
+Disallow: /calendar
+Disallow: /clock
+Disallow: /spotify
+Disallow: /settings
+Disallow: /profile
+Disallow: /admin
+Disallow: /callback
+
+# Block build artifacts
+Disallow: /assets/
+
+# Sitemap location
+Sitemap: https://focusmaster-tau.vercel.app/sitemap.xml

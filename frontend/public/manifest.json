@@ -1,16 +1,34 @@
 {
   "name": "FocusMaster",
   "short_name": "FocusMaster",
+  "description": "Productivity app with Pomodoro timer, task manager, analytics dashboard, calendar, and Spotify integration.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#09090b",
   "theme_color": "#09090b",
   "orientation": "portrait",
+  "lang": "en-US",
+  "categories": ["productivity", "utilities"],
   "icons": [
     {
+      "src": "/fmasterlogosm.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
       "src": "/fmasterlogo.png",
-      "sizes": "192x192 512x512",
-      "type": "image/png"
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/dash_admin.png",
+      "sizes": "1280x800",
+      "type": "image/png",
+      "label": "FocusMaster Dashboard"
     }
   ]
 }
