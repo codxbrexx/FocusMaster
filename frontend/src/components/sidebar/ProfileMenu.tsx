@@ -120,7 +120,7 @@ export const ProfileMenu = ({ isOpen }: ProfileMenuProps) => {
           <div
             className={cn(
               'absolute z-[70]',
-              isOpen ? 'bottom-full left-0 w-full mb-3' : 'left-14 bottom-0 pl-2'
+              isOpen ? 'top-full right-0 w-full mt-3' : 'left-14 top-0 pl-2'
             )}
             onClick={(e) => e.stopPropagation()}
           >
