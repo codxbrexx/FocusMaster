@@ -18,7 +18,6 @@ import { useNavigate } from 'react-router-dom';
 import { useDevice } from '@/context/DeviceContext';
 import { useAuth } from '@/context/AuthContext';
 import { SidebarItem } from './SidebarItem';
-import { ProfileMenu } from './ProfileMenu';
 
 interface SidebarProps {
   open: boolean;
@@ -193,20 +192,6 @@ export const Sidebar = ({ open, onOpenChange }: SidebarProps) => {
         )}
       </div>
 
-      {/* --- FOOTER / PROFILE --- */}
-      <div
-        className="p-4 mt-auto border-t border-border/50 bg-background relative"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <SidebarItem
-          item={{ path: '/settings', label: 'Settings', icon: Settings }}
-          isOpen={open}
-        />
-
-        <div className="mt-2 pt-2 border-t border-primary/50">
-          <ProfileMenu isOpen={open} />
-        </div>
-      </div>
     </motion.aside>
   );
 };
