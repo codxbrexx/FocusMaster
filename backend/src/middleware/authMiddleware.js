@@ -29,9 +29,16 @@ const protect = asyncHandler(async (req, res, next) => {
 
       next();
     } catch (error) {
-      // Only set 401 if it hasn't been set by the null-user check above
       if (res.statusCode !== 401) {
         res.status(401);
+      }
+      // Re-throw our own specific errors verbatim; replace JWT library errors
+      // with a generic message so we don't leak JWT internals to the client.
+      if (
+        error.message === "Not authorized, user no longer exists" ||
+        error.message === "Not authorized, token failed"
+      ) {
+        throw error;
       }
       throw new Error("Not authorized, token failed");
     }
