@@ -1,26 +1,30 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { toast } from 'sonner';
 import api from '@/services/api';
 
 export function CookieSettings() {
-  const [preferences, setPreferences] = useState({
-    essential: true,
-    analytics: false,
-    marketing: false,
-  });
-
-  useEffect(() => {
+  const [preferences, setPreferences] = useState(() => {
     const saved = localStorage.getItem('cookie-consent');
     if (saved) {
       try {
-        setPreferences(JSON.parse(saved));
-      } catch (e) {
-        // Handle parse error
+        const parsed = JSON.parse(saved);
+        return {
+          essential: true,
+          analytics: !!parsed.analytics,
+          marketing: !!parsed.marketing,
+        };
+      } catch {
+        // Fallback to default
       }
     }
-  }, []);
+    return {
+      essential: true,
+      analytics: false,
+      marketing: false,
+    };
+  });
 
   const handleSave = async () => {
     const updatedPreferences = {
@@ -33,7 +37,7 @@ export function CookieSettings() {
     try {
       await api.post('/gdpr/log-consent', { preferences: updatedPreferences });
       toast.success('Cookie preferences saved successfully');
-    } catch (error) {
+    } catch {
       toast.success('Cookie preferences saved locally'); // Still show success if offline/not logged in
     }
   };

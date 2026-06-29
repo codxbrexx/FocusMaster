@@ -7,9 +7,10 @@ export const useCounterAnimation = (targetValue: number, duration: number = 2) =
   const animatedRef = useRef({ value: 0 });
 
   useEffect(() => {
+    const animatedObj = animatedRef.current;
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && animatedRef.current.value === 0) {
+        if (entry.isIntersecting && animatedObj.value === 0) {
           // Check if user prefers reduced motion
           const prefersReducedMotion = window.matchMedia(
             '(prefers-reduced-motion: reduce)'
@@ -18,12 +19,12 @@ export const useCounterAnimation = (targetValue: number, duration: number = 2) =
           if (prefersReducedMotion) {
             setDisplayValue(targetValue);
           } else {
-            gsap.to(animatedRef.current, {
+            gsap.to(animatedObj, {
               value: targetValue,
               duration: duration,
               ease: 'power1.out',
               onUpdate: () => {
-                setDisplayValue(Math.floor(animatedRef.current.value));
+                setDisplayValue(Math.floor(animatedObj.value));
               },
             });
           }
@@ -38,7 +39,7 @@ export const useCounterAnimation = (targetValue: number, duration: number = 2) =
 
     return () => {
       observer.disconnect();
-      gsap.killTweensOf(animatedRef.current);
+      gsap.killTweensOf(animatedObj);
     };
   }, [targetValue, duration]);
 

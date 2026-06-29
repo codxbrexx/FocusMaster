@@ -72,7 +72,7 @@ export const AccountSettings = () => {
                 link.click();
                 link.parentNode?.removeChild(link);
                 toast.success('Data exported successfully');
-              } catch (error) {
+              } catch {
                 toast.error('Failed to export data');
               }
             }}

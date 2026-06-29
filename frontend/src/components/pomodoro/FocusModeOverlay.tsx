@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { useEffect } from 'react';
+
 import { ArrowLeft, Brain, Coffee, Armchair } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
