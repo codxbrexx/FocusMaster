@@ -64,6 +64,7 @@ export const test = base.extend<{ authedPage: Page }>({
     // Pre-accept cookies so they don't interfere
     await page.goto('/login');
     await preAcceptCookies(page);
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     await use(page);
   },
 });

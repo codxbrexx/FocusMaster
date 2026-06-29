@@ -84,12 +84,14 @@ export const useThreeScene = () => {
     const setup = initScene();
     if (!setup) return;
 
+    const frameIdRefObj = frameIdRef;
+
     return () => {
       window.removeEventListener('resize', onWindowResize);
 
       // Cleanup
-      if (frameIdRef.current) {
-        cancelAnimationFrame(frameIdRef.current);
+      if (frameIdRefObj.current) {
+        cancelAnimationFrame(frameIdRefObj.current);
       }
 
       setup.renderer.dispose();

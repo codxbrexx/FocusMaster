@@ -1,4 +1,4 @@
-import { test, expect, dismissCookieBanner, preAcceptCookies } from './fixtures';
+import { test, expect, dismissCookieBanner } from './fixtures';
 
 // AUTH E2E TESTS — Login, Register, Guest, Password Validation
 

@@ -1,17 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import api from '@/services/api';
 
 export function CookieConsentBanner() {
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const consent = localStorage.getItem('cookie-consent');
-    if (!consent) {
-      setIsVisible(true);
-    }
-  }, []);
+  const [isVisible, setIsVisible] = useState(() => {
+    return !localStorage.getItem('cookie-consent');
+  });
 
   const logConsentToDatabase = async (preferences: any) => {
     try {

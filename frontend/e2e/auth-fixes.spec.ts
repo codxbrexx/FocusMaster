@@ -133,7 +133,7 @@ test.describe('Login Page — Validation errors (inline, no toast spam)', () => 
     const spinner = page.locator('.animate-spin');
     // If the network is fast the spinner may disappear immediately — use a
     // soft check rather than strict assertion
-    const visible = await spinner.isVisible().catch(() => false);
+    await spinner.isVisible().catch(() => false);
     // Just assert the page stays on /login or moves to /dashboard — no crash
     await expect(page.locator('body')).toBeVisible();
   });

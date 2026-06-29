@@ -53,7 +53,7 @@ export function GlobalTimer() {
     let interval: ReturnType<typeof setInterval>;
 
     if (isActive) {
-      const endTime = Date.now() + timeLeft * 1000;
+      const endTime = Date.now() + useTimerStore.getState().timeLeft * 1000;
 
       interval = setInterval(() => {
         const now = Date.now();
