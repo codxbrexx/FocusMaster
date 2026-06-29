@@ -89,75 +89,60 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const login = async (email: string, password: string) => {
-    try {
-      const { data } = await api.post('/auth/login', { email, password });
-      localStorage.removeItem('isGuest');
-      localStorage.setItem('isAuthenticated', 'true');
+    const { data } = await api.post('/auth/login', { email, password });
+    localStorage.removeItem('isGuest');
+    localStorage.setItem('isAuthenticated', 'true');
 
-      // DEV: Grant admin role to specific email
-      if (data.email === 'adminali@gmail.com') {
-        data.role = 'admin';
-      }
-
-      setUser(data);
-      setIsAuthenticated(true);
-
-      // Hydrate stores after login
-      await Promise.all([
-        useSettingsStore.getState().fetchSettings(),
-        useTaskStore.getState().fetchTasks(),
-        useHistoryStore.getState().fetchHistory(),
-      ]);
-
-      toast.success('Welcome back!');
-    } catch (error: any) {
-      // Re-throw so the Login page can display the inline error message
-      throw error;
+    // DEV: Grant admin role to specific email
+    if (data.email === 'adminali@gmail.com') {
+      data.role = 'admin';
     }
+
+    setUser(data);
+    setIsAuthenticated(true);
+
+    // Hydrate stores after login
+    await Promise.all([
+      useSettingsStore.getState().fetchSettings(),
+      useTaskStore.getState().fetchTasks(),
+      useHistoryStore.getState().fetchHistory(),
+    ]);
+
+    toast.success('Welcome back!');
   };
 
   const googleLogin = async (token: string) => {
-    try {
-      const { data } = await api.post('/auth/google', { token });
-      localStorage.removeItem('isGuest');
-      localStorage.setItem('isAuthenticated', 'true');
-      setUser(data);
-      setIsAuthenticated(true);
+    const { data } = await api.post('/auth/google', { token });
+    localStorage.removeItem('isGuest');
+    localStorage.setItem('isAuthenticated', 'true');
+    setUser(data);
+    setIsAuthenticated(true);
 
-      // Hydrate stores after Google login
-      await Promise.all([
-        useSettingsStore.getState().fetchSettings(),
-        useTaskStore.getState().fetchTasks(),
-        useHistoryStore.getState().fetchHistory(),
-      ]);
+    // Hydrate stores after Google login
+    await Promise.all([
+      useSettingsStore.getState().fetchSettings(),
+      useTaskStore.getState().fetchTasks(),
+      useHistoryStore.getState().fetchHistory(),
+    ]);
 
-      toast.success('Signed in with Google!');
-    } catch (error: any) {
-      // Re-throw so the Login page can display the inline error message
-      throw error;
-    }
+    toast.success('Signed in with Google!');
   };
 
   const register = async (name: string, email: string, password: string) => {
-    try {
-      const { data } = await api.post('/auth/register', { name, email, password });
-      localStorage.removeItem('isGuest');
-      localStorage.setItem('isAuthenticated', 'true');
-      setUser(data);
-      setIsAuthenticated(true);
+    const { data } = await api.post('/auth/register', { name, email, password });
+    localStorage.removeItem('isGuest');
+    localStorage.setItem('isAuthenticated', 'true');
+    setUser(data);
+    setIsAuthenticated(true);
 
-      // Hydrate stores after registration
-      await Promise.all([
-        useSettingsStore.getState().fetchSettings(),
-        useTaskStore.getState().fetchTasks(),
-        useHistoryStore.getState().fetchHistory(),
-      ]);
+    // Hydrate stores after registration
+    await Promise.all([
+      useSettingsStore.getState().fetchSettings(),
+      useTaskStore.getState().fetchTasks(),
+      useHistoryStore.getState().fetchHistory(),
+    ]);
 
-      toast.success('Account created!');
-    } catch (error: any) {
-      // Re-throw so the Register page can display the inline error message
-      throw error;
-    }
+    toast.success('Account created!');
   };
 
   const logout = async () => {

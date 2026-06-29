@@ -6,7 +6,6 @@ import {
   Clock,
   Calendar as CalendarIcon,
   Music,
-  Settings,
   PanelLeftClose,
   PanelLeftOpen,
   ShieldCheck,

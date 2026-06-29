@@ -202,7 +202,7 @@ export function Login() {
                   setIsLoading(true);
                   await loginAsGuest();
                   navigate('/dashboard');
-                } catch (err) {
+                } catch {
                   // Error is already toasted in loginAsGuest
                 } finally {
                   setIsLoading(false);

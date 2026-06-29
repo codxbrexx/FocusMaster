@@ -300,7 +300,7 @@ export function Register() {
                   setIsLoading(true);
                   await loginAsGuest();
                   navigate('/dashboard');
-                } catch (err) {
+                } catch {
                   // Handled
                 } finally {
                   setIsLoading(false);
