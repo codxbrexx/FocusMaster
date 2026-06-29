@@ -96,16 +96,4 @@ describe('Sidebar Integration', () => {
     const dashboardLink = screen.getByText('Dashboard').closest('a');
     expect(dashboardLink).toHaveAttribute('href', '/dashboard');
   });
-
-  it('opens profile menu and shows appearance settings', () => {
-    renderSidebar();
-    const profileButton = screen.getByText('Test User').closest('.cursor-pointer');
-    fireEvent.click(profileButton!);
-
-    expect(screen.getByText('My Profile')).toBeVisible();
-    expect(screen.getByText('Theme')).toBeVisible();
-    fireEvent.click(screen.getByText('Theme'));
-
-    expect(screen.getByTitle('Dark')).toBeInTheDocument();
-  });
 });

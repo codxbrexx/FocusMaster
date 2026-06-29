@@ -12,19 +12,19 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # ── 1. Backend: lint + type-check + unit tests ──────────────────────────
+  # ── 1. Backend: unit tests (Jest + MongoMemoryServer) ───────────────────
   backend-tests:
     name: Backend — Jest
     runs-on: ubuntu-latest
 
     defaults:
       run:
-        working-directory: FocusMaster/backend
+        working-directory: backend
 
     env:
       NODE_ENV: test
       JWT_SECRET: testsecret-longkey-for-jwt-ci-1234
-      # MONGO_URI is intentionally omitted — tests use MongoMemoryServer
+      # MONGO_URI intentionally omitted — tests use MongoMemoryServer
       GOOGLE_CLIENT_ID: placeholder
 
     steps:
@@ -32,9 +32,9 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: npm
-          cache-dependency-path: FocusMaster/backend/package-lock.json
+          cache-dependency-path: backend/package-lock.json
 
       - name: Install dependencies
         run: npm ci
@@ -42,23 +42,23 @@ jobs:
       - name: Run Jest tests
         run: npm test
 
-  # ── 2. Frontend: lint + type-check + Vitest unit tests ─────────────────
+  # ── 2. Frontend: type-check + lint + Vitest unit tests ──────────────────
   frontend-unit:
     name: Frontend — Lint & Vitest
     runs-on: ubuntu-latest
 
     defaults:
       run:
-        working-directory: FocusMaster/frontend
+        working-directory: frontend
 
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: npm
-          cache-dependency-path: FocusMaster/frontend/package-lock.json
+          cache-dependency-path: frontend/package-lock.json
 
       - name: Install dependencies
         run: npm ci
@@ -92,40 +92,40 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: npm
           cache-dependency-path: |
-            FocusMaster/backend/package-lock.json
-            FocusMaster/frontend/package-lock.json
+            backend/package-lock.json
+            frontend/package-lock.json
 
       - name: Install backend dependencies
         run: npm ci
-        working-directory: FocusMaster/backend
+        working-directory: backend
 
       - name: Install frontend dependencies
         run: npm ci
-        working-directory: FocusMaster/frontend
+        working-directory: frontend
 
       - name: Install Playwright Chromium
         run: npx playwright install chromium --with-deps
-        working-directory: FocusMaster/frontend
+        working-directory: frontend
 
       - name: Start backend server
         run: node src/server.js &
-        working-directory: FocusMaster/backend
+        working-directory: backend
 
       - name: Wait for backend to be ready
         run: npx wait-on http://localhost:5000/api/health --timeout 30000
-        working-directory: FocusMaster/frontend
+        working-directory: frontend
 
       - name: Run Playwright E2E tests
         run: npx playwright test --project=chromium
-        working-directory: FocusMaster/frontend
+        working-directory: frontend
 
       - name: Upload Playwright report on failure
         if: failure()
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report-${{ github.run_id }}
-          path: FocusMaster/frontend/playwright-report/
+          path: frontend/playwright-report/
           retention-days: 7
