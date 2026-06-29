@@ -111,7 +111,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       toast.success('Welcome back!');
     } catch (error: any) {
-      toast.error(error.response?.data?.message || 'Login failed');
+      // Re-throw so the Login page can display the inline error message
       throw error;
     }
   };
@@ -133,7 +133,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       toast.success('Signed in with Google!');
     } catch (error: any) {
-      toast.error(error.response?.data?.message || 'Google login failed');
+      // Re-throw so the Login page can display the inline error message
       throw error;
     }
   };
@@ -155,7 +155,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       toast.success('Account created!');
     } catch (error: any) {
-      toast.error(error.response?.data?.message || 'Registration failed');
+      // Re-throw so the Register page can display the inline error message
       throw error;
     }
   };

@@ -22,9 +22,17 @@ const protect = asyncHandler(async (req, res, next) => {
 
       req.user = await User.findById(decoded.userId).select("-password");
 
+      if (!req.user) {
+        res.status(401);
+        throw new Error("Not authorized, user no longer exists");
+      }
+
       next();
     } catch (error) {
-      res.status(401);
+      // Only set 401 if it hasn't been set by the null-user check above
+      if (res.statusCode !== 401) {
+        res.status(401);
+      }
       throw new Error("Not authorized, token failed");
     }
   } else {

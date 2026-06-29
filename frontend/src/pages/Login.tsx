@@ -40,8 +40,11 @@ export function Login() {
       await login(email, password);
       navigate('/dashboard');
     } catch (err: any) {
+      const data = err.response?.data;
       const errorMessage =
-        err.response?.data?.message || 'Login failed. Please check your credentials.';
+        data?.errors?.[0]?.message ||
+        data?.message ||
+        'Login failed. Please check your credentials.';
       setError(errorMessage);
     } finally {
       setIsLoading(false);
@@ -109,16 +112,16 @@ export function Login() {
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Email Field */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="email" className="block text-sm font-medium text-slate-300 mb-2">
                 Email
               </label>
               <div className="relative">
-                <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                <Mail className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
                 <Input
                   id="email"
                   type="email"
                   placeholder="name@example.com"
-                  className="pl-10 h-11 border border-gray-300 bg-white text-gray-900 placeholder:text-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                  className="pl-10 h-11 border border-slate-700 bg-slate-800/60 text-white placeholder:text-slate-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   disabled={isLoading}
@@ -128,16 +131,16 @@ export function Login() {
 
             {/* Password Field */}
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="password" className="block text-sm font-medium text-slate-300 mb-2">
                 Password
               </label>
               <div className="relative">
-                <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                <Lock className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
                 <Input
                   id="password"
                   type={isPasswordVisible ? 'text' : 'password'}
                   placeholder="••••••••"
-                  className="pl-10 pr-10 h-11 border border-gray-300 bg-white text-gray-900 placeholder:text-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                  className="pl-10 pr-10 h-11 border border-slate-700 bg-slate-800/60 text-white placeholder:text-slate-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   disabled={isLoading}
@@ -145,7 +148,7 @@ export function Login() {
                 <button
                   type="button"
                   onClick={() => setIsPasswordVisible(!isPasswordVisible)}
-                  className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
+                  className="absolute right-3 top-3 text-slate-400 hover:text-slate-200"
                   tabIndex={-1}
                 >
                   {isPasswordVisible ? (
@@ -162,11 +165,11 @@ export function Login() {
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
-                  className="w-4 h-4 border border-gray-300 rounded focus:ring-blue-500"
+                  className="w-4 h-4 border border-slate-600 rounded focus:ring-blue-500 accent-blue-600"
                 />
-                <span className="text-sm text-gray-600">Remember me</span>
+                <span className="text-sm text-slate-400">Remember me</span>
               </label>
-              <a href="#" className="text-sm text-blue-600 hover:text-blue-700">
+              <a href="#" className="text-sm text-blue-400 hover:text-blue-300">
                 Forgot password?
               </a>
             </div>
@@ -193,7 +196,7 @@ export function Login() {
             {/* Guest Login */}
             <button
               type="button"
-              className="w-full h-11 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors"
+              className="w-full h-11 border border-slate-600 text-slate-300 font-medium rounded-lg hover:bg-slate-800 transition-colors"
               onClick={async () => {
                 try {
                   setIsLoading(true);
@@ -212,9 +215,9 @@ export function Login() {
           </form>
 
           {/* Sign Up Link */}
-          <p className="text-center text-sm text-gray-600 mt-6">
+          <p className="text-center text-sm text-slate-400 mt-6">
             Don't have an account?{' '}
-            <Link to="/register" className="text-blue-600 hover:text-blue-700 font-medium">
+            <Link to="/register" className="text-blue-400 hover:text-blue-300 font-medium">
               Sign up
             </Link>
           </p>

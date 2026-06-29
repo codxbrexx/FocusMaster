@@ -17,20 +17,31 @@ const authUser = asyncHandler(async (req, res) => {
 
   const user = await User.findOne({ email });
 
-  if (user && (await user.matchPassword(password))) {
-    generateToken(res, user._id, req);
-    res.json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      picture: user.picture,
-      role: user.role,
-      isGuest: user.isGuest,
-    });
-  } else {
+  if (!user || !(await user.matchPassword(password))) {
     res.status(401);
     throw new Error("Invalid email or password");
   }
+
+  // Check if account is banned or suspended
+  if (user.status === "banned") {
+    res.status(403);
+    throw new Error("Your account has been banned. Please contact support.");
+  }
+
+  if (user.status === "suspended") {
+    res.status(403);
+    throw new Error("Your account has been suspended. Please contact support.");
+  }
+
+  generateToken(res, user._id, req);
+  res.json({
+    _id: user._id,
+    name: user.name,
+    email: user.email,
+    picture: user.picture,
+    role: user.role,
+    isGuest: user.isGuest,
+  });
 });
 
 // @desc    Register a guest user
@@ -91,7 +102,17 @@ const googleLogin = asyncHandler(async (req, res) => {
     let user = await User.findOne({ email });
 
     if (user) {
-      // User exists, update googleId and picture if not set
+      // Check if account is banned or suspended
+      if (user.status === "banned") {
+        res.status(403);
+        throw new Error("Your account has been banned. Please contact support.");
+      }
+      if (user.status === "suspended") {
+        res.status(403);
+        throw new Error("Your account has been suspended. Please contact support.");
+      }
+
+      // Update googleId and picture if not set
       if (!user.googleId) {
         user.googleId = googleId;
       }
@@ -121,6 +142,10 @@ const googleLogin = asyncHandler(async (req, res) => {
       isGuest: user.isGuest,
     });
   } catch (error) {
+    // Re-throw errors we've already set status for (banned/suspended)
+    if (res.statusCode === 403) {
+      throw error;
+    }
     console.error("Google authentication error:", error);
     res.status(401);
     throw new Error("Google authentication failed. Please try again.");
@@ -168,8 +193,17 @@ const registerUser = asyncHandler(async (req, res) => {
 // @route   POST /api/auth/logout
 // @access  Public
 const logoutUser = asyncHandler(async (req, res) => {
+  const isProduction = process.env.NODE_ENV === "production";
+  const isLocal =
+    (req.get("host") || "").includes("localhost") ||
+    (req.get("host") || "").includes("127.0.0.1") ||
+    (req.get("origin") || "").includes("localhost") ||
+    (req.get("origin") || "").includes("127.0.0.1");
+
   res.cookie("jwt", "", {
     httpOnly: true,
+    secure: isProduction && !isLocal,
+    sameSite: isProduction && !isLocal ? "none" : "lax",
     expires: new Date(0),
   });
   res.status(200).json({ message: "User logged out" });
