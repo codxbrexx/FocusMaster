@@ -1,0 +1,131 @@
+name: CI
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+
+# Cancel in-flight runs for the same branch/PR to save minutes
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ── 1. Backend: lint + type-check + unit tests ──────────────────────────
+  backend-tests:
+    name: Backend — Jest
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: FocusMaster/backend
+
+    env:
+      NODE_ENV: test
+      JWT_SECRET: testsecret-longkey-for-jwt-ci-1234
+      # MONGO_URI is intentionally omitted — tests use MongoMemoryServer
+      GOOGLE_CLIENT_ID: placeholder
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: FocusMaster/backend/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Jest tests
+        run: npm test
+
+  # ── 2. Frontend: lint + type-check + Vitest unit tests ─────────────────
+  frontend-unit:
+    name: Frontend — Lint & Vitest
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: FocusMaster/frontend
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: FocusMaster/frontend/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: TypeScript type-check
+        run: npx tsc --noEmit
+
+      - name: ESLint
+        run: npm run lint
+
+      - name: Vitest unit tests
+        run: npm test -- --run
+
+  # ── 3. Playwright E2E (runs after both unit jobs pass) ──────────────────
+  e2e:
+    name: E2E — Playwright (Chromium)
+    runs-on: ubuntu-latest
+    needs: [backend-tests, frontend-unit]
+
+    env:
+      NODE_ENV: development
+      JWT_SECRET: testsecret-longkey-for-jwt-ci-1234
+      MONGO_URI: ${{ secrets.MONGO_URI_TEST }}
+      GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+      VITE_API_URL: http://localhost:5000/api
+      VITE_GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+      FRONTEND_URL: http://localhost:5173
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: |
+            FocusMaster/backend/package-lock.json
+            FocusMaster/frontend/package-lock.json
+
+      - name: Install backend dependencies
+        run: npm ci
+        working-directory: FocusMaster/backend
+
+      - name: Install frontend dependencies
+        run: npm ci
+        working-directory: FocusMaster/frontend
+
+      - name: Install Playwright Chromium
+        run: npx playwright install chromium --with-deps
+        working-directory: FocusMaster/frontend
+
+      - name: Start backend server
+        run: node src/server.js &
+        working-directory: FocusMaster/backend
+
+      - name: Wait for backend to be ready
+        run: npx wait-on http://localhost:5000/api/health --timeout 30000
+        working-directory: FocusMaster/frontend
+
+      - name: Run Playwright E2E tests
+        run: npx playwright test --project=chromium
+        working-directory: FocusMaster/frontend
+
+      - name: Upload Playwright report on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-${{ github.run_id }}
+          path: FocusMaster/frontend/playwright-report/
+          retention-days: 7
