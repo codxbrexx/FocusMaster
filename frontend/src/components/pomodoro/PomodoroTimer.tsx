@@ -125,19 +125,6 @@ export function PomodoroTimer() {
     }
   }, [timeLeft, mode, showMoodModal, isActive]);
 
-  // Background animation effect - only active when timer is running
-  useEffect(() => {
-    if (isActive) {
-      document.body.classList.add('pomodoro-bg-active');
-    } else {
-      document.body.classList.remove('pomodoro-bg-active');
-    }
-
-    return () => {
-      document.body.classList.remove('pomodoro-bg-active');
-    };
-  }, [isActive]);
-
   const savePomodoroSession = async (selectedMood: string) => {
     const sessionDuration = Math.floor(totalDuration / 60);
 
@@ -194,7 +181,7 @@ export function PomodoroTimer() {
 
   return (
     <div className="max-w-5xl mx-auto space-y-6">
-      <Card className="border-none  bg-gradient-to-br from-card to-secondary/10 overflow-hidden relative">
+      <Card className="border-none bg-card shadow-none overflow-hidden relative">
         <div className="absolute top-4 right-4 z-20">
           <Button
             variant="ghost"

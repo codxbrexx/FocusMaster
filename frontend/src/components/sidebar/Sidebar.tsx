@@ -82,7 +82,6 @@ export const Sidebar = ({ open, onOpenChange }: SidebarProps) => {
         'bg-background border-r border-white/10',
         isMobile && 'border-none w-full max-w-[85vw]'
       )}
-      style={{ boxShadow: '4px 0 24px -2px rgba(255, 255, 255, 1), 2px 0 8px -1px rgba(0,0,0,0.3)' }}
       onClick={() => !isMobile && onOpenChange(!open)}
     >
       {/* --- HEADER --- */}

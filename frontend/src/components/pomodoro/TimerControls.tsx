@@ -22,7 +22,7 @@ export const TimerControls = ({
       {status !== 'running' ? (
         <Button
           onClick={handleStart}
-          className="rounded-full w-32 h-12 text-lg shadow-lg shadow-primary/20"
+          className="rounded-full w-32 h-12 text-lg"
         >
           <Play className="w-5 h-5 mr-2 fill-current" /> Start
         </Button>

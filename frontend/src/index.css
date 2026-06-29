@@ -364,15 +364,6 @@
     }
   }
 
-  @keyframes timer-pulse {
-    0%, 100% {
-      filter: drop-shadow(0 0 20px rgba(124, 58, 237, 0.4));
-    }
-    50% {
-      filter: drop-shadow(0 0 40px rgba(124, 58, 237, 0.7));
-    }
-  }
-
   @keyframes subtle-scale {
     0%, 100% {
       transform: scale(1);
@@ -384,19 +375,6 @@
 
   .pomodoro-running {
     animation: pulse-glow 2s ease-in-out infinite;
-  }
-
-  .pomodoro-bg-active {
-    background-image:
-      radial-gradient(circle at 15% 30%, rgba(124, 58, 237, 0.15) 0%, transparent 40%),
-      radial-gradient(circle at 85% 70%, rgba(6, 182, 212, 0.15) 0%, transparent 40%),
-      radial-gradient(circle at 50% 50%, rgba(124, 58, 237, 0.08) 0%, transparent 35%);
-    background-size: 200% 200%;
-    animation: flow-gradient 6s ease infinite;
-  }
-
-  .focus-mode-timer-active {
-    animation: timer-pulse 2s ease-in-out infinite;
   }
 
   .focus-mode-active {

@@ -55,19 +55,6 @@ export function FocusModeOverlay({
   const c = 2 * Math.PI * r;
   const offset = c - (progress / 100) * c;
 
-  // Background animation effect - active when timer is running
-  useEffect(() => {
-    if (status === 'running') {
-      document.body.classList.add('pomodoro-bg-active');
-    } else {
-      document.body.classList.remove('pomodoro-bg-active');
-    }
-
-    return () => {
-      document.body.classList.remove('pomodoro-bg-active');
-    };
-  }, [status]);
-
   return (
     <motion.div
       layoutId="focus-mode-container"
@@ -111,7 +98,7 @@ export function FocusModeOverlay({
       </div>
 
       <div className="flex-1 flex flex-col items-center justify-center relative -mt-16">
-        <div className={`relative w-[min(85vw,65vh)] h-[min(85vw,65vh)] max-w-[800px] max-h-[800px] ${status === 'running' ? 'focus-mode-timer-active' : ''}`}>
+        <div className="relative w-[min(85vw,65vh)] h-[min(85vw,65vh)] max-w-[800px] max-h-[800px]">
           <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
             <defs>
               <linearGradient id="gradient-focus" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -134,7 +121,7 @@ export function FocusModeOverlay({
               stroke="currentColor"
               strokeWidth="1.5"
               fill="none"
-              className="text-secondary/20 inner-shadow-[0_0_20px_rgba(255,255,255,0.3)]"
+              className="text-secondary/20"
             />
             <circle
               cx="50"
