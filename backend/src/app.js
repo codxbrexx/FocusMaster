@@ -29,7 +29,7 @@ const configuredOrigins = (
   (isProduction ? "" : defaultDevOrigins.join(","))
 )
   .split(",")
-  .map((origin) => origin.trim())
+  .map((origin) => origin.trim().replace(/\/$/, ""))
   .filter(Boolean);
 
 // Middleware
