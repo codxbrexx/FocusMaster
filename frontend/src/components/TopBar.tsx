@@ -12,6 +12,7 @@ import {
   ChevronDown,
   ChevronRight,
 } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
 import { useTheme } from '@/context/ThemeContext';
@@ -273,7 +274,7 @@ function MenuItem({
   className,
   iconClass,
 }: {
-  icon: React.ElementType;
+  icon: LucideIcon;
   label: string;
   onClick: () => void;
   className?: string;
