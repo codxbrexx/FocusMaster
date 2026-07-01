@@ -9,13 +9,7 @@ export const FloatingText = () => {
     >
       <h1 className="text-6xl md:text-8xl font-black leading-[0.87] tracking-tighter text-white uppercase">
         Transform Your <br />
-        <span
-          className="bg-gradient-to-r from-indigo-500 via-indigo-600 to-indigo-500 bg-clip-text text-transparent"
-          style={{
-            backgroundSize: '200% 200%',
-            animation: 'gradient-shift 3s ease infinite',
-          }}
-        >
+        <span className="text-indigo-500">
           PRODUCTIVITY
         </span>
       </h1>
@@ -27,28 +21,17 @@ export const FloatingText = () => {
       <div className="mt-10 flex flex-wrap gap-4">
         <a
           href="/register"
-          className="px-8 py-4 bg-white text-blue-600 font-bold text-sm uppercase tracking-wider rounded-lg transition-all duration-300 flex items-center justify-center min-w-[170px]"
+          className="px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm uppercase tracking-wider rounded-lg transition-all duration-300 flex items-center justify-center min-w-[170px]"
         >
           Get Started Free
         </a>
         <a
           href="/login"
-          className="px-8 py-4 border border-white/20 hover:border-indigo-400/50 hover:bg-white/5 text-white font-bold text-sm uppercase tracking-wider rounded-lg transition-all duration-300 flex items-center justify-center min-w-[170px]"
+          className="px-8 py-4 border border-white/20 hover:border-indigo-500/50 hover:bg-white/5 text-white font-bold text-sm uppercase tracking-wider rounded-lg transition-all duration-300 flex items-center justify-center min-w-[170px]"
         >
           Try Guest Mode
         </a>
       </div>
-
-      <style>{`
-        @keyframes gradient-shift {
-          0%, 100% {
-            background-position: 0% 50%;
-          }
-          50% {
-            background-position: 100% 50%;
-          }
-        }
-      `}</style>
     </motion.div>
   );
 };

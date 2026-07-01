@@ -116,7 +116,7 @@ export const DetailedFeaturesSection = () => {
                   </div>
 
                   {/* Title */}
-                  <h3 className="text-3xl md:text-4xl lg:text-5xl font-black text-white leading-tight">
+                  <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white tracking-tight leading-tight">
                     {feature.title}
                   </h3>
 
@@ -151,15 +151,14 @@ export const DetailedFeaturesSection = () => {
                   viewport={{ once: true }}
                 >
                   <div
-                    className={`p-6 rounded-2xl border border-slate-800 bg-slate-950/80 backdrop-blur-md shadow-2xl relative overflow-hidden`}
+                    className={`p-6 rounded-2xl border border-slate-800 bg-slate-950/80 backdrop-blur-md shadow-lg relative overflow-hidden`}
                   >
-                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 to-purple-500 opacity-50" />
                     
                     <div className={`aspect-video rounded-xl flex items-center justify-center p-4`}>
                       {/* Focus Engine (Timer) */}
                       {index === 0 && (
                         <div className="flex flex-col items-center justify-center w-full">
-                          <div className="relative w-36 h-36 rounded-full border-4 border-indigo-500/20 flex items-center justify-center shadow-[0_0_30px_rgba(99,102,241,0.15)]">
+                          <div className="relative w-36 h-36 rounded-full border-4 border-indigo-500/20 flex items-center justify-center">
                             {/* Glowing circular progress mask */}
                             <svg className="absolute -inset-1 w-[152px] h-[152px] -rotate-90">
                               <circle
@@ -171,7 +170,7 @@ export const DetailedFeaturesSection = () => {
                                 strokeWidth="4"
                                 strokeDasharray="440"
                                 strokeDashoffset="110"
-                                className="drop-shadow-[0_0_6px_rgba(99,102,241,0.5)]"
+                                className=""
                               />
                             </svg>
                             <div className="flex flex-col items-center">
@@ -217,10 +216,10 @@ export const DetailedFeaturesSection = () => {
                               <span className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse" />
                             </div>
                             <div className="space-y-2">
-                              <div className="bg-slate-950 p-2.5 rounded-lg border border-indigo-500/30 shadow-[0_4px_12px_rgba(99,102,241,0.05)]">
+                              <div className="bg-slate-950 p-2.5 rounded-lg border border-indigo-500/30">
                                 <p className="text-xs font-semibold text-white">Design Landing Page</p>
                                 <div className="mt-3 w-full bg-slate-800 h-1 rounded-full overflow-hidden">
-                                  <div className="bg-gradient-to-r from-indigo-500 to-purple-500 h-full w-[70%]" />
+                                  <div className="bg-indigo-500 h-full w-[70%]" />
                                 </div>
                               </div>
                             </div>
@@ -249,7 +248,7 @@ export const DetailedFeaturesSection = () => {
                                     initial={{ height: 0 }}
                                     whileInView={{ height: `${item.h}%` }}
                                     transition={{ duration: 1, delay: i * 0.1 }}
-                                    className="w-full bg-gradient-to-t from-violet-600 via-indigo-500 to-indigo-400 rounded-t-lg"
+                                    className="w-full bg-violet-600 rounded-t-lg"
                                   />
                                 </div>
                                 <span className="text-[9px] text-slate-500 font-bold uppercase">{item.day}</span>
@@ -264,8 +263,8 @@ export const DetailedFeaturesSection = () => {
                         <div className="flex flex-col bg-slate-900/60 p-4 rounded-xl border border-slate-800/80 w-full max-w-[340px]">
                           <div className="flex items-center gap-4">
                             {/* album cover art placeholder */}
-                            <div className="w-16 h-16 rounded-lg bg-gradient-to-tr from-pink-500 to-rose-400 flex items-center justify-center shadow-lg relative overflow-hidden flex-shrink-0 group-hover:scale-105 transition-transform">
-                              <Music2 className="w-8 h-8 text-white drop-shadow-md" />
+                            <div className="w-16 h-16 rounded-lg bg-pink-600 flex items-center justify-center relative overflow-hidden flex-shrink-0">
+                              <Music2 className="w-8 h-8 text-white" />
                             </div>
                             <div className="min-w-0 flex-1 text-left">
                               <h4 className="text-sm font-bold text-white truncate">Lofi Focus Beats</h4>
@@ -319,7 +318,7 @@ export const DetailedFeaturesSection = () => {
                             <button className="flex-1 py-2 rounded-lg bg-slate-950 hover:bg-slate-900 border border-slate-800 text-slate-300 font-bold text-xs uppercase tracking-wide transition-colors flex items-center justify-center gap-1.5">
                               <Coffee className="w-3.5 h-3.5" /> Break
                             </button>
-                            <button className="flex-1 py-2 rounded-lg bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs uppercase tracking-wide transition-transform hover:scale-[1.02] flex items-center justify-center gap-1.5 shadow-[0_0_15px_rgba(245,158,11,0.2)]">
+                            <button className="flex-1 py-2 rounded-lg bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs uppercase tracking-wide transition-colors flex items-center justify-center gap-1.5">
                               <LogOut className="w-3.5 h-3.5" /> Clock Out
                             </button>
                           </div>

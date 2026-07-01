@@ -36,8 +36,8 @@ export const Navbar = () => {
           : 'bg-transparent border-b border-transparent'
           }`}
       >
-        <div className="max-w-9xl mx-auto px-4 sm:px-6 py-4">
-          <div className="flex items-center justify-between">
+        <div className="max-w-9xl  px-4 sm:px-4 py-2">
+          <div className="flex py-2 items-center justify-between">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2 sm:gap-3 group">
               <div className="relative">
