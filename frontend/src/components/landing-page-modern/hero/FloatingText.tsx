@@ -24,6 +24,21 @@ export const FloatingText = () => {
         We engineer immersive focus experiences through advanced productivity tools and spatial mastery.
       </p>
 
+      <div className="mt-10 flex flex-wrap gap-4">
+        <a
+          href="/register"
+          className="px-8 py-4 bg-white text-blue-600 font-bold text-sm uppercase tracking-wider rounded-lg transition-all duration-300 flex items-center justify-center min-w-[170px]"
+        >
+          Get Started Free
+        </a>
+        <a
+          href="/login"
+          className="px-8 py-4 border border-white/20 hover:border-indigo-400/50 hover:bg-white/5 text-white font-bold text-sm uppercase tracking-wider rounded-lg transition-all duration-300 flex items-center justify-center min-w-[170px]"
+        >
+          Try Guest Mode
+        </a>
+      </div>
+
       <style>{`
         @keyframes gradient-shift {
           0%, 100% {

@@ -6,7 +6,7 @@ export const FinalCTASection = () => {
   const navigate = useNavigate();
 
   return (
-    <section className="relative w-full bg-gradient-to-b from-[#0f0f1e] to-[#0a0a0a] py-20 md:py-32 lg:py-40 px-4 md:px-8 lg:px-20">
+    <section id="pricing" className="relative w-full bg-gradient-to-b from-[#0f0f1e] to-[#0a0a0a] py-20 md:py-32 lg:py-40 px-4 md:px-8 lg:px-20">
       <div className="mx-auto max-w-4xl text-center">
         {/* Main CTA */}
         <motion.div

@@ -1,9 +1,6 @@
 import { Suspense } from 'react';
 import { ModernHero } from '../components/landing-page-modern/hero/ModernHero';
-import { FeaturesSection } from '../components/landing-page-modern/features/FeaturesSection';
 import { DetailedFeaturesSection } from '../components/landing-page-modern/detailed-features/DetailedFeaturesSection';
-import { HowItWorksSection } from '../components/landing-page-modern/how-it-works/HowItWorksSection';
-import { StatsSection } from '../components/landing-page-modern/stats/StatsSection';
 
 import { FinalCTASection } from '../components/landing-page-modern/cta/FinalCTASection';
 import { FooterSection } from '../components/landing-page-modern/footer/FooterSection';
@@ -30,13 +27,8 @@ export function LandingPageModern() {
         <main aria-label="FocusMaster productivity app landing page">
           <ModernHero />
           <div id="features" aria-label="Features">
-            <FeaturesSection />
+            <DetailedFeaturesSection />
           </div>
-          <DetailedFeaturesSection />
-          <div id="how-it-works" aria-label="How it works">
-            <HowItWorksSection />
-          </div>
-          <StatsSection />
 
           <FinalCTASection />
           <FooterSection />
