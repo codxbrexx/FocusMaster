@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { Input } from '../components/ui/input';
 import { User, Lock, Mail, Loader2, Eye, EyeOff, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { LoadingPage } from '../components/ui/LoadingPage';
 
 // Password strength indicator
 const PasswordStrengthIndicator = ({ password }: { password: string }) => {
@@ -38,9 +39,12 @@ export function Register() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [error, setError] = useState('');
   const { register, loginAsGuest, googleLogin } = useAuth();
   const navigate = useNavigate();
+
+  const isAnyLoading = isLoading || isGoogleLoading;
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -107,6 +111,10 @@ export function Register() {
 
   const passwordsMatch = password && confirmPassword && password === confirmPassword;
 
+  if (isGoogleLoading) {
+    return <LoadingPage customMessage="Authenticating with Google..." />;
+  }
+
   return (
     <div className="flex h-[100dvh] w-full bg-black overflow-hidden">
       {/* Left side - Image (hidden on mobile) */}
@@ -120,7 +128,7 @@ export function Register() {
 
       {/* Right side - Form */}
       <div className="w-full flex flex-col items-center justify-center px-6 md:px-0 bg-dot-pattern">
-        <div className="w-full md:w-[420px] max-w-md p-8 rounded-xl bg-black/80 backdrop-blur-lg ">
+        <div className="relative w-full md:w-[420px] max-w-md p-8 rounded-xl bg-black/80 border border-slate-800/80 backdrop-blur-lg overflow-hidden shadow-2xl">
           {/* Header */}
           <div className="mb-8 text-center">
             <h1 className="text-4xl font-bold text-white">Create an Account</h1>
@@ -139,10 +147,14 @@ export function Register() {
               onSuccess={async (credentialResponse) => {
                 if (credentialResponse.credential) {
                   try {
+                    setIsGoogleLoading(true);
+                    setError('');
                     await googleLogin(credentialResponse.credential);
                     navigate('/dashboard');
                   } catch {
                     setError('Google sign-up failed. Please try again.');
+                  } finally {
+                    setIsGoogleLoading(false);
                   }
                 }
               }}
@@ -167,7 +179,7 @@ export function Register() {
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Full Name Field */}
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="name" className="block text-sm font-medium text-gray-400 mb-2">
                 Full Name
               </label>
               <div className="relative">
@@ -176,17 +188,17 @@ export function Register() {
                   id="name"
                   type="text"
                   placeholder="Name"
-                  className="pl-10 h-11 border border-gray-300 bg-white text-gray-900 placeholder:text-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                  className="pl-10 h-11 border border-slate-700 bg-slate-800/60 text-white placeholder:text-slate-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  disabled={isLoading}
+                  disabled={isAnyLoading}
                 />
               </div>
             </div>
 
             {/* Email Field */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="email" className="block text-sm font-medium text-gray-400 mb-2">
                 Email
               </label>
               <div className="relative">
@@ -195,17 +207,17 @@ export function Register() {
                   id="email"
                   type="email"
                   placeholder="name@example.com"
-                  className="pl-10 h-11 border border-gray-300 bg-white text-gray-900 placeholder:text-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                  className="pl-10 h-11 border border-slate-700 bg-slate-800/60 text-white placeholder:text-slate-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  disabled={isLoading}
+                  disabled={isAnyLoading}
                 />
               </div>
             </div>
 
             {/* Password Field */}
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="password" className="block text-sm font-medium text-gray-400 mb-2">
                 Password
               </label>
               <div className="relative">
@@ -214,16 +226,17 @@ export function Register() {
                   id="password"
                   type={isPasswordVisible ? 'text' : 'password'}
                   placeholder="••••••••"
-                  className="pl-10 pr-10 h-11 border border-gray-300 bg-white text-gray-900 placeholder:text-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                  className="pl-10 pr-10 h-11 border border-slate-700 bg-slate-800/60 text-white placeholder:text-slate-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  disabled={isLoading}
+                  disabled={isAnyLoading}
                 />
                 <button
                   type="button"
                   onClick={() => setIsPasswordVisible(!isPasswordVisible)}
-                  className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
+                  className="absolute right-3 top-3 text-gray-400 hover:text-gray-200"
                   tabIndex={-1}
+                  disabled={isAnyLoading}
                 >
                   {isPasswordVisible ? (
                     <EyeOff className="h-4 w-4" />
@@ -237,7 +250,7 @@ export function Register() {
 
             {/* Confirm Password Field */}
             <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-400 mb-2">
                 Confirm Password
               </label>
               <div className="relative">
@@ -246,16 +259,17 @@ export function Register() {
                   id="confirmPassword"
                   type={isConfirmPasswordVisible ? 'text' : 'password'}
                   placeholder="••••••••"
-                  className="pl-10 pr-10 h-11 border border-gray-300 bg-white text-gray-900 placeholder:text-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                  className="pl-10 pr-10 h-11 border border-slate-700 bg-slate-800/60 text-white placeholder:text-slate-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  disabled={isLoading}
+                  disabled={isAnyLoading}
                 />
                 <button
                   type="button"
                   onClick={() => setIsConfirmPasswordVisible(!isConfirmPasswordVisible)}
-                  className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
+                  className="absolute right-3 top-3 text-gray-400 hover:text-gray-200"
                   tabIndex={-1}
+                  disabled={isAnyLoading}
                 >
                   {isConfirmPasswordVisible ? (
                     <EyeOff className="h-4 w-4" />
@@ -265,7 +279,7 @@ export function Register() {
                 </button>
               </div>
               {passwordsMatch && (
-                <div className="flex items-center gap-2 text-xs text-green-600 mt-2">
+                <div className="flex items-center gap-2 text-xs text-green-500 mt-2">
                   <CheckCircle2 className="h-3 w-3" />
                   Passwords match
                 </div>
@@ -276,7 +290,7 @@ export function Register() {
             <button
               type="submit"
               className="w-full h-11 mt-6 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-              disabled={isLoading}
+              disabled={isAnyLoading}
             >
               {isLoading ? (
                 <>
@@ -294,7 +308,7 @@ export function Register() {
             {/* Start as Guest Button */}
             <button
               type="button"
-              className="w-full h-11 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors"
+              className="w-full h-11 border border-slate-700 text-slate-300 font-medium rounded-lg hover:bg-slate-800 transition-colors"
               onClick={async () => {
                 try {
                   setIsLoading(true);
@@ -306,14 +320,14 @@ export function Register() {
                   setIsLoading(false);
                 }
               }}
-              disabled={isLoading}
+              disabled={isAnyLoading}
             >
               Start as Guest
             </button>
           </form>
 
           {/* Sign In Link */}
-          <p className="text-center text-sm text-gray-600 mt-6">
+          <p className="text-center text-sm text-gray-400 mt-6">
             Already have an account?{' '}
             <Link to="/login" className="text-blue-600 hover:text-blue-700 font-medium">
               Sign in

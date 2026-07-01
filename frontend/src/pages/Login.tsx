@@ -5,15 +5,19 @@ import { useAuth } from '../context/AuthContext';
 import { Input } from '../components/ui/input';
 import { Lock, Mail, Loader2, Eye, EyeOff, ArrowRight } from 'lucide-react';
 import { toast } from 'sonner';
+import { LoadingPage } from '../components/ui/LoadingPage';
 
 export function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [error, setError] = useState('');
   const { login, loginAsGuest, googleLogin } = useAuth();
   const navigate = useNavigate();
+
+  const isAnyLoading = isLoading || isGoogleLoading;
 
   // Check for AdBlocker blocking Google Script
   useEffect(() => {
@@ -51,6 +55,10 @@ export function Login() {
     }
   };
 
+  if (isGoogleLoading) {
+    return <LoadingPage customMessage="Authenticating with Google..." />;
+  }
+
   return (
     <div className="flex h-[100dvh] w-full bg-gradient-to-br from-[#0a0a0a] to-[#020202]">
       {/* Left side - Image (hidden on mobile) */}
@@ -64,7 +72,7 @@ export function Login() {
 
       {/* Right side - Form */}
       <div className="w-full flex flex-col items-center justify-center px-6 md:px-0">
-        <div className="w-full md:w-96 max-w-md">
+        <div className="relative w-full md:w-[420px] max-w-md p-8 rounded-xl bg-black/80 border border-slate-800/80 backdrop-blur-lg overflow-hidden shadow-2xl">
           {/* Header */}
           <div className="mb-8 text-center">
             <h1 className="text-4xl font-bold text-white">Welcome Back</h1>
@@ -84,10 +92,14 @@ export function Login() {
               onSuccess={async (credentialResponse) => {
                 if (credentialResponse.credential) {
                   try {
+                    setIsGoogleLoading(true);
+                    setError('');
                     await googleLogin(credentialResponse.credential);
                     navigate('/dashboard');
                   } catch {
                     setError('Google login failed. Please try again.');
+                  } finally {
+                    setIsGoogleLoading(false);
                   }
                 }
               }}
@@ -124,7 +136,7 @@ export function Login() {
                   className="pl-10 h-11 border border-slate-700 bg-slate-800/60 text-white placeholder:text-slate-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  disabled={isLoading}
+                  disabled={isAnyLoading}
                 />
               </div>
             </div>
@@ -143,13 +155,14 @@ export function Login() {
                   className="pl-10 pr-10 h-11 border border-slate-700 bg-slate-800/60 text-white placeholder:text-slate-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  disabled={isLoading}
+                  disabled={isAnyLoading}
                 />
                 <button
                   type="button"
                   onClick={() => setIsPasswordVisible(!isPasswordVisible)}
                   className="absolute right-3 top-3 text-slate-400 hover:text-slate-200"
                   tabIndex={-1}
+                  disabled={isAnyLoading}
                 >
                   {isPasswordVisible ? (
                     <EyeOff className="h-4 w-4" />
@@ -165,6 +178,7 @@ export function Login() {
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
+                  disabled={isAnyLoading}
                   className="w-4 h-4 border border-slate-600 rounded focus:ring-blue-500 accent-blue-600"
                 />
                 <span className="text-sm text-slate-400">Remember me</span>
@@ -178,7 +192,7 @@ export function Login() {
             <button
               type="submit"
               className="w-full h-11 mt-6 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-              disabled={isLoading}
+              disabled={isAnyLoading}
             >
               {isLoading ? (
                 <>
@@ -208,7 +222,7 @@ export function Login() {
                   setIsLoading(false);
                 }
               }}
-              disabled={isLoading}
+              disabled={isAnyLoading}
             >
               Continue as Guest
             </button>
