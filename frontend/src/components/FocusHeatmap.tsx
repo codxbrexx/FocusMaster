@@ -87,7 +87,7 @@ export function FocusHeatmap() {
 
   if (isLoading) {
     return (
-      <Card className="bg-card lg:bg-card/50 border-2 border-border/50 shadow-sm order-last lg:col-span-3">
+      <Card className="bg-card border border-border/50 shadow-sm order-last lg:col-span-3">
         <CardContent className="h-48 flex items-center justify-center">
           <div className="flex flex-col gap-2 w-full max-w-md animate-pulse">
             <div className="h-4 w-32 bg-muted rounded mb-4" />
@@ -99,7 +99,7 @@ export function FocusHeatmap() {
   }
 
   return (
-    <Card className="bg-card lg:bg-card/50 border border-white/10 shadow-none order-last lg:col-span-3">
+    <Card className="bg-card border border-border/50 shadow-sm order-last lg:col-span-3">
       <CardHeader className="p-4 sm:p-6 pb-4 border-b border-border/50">
         <div className="flex items-center justify-between">
           <div>

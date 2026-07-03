@@ -157,7 +157,7 @@ export function Analytics() {
           <h2 className="text-3xl font-bold tracking-tight">Analytics Dashboard</h2>
           <p className="text-muted-foreground">Gain insights into your productivity patterns.</p>
         </div>
-        <div className="flex items-center gap-2 bg-accent/50 p-1 rounded-lg">
+        <div className="flex items-center gap-2 bg-accent p-1 rounded-lg">
           {['Week', 'Month', 'Year'].map((period) => (
             <button
               key={period}
@@ -180,7 +180,7 @@ export function Analytics() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Suspense
           fallback={
-            <div className="h-[300px] flex items-center justify-center bg-card/50 rounded-xl border border-border/50">
+            <div className="h-[300px] flex items-center justify-center bg-card rounded-xl border border-border/50">
               <LoadingSpinner />
             </div>
           }
@@ -189,7 +189,7 @@ export function Analytics() {
         </Suspense>
         <Suspense
           fallback={
-            <div className="h-[300px] flex items-center justify-center bg-card/50 rounded-xl border border-border/50">
+            <div className="h-[300px] flex items-center justify-center bg-card rounded-xl border border-border/50">
               <LoadingSpinner />
             </div>
           }
@@ -198,7 +198,7 @@ export function Analytics() {
         </Suspense>
         <Suspense
           fallback={
-            <div className="h-[300px] flex items-center justify-center bg-card/50 rounded-xl border border-border/50">
+            <div className="h-[300px] flex items-center justify-center bg-card rounded-xl border border-border/50">
               <LoadingSpinner />
             </div>
           }

@@ -88,7 +88,7 @@ export function Profile() {
       animate={{ opacity: 1, y: 0 }}
       className="max-w-6xl mx-auto space-y-8 pb-24"
     >
-      <div className="relative rounded-3xl overflow-hidden bg-card/50 backdrop-blur-xl border border-border/50 shadow-sm group">
+      <div className="relative rounded-3xl overflow-hidden bg-card border border-border/50 shadow-sm group">
         {/* Cover Image Area */}
         <div className="h-40 bg-gradient-to-r from-zinc-900 via-slate-900 to-indigo-950 relative overflow-hidden backdrop-blur-3xl">
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
@@ -220,7 +220,7 @@ export function Profile() {
           <FocusHeatmap />
 
           {/* Recent Activity List */}
-          <div className="bg-card/40 backdrop-blur-xl border border-border/50 rounded-2xl p-6 shadow-sm">
+          <div className="bg-card border border-border/50 rounded-2xl p-6 shadow-sm">
             <div className="flex items-center justify-between mb-6">
               <h3 className="font-semibold text-lg flex items-center gap-2">
                 <Zap className="w-4 h-4 text-yellow-500" />
@@ -279,7 +279,7 @@ export function Profile() {
         <div className="space-y-6">
           {/* Rank Card */}
           <div
-            className={`backdrop-blur-xl border rounded-2xl p-6 shadow-sm relative overflow-hidden group transition-all duration-500 ${currentLevel.border} bg-card/40`}
+            className={`border rounded-2xl p-6 shadow-sm relative overflow-hidden group transition-all duration-500 ${currentLevel.border} bg-card`}
           >
             {/* Dynamic Background Gradient Glow */}
             <div
@@ -324,7 +324,7 @@ export function Profile() {
           </div>
 
           {/* Achievements List */}
-          <div className="bg-card/40 backdrop-blur-xl border border-border/50 rounded-2xl p-6 shadow-sm">
+          <div className="bg-card border border-border/50 rounded-2xl p-6 shadow-sm">
             <h3 className="font-semibold text-lg mb-6 flex items-center gap-2">
               <Trophy className="w-4 h-4 text-primary" />
               Achievements
@@ -369,7 +369,7 @@ export function Profile() {
 
 function StatCard({ icon: Icon, label, value, subvalue, color, bg, trend }: any) {
   return (
-    <div className="bg-card/40 backdrop-blur-xl border border-border/50 rounded-2xl p-5 shadow-sm hover:shadow-md hover:border-primary/20 transition-all duration-300 group">
+    <div className="bg-card border border-border/50 rounded-2xl p-5 shadow-sm hover:shadow-md hover:border-primary/20 transition-all duration-300 group">
       <div className="flex items-start justify-between mb-4">
         <div
           className={`p-2.5 rounded-xl ${bg} group-hover:scale-110 transition-transform duration-300`}

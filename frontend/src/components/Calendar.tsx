@@ -144,7 +144,7 @@ export function Calendar() {
           <p className="text-muted-foreground mt-1">Plan your Schedule, Events, and Goals.</p>
         </div>
 
-        <div className="flex items-center gap-4 bg-card/50 backdrop-blur-md p-2 rounded-2xl border border-border shadow-sm">
+        <div className="flex items-center gap-4 bg-card p-2 rounded-2xl border border-border shadow-sm">
           <Button variant="ghost" size="icon" onClick={handlePrevMonth} className="hover:bg-muted">
             <ChevronLeft className="w-5 h-5" />
           </Button>
@@ -168,8 +168,8 @@ export function Calendar() {
         </Button>
       </div>
 
-      <Card className="border border-border shadow-lg bg-card/40 backdrop-blur-xl overflow-hidden rounded-xl">
-        <CardHeader className="border-b border-border pb-4 bg-card/20">
+      <Card className="border border-border shadow-lg bg-card overflow-hidden rounded-xl">
+        <CardHeader className="border-b border-border pb-4 bg-card">
           <div className="grid grid-cols-7 text-center">
             {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
               <div
