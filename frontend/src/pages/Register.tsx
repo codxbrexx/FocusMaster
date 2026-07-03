@@ -116,7 +116,7 @@ export function Register() {
   }
 
   return (
-    <div className="flex h-[100dvh] w-full bg-black overflow-hidden">
+    <div className="flex min-h-[100dvh] w-full bg-black overflow-y-auto">
       {/* Left side - Image (hidden on mobile) */}
       <div className="w-full hidden md:flex items-center justify-center bg-gray-50">
         <img
@@ -127,11 +127,11 @@ export function Register() {
       </div>
 
       {/* Right side - Form */}
-      <div className="w-full flex flex-col items-center justify-center px-6 md:px-0 bg-dot-pattern">
-        <div className="relative w-full md:w-[420px] max-w-md p-8 rounded-xl bg-black/80 border border-slate-800/80 backdrop-blur-lg overflow-hidden shadow-2xl">
+      <div className="w-full flex flex-col items-center justify-center px-4 sm:px-6 py-8 md:py-4 bg-dot-pattern">
+        <div className="relative w-full max-w-[400px] sm:max-w-[420px] p-6 sm:p-8 rounded-xl bg-black/80 backdrop-blur-lg overflow-hidden shadow-2xl">
           {/* Header */}
           <div className="mb-8 text-center">
-            <h1 className="text-4xl font-bold text-white">Create an Account</h1>
+            <h1 className="text-2xl sm:text-4xl font-bold text-white">Create an Account</h1>
           </div>
 
           {/* Error Message */}
@@ -308,7 +308,7 @@ export function Register() {
             {/* Start as Guest Button */}
             <button
               type="button"
-              className="w-full h-11 border border-slate-700 text-slate-300 font-medium rounded-lg hover:bg-slate-800 transition-colors"
+              className="w-full h-11 border border-slate-700 text-slate-300 font-medium rounded-lg hover:bg-slate-800 transition-colors cursor-pointer"
               onClick={async () => {
                 try {
                   setIsLoading(true);

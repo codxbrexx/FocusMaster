@@ -60,7 +60,7 @@ export function Login() {
   }
 
   return (
-    <div className="flex h-[100dvh] w-full bg-gradient-to-br from-[#0a0a0a] to-[#020202]">
+    <div className="flex min-h-[100dvh] w-full bg-gradient-to-br from-[#0a0a0a] to-[#020202]">
       {/* Left side - Image (hidden on mobile) */}
       <div className="w-full hidden md:flex items-center justify-center bg-gray-50">
         <img
@@ -71,8 +71,8 @@ export function Login() {
       </div>
 
       {/* Right side - Form */}
-      <div className="w-full flex flex-col items-center justify-center px-6 md:px-0">
-        <div className="relative w-full md:w-[420px] max-w-md p-8 rounded-xl bg-black/80 border border-slate-800/80 backdrop-blur-lg overflow-hidden shadow-2xl">
+      <div className="w-full flex flex-col items-center justify-center px-4 sm:px-6 py-8 md:py-4">
+        <div className="relative w-full max-w-[400px] sm:max-w-[420px] p-6 sm:p-8 rounded-xl bg-black/80 backdrop-blur-lg overflow-hidden shadow-2xl">
           {/* Header */}
           <div className="mb-8 text-center">
             <h1 className="text-4xl font-bold text-white">Welcome Back</h1>
@@ -210,7 +210,7 @@ export function Login() {
             {/* Guest Login */}
             <button
               type="button"
-              className="w-full h-11 border border-slate-600 text-slate-300 font-medium rounded-lg hover:bg-slate-800 transition-colors"
+              className="w-full h-11 border border-slate-600 text-slate-300 font-medium rounded-lg hover:bg-slate-800 transition-colors cursor-pointer"
               onClick={async () => {
                 try {
                   setIsLoading(true);
