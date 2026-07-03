@@ -11,7 +11,7 @@ interface StatsGridProps {
 export function StatsGrid({ isToday, todayTotal, weeklyHours, totalEntries }: StatsGridProps) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-      <Card className="backdrop-blur-xl bg-card/50 border border-border/50 shadow-none">
+      <Card className="bg-card border border-border/50 shadow-sm">
         <CardContent className="pt-6">
           <div className="flex items-start justify-between mb-4">
             <div className="p-3 rounded-xl bg-gradient-to-br from-gray-500/20 to-gray-500/10">
@@ -28,7 +28,7 @@ export function StatsGrid({ isToday, todayTotal, weeklyHours, totalEntries }: St
         </CardContent>
       </Card>
 
-      <Card className="backdrop-blur-xl bg-card/50 border border-border/50 shadow-none">
+      <Card className="bg-card border border-border/50 shadow-sm">
         <CardContent className="pt-6">
           <div className="flex items-start justify-between mb-4">
             <div className="p-3 rounded-xl bg-gradient-to-br from-gray-500/20 to-gray-500/10">
@@ -45,7 +45,7 @@ export function StatsGrid({ isToday, todayTotal, weeklyHours, totalEntries }: St
         </CardContent>
       </Card>
 
-      <Card className="backdrop-blur-xl bg-card/50 border border-border/50 shadow-none">
+      <Card className="bg-card border border-border/50 shadow-sm">
         <CardContent className="pt-6">
           <div className="flex items-start justify-between mb-4">
             <div className="p-3 rounded-xl bg-gradient-to-br from-gray-500/20 to-gray-500/10">

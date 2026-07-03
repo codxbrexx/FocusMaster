@@ -29,7 +29,7 @@ export function PriorityTasks({ tasks }: PriorityTasksProps) {
       }}
       className="lg:col-span-2 h-full"
     >
-      <Card className="h-full bg-card lg:bg-card/50 border border-border/50 shadow-none flex flex-col">
+      <Card className="h-full bg-card border border-border/50 shadow-sm flex flex-col">
         <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 sm:p-6 pb-4 border-b border-border/40">
           <div className="space-y-1">
             <CardTitle className="text-lg flex items-center gap-2">
@@ -66,7 +66,7 @@ export function PriorityTasks({ tasks }: PriorityTasksProps) {
               {tasks.slice(0, 4).map((task) => (
                 <div
                   key={task._id}
-                  className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl bg-secondary lg:bg-card/30 border border-border/40 transition-all shadow-sm"
+                  className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl bg-secondary border border-border/40 transition-all shadow-sm"
                 >
                   <div className="flex items-center gap-3 w-full sm:w-auto">
                     <div

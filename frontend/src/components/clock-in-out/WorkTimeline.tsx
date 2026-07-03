@@ -25,7 +25,7 @@ export function WorkTimeline({ entries }: WorkTimelineProps) {
   if (entries.length === 0) return null;
 
   return (
-    <Card className="border border-border/50 backdrop-blur-xl bg-card/50 shadow-none">
+    <Card className="border border-border/50 bg-card shadow-sm">
       <CardHeader className="border-b border-border/50 pb-4">
         <CardTitle className="text-base">Working Hours</CardTitle>
       </CardHeader>

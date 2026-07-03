@@ -87,7 +87,7 @@ export function WorkClock({
 
       {/* Side Card: Daily Pulse - Corner Position */}
       <div className="lg:col-span-1 flex flex-col gap-4">
-        <div className="bg-surface-container-highest/40 backdrop-blur-md rounded-xl p-8 border border-outline-variant/10 flex-1 flex flex-col justify-center">
+        <div className="bg-surface-container-highest rounded-xl p-8 border border-outline-variant/10 flex-1 flex flex-col justify-center">
           <h4 className="text-on-surface-variant font-label uppercase tracking-widest text-xs mb-6">Daily Pulse</h4>
           <div className="space-y-6">
             <div className="flex items-center justify-between">

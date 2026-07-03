@@ -30,7 +30,7 @@ export function FocusActivityChart({ data }: FocusActivityChartProps) {
 
   return (
     <motion.div variants={item} className="lg:col-span-2 h-full">
-      <Card className="border-border shadow-xl backdrop-blur-xl bg-card/40 h-full">
+      <Card className="border-border shadow-xl bg-card h-full">
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-lg font-medium tracking-wide text-foreground">
             <Activity className="w-5 h-5 text-indigo-400" />
