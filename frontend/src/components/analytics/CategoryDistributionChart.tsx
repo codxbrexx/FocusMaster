@@ -23,7 +23,7 @@ export function CategoryDistributionChart({ data, colors }: CategoryDistribution
 
   return (
     <motion.div variants={item} className="h-full">
-      <Card className="border-border shadow-xl backdrop-blur-xl bg-card/40 h-full">
+      <Card className="border-border shadow-xl bg-card h-full">
         <CardHeader>
           <CardTitle className="text-lg font-medium tracking-wide text-foreground">
             Category Distribution

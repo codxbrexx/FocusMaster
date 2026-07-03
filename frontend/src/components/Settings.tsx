@@ -27,7 +27,7 @@ export function Settings() {
       className="max-w-4xl mx-auto space-y-8 pb-24"
     >
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center backdrop-blur-lg justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h2 className="text-3xl font-bold tracking-tight">Settings</h2>
           <p className="text-muted-foreground mt-1">Configure your focus environment.</p>
@@ -43,9 +43,9 @@ export function Settings() {
 
       <Tabs
         defaultValue="account"
-        className="w-full backdrop-blur-lg border border-primary/50 rounded-xl"
+        className="w-full border border-border rounded-xl"
       >
-        <TabsList className="w-full justify-start h-auto p-1 rounded-xl border-primary/50 mb-8 overflow-x-auto bg-background/50">
+        <TabsList className="w-full justify-start h-auto p-1 rounded-xl border-border mb-8 overflow-x-auto bg-background">
           {tabs.map((tab) => {
             const Icon = tab.icon;
             return (

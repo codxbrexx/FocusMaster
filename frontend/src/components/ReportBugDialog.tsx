@@ -67,11 +67,11 @@ export function ReportBugDialog() {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <button
-          className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-gray-500/10 hover:bg-red-500/20 text-red-300 hover:text-red-400 border border-red-500/20 transition-all duration-300 group shadow-sm hover:shadow-red-500/20"
+          className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-gray-200/10 hover:border-red-500/70 text-gray-700 dark:text-gray-500 hover:text-gray-500 border border-gray-600/10 transition-all duration-300 group"
           title="Report Information"
         >
           <Bug className="w-3.5 h-3.5 group-hover:rotate-12 transition-transform" />
-          <span className="text-[11px] font-medium hidden sm:inline-block">Report Issue</span>
+          <span className="text-[11px] text-gray-700 dark:text-gray-500 font-medium hidden sm:inline-block">Report Issue</span>
         </button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[500px] border-white/10 bg-black/40 backdrop-blur-xl shadow-2xl p-0 overflow-hidden">

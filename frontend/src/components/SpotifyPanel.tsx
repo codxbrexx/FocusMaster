@@ -203,7 +203,7 @@ export function SpotifyPanel() {
             exit={{ opacity: 0, scale: 0.95 }}
             className="flex flex-col"
           >
-            <Card className="bg-card border border-border md:border-white/10 shadow-none relative group overflow-hidden">
+            <Card className="bg-card border border-border shadow-sm relative group overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-accent-1/10 via-transparent to-accent-2/10 pointer-events-none group-hover:opacity-100 transition-opacity duration-700 opacity-50" />
               <CardContent className="py-12 sm:py-24 text-center relative z-10 flex flex-col items-center justify-center max-w-lg mx-auto px-4">
                 <div className="w-24 h-24 rounded-full bg-gradient-to-br from-accent-1/20 to-accent-2/20 flex items-center justify-center mb-6 shadow-glow border border-white/5">
@@ -238,7 +238,7 @@ export function SpotifyPanel() {
           >
             {/* Player Card */}
             <div className="lg:col-span-12">
-              <Card className="bg-card md:bg-black/40 border border-border md:border-white/10 shadow-none relative group overflow-hidden">
+              <Card className="bg-card border border-border shadow-sm relative group overflow-hidden">
                 {/* Ambient Background based on album art color could go here */}
                 <div className="absolute inset-0 bg-gradient-to-r from-accent-1/5 to-accent-2/5 z-0 pointer-events-none" />
 
@@ -350,7 +350,7 @@ export function SpotifyPanel() {
 
             {/* Playlists Placeholder */}
             <div className="lg:col-span-12">
-              <Card className="bg-card md:bg-black/20 border border-border md:border-white/5 hover:bg-card/90 md:hover:bg-black/30 transition-colors shadow-none">
+              <Card className="bg-card border border-border hover:bg-accent/5 transition-colors shadow-sm">
                 <CardContent className="p-6 sm:p-10 flex flex-col items-center justify-center text-center min-h-[160px] h-auto">
                   <div className="p-3 rounded-full bg-white/5 mb-4">
                     <ListMusic className="w-8 h-8 text-accent-2/80" />

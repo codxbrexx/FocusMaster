@@ -25,7 +25,7 @@ export function AnalyticsStats({
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
       <motion.div variants={item}>
-        <Card className="backdrop-blur-xl bg-card/40 border-border group hover:shadow-lg hover:shadow-indigo-500/10 transition-all duration-300">
+        <Card className="bg-card border-border group hover:shadow-lg hover:shadow-indigo-500/10 transition-all duration-300">
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-4">
               <div className="p-2 bg-indigo-500/20 text-indigo-400 rounded-lg group-hover:bg-indigo-500/30 transition-colors">
@@ -57,7 +57,7 @@ export function AnalyticsStats({
       </motion.div>
 
       <motion.div variants={item}>
-        <Card className="backdrop-blur-xl bg-card/40 border-border group hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300">
+        <Card className="bg-card border-border group hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300">
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-4">
               <div className="p-2 bg-amber-500/20 text-amber-400 rounded-lg group-hover:bg-amber-500/30 transition-colors">
@@ -79,7 +79,7 @@ export function AnalyticsStats({
       </motion.div>
 
       <motion.div variants={item}>
-        <Card className="backdrop-blur-xl bg-card/40 border-border group hover:shadow-lg hover:shadow-emerald-500/10 transition-all duration-300">
+        <Card className="bg-card border-border group hover:shadow-lg hover:shadow-emerald-500/10 transition-all duration-300">
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-4">
               <div className="p-2 bg-emerald-500/20 text-emerald-400 rounded-lg group-hover:bg-emerald-500/30 transition-colors">

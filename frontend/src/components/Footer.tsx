@@ -3,7 +3,7 @@ import { ReportBugDialog } from './ReportBugDialog';
 
 export const Footer = () => {
   return (
-    <footer className="hidden lg:block w-full mt-auto py-4 border-t border-border/40 bg-background/50 backdrop-blur-sm">
+    <footer className="hidden lg:block w-full mt-auto py-4 border-t border-border bg-background">
       <div className="flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-muted-foreground/60">
         <div className="flex items-center gap-2 font-mono order-2 md:order-1">
           <span>FocusMaster V_2.0.0</span>
