@@ -25,9 +25,9 @@ export const SessionManager = ({
   sessionCount,
 }: SessionManagerProps) => {
   return (
-    <div className="w-full mt-12 pt-8 backdrop-blur-lg bg-background/20 border-t border-muted/10">
-      <div className="flex flex-col bg-muted-50 border-muted/10  rounded-lg md:flex-row gap-8 justify-between items-start md:items-center">
-        <div className="space-y-2 w-full md:w-auto min-w-[320px]">
+    <div className="w-full mt-8 md:mt-12 pt-6 md:pt-8 bg-card border border-border/40 rounded-2xl p-4 md:p-0 md:bg-transparent md:border-none md:border-t md:border-muted/10">
+      <div className="flex flex-col md:flex-row gap-6 md:gap-8 justify-between items-stretch md:items-center divide-y divide-border/20 md:divide-y-0">
+        <div className="space-y-2 w-full md:w-auto min-w-0 md:max-w-xs pb-4 md:pb-0">
           <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest pl-1">
             Working On
           </span>
@@ -55,12 +55,12 @@ export const SessionManager = ({
           </Select>
         </div>
 
-        <div className="space-y-3 flex-1 flex flex-col items-center md:items-start">
-          <div className="w-full flex-col md:items-center flex">
-            <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest pl-1 self-start md:self-center">
+        <div className="space-y-3 flex-1 flex flex-col items-start pt-4 pb-4 md:pt-0 md:pb-0">
+          <div className="w-full flex-col flex">
+            <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest pl-1 self-start">
               Session Tag
             </span>
-            <div className="flex flex-wrap gap-2 mt-2 justify-start md:justify-center">
+            <div className="flex flex-wrap gap-2 mt-2 justify-start">
               {['Study', 'Work', 'Code', 'Write', 'Read'].map((tag) => (
                 <Badge
                   key={tag}
@@ -75,7 +75,7 @@ export const SessionManager = ({
           </div>
         </div>
 
-        <div className="space-y-3 w-full md:w-[200px]">
+        <div className="space-y-3 w-full md:w-[200px] pt-4 md:pt-0">
           <div className="flex justify-between items-center px-1">
             <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest">
               Daily Goal

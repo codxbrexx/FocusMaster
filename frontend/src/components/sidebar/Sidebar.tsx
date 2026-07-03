@@ -79,14 +79,14 @@ export const Sidebar = ({ open, onOpenChange }: SidebarProps) => {
       className={cn(
         'h-screen fixed left-0 top-0 z-40 flex flex-col',
         'bg-background border-r border-white/10',
-        isMobile && 'border-none w-full max-w-[85vw]'
+        isMobile && 'bg-card border-r border-border w-full max-w-[80vw] shadow-[10px_0_35px_rgba(0,0,0,0.6)]'
       )}
       onClick={() => !isMobile && onOpenChange(!open)}
     >
       {/* --- HEADER --- */}
       <div
         className={cn(
-          'h-28 flex items-center mb-2 relative group transition-all duration-300 z-10',
+          'h-20 lg:h-28 flex items-center mb-2 relative group transition-all duration-300 z-10',
           open ? 'justify-between px-6' : 'justify-center'
         )}
       >

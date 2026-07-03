@@ -293,11 +293,11 @@ export function Profile() {
                 Current Rank
               </span>
               <div className="flex items-end gap-3 mb-4">
-                <h3 className="text-3xl font-bold text-foreground tracking-tight">
+                <h3 className="text-1xl md:text-2xl font-bold text-foreground tracking-tight">
                   {currentLevel.name}
                 </h3>
                 <div
-                  className={`mb-1.5 text-[10px] px-2 py-0.5 rounded border font-bold uppercase ${currentLevel.bg} ${currentLevel.color} ${currentLevel.border}`}
+                  className={`mb-1.5 text-[8px] md:text-[12px] px-2 py-0.5 rounded border font-bold uppercase ${currentLevel.bg} ${currentLevel.color} ${currentLevel.border}`}
                 >
                   LVL {currentLevel.level}
                 </div>

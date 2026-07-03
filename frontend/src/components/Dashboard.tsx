@@ -111,7 +111,7 @@ export function Dashboard() {
       variants={container}
       initial="hidden"
       animate="show"
-      className="max-w-7xl mx-auto space-y-8 pb-10"
+      className="max-w-7xl mx-auto space-y-6 sm:space-y-8 pb-10 px-0.5 sm:px-0"
     >
       <WelcomeHeader user={user} settings={settings} randomQuote={randomQuote} points={points} />
 

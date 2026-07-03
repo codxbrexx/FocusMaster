@@ -170,14 +170,14 @@ export function SpotifyPanel() {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="max-w-6xl mx-auto space-y-8 pb-20"
+      className="max-w-6xl mx-auto space-y-6 sm:space-y-8 pb-20 px-0.5 sm:px-0"
     >
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h2 className="text-3xl font-bold font-heading tracking-tight flex items-center gap-2">
-            <Music className="w-8 h-8 text-primary" /> Spotify Integration
+          <h2 className="text-2xl font-bold font-heading tracking-tight flex items-center gap-2">
+            <Music className="text-xl sm:text-2xl md:text-3xl w-8 h-8 text-primary" /> Spotify Integration
           </h2>
-          <p className="text-muted-foreground">
+          <p className="text-muted-foreground text-sm sm:text-base md:text-lg mt-1">
             Control your focus soundtrack directly from the dashboard.
           </p>
         </div>
@@ -203,9 +203,9 @@ export function SpotifyPanel() {
             exit={{ opacity: 0, scale: 0.95 }}
             className="flex flex-col"
           >
-            <Card className="border border-white/10 backdrop-blur-lg overflow-hidden relative group">
+            <Card className="bg-card border border-border md:border-white/10 shadow-none relative group overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-accent-1/10 via-transparent to-accent-2/10 pointer-events-none group-hover:opacity-100 transition-opacity duration-700 opacity-50" />
-              <CardContent className="pt-24 pb-24 text-center relative z-10 flex flex-col items-center justify-center max-w-lg mx-auto">
+              <CardContent className="py-12 sm:py-24 text-center relative z-10 flex flex-col items-center justify-center max-w-lg mx-auto px-4">
                 <div className="w-24 h-24 rounded-full bg-gradient-to-br from-accent-1/20 to-accent-2/20 flex items-center justify-center mb-6 shadow-glow border border-white/5">
                   <Music className="w-12 h-12 text-primary" />
                 </div>
@@ -238,30 +238,30 @@ export function SpotifyPanel() {
           >
             {/* Player Card */}
             <div className="lg:col-span-12">
-              <Card className="overflow-hidden border border-white/10 shadow-2xl backdrop-blur-xl bg-black/40 relative group">
+              <Card className="bg-card md:bg-black/40 border border-border md:border-white/10 shadow-none relative group overflow-hidden">
                 {/* Ambient Background based on album art color could go here */}
                 <div className="absolute inset-0 bg-gradient-to-r from-accent-1/5 to-accent-2/5 z-0 pointer-events-none" />
 
                 <CardContent className="p-0 relative z-20">
-                  <div className="flex flex-col md:flex-row h-full md:h-[300px]">
+                  <div className="flex flex-col md:flex-row h-full md:min-h-[300px]">
                     {/* Album Art */}
-                    <div className="w-full md:w-[300px] p-6 flex flex-col items-center justify-center relative">
+                    <div className="w-full md:w-[300px] p-4 sm:p-6 flex flex-col items-center justify-center relative">
                       {playbackState?.item?.album.images[0]?.url ? (
                         <img
                           src={playbackState.item.album.images[0].url}
                           alt="Album Art"
-                          className="w-64 h-64 rounded-xl shadow-2xl object-cover animate-in fade-in zoom-in duration-700 ring-1 ring-white/10"
+                          className="w-48 h-48 sm:w-64 sm:h-64 rounded-xl shadow-2xl object-cover animate-in fade-in zoom-in duration-700 ring-1 ring-white/10"
                         />
                       ) : (
-                        <div className="w-64 h-64 rounded-xl bg-white/5 flex items-center justify-center ring-1 ring-white/10">
-                          <Music className="w-16 h-16 text-white/20" />
+                        <div className="w-48 h-48 sm:w-64 sm:h-64 rounded-xl bg-white/5 flex items-center justify-center ring-1 ring-white/10">
+                          <Music className="w-12 h-12 text-white/20" />
                         </div>
                       )}
                     </div>
 
                     {/* Controls & Info */}
-                    <div className="flex-1 p-6 md:p-8 flex flex-col justify-center">
-                      <div className="space-y-2 mb-8">
+                    <div className="flex-1 p-4 sm:p-6 md:p-8 flex flex-col justify-center text-center md:text-left items-center md:items-stretch">
+                      <div className="space-y-1.5 mb-5 md:mb-8 w-full flex flex-col items-center md:items-start">
                         {playbackState?.is_playing && (
                           <Badge
                             variant="outline"
@@ -270,17 +270,17 @@ export function SpotifyPanel() {
                             Now Playing
                           </Badge>
                         )}
-                        <h2 className="text-4xl font-bold font-heading tracking-tight truncate text-transparent bg-clip-text bg-gradient-to-r from-white to-white/60">
+                        <h2 className="text-xl sm:text-2xl md:text-4xl font-bold font-heading tracking-tight w-full text-foreground/90 line-clamp-2">
                           {playbackState?.item?.name || 'No Track Playing'}
                         </h2>
-                        <p className="text-xl text-muted-foreground truncate font-medium">
+                        <p className="text-sm sm:text-base md:text-xl text-muted-foreground w-full font-medium line-clamp-1">
                           {playbackState?.item?.artists.map((a) => a.name).join(', ') ||
                             'Start music in Spotify app'}
                         </p>
                       </div>
 
                       {/* Progress Bar */}
-                      <div className="space-y-2 mb-8 max-w-2xl">
+                      <div className="space-y-2 mb-5 md:mb-8 max-w-2xl w-full">
                         <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
                           <div
                             className="h-full bg-gradient-to-r from-accent-1 to-accent-2 transition-all duration-1000 ease-linear shadow-[0_0_10px_rgba(124,58,237,0.5)]"
@@ -298,11 +298,11 @@ export function SpotifyPanel() {
                       </div>
 
                       {/* Controls */}
-                      <div className="flex items-center gap-6">
+                      <div className="flex items-center justify-center md:justify-start gap-6 w-full">
                         <Button
                           variant="outline"
                           size="icon"
-                          className="h-12 w-12 rounded-full border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 transition-all"
+                          className="h-12 w-12 rounded-full border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 transition-all shrink-0"
                           onClick={() =>
                             axios.post(`${API_URL}/spotify/prev`, {}, { withCredentials: true })
                           }
@@ -311,7 +311,7 @@ export function SpotifyPanel() {
                         </Button>
 
                         <Button
-                          className="h-16 w-16 rounded-full shadow-glow-lg bg-gradient-to-br from-accent-1 to-accent-2 text-white hover:scale-105 transition-transform border border-white/10"
+                          className="h-16 w-16 rounded-full shadow-glow-lg bg-gradient-to-br from-accent-1 to-accent-2 text-white hover:scale-105 transition-transform border border-white/10 shrink-0"
                           onClick={handlePlayPause}
                         >
                           {playbackState?.is_playing ? (
@@ -324,7 +324,7 @@ export function SpotifyPanel() {
                         <Button
                           variant="outline"
                           size="icon"
-                          className="h-12 w-12 rounded-full border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 transition-all"
+                          className="h-12 w-12 rounded-full border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 transition-all shrink-0"
                           onClick={() =>
                             axios.post(`${API_URL}/spotify/next`, {}, { withCredentials: true })
                           }
@@ -350,8 +350,8 @@ export function SpotifyPanel() {
 
             {/* Playlists Placeholder */}
             <div className="lg:col-span-12">
-              <Card className="border border-white/5 bg-black/20 backdrop-blur-md hover:bg-black/30 transition-colors">
-                <CardContent className="p-10 flex flex-col items-center justify-center text-center h-[200px]">
+              <Card className="bg-card md:bg-black/20 border border-border md:border-white/5 hover:bg-card/90 md:hover:bg-black/30 transition-colors shadow-none">
+                <CardContent className="p-6 sm:p-10 flex flex-col items-center justify-center text-center min-h-[160px] h-auto">
                   <div className="p-3 rounded-full bg-white/5 mb-4">
                     <ListMusic className="w-8 h-8 text-accent-2/80" />
                   </div>

@@ -38,10 +38,10 @@ export const SidebarItem = ({ item, isOpen, onClick }: SidebarItemProps) => {
         <>
           {isActive && (
             <>
-              {/* Active Background with reduced opacity gradient */}
+              {/* Active Background */}
               <motion.div
                 layoutId="sidebar-active-bg"
-                className="absolute inset-0 bg-gradient-to-r from-purple-500/10 via-purple-500/5 to-transparent rounded-xl"
+                className="absolute inset-0 bg-purple-500/10 dark:bg-purple-500/15 rounded-xl"
                 initial={false}
                 transition={{ type: 'spring', stiffness: 300, damping: 24 }}
               />

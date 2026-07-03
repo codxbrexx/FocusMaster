@@ -193,7 +193,7 @@ export function PomodoroTimer() {
           </Button>
         </div>
 
-        <CardContent className="p-8 md:p-12">
+        <CardContent className="p-4 sm:p-8 md:p-12">
           <div className="flex flex-col items-center justify-center">
             <ModeSelector mode={mode} setMode={setMode} resetTimer={resetTimer} />
 

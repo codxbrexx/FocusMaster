@@ -25,14 +25,14 @@ export function DailyOverviewChart({
       }}
       className="space-y-6"
     >
-      <Card className="backdrop-blur-xl bg-card/50 border border-white/10 shadow-none h-full">
-        <CardHeader className="pb-2">
+      <Card className="bg-card lg:bg-card/50 border border-white/10 shadow-none h-full">
+        <CardHeader className="p-4 sm:p-6 pb-2">
           <CardTitle className="flex items-center gap-2 text-lg">
             <Activity className="h-5 w-5 text-primary" />
             Daily Overview
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-6">
+        <CardContent className="p-4 sm:p-6 pt-0 space-y-6">
           <div className="flex flex-col items-center justify-center py-4">
             <div className="relative w-32 h-32 flex items-center justify-center">
               <svg className="w-full h-full transform -rotate-90">

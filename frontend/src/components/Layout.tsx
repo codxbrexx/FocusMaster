@@ -72,7 +72,9 @@ export const Layout = () => {
         <div
           className={`flex-1 flex flex-col transition-all duration-300 ml-0 ${sidebarOpen ? 'lg:ml-72' : 'lg:ml-20'}`}
         >
-          <TopBar onMenuClick={() => setSidebarOpen(true)} />
+          <div className={(sidebarOpen && (deviceType === 'mobile' || deviceType === 'tablet' || isScreenSmall)) ? "hidden lg:block" : ""}>
+            <TopBar onMenuClick={() => setSidebarOpen(true)} />
+          </div>
           <main className="flex-1 p-4 md:p-6 pb-24 lg:pb-6 overflow-x-hidden overflow-y-auto">
             <div className="max-w-7xl mx-auto h-full flex flex-col">
               <div className="flex-1">
@@ -80,7 +82,9 @@ export const Layout = () => {
               </div>
 
               <Footer />
-              <BottomMobileNav />
+              <div className={(sidebarOpen && (deviceType === 'mobile' || deviceType === 'tablet' || isScreenSmall)) ? "hidden lg:block" : ""}>
+                <BottomMobileNav />
+              </div>
             </div>
           </main>
         </div>

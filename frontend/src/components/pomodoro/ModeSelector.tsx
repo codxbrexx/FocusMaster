@@ -9,7 +9,7 @@ interface ModeSelectorProps {
 
 export const ModeSelector = ({ mode, setMode, resetTimer }: ModeSelectorProps) => {
   return (
-    <div className="flex flex-wrap justify-center gap-4 md:gap-12 mb-8 bg-secondary/50 p-1 rounded-xl">
+    <div className="flex flex-wrap justify-center gap-2 md:gap-12 mb-8 bg-secondary md:bg-secondary/50 p-1.5 rounded-xl border border-border/10 md:border-none">
       {[
         { id: 'pomodoro', icon: Brain, label: 'Focus' },
         { id: 'short-break', icon: Coffee, label: 'Short' },
@@ -21,7 +21,7 @@ export const ModeSelector = ({ mode, setMode, resetTimer }: ModeSelectorProps) =
             setMode(item.id as TimerMode);
             resetTimer();
           }}
-          className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+          className={`flex items-center gap-1.5 px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-sm font-medium transition-all ${
             mode === item.id
               ? 'bg-background shadow-sm text-primary'
               : 'text-muted-foreground hover:text-foreground hover:bg-background/50'

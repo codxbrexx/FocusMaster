@@ -61,7 +61,7 @@ export function FocusModeOverlay({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 bg-matrix flex flex-col overflow-hidden"
+      className="fixed inset-0 z-50 bg-matrix flex flex-col overflow-y-auto min-h-screen pb-safe"
     >
       <div className="flex flex-col items-center pt-8 px-6 relative z-10">
         <Button
@@ -173,8 +173,8 @@ export function FocusModeOverlay({
 
       <motion.div initial={{ y: 100 }} animate={{ y: 0 }} className="w-full py-4 px-6 md:px-12">
         <div className="max-w-5xl mx-auto">
-          <div className="flex flex-col md:flex-row gap-8 justify-between items-start md:items-center backdrop-blur-lg bg-background/20 border border-white/10 rounded-xl p-6">
-            <div className="space-y-2 w-full md:w-auto min-w-[300px]">
+          <div className="flex flex-col md:flex-row gap-6 md:gap-8 justify-between items-stretch md:items-center bg-card md:bg-background/20 border border-border md:border-white/10 rounded-xl p-4 md:p-6 shadow-lg">
+            <div className="space-y-2 w-full md:w-auto min-w-0 md:max-w-xs">
               <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest pl-1">
                 Working On
               </span>

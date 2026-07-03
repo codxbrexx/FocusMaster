@@ -30,27 +30,27 @@ export function WelcomeHeader({ user, settings, randomQuote, points }: WelcomeHe
         hidden: { y: 20, opacity: 0 },
         show: { y: 0, opacity: 1, transition: { type: 'spring', stiffness: 300, damping: 24 } },
       }}
-      className="relative overflow-hidden rounded-3xl backdrop-blur-xl bg-card/50 border border-border/50 p-8 lg:p-10 transition-all duration-300"
+      className="relative overflow-hidden rounded-[20px] sm:rounded-3xl bg-card md:bg-card/50 border border-border/50 p-5 sm:p-8 lg:p-10 transition-all duration-300"
     >
       <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
         <div className="space-y-4 max-w-2xl">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 text-primary text-xs font-medium mb-2 border border-primary/20">
+          <div className="inline-flex items-center gap-2 py-1 bg-primary/10 text-primary text-xs font-medium mb-2">
             <span>Welcome to Focus Master</span>
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">
+          <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-foreground">
             {getTimeGreeting()},{' '}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-purple-400">
               {user?.name || 'Focus Master'}
             </span>
           </h1>
-          <p className="text-lg text-muted-foreground leading-relaxed">
+          <p className="text-sm md:text-md text-muted-foreground leading-relaxed">
             "{settings.motivationalQuotes ? randomQuote : 'Ready to focus?'}"
           </p>
           <div className="flex flex-wrap gap-4 pt-4">
             <Button
               onClick={() => navigate('/pomodoro')}
               size="lg"
-              className="rounded-full px-8 bg-background/50 border border-border/50"
+              className="rounded-full px-8 bg-background md:bg-background/50 border border-border/50"
             >
               <Target className="mr-2 h-5 w-5" /> Start Session
             </Button>

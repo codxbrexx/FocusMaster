@@ -16,7 +16,7 @@ export const TimerDisplay = ({
   formatTime,
 }: TimerDisplayProps) => {
   return (
-    <div className="relative w-96 h-96 flex items-center justify-center">
+    <div className="relative w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 flex items-center justify-center">
       <svg
         className="absolute w-full h-full transform -rotate-90 pointer-events-none"
         viewBox="0 0 100 100"
@@ -58,11 +58,11 @@ export const TimerDisplay = ({
           className="transition-all duration-500 ease-linear"
         />
       </svg>
-      <div className="absolute inset-0 flex flex-col items-center justify-center z-10">
-        <span className="text-8xl font-black tabular-nums tracking-tighter text-foreground select-none">
+      <div className="absolute inset-0 flex flex-col items-center justify-center z-10 p-4">
+        <span className="text-5xl sm:text-7xl md:text-8xl font-black tabular-nums tracking-tighter text-foreground select-none">
           {formatTime(timeLeft)}
         </span>
-        <span className="text-base font-medium text-muted-foreground/80 uppercase tracking-[0.2em] mt-4 select-none">
+        <span className="text-xs sm:text-sm md:text-base font-medium text-muted-foreground/80 uppercase tracking-[0.2em] mt-2 sm:mt-4 select-none">
           {status === 'idle' ? 'Ready' : mode === 'pomodoro' ? 'Deep Work' : 'Recharging'}
         </span>
       </div>
