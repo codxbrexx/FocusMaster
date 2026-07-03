@@ -27,7 +27,7 @@ export function SystemSettings() {
 
   return (
     <div className="space-y-6">
-      <Card className="border-none shadow-none bg-card/50 backdrop-blur-sm">
+      <Card className="bg-card border border-border shadow-sm">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Volume2 className="w-5 h-5 text-primary" /> Sound & Feedback

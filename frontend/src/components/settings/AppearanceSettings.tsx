@@ -39,7 +39,7 @@ export function AppearanceSettings() {
   ];
 
   return (
-    <Card className="border-none shadow-none bg-card/50">
+    <Card className="bg-card border border-border shadow-sm">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Palette className="w-5 h-5 text-primary" /> Theme & Interface
@@ -82,7 +82,7 @@ export function AppearanceSettings() {
                   )}
                 </div>
               </div>
-              <div className="p-2 text-center text-sm font-medium bg-secondary/50">
+              <div className="p-2 text-center text-sm font-medium bg-secondary">
                 {theme.name}
               </div>
             </div>

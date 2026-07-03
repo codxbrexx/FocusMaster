@@ -72,7 +72,7 @@ export function FocusModeOverlay({
           <ArrowLeft className="w-5 h-5" /> <span className="hidden md:inline">Exit</span>
         </Button>
 
-        <div className="flex gap-1 bg-secondary/30 p-1.5 rounded-full backdrop-blur-md border border-white/5">
+        <div className="flex gap-1 bg-secondary p-1.5 rounded-full border border-border">
           {[
             { id: 'pomodoro', label: 'Focus', icon: Brain },
             { id: 'short-break', label: 'Short Break', icon: Coffee },
@@ -87,7 +87,7 @@ export function FocusModeOverlay({
               className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${
                 mode === m.id
                   ? 'bg-primary text-primary-foreground shadow-lg'
-                  : 'text-muted-foreground hover:text-foreground hover:bg-white/5'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-accent'
               }`}
             >
               <m.icon className="w-4 h-4" />
@@ -173,7 +173,7 @@ export function FocusModeOverlay({
 
       <motion.div initial={{ y: 100 }} animate={{ y: 0 }} className="w-full py-4 px-6 md:px-12">
         <div className="max-w-5xl mx-auto">
-          <div className="flex flex-col md:flex-row gap-6 md:gap-8 justify-between items-stretch md:items-center bg-card md:bg-background/20 border border-border md:border-white/10 rounded-xl p-4 md:p-6 shadow-lg">
+          <div className="flex flex-col md:flex-row gap-6 md:gap-8 justify-between items-stretch md:items-center bg-card border border-border rounded-xl p-4 md:p-6 shadow-lg">
             <div className="space-y-2 w-full md:w-auto min-w-0 md:max-w-xs">
               <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest pl-1">
                 Working On

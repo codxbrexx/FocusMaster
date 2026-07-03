@@ -25,7 +25,7 @@ export function DailyOverviewChart({
       }}
       className="space-y-6"
     >
-      <Card className="bg-card lg:bg-card/50 border border-white/10 shadow-none h-full">
+      <Card className="bg-card border border-border shadow-sm h-full">
         <CardHeader className="p-4 sm:p-6 pb-2">
           <CardTitle className="flex items-center gap-2 text-lg">
             <Activity className="h-5 w-5 text-primary" />

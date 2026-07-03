@@ -37,7 +37,7 @@ export const AccountSettings = () => {
         <p className="text-sm text-muted-foreground mt-1">Manage your account data and presence.</p>
       </div>
 
-      <div className="bg-card/50 backdrop-blur-sm border rounded-xl overflow-hidden divide-y divide-border/50">
+      <div className="bg-card border border-border rounded-xl overflow-hidden divide-y divide-border/50 shadow-sm">
         {/* Header for the section */}
         <div className="p-6 bg-muted/20 flex items-center gap-2">
           <AlertTriangle className="w-4 h-4 text-orange-500" />

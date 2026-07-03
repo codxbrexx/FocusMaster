@@ -77,12 +77,12 @@ export function StatsOverview({
     >
       {stats.map((stat, idx) => (
         <motion.div key={idx} transition={{ type: 'spring', stiffness: 300, damping: 24 }}>
-          <Card className="bg-card md:bg-card/60 border border-border/50 transition-all duration-300 h-full overflow-hidden relative shadow-none">
+          <Card className="bg-card border border-border/50 transition-all duration-300 h-full overflow-hidden relative shadow-sm">
             <CardHeader className="flex flex-row items-center justify-between pb-4 space-y-0 relative z-10 px-4 sm:px-6 pt-4 sm:pt-6">
               <CardTitle className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
                 {stat.title}
               </CardTitle>
-              <div className={`p-2.5 rounded-xl bg-secondary md:${stat.bg}`}>
+              <div className={`p-2.5 rounded-xl bg-secondary`}>
                 <stat.icon className={`h-5 w-5 ${stat.color}`} />
               </div>
             </CardHeader>

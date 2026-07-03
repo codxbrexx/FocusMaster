@@ -19,7 +19,7 @@ export function TaskStats({
 }: TaskStatsProps) {
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-      <Card className="backdrop-blur-xl bg-card/50 shadow-sm border-2 border-l-4 border-l-purple-500">
+      <Card className="bg-card shadow-sm border border-l-4 border-l-purple-500">
         <CardContent className="p-4 flex items-center justify-between">
           <div>
             <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
@@ -33,7 +33,7 @@ export function TaskStats({
         </CardContent>
       </Card>
 
-      <Card className="backdrop-blur-xl bg-card/50 shadow-sm border-2 border-l-4 border-l-green-500">
+      <Card className="bg-card shadow-sm border border-l-4 border-l-green-500">
         <CardContent className="p-4 flex items-center justify-between">
           <div>
             <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
@@ -47,7 +47,7 @@ export function TaskStats({
         </CardContent>
       </Card>
 
-      <Card className="backdrop-blur-xl bg-card/50 shadow-sm border-2 border-l-4 border-l-blue-500 md:col-span-2 relative overflow-hidden">
+      <Card className="bg-card shadow-sm border border-l-4 border-l-blue-500 md:col-span-2 relative overflow-hidden">
         <div className="absolute top-0 right-0 p-3 opacity-10">
           <Trophy className="w-24 h-24" />
         </div>

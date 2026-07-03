@@ -48,7 +48,7 @@ export function TaskForm({
       exit={{ height: 0, opacity: 0 }}
       className="overflow-hidden mb-6"
     >
-      <Card className="backdrop-blur-xl bg-card/50 border-2 border-border/50 shadow-md">
+      <Card className="bg-card border border-border/50 shadow-md">
         <CardHeader className="pb-4">
           <CardTitle className="text-xl flex items-center gap-2">
             {editingTaskId ? (

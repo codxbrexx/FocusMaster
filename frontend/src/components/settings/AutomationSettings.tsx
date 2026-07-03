@@ -24,7 +24,7 @@ export function AutomationSettings() {
   ];
 
   return (
-    <Card className="border-none shadow-none bg-card/50">
+    <Card className="bg-card border border-border shadow-sm">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Zap className="w-5 h-5 text-primary" /> Workflow
@@ -35,7 +35,7 @@ export function AutomationSettings() {
         {toggles.map((item) => (
           <div
             key={item.id}
-            className="flex items-center justify-between p-4 rounded-xl border bg-card hover:bg-secondary/20 transition-colors"
+            className="flex items-center justify-between p-4 rounded-xl border bg-card hover:bg-accent/40 transition-colors"
           >
             <div className="space-y-0.5">
               <Label htmlFor={item.id} className="text-base cursor-pointer">
@@ -57,7 +57,7 @@ export function AutomationSettings() {
             <Label className="text-base">Daily Goal</Label>
             <p className="text-sm text-muted-foreground">Sessions to complete per day.</p>
           </div>
-          <div className="flex items-center gap-3 bg-secondary/50 p-1.5 rounded-lg">
+          <div className="flex items-center gap-3 bg-secondary p-1.5 rounded-lg">
             <Button
               variant="ghost"
               size="icon"
