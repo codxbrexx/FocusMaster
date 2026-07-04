@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 
 export interface TrailGridProps {
   cellSize?: number;
@@ -9,11 +9,11 @@ export interface TrailGridProps {
 export default function TrailGrid({
   cellSize = 40,
   duration = 150,
-  cellColor = "#e5e5e5",
+  cellColor = "rgba(99, 102, 241, 0.15)", // Default to the glowing indigo
 }: TrailGridProps) {
   const gridContainerRef = useRef<HTMLDivElement>(null);
   const cellsRef = useRef<(HTMLDivElement | null)[]>([]);
-  const timeoutsRef = useRef<Map<number, NodeJS.Timeout>>(new Map());
+  const timeoutsRef = useRef<Map<number, ReturnType<typeof setTimeout>>>(new Map());
   const lastHoveredRef = useRef<number>(-1);
 
   const [gridDimensions, setGridDimensions] = useState({ cols: 0, rows: 0 });
@@ -49,40 +49,48 @@ export default function TrailGrid({
       }
     });
 
+    let rafId: number | null = null;
+
     const handleMouseMove = (e: MouseEvent) => {
       // Only run on hover-capable pointer devices
       if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
 
-      const col = Math.floor(e.clientX / cellSize);
-      const row = Math.floor(e.clientY / cellSize);
-
-      if (col >= 0 && col < columns && row >= 0 && row < rows) {
-        const index = row * columns + col;
-
-        if (index !== lastHoveredRef.current) {
-          lastHoveredRef.current = index;
-          const targetCell = cellsRef.current[index];
-
-          if (!targetCell) return;
-
-          targetCell.classList.add("active");
-          updateCellAndNeighbors(index);
-
-          if (timeoutsRef.current.has(index)) {
-            clearTimeout(timeoutsRef.current.get(index)!);
-          }
-
-          const timeout = setTimeout(() => {
-            const cell = cellsRef.current[index];
-            if (cell) {
-              cell.classList.remove("active");
-              updateCellAndNeighbors(index);
-            }
-          }, duration);
-
-          timeoutsRef.current.set(index, timeout);
-        }
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId);
       }
+
+      rafId = requestAnimationFrame(() => {
+        const col = Math.floor(e.clientX / cellSize);
+        const row = Math.floor(e.clientY / cellSize);
+
+        if (col >= 0 && col < columns && row >= 0 && row < rows) {
+          const index = row * columns + col;
+
+          if (index !== lastHoveredRef.current) {
+            lastHoveredRef.current = index;
+            const targetCell = cellsRef.current[index];
+
+            if (!targetCell) return;
+
+            targetCell.classList.add("active");
+            updateCellAndNeighbors(index);
+
+            if (timeoutsRef.current.has(index)) {
+              clearTimeout(timeoutsRef.current.get(index)!);
+            }
+
+            const timeout = setTimeout(() => {
+              const cell = cellsRef.current[index];
+              if (cell) {
+                cell.classList.remove("active");
+                updateCellAndNeighbors(index);
+              }
+            }, duration);
+
+            timeoutsRef.current.set(index, timeout);
+          }
+        }
+      });
     };
 
     const handleMouseLeave = () => {
@@ -128,6 +136,7 @@ export default function TrailGrid({
       timeoutsRef.current.forEach(clearTimeout);
       timeoutsRef.current.clear();
       lastHoveredRef.current = -1;
+      if (rafId !== null) cancelAnimationFrame(rafId);
     };
   }, [gridDimensions, duration, cellSize]);
 
@@ -167,7 +176,7 @@ export default function TrailGrid({
           transition: background-color 0.1s ease, border-radius 0.1s ease;
         }
         .cell.active {
-          background-color: rgba(99, 102, 241, 0.15);
+          background-color: ${cellColor};
           box-shadow: 0 0 20px rgba(99, 102, 241, 0.4), inset 0 0 10px rgba(99, 102, 241, 0.2);
           transition: none;
         }

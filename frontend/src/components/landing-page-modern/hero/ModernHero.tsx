@@ -15,6 +15,7 @@ export const ModernHero = () => {
           loop
           muted
           playsInline
+          preload="metadata"
           className="w-full h-full object-cover opacity-65"
         >
           <source src="/fmhero.mp4" type="video/mp4" />

@@ -11,4 +11,18 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+          'vendor-charts': ['recharts'],
+          'vendor-animation': ['framer-motion', 'gsap'],
+          'vendor-3d': ['three', '@react-three/fiber', '@react-three/drei'],
+          'vendor-ui': ['lucide-react', 'tailwind-merge', 'clsx'],
+        },
+      },
+    },
+    chunkSizeWarningLimit: 600,
+  },
 });
