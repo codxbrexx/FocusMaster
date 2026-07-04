@@ -6,7 +6,7 @@ export const FinalCTASection = () => {
   const navigate = useNavigate();
 
   return (
-    <section id="pricing" className="relative w-full bg-gradient-to-b from-[#0f0f1e] to-[#0a0a0a] py-20 md:py-32 lg:py-40 px-4 md:px-8 lg:px-20">
+    <section id="pricing" className="relative w-full bg-transparent py-20 md:py-32 lg:py-40 px-4 md:px-8 lg:px-20">
       <div className="mx-auto max-w-4xl text-center">
         {/* Main CTA */}
         <motion.div
@@ -66,10 +66,6 @@ export const FinalCTASection = () => {
            • Trusted YourSelf
         </motion.p>
       </div>
-
-      {/* Decorative elements */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-indigo-500/5 rounded-full blur-3xl -z-10 -translate-y-1/2" />
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-indigo-600/5 rounded-full blur-3xl -z-10 translate-y-1/2" />
     </section>
   );
 };

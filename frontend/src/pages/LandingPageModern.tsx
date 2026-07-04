@@ -33,9 +33,8 @@ export function LandingPageModern() {
 
   return (
     <div 
-      className="dark min-h-screen text-white overflow-x-hidden selection:bg-indigo-500 selection:text-white relative"
+      className="dark min-h-screen text-white overflow-x-hidden selection:bg-indigo-500 selection:text-white relative bg-gradient-to-b from-[#0a0a0f] via-[#0f0f1e] to-[#05050a]"
       style={{
-        backgroundColor: bgColor,
         transition: "background-color 0.3s ease",
       }}
     >
@@ -68,15 +67,15 @@ export function LandingPageModern() {
         {/* Foreground Content */}
         <div className="relative z-10 flex-grow flex flex-col pointer-events-auto w-full">
           <Header />
-          {/* Visually hidden h1 — feeds primary keyword to search engines without affecting visual design */}
+          {/* Visually hidden h1 */}
           <h1 className="sr-only">
             FocusMaster — Free Pomodoro Timer, Task Manager &amp; Productivity Dashboard
           </h1>
           <main aria-label="FocusMaster productivity app landing page">
             <ModernHero />
             
-            {/* Elements below the hero are inverted against the grid */}
-            <div style={{ mixBlendMode: "difference" }} className="relative z-10">
+            {/* Elements below the hero with standard stacking (no inversion) */}
+            <div className="relative z-10">
               <div id="features" aria-label="Features">
                 <DetailedFeaturesSection />
               </div>

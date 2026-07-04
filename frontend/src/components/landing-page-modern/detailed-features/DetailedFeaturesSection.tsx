@@ -85,7 +85,7 @@ const colorMap: Record<string, { bg: string; text: string; badge: string }> = {
 
 export const DetailedFeaturesSection = () => {
   return (
-    <section className="relative w-full bg-[#0f0f1e] py-20 md:py-32 lg:py-40 px-4 md:px-8 lg:px-20">
+    <section className="relative w-full bg-transparent py-20 md:py-32 lg:py-40 px-4 md:px-8 lg:px-20">
       <div className="mx-auto max-w-6xl">
         {/* Features List */}
         <div className="space-y-16 md:space-y-24">

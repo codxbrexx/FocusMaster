@@ -2,7 +2,7 @@ import { Github, Linkedin, Twitter } from 'lucide-react';
 
 export const FooterSection = () => {
   return (
-    <footer className="relative z-10 border-t border-slate-800 bg-[#0f0f1e] pt-20 pb-12 overflow-hidden">
+    <footer className="relative z-10 border-t border-slate-800 bg-transparent pt-20 pb-12 overflow-hidden">
       <div className="mx-auto max-w-6xl px-4 md:px-8 lg:px-20 relative">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-8 mb-16">
           
@@ -14,7 +14,7 @@ export const FooterSection = () => {
                 alt="FocusMaster Logo"
                 className="h-9 w-auto"
               />
-              <span className="font-extrabold text-2xl tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-300">
+              <span className="font-extrabold text-2xl tracking-tight text-white">
                 FocusMaster
               </span>
             </div>
