@@ -22,9 +22,7 @@ export const ModernHero = () => {
         <div className="absolute inset-0 bg-black/60 pointer-events-none" />
       </div>
 
-      {/* Subtle radial glow accent */}
-      <div className="absolute top-1/3 left-1/4 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-indigo-600/5 rounded-full blur-3xl pointer-events-none" />
+      {/* Subtle radial glow accent removed */}
 
       {/* Content Overlay */}
       <div className="relative z-10 w-full flex flex-col md:flex-row p-8 md:p-14 lg:p-20 min-h-screen items-center md:items-stretch gap-10 md:gap-0">

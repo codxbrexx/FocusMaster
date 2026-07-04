@@ -106,7 +106,7 @@ export const DetailedFeaturesSection = () => {
                 {/* Text Content */}
                 <div className="lg:w-1/2 space-y-6">
                   {/* Badge */}
-                  <div className="inline-flex items-center gap-3 px-4 py-2 rounded-lg bg-slate-900/50 border border-slate-700">
+                  <div className="inline-flex items-center gap-3 px-4 py-2 rounded-lg bg-slate-900/50">
                     <div className={`p-2 rounded-lg ${colors.bg}`}>
                       <Icon className={`w-5 h-5 ${colors.text}`} />
                     </div>
@@ -333,9 +333,7 @@ export const DetailedFeaturesSection = () => {
         </div>
       </div>
 
-      {/* Decorative elements */}
-      <div className="absolute top-0 left-0 w-96 h-96 bg-indigo-500/5 rounded-full blur-3xl -z-10" />
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-indigo-600/5 rounded-full blur-3xl -z-10" />
+      {/* Decorative elements removed */}
     </section>
   );
 };
