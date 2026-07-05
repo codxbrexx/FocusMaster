@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
 import { useAuth } from '../context/AuthContext';
 import { Input } from '../components/ui/input';
-import { Lock, Mail, Loader2, Eye, EyeOff, ArrowRight } from 'lucide-react';
+import { Lock, Mail, Loader2, Eye, EyeOff, ArrowRight, X } from 'lucide-react';
 import { toast } from 'sonner';
 import { LoadingPage } from '../components/ui/LoadingPage';
 
@@ -60,181 +60,176 @@ export function Login() {
   }
 
   return (
-    <div className="flex min-h-[100dvh] w-full bg-gradient-to-br from-[#0a0a0a] to-[#020202]">
-      {/* Left side - Image (hidden on mobile) */}
-      <div className="w-full hidden md:flex items-center justify-center bg-gray-50">
-        <img
-          className="w-full h-full object-cover"
-          src="https://images.unsplash.com/photo-1514474959185-1472d4c4e0d4?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt="Focus and productivity"
-        />
-      </div>
+    <div className="flex min-h-[100dvh] w-full items-center justify-center bg-[#050505] p-4 sm:p-6 lg:p-8">
+      {/* Card Container */}
+      <div className="flex w-full max-w-[1000px] overflow-hidden rounded-2xl bg-[#0f111a] shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-white/5">
+        {/* Left side - Image */}
+        <div className="hidden md:block md:w-5/12 lg:w-1/2 relative">
+          <img
+            className="h-full w-full object-cover"
+            src="https://images.unsplash.com/photo-1514474959185-1472d4c4e0d4?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            alt="Focus and productivity"
+          />
+        </div>
 
-      {/* Right side - Form */}
-      <div className="w-full flex flex-col items-center justify-center px-4 sm:px-6 py-8 md:py-4">
-        <div className="relative w-full max-w-[400px] sm:max-w-[420px] p-6 sm:p-8 rounded-xl bg-black/80 backdrop-blur-lg overflow-hidden shadow-2xl">
-          {/* Header */}
-          <div className="mb-8 text-center">
-            <h1 className="text-4xl font-bold text-white">Welcome Back</h1>
-            <p className="text-sm text-slate-400 mt-2">Sign in to unlock your focus.</p>
-          </div>
+        {/* Right side - Form */}
+        <div className="w-full md:w-7/12 lg:w-1/2 p-8 sm:p-12 relative flex flex-col justify-center min-h-[600px]">
+          {/* Close Button */}
+          <Link to="/" className="absolute right-6 top-6 text-slate-500 hover:text-white transition-colors bg-[#1a1d27]/50 hover:bg-[#1a1d27] p-2 rounded-md">
+            <X className="h-4 w-4" />
+          </Link>
 
-          {/* Error Message */}
-          {error && (
-            <div className="mb-4 p-3 rounded-lg bg-red-900/50 border border-red-500/30 text-red-400 text-sm">
-              {error}
+          <div className="w-full max-w-[400px] mx-auto">
+            {/* Header */}
+            <div className="mb-8">
+              <h1 className="text-3xl font-bold text-white mb-2">Log in</h1>
+              <p className="text-sm text-slate-400">
+                New user? <Link to="/register" className="text-indigo-400 hover:text-indigo-300 font-medium">Register Now</Link>
+              </p>
             </div>
-          )}
 
-          {/* Google Login Button */}
-          <div className="flex justify-center mb-6">
-            <GoogleLogin
-              onSuccess={async (credentialResponse) => {
-                if (credentialResponse.credential) {
-                  try {
-                    setIsGoogleLoading(true);
-                    setError('');
-                    await googleLogin(credentialResponse.credential);
-                    navigate('/dashboard');
-                  } catch {
-                    setError('Google login failed. Please try again.');
-                  } finally {
-                    setIsGoogleLoading(false);
+            {/* Error Message */}
+            {error && (
+              <div className="mb-4 p-3 rounded-lg bg-red-900/50 border border-red-500/30 text-red-400 text-sm">
+                {error}
+              </div>
+            )}
+
+            {/* Google Login Button */}
+            <div className="mb-6 flex justify-center">
+              <GoogleLogin
+                onSuccess={async (credentialResponse) => {
+                  if (credentialResponse.credential) {
+                    try {
+                      setIsGoogleLoading(true);
+                      setError('');
+                      await googleLogin(credentialResponse.credential);
+                      navigate('/dashboard');
+                    } catch {
+                      setError('Google login failed. Please try again.');
+                    } finally {
+                      setIsGoogleLoading(false);
+                    }
                   }
-                }
-              }}
-              onError={() => {
-                setError('Google Login Failed');
-              }}
-              theme="filled_black"
-              shape="circle"
-              useOneTap
-            />
-          </div>
+                }}
+                onError={() => {
+                  setError('Google Login Failed');
+                }}
+                theme="outline"
+                size="large"
+                text="continue_with"
+                shape="rectangular"
+                width="336"
+              />
+            </div>
 
-          {/* Divider */}
-          <div className="flex items-center gap-3 mb-6">
-            <div className="flex-1 h-px bg-slate-700"></div>
-            <span className="text-xs text-slate-500">or sign in with email</span>
-            <div className="flex-1 h-px bg-slate-700"></div>
-          </div>
+            {/* Divider */}
+            <div className="flex items-center gap-3 mb-6">
+              <div className="flex-1 h-px bg-[#2a2d3a]"></div>
+              <span className="text-xs text-slate-500">or</span>
+              <div className="flex-1 h-px bg-[#2a2d3a]"></div>
+            </div>
 
-
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Email Field */}
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-slate-300 mb-2">
-                Email
-              </label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
+            {/* Form */}
+            <form onSubmit={handleSubmit} className="space-y-4">
+              {/* Email Field */}
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-slate-300 mb-2">
+                  Username or Email
+                </label>
                 <Input
                   id="email"
                   type="email"
-                  placeholder="name@example.com"
-                  className="pl-10 h-11 border border-slate-700 bg-slate-800/60 text-white placeholder:text-slate-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                  placeholder="Username or Email"
+                  className="h-11 bg-[#1a1d27] border-[#2a2d3a] text-white placeholder:text-slate-500 focus:border-indigo-500 focus-visible:ring-0 focus-visible:ring-offset-0 rounded-md"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   disabled={isAnyLoading}
                 />
               </div>
-            </div>
 
-            {/* Password Field */}
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-slate-300 mb-2">
-                Password
-              </label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
-                <Input
-                  id="password"
-                  type={isPasswordVisible ? 'text' : 'password'}
-                  placeholder="••••••••"
-                  className="pl-10 pr-10 h-11 border border-slate-700 bg-slate-800/60 text-white placeholder:text-slate-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  disabled={isAnyLoading}
-                />
-                <button
-                  type="button"
-                  onClick={() => setIsPasswordVisible(!isPasswordVisible)}
-                  className="absolute right-3 top-3 text-slate-400 hover:text-slate-200"
-                  tabIndex={-1}
-                  disabled={isAnyLoading}
-                >
-                  {isPasswordVisible ? (
-                    <EyeOff className="h-4 w-4" />
-                  ) : (
-                    <Eye className="h-4 w-4" />
-                  )}
-                </button>
+              {/* Password Field */}
+              <div>
+                <label htmlFor="password" className="block text-sm font-medium text-slate-300 mb-2">
+                  Password
+                </label>
+                <div className="relative">
+                  <Input
+                    id="password"
+                    type={isPasswordVisible ? 'text' : 'password'}
+                    placeholder="Enter password"
+                    className="h-11 bg-[#1a1d27] border-[#2a2d3a] text-white placeholder:text-slate-500 focus:border-indigo-500 focus-visible:ring-0 focus-visible:ring-offset-0 pr-10 rounded-md"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    disabled={isAnyLoading}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+                    className="absolute right-3 top-3 text-slate-400 hover:text-slate-200"
+                    tabIndex={-1}
+                    disabled={isAnyLoading}
+                  >
+                    {isPasswordVisible ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </button>
+                </div>
               </div>
-            </div>
 
-            {/* Remember & Forgot */}
-            <div className="flex items-center justify-between pt-2">
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  disabled={isAnyLoading}
-                  className="w-4 h-4 border border-slate-600 rounded focus:ring-blue-500 accent-blue-600"
-                />
-                <span className="text-sm text-slate-400">Remember me</span>
-              </label>
-              <a href="#" className="text-sm text-blue-400 hover:text-blue-300">
-                Forgot password?
-              </a>
-            </div>
+              {/* Forgot */}
+              <div className="pt-1">
+                <a href="#" className="text-sm text-[#5b52ff] hover:text-indigo-400 font-medium">
+                  Forgot password
+                </a>
+              </div>
 
-            {/* Sign In Button */}
-            <button
-              type="submit"
-              className="w-full h-11 mt-6 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-              disabled={isAnyLoading}
-            >
-              {isLoading ? (
-                <>
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  Signing in...
-                </>
-              ) : (
-                <>
-                  Sign In
-                  <ArrowRight className="h-4 w-4" />
-                </>
-              )}
-            </button>
+              {/* Sign In Button */}
+              <button
+                type="submit"
+                className="w-full h-11 mt-4 bg-[#5b52ff] hover:bg-[#4f46e5] text-white font-medium rounded-md transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={isAnyLoading}
+              >
+                {isLoading ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Signing in...
+                  </>
+                ) : (
+                  'Sign In'
+                )}
+              </button>
+              
+              {/* Guest Login */}
+              <button
+                type="button"
+                className="w-full h-11 border border-[#2a2d3a] text-slate-300 font-medium rounded-md hover:bg-[#1a1d27] transition-colors cursor-pointer"
+                onClick={async () => {
+                  try {
+                    setIsLoading(true);
+                    await loginAsGuest();
+                    navigate('/dashboard');
+                  } catch {
+                    // Error is already toasted in loginAsGuest
+                  } finally {
+                    setIsLoading(false);
+                  }
+                }}
+                disabled={isAnyLoading}
+              >
+                Continue as Guest
+              </button>
+            </form>
 
-            {/* Guest Login */}
-            <button
-              type="button"
-              className="w-full h-11 border border-slate-600 text-slate-300 font-medium rounded-lg hover:bg-slate-800 transition-colors cursor-pointer"
-              onClick={async () => {
-                try {
-                  setIsLoading(true);
-                  await loginAsGuest();
-                  navigate('/dashboard');
-                } catch {
-                  // Error is already toasted in loginAsGuest
-                } finally {
-                  setIsLoading(false);
-                }
-              }}
-              disabled={isAnyLoading}
-            >
-              Continue as Guest
-            </button>
-          </form>
-
-          {/* Sign Up Link */}
-          <p className="text-center text-sm text-slate-400 mt-6">
-            Don't have an account?{' '}
-            <Link to="/register" className="text-blue-400 hover:text-blue-300 font-medium">
-              Sign up
-            </Link>
-          </p>
+            {/* Bottom Text */}
+            <p className="text-center text-xs text-slate-500 mt-8">
+              By creating this account, you agree to our{' '}
+              <a href="#" className="text-slate-300 hover:text-white transition-colors">Privacy Policy</a> &{' '}
+              <a href="#" className="text-slate-300 hover:text-white transition-colors">Cookie Policy</a>.
+            </p>
+          </div>
         </div>
       </div>
     </div>
