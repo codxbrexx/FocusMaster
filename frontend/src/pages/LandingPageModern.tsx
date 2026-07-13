@@ -20,20 +20,20 @@ const LoadingFallback = () => (
 export function LandingPageModern() {
   const [cellSize, setCellSize] = useState(40);
   const [duration, setDuration] = useState(150);
-  const [bgColor, setBgColor] = useState("#0f0f1e");
+  const [bgColor, setBgColor] = useState("#05060a");
   const [cellColor, setCellColor] = useState("#e5e5e5");
   const [isPanelVisible, setIsPanelVisible] = useState(false);
 
   const handleReset = () => {
     setCellSize(40);
     setDuration(150);
-    setBgColor("#0f0f1e");
+    setBgColor("#05060a");
     setCellColor("#e5e5e5");
   };
 
   return (
     <div 
-      className="dark min-h-screen text-white overflow-x-hidden selection:bg-indigo-500 selection:text-white relative bg-gradient-to-b from-[#0a0a0f] via-[#0f0f1e] to-[#05050a]"
+      className="dark min-h-screen text-white overflow-x-hidden selection:bg-indigo-500 selection:text-white relative bg-[#05060A]"
       style={{
         transition: "background-color 0.3s ease",
       }}

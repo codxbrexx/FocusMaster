@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 
 const navLinks = [
   { href: '#features', label: 'Features' },
@@ -12,104 +11,289 @@ const navLinks = [
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
-    window.addEventListener('scroll', handleScroll);
+    const handleScroll = () => setIsScrolled(window.scrollY > 12);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
-    const sectionId = href.substring(1);
-    const section = document.getElementById(sectionId);
-    if (section) {
-      section.scrollIntoView({ behavior: 'smooth' });
-    }
+    setMobileOpen(false);
+    const el = document.getElementById(href.substring(1));
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
     <motion.header
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.2 }}
+      initial={{ y: -80, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
       className={cn(
-        'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
+        'fixed top-0 left-0 right-0 z-50 transition-all duration-500',
         isScrolled
-          ? 'bg-[#0f0f1e]/90 backdrop-blur-md border-b border-white/10 shadow-lg py-2'
-          : 'bg-transparent border-b border-transparent shadow-none py-4',
+          ? 'py-3'
+          : 'py-5',
       )}
+      style={
+        isScrolled
+          ? {
+              background: 'rgba(7,7,16,0.82)',
+              backdropFilter: 'blur(20px)',
+              WebkitBackdropFilter: 'blur(20px)',
+              borderBottom: '1px solid rgba(255,255,255,0.06)',
+              boxShadow: '0 1px 0 0 rgba(255,255,255,0.03)',
+            }
+          : {}
+      }
     >
-      <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center h-12">
-          {/* Flat logo and brand name */}
-          <a href="/" className="flex items-center space-x-3">
-            <img src="/fmasterlogosm.png" alt="FocusMaster Logo" className="h-9 w-auto" />
-            <span className="text-xl font-bold text-white tracking-tight">
-              FocusMaster
-            </span>
+      <div
+        style={{
+          maxWidth: '1280px',
+          margin: '0 auto',
+          padding: '0 32px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          height: '44px',
+        }}
+      >
+        {/* ── Logo ── */}
+        <a
+          href="/"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            textDecoration: 'none',
+          }}
+        >
+          <img
+            src="/fmasterlogosm.png"
+            alt="FocusMaster"
+            style={{ height: '42px', width: 'auto' }}
+          />
+          <span
+            style={{
+              fontSize: '16px',
+              fontWeight: 700,
+              color: '#ffffff',
+              letterSpacing: '-0.02em',
+              lineHeight: 1,
+            }}
+          >
+            FocusMaster
+          </span>
+        </a>
+
+        {/* ── Center Nav ── */}
+        <nav
+          className="hidden md:flex"
+          style={{ display: 'flex', alignItems: 'center', gap: '4px' }}
+        >
+          {navLinks.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              onClick={(e) => scrollToSection(e, link.href)}
+              className="hidden md:inline-flex"
+              style={{
+                padding: '6px 14px',
+                fontSize: '13px',
+                fontWeight: 500,
+                color: 'rgba(255,255,255,0.55)',
+                textDecoration: 'none',
+                borderRadius: '6px',
+                transition: 'color 0.18s, background-color 0.18s',
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.color = '#fff';
+                e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.05)';
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.color = 'rgba(255,255,255,0.55)';
+                e.currentTarget.style.backgroundColor = 'transparent';
+              }}
+            >
+              {link.label}
+            </a>
+          ))}
+        </nav>
+
+        {/* ── Right CTAs ── */}
+        <div className="hidden md:flex" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          {/* Login — ghost */}
+          <a
+            href="/login"
+            style={{
+              padding: '7px 16px',
+              fontSize: '13px',
+              fontWeight: 500,
+              color: 'rgba(255,255,255,0.6)',
+              textDecoration: 'none',
+              borderRadius: '6px',
+              transition: 'color 0.18s, background-color 0.18s',
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.color = '#fff';
+              e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.06)';
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.color = 'rgba(255,255,255,0.6)';
+              e.currentTarget.style.backgroundColor = 'transparent';
+            }}
+          >
+            Log in
           </a>
 
-          {/* Clean, high-contrast links */}
-          <nav className="hidden md:flex items-center space-x-8">
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                onClick={(e) => scrollToSection(e, link.href)}
-                className="text-slate-400 hover:text-white transition-colors duration-200 font-semibold text-sm"
+          {/* Sign Up — sharp filled */}
+          <a
+            href="/register"
+            style={{
+              padding: '8px 20px',
+              fontSize: '13px',
+              fontWeight: 600,
+              color: '#fff',
+              backgroundColor: '#6D5EF9',
+              textDecoration: 'none',
+              border: 'none',
+              borderRadius: 0,
+              letterSpacing: '0.01em',
+              transition: 'background-color 0.18s',
+              whiteSpace: 'nowrap',
+            }}
+            onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#7C6EF9')}
+            onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#6D5EF9')}
+          >
+            Sign Up
+          </a>
+        </div>
+
+        {/* ── Mobile Hamburger ── */}
+        <div className="md:hidden">
+          <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+            <SheetTrigger asChild>
+              <button
+                aria-label="Open navigation menu"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '36px',
+                  height: '36px',
+                  backgroundColor: 'rgba(255,255,255,0.06)',
+                  border: '1px solid rgba(255,255,255,0.1)',
+                  borderRadius: '6px',
+                  color: '#fff',
+                  cursor: 'pointer',
+                }}
               >
-                {link.label}
-              </a>
-            ))}
-          </nav>
+                {mobileOpen ? <X size={16} /> : <Menu size={16} />}
+              </button>
+            </SheetTrigger>
+            <SheetContent
+              side="right"
+              style={{
+                backgroundColor: '#0a0a14',
+                borderLeft: '1px solid rgba(255,255,255,0.07)',
+                color: '#fff',
+                width: '280px',
+                padding: '0',
+              }}
+            >
+              <div style={{ padding: '28px 24px', display: 'flex', flexDirection: 'column', height: '100%' }}>
+                {/* Mobile brand */}
+                <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '36px', textDecoration: 'none' }}>
+                  <img src="/fmasterlogosm.png" alt="FocusMaster" style={{ height: '28px', width: 'auto' }} />
+                  <span style={{ fontSize: '14px', fontWeight: 700, color: '#fff' }}>FocusMaster</span>
+                </a>
 
-          {/* Clean solid action buttons */}
-          <div className="hidden md:flex items-center space-x-6">
-            <Button className='text-slate-400 hover:text-white transition-colors duration-200 font-semibold text-sm' variant="ghost" asChild>
-              <a href="/login">Login</a>
-            </Button>
-            <Button asChild className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-5 py-2.5 rounded-lg transition-colors border-0">
-              <a href="/register">Sign Up</a>
-            </Button>
-          </div>
-
-          {/* Mobile menu trigger */}
-          <div className="md:hidden">
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <Menu className="h-6 w-6 text-white" />
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="right" className="bg-[#0f0f1e] border-l-white/10 text-white">
-                <div className="flex flex-col space-y-6 pt-12">
+                {/* Nav links */}
+                <nav style={{ display: 'flex', flexDirection: 'column', gap: '2px', marginBottom: 'auto' }}>
                   {navLinks.map((link) => (
                     <a
                       key={link.href}
                       href={link.href}
                       onClick={(e) => scrollToSection(e, link.href)}
-                      className="text-xl text-slate-300 hover:text-white transition-colors duration-300"
+                      style={{
+                        padding: '10px 12px',
+                        fontSize: '14px',
+                        fontWeight: 500,
+                        color: 'rgba(255,255,255,0.65)',
+                        textDecoration: 'none',
+                        borderRadius: '6px',
+                        transition: 'color 0.18s, background-color 0.18s',
+                      }}
+                      onMouseEnter={e => {
+                        e.currentTarget.style.color = '#fff';
+                        e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.05)';
+                      }}
+                      onMouseLeave={e => {
+                        e.currentTarget.style.color = 'rgba(255,255,255,0.65)';
+                        e.currentTarget.style.backgroundColor = 'transparent';
+                      }}
                     >
                       {link.label}
                     </a>
                   ))}
-                  <div className="border-t border-white/10 pt-6 flex flex-col space-y-4">
-                    <Button variant="outline" asChild className="border-indigo-500 text-indigo-400 hover:bg-indigo-500/10 hover:text-indigo-300">
-                      <a href="/login">Login</a>
-                    </Button>
-                    <Button asChild className="bg-indigo-600 hover:bg-indigo-700 text-white">
-                      <a href="/register">Sign Up</a>
-                    </Button>
-                  </div>
+                </nav>
+
+                {/* Auth buttons */}
+                <div style={{ borderTop: '1px solid rgba(255,255,255,0.07)', paddingTop: '20px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  <a
+                    href="/login"
+                    style={{
+                      display: 'block',
+                      textAlign: 'center',
+                      padding: '10px',
+                      fontSize: '13px',
+                      fontWeight: 500,
+                      color: 'rgba(255,255,255,0.65)',
+                      textDecoration: 'none',
+                      border: '1px solid rgba(255,255,255,0.1)',
+                      borderRadius: '6px',
+                      transition: 'border-color 0.18s, color 0.18s',
+                    }}
+                    onMouseEnter={e => {
+                      e.currentTarget.style.color = '#fff';
+                      e.currentTarget.style.borderColor = 'rgba(255,255,255,0.25)';
+                    }}
+                    onMouseLeave={e => {
+                      e.currentTarget.style.color = 'rgba(255,255,255,0.65)';
+                      e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)';
+                    }}
+                  >
+                    Log in
+                  </a>
+                  <a
+                    href="/register"
+                    style={{
+                      display: 'block',
+                      textAlign: 'center',
+                      padding: '10px',
+                      fontSize: '13px',
+                      fontWeight: 600,
+                      color: '#fff',
+                      backgroundColor: '#6D5EF9',
+                      textDecoration: 'none',
+                      border: 'none',
+                      borderRadius: 0,
+                      transition: 'background-color 0.18s',
+                    }}
+                    onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#7C6EF9')}
+                    onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#6D5EF9')}
+                  >
+                    Sign Up
+                  </a>
                 </div>
-              </SheetContent>
-            </Sheet>
-          </div>
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
+
       </div>
     </motion.header>
   );

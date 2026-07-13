@@ -1,63 +1,306 @@
-'use client';
+import { motion } from 'framer-motion';
+import { Zap, BarChart3, FolderKanban, Brain, Lock } from 'lucide-react';
 
-import { FloatingText } from './FloatingText';
-import { CTAOverlay } from './CTAOverlay';
-import { InfoCardsGrid } from './InfoCardsGrid';
+const sideCards = [
+  {
+    icon: Zap,
+    title: 'Lightning Quick',
+    description: 'Sub-100ms response time for seamless interactions',
+  },
+  {
+    icon: Brain,
+    title: 'AI-Powered',
+    description: 'Adaptive focus suggestions based on your patterns',
+  },
+  {
+    icon: Lock,
+    title: 'Privacy First',
+    description: 'Your data, always yours. End-to-end encrypted.',
+  },
+];
+
+const features = [
+  {
+    icon: Zap,
+    title: 'Boost Productivity',
+    description: 'Leverage proven techniques to enhance your focus and efficiency.',
+  },
+  {
+    icon: BarChart3,
+    title: 'Gain Insights',
+    description: 'Understand your work patterns with powerful, visual analytics.',
+  },
+  {
+    icon: FolderKanban,
+    title: 'Stay Organized',
+    description: 'Manage tasks and projects seamlessly to keep your workflow clear.',
+  },
+];
 
 export const ModernHero = () => {
   return (
-    <section className="relative min-h-screen w-full bg-black flex flex-col overflow-hidden selection:bg-indigo-500 selection:text-white">
-      {/* Video Background */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
-        {/* Placeholder for a video background. Replace with your video file. */}
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="metadata"
-          className="w-full h-full object-cover opacity-65"
-        >
-          <source src="/fmhero.mp4" type="video/mp4" />
-        </video>
-        <div className="absolute inset-0 bg-black/60 pointer-events-none" />
+    <section
+      className="relative w-full overflow-hidden selection:bg-indigo-500 selection:text-white"
+      style={{ minHeight: '100vh', backgroundColor: '#05060a' }}
+    >
+
+      <div className="absolute inset-0 z-0">
+        <img
+          src="/hero_image.png"
+          alt=""
+          aria-hidden="true"
+          className="w-full h-full object-cover"
+          style={{ objectPosition: 'center center' }}
+        />
+
+        {/* Top fade — blends into navbar */}
+        <div
+          className="absolute top-0 left-0 right-0 z-10"
+          style={{
+            height: '180px',
+            background: 'linear-gradient(to bottom, #05060a 0%, rgba(5,6,10,0.6) 40%, transparent 100%)',
+          }}
+        />
+        <div
+          className="absolute bottom-0 left-0 right-0"
+          style={{
+            height: '380px',
+            background: 'linear-gradient(to top, #05060a 0%, #05060a 12%, rgba(5,6,10,0.92) 30%, rgba(5,6,10,0.7) 50%, rgba(5,6,10,0.3) 70%, transparent 100%)',
+          }}
+        />
       </div>
 
-      {/* Subtle radial glow accent removed */}
-
-      {/* Content Overlay */}
-      <div className="relative z-10 w-full flex flex-col md:flex-row p-8 md:p-14 lg:p-20 min-h-screen items-center md:items-stretch gap-10 md:gap-0">
-        {/* Left Side - Text Content */}
+      <div
+        className="relative z-10 w-full"
+        style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}
+      >
+        {/* Content row — fills the viewport */}
         <div
-          className="flex-1 min-w-0 flex flex-col justify-between pb-12 md:pb-8 w-full md:w-1/2"
+          className="flex-1 flex items-stretch w-full px-6 lg:px-16 xl:px-24"
+          style={{ paddingTop: '88px' }} /* clears fixed header */
         >
-          {/* Header Badge */}
+          {/* LEFT column — headline, sub, CTAs */}
           <div
-            className="flex items-center gap-3 p-3 pb-10 md:pb-6 lg:pb-8"
+            className="flex flex-col justify-center"
+            style={{ width: '44%', minWidth: '320px', paddingBottom: '80px', padding: '8px' }}
           >
-   
+            {/* Headline */}
+            <motion.div
+              initial={{ opacity: 0, y: 32 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.05 }}
+            >
+              <h2
+                className="font-black uppercase leading-none tracking-tighter"
+                style={{ fontSize: 'clamp(3.6rem, 7.5vw, 6.5rem)', color: '#ffffff', lineHeight: 0.88 }}
+              >
+                Transform<br />
+                Your<br />
+                <span style={{ color: '#6D5EF9' }}>Productivity</span>
+              </h2>
+            </motion.div>
 
+            {/* Sub-text */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1], delay: 0.18 }}
+              style={{
+                marginTop: '24px',
+                fontSize: '14px',
+                lineHeight: '1.7',
+                color: 'rgba(255,255,255,0.48)',
+                maxWidth: '320px',
+              }}
+            >
+              We engineer immersive focus experiences<br />
+              through advanced productivity tools and<br />
+              spatial mastery.
+            </motion.p>
+
+            {/* CTA Buttons */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1], delay: 0.28 }}
+              style={{ marginTop: '36px', marginBottom: '32px', display: 'flex', gap: '14px', flexWrap: 'wrap' }}
+            >
+              <a
+                href="/register"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: '13px 28px',
+                  backgroundColor: '#6D5EF9',
+                  color: '#fff',
+                  fontSize: '13px',
+                  fontWeight: 700,
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  border: 'none',
+                  borderRadius: '2px',
+                  textDecoration: 'none',
+                  transition: 'background-color 0.2s',
+                  whiteSpace: 'nowrap',
+                }}
+                onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#7C6EF9')}
+                onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#6D5EF9')}
+              >
+                Get Started Free
+              </a>
+              <a
+                href="/login"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: '13px 28px',
+                  backgroundColor: 'transparent',
+                  color: '#ffffff',
+                  fontSize: '13px',
+                  fontWeight: 700,
+                  letterSpacing: '0.08em',
+                  textTransform: 'uppercase',
+                  border: '1.5px solid rgba(255,255,255,0.25)',
+                  borderRadius: '2px',
+                  textDecoration: 'none',
+                  transition: 'border-color 0.2s, background-color 0.2s',
+                  whiteSpace: 'nowrap',
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.5)';
+                  e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.05)';
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.borderColor = 'rgba(255,255,255,0.25)';
+                  e.currentTarget.style.backgroundColor = 'transparent';
+                }}
+              >
+                Try Guest Mode
+              </a>
+            </motion.div>
           </div>
 
-          {/* Floating Text */}
-          <FloatingText />
+          {/* CENTER spacer — image shows through */}
+          <div className="flex-1 hidden lg:block" />
 
-          {/* CTA Buttons */}
-          <div>
-            <CTAOverlay />
+          {/* RIGHT column — floating info cards */}
+          <div
+            className="hidden lg:flex flex-col justify-center gap-3"
+            style={{ width: '260px', paddingBottom: '80px' }}
+          >
+            {sideCards.map((card, i) => {
+              const Icon = card.icon;
+              return (
+                <motion.div
+                  key={card.title}
+                  initial={{ opacity: 0, x: 50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.3 + i * 0.12 }}
+                  whileHover={{ y: -3, transition: { duration: 0.18 } }}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    gap: '14px',
+                    padding: '16px 18px',
+                    backgroundColor: 'rgba(8,8,20,0.85)',
+                    border: '1px solid rgba(255,255,255,0.09)',
+                    borderRadius: 0,
+                    cursor: 'default',
+                    transition: 'border-color 0.2s',
+                  }}
+                  onMouseEnter={e => {
+                    (e.currentTarget as HTMLElement).style.borderColor = 'rgba(109,94,249,0.45)';
+                  }}
+                  onMouseLeave={e => {
+                    (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.09)';
+                  }}
+                >
+                  <div
+                    style={{
+                      flexShrink: 0,
+                      width: '34px',
+                      height: '34px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      backgroundColor: 'rgba(109,94,249,0.12)',
+                      border: '1px solid rgba(109,94,249,0.22)',
+                      borderRadius: 0,
+                    }}
+                  >
+                    <Icon size={15} style={{ color: '#A78BFA' }} />
+                  </div>
+                  <div>
+                    <p style={{ fontSize: '13px', fontWeight: 600, color: '#fff', marginBottom: '4px' }}>
+                      {card.title}
+                    </p>
+                    <p style={{ fontSize: '11px', color: 'rgba(255,255,255,0.48)', lineHeight: '1.55' }}>
+                      {card.description}
+                    </p>
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
 
-        {/* Right Side - Info Cards */}
+        {/* BOTTOM — Feature icons row */}
         <div
-          className="w-full md:w-1/2 flex items-center justify-end"
+          className="relative z-10 w-full px-6 lg:px-16 xl:px-24"
+          style={{
+            paddingBottom: '52px',
+            paddingTop: '32px',
+            borderTop: '1px solid rgba(255,255,255,0.06)',
+          }}
         >
-          <InfoCardsGrid />
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
+              gap: '0 32px',
+              maxWidth: '560px',
+            }}
+          >
+            {features.map((f, i) => {
+              const Icon = f.icon;
+              return (
+                <motion.div
+                  key={f.title}
+                  initial={{ opacity: 0, y: 18 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.5 + i * 0.1 }}
+                  style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}
+                >
+                  {/* Round icon container — matches the reference */}
+                  <div
+                    style={{
+                      width: '52px',
+                      height: '52px',
+                      borderRadius: '50%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      backgroundColor: 'rgba(255,255,255,0.06)',
+                      border: '1px solid rgba(255,255,255,0.1)',
+                      marginBottom: '14px',
+                    }}
+                  >
+                    <Icon size={20} style={{ color: '#8B7CF6' }} />
+                  </div>
+                  <p style={{ fontSize: '13px', fontWeight: 600, color: '#fff', marginBottom: '6px' }}>
+                    {f.title}
+                  </p>
+                  <p style={{ fontSize: '11.5px', color: 'rgba(255,255,255,0.4)', lineHeight: '1.55' }}>
+                    {f.description}
+                  </p>
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
       </div>
-
-      {/* Subtle grid pattern overlay */}
-      <div className="absolute inset-0 pointer-events-none bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48Y2lyY2xlIGN4PSIzMCIgY3k9IjMwIiByPSIxLjUiIGZpbGw9IiMzNzQxNTEiIG9wYWNpdHk9IjAuMyIvPjwvZz48L3N2Zz4=')] opacity-20 z-[1]" />
     </section>
   );
 };
