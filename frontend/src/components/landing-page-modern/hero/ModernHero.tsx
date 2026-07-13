@@ -103,8 +103,7 @@ export const ModernHero = () => {
         >
           {/* LEFT column — headline, sub, CTAs */}
           <div
-            className="flex flex-col justify-center"
-            style={{ width: '44%', minWidth: '320px', paddingBottom: '80px', padding: '8px' }}
+            className="flex flex-col justify-center w-full lg:w-[44%] pb-12 lg:pb-20"
           >
             {/* Headline */}
             <motion.div
@@ -113,8 +112,8 @@ export const ModernHero = () => {
               transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.05 }}
             >
               <h2
-                className="font-black uppercase leading-none tracking-tighter"
-                style={{ fontSize: 'clamp(3.6rem, 7.5vw, 6.5rem)', color: '#ffffff', lineHeight: 0.88 }}
+                className="font-black uppercase tracking-tighter"
+                style={{ fontSize: 'clamp(2.75rem, 8vw, 6.5rem)', color: '#ffffff', lineHeight: 0.88 }}
               >
                 Transform<br />
                 Your<br />
@@ -127,13 +126,8 @@ export const ModernHero = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1], delay: 0.18 }}
-              style={{
-                marginTop: '24px',
-                fontSize: '14px',
-                lineHeight: '1.7',
-                color: 'rgba(255,255,255,0.48)',
-                maxWidth: '320px',
-              }}
+              className="mt-6 text-[13px] sm:text-sm md:text-base leading-relaxed max-w-[320px] md:max-w-[400px]"
+              style={{ color: 'rgba(255,255,255,0.48)' }}
             >
               We engineer immersive focus experiences<br />
               through advanced productivity tools and<br />
@@ -290,12 +284,7 @@ export const ModernHero = () => {
           }}
         >
           <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
-              gap: '0 32px',
-              maxWidth: '560px',
-            }}
+            className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-x-8 max-w-[560px]"
           >
             {features.map((f, i) => {
               const Icon = f.icon;

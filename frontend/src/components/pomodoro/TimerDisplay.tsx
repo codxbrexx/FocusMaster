@@ -3,69 +3,116 @@ import type { TimerMode } from '@/store/useTimerStore';
 interface TimerDisplayProps {
   mode: TimerMode;
   timeLeft: number;
+  totalDuration: number;
   progress: number;
   status: string;
   formatTime: (seconds: number) => string;
 }
 
-export const TimerDisplay = ({
-  mode,
-  timeLeft,
-  progress,
-  status,
-  formatTime,
-}: TimerDisplayProps) => {
-  return (
-    <div className="relative w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 flex items-center justify-center">
-      <svg
-        className="absolute w-full h-full transform -rotate-90 pointer-events-none"
-        viewBox="0 0 100 100"
-      >
-        <defs>
-          <linearGradient id="main-gradient-focus" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#6366f1" />
-            <stop offset="100%" stopColor="#a855f7" />
-          </linearGradient>
-          <linearGradient id="main-gradient-short-break" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#14b8a6" />
-            <stop offset="100%" stopColor="#22c55e" />
-          </linearGradient>
-          <linearGradient id="main-gradient-long-break" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#3b82f6" />
-            <stop offset="100%" stopColor="#06b6d4" />
-          </linearGradient>
-        </defs>
+const MODE_CONFIG: Record<TimerMode, {
+  label: string;
+  ringColor: string;
+  statusColor: string;
+  tagBg: string;
+  tagText: string;
+  motivation: string;
+}> = {
+  pomodoro: {
+    label: 'Focus Session',
+    ringColor: '#7C3AED',   // violet-600
+    statusColor: 'text-violet-500 dark:text-violet-400',
+    tagBg: 'bg-violet-500/10',
+    tagText: 'text-violet-600 dark:text-violet-400',
+    motivation: 'Stay focused. Every minute counts.',
+  },
+  'short-break': {
+    label: 'Short Break',
+    ringColor: '#10B981',   // emerald-500
+    statusColor: 'text-emerald-500 dark:text-emerald-400',
+    tagBg: 'bg-emerald-500/10',
+    tagText: 'text-emerald-600 dark:text-emerald-400',
+    motivation: "Rest well. You've earned it.",
+  },
+  'long-break': {
+    label: 'Long Break',
+    ringColor: '#0EA5E9',   // sky-500
+    statusColor: 'text-sky-500 dark:text-sky-400',
+    tagBg: 'bg-sky-500/10',
+    tagText: 'text-sky-600 dark:text-sky-400',
+    motivation: 'Take a proper break. Recharge fully.',
+  },
+};
 
-        <circle
-          cx="50"
-          cy="50"
-          r="45"
-          stroke="currentColor"
-          strokeWidth="3"
-          fill="transparent"
-          className="text-secondary/30"
-        />
-        <circle
-          cx="50"
-          cy="50"
-          r="45"
-          stroke={`url(#main-gradient-${mode === 'short-break' ? 'short-break' : mode === 'long-break' ? 'long-break' : 'focus'})`}
-          strokeWidth="3"
-          fill="transparent"
-          strokeDasharray={2 * Math.PI * 45}
-          strokeDashoffset={2 * Math.PI * 45 * (1 - progress / 100)}
-          strokeLinecap="round"
-          className="transition-all duration-500 ease-linear"
-        />
-      </svg>
-      <div className="absolute inset-0 flex flex-col items-center justify-center z-10 p-4">
-        <span className="text-5xl sm:text-7xl md:text-8xl font-black tabular-nums tracking-tighter text-foreground select-none">
-          {formatTime(timeLeft)}
-        </span>
-        <span className="text-xs sm:text-sm md:text-base font-medium text-muted-foreground/80 uppercase tracking-[0.2em] mt-2 sm:mt-4 select-none">
-          {status === 'idle' ? 'Ready' : mode === 'pomodoro' ? 'Deep Work' : 'Recharging'}
-        </span>
+export const TimerDisplay = ({ mode, timeLeft, totalDuration, progress, status, formatTime }: TimerDisplayProps) => {
+  const cfg = MODE_CONFIG[mode];
+
+  const r = 44;
+  const circumference = 2 * Math.PI * r;
+  const offset = circumference * (1 - progress / 100);
+
+  // Estimated finish time
+  const finishDate = new Date(Date.now() + timeLeft * 1000);
+  const finishStr = finishDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+
+  const statusLabel =
+    status === 'idle' ? 'READY' :
+    status === 'paused' ? 'PAUSED' :
+    mode === 'pomodoro' ? 'FOCUSING' : 'RESTING';
+
+  return (
+    <div className="flex flex-col items-center w-full">
+      {/* Ring container - scales on mobile up to max sizes */}
+      <div className="relative flex items-center justify-center w-[75vw] h-[75vw] max-w-[280px] max-h-[280px] sm:max-w-[320px] sm:max-h-[320px] lg:max-w-[340px] lg:max-h-[340px]">
+        <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 100 100">
+          {/* Track */}
+          <circle cx="50" cy="50" r={r} stroke="currentColor" strokeWidth="4" fill="none" className="text-secondary" />
+          {/* Progress — color matches active mode */}
+          <circle
+            cx="50" cy="50" r={r}
+            stroke={cfg.ringColor}
+            strokeWidth="4"
+            fill="none"
+            strokeDasharray={circumference}
+            strokeDashoffset={offset}
+            strokeLinecap="round"
+            style={{ filter: `drop-shadow(0 0 6px ${cfg.ringColor}55)` }}
+            className="transition-all duration-500 ease-linear"
+          />
+        </svg>
+
+        {/* Inner text */}
+        <div className="relative z-10 flex flex-col items-center justify-center select-none gap-1">
+          {/* Mode tag pill */}
+          <span className={`text-[9px] sm:text-[10px] font-bold uppercase tracking-widest px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full ${cfg.tagBg} ${cfg.tagText}`}>
+            {cfg.label}
+          </span>
+
+          {/* Digits */}
+          <span
+            id="timer-display"
+            className="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight tabular-nums text-foreground leading-none mt-1 sm:mt-2"
+          >
+            {formatTime(timeLeft)}
+          </span>
+
+          {/* Status */}
+          <span className={`text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.22em] mt-0.5 sm:mt-1 ${cfg.statusColor}`}>
+            {statusLabel}
+          </span>
+
+          {/* Estimated finish */}
+          {status === 'running' && (
+            <span className="text-[9px] sm:text-[10px] text-muted-foreground/60 mt-0.5">
+              ends at {finishStr}
+            </span>
+          )}
+        </div>
       </div>
+
+      {/* Motivational line */}
+      <p className={`mt-3 text-xs font-medium tracking-wide text-center ${cfg.tagText} opacity-70`}>
+        {cfg.motivation}
+      </p>
     </div>
   );
 };

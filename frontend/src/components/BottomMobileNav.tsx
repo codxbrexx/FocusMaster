@@ -16,7 +16,7 @@ export const BottomMobileNav = () => {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-card border-t border-border lg:hidden safe-area-bottom pb-safe shadow-[0_-8px_16px_rgba(0,0,0,0.4)]">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-2xl border-t border-border lg:hidden safe-area-bottom pb-safe shadow-[0_-8px_16px_rgba(0,0,0,0.4)]">
       <div className="grid grid-cols-6 h-[58px] w-full">
         {NAV_ITEMS.map((item) => {
           const isActive = location.pathname === item.path;

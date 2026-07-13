@@ -1,4 +1,3 @@
-import { Badge } from '@/components/ui/badge';
 import {
   Select,
   SelectContent,
@@ -6,6 +5,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { Badge } from '@/components/ui/badge';
+
+const SESSION_TAGS = ['Study', 'Work', 'Reading', 'Coding', 'Writing', 'Research', 'Design'];
 
 interface SessionManagerProps {
   activeTasks: any[];
@@ -25,72 +27,64 @@ export const SessionManager = ({
   sessionCount,
 }: SessionManagerProps) => {
   return (
-    <div className="w-full mt-8 md:mt-12 pt-6 md:pt-8 bg-card border border-border/40 rounded-2xl p-4 md:p-0 md:bg-transparent md:border-none md:border-t md:border-muted/10">
-      <div className="flex flex-col md:flex-row gap-6 md:gap-8 justify-between items-stretch md:items-center divide-y divide-border/20 md:divide-y-0">
-        <div className="space-y-2 w-full md:w-auto min-w-0 md:max-w-xs pb-4 md:pb-0">
-          <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest pl-1">
-            Working On
-          </span>
-          <Select value={selectedTaskId} onValueChange={setSelectedTaskId}>
-            <SelectTrigger className="h-10 bg-card border-border text-sm text-foreground hover:bg-primary/5 hover:border-primary/30 transition-all duration-300 focus:ring-ring">
-              <SelectValue placeholder="No Task Added" />
-            </SelectTrigger>
-            <SelectContent className="bg-popover border-border text-popover-foreground">
-              <SelectItem
-                value="none"
-                className="focus:bg-primary/10 focus:text-primary cursor-pointer"
-              >
-                No Task Added
+    <div className="w-full space-y-4 sm:space-y-6 pt-4 sm:pt-6">
+      {/* Tag pills */}
+      <div>
+        <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-2 sm:mb-3">Session Tag</p>
+        <div className="flex flex-wrap gap-1.5 sm:gap-2">
+          {SESSION_TAGS.map((tag) => (
+            <Badge
+              key={tag}
+              variant={selectedTag === tag ? 'default' : 'outline'}
+              onClick={() => setSelectedTag(tag)}
+              className={`px-2.5 sm:px-3 py-0.5 sm:py-1 cursor-pointer text-[10px] sm:text-xs font-normal rounded-full transition-all duration-200 border ${
+                selectedTag === tag
+                  ? 'bg-primary text-primary-foreground border-primary hover:bg-primary/90'
+                  : 'border-border text-muted-foreground hover:border-primary/50 hover:text-primary hover:bg-primary/5'
+              }`}
+            >
+              {tag}
+            </Badge>
+          ))}
+        </div>
+      </div>
+
+      {/* Task select */}
+      <div>
+        <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-2 sm:mb-3">Working On</p>
+        <Select value={selectedTaskId} onValueChange={setSelectedTaskId}>
+          <SelectTrigger
+            id="task-select"
+            className="h-8 sm:h-10 text-xs sm:text-sm bg-card border-border text-foreground rounded-lg sm:rounded-xl hover:border-primary/40 transition-colors focus:ring-primary/30"
+          >
+            <SelectValue placeholder="No task selected" />
+          </SelectTrigger>
+          <SelectContent className="bg-popover border-border rounded-lg sm:rounded-xl">
+            <SelectItem value="none" className="text-xs sm:text-sm cursor-pointer">No task selected</SelectItem>
+            {activeTasks.map((t) => (
+              <SelectItem key={t._id} value={t._id} className="text-xs sm:text-sm cursor-pointer focus:bg-primary/10 focus:text-primary">
+                {t.title}
               </SelectItem>
-              {activeTasks.map((t) => (
-                <SelectItem
-                  key={t._id}
-                  value={t._id}
-                  className="focus:bg-primary/10 hover:text-purple-500  focus:text-primary cursor-pointer font-medium"
-                >
-                  {t.title}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
 
-        <div className="space-y-3 flex-1 flex flex-col items-start pt-4 pb-4 md:pt-0 md:pb-0">
-          <div className="w-full flex-col flex">
-            <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest pl-1 self-start">
-              Session Tag
-            </span>
-            <div className="flex flex-wrap gap-2 mt-2 justify-start">
-              {['Study', 'Work', 'Code', 'Write', 'Read'].map((tag) => (
-                <Badge
-                  key={tag}
-                  variant={selectedTag === tag ? 'default' : 'outline'}
-                  onClick={() => setSelectedTag(tag)}
-                  className={`px-3 py-1 cursor-pointer text-xs font-normal rounded-full transition-all border duration-300 ${selectedTag === tag ? 'bg-primary text-primary-foreground border-purple-500 hover:text-purple-500 ' : 'border-border hover:border-primary/50 hover:text-primary hover:bg-primary/5 text-muted-foreground'}`}
-                >
-                  {tag}
-                </Badge>
-              ))}
-            </div>
+      {/* Mini stat cards */}
+      <div className="grid grid-cols-3 gap-2 sm:gap-3">
+        {[
+          { label: "Today's Focus", value: sessionCount > 0 ? `${sessionCount * 25}m` : '—' },
+          { label: 'Current Cycle', value: `${sessionCount} / 8` },
+          { label: 'Focus Score', value: sessionCount > 0 ? `${Math.min(sessionCount * 12, 100)}%` : '—' },
+        ].map(({ label, value }) => (
+          <div
+            key={label}
+            className="bg-secondary rounded-lg sm:rounded-xl p-2 sm:p-3 border border-border/40 text-center"
+          >
+            <p className="text-sm sm:text-base font-bold text-foreground">{value}</p>
+            <p className="text-[9px] sm:text-[10px] text-muted-foreground mt-0 sm:mt-0.5 leading-tight">{label}</p>
           </div>
-        </div>
-
-        <div className="space-y-3 w-full md:w-[200px] pt-4 md:pt-0">
-          <div className="flex justify-between items-center px-1">
-            <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest">
-              Daily Goal
-            </span>
-            <span className="text-sm font-bold tabular-nums text-muted-foreground">
-              <span className="text-foreground">{sessionCount}</span> / 4
-            </span>
-          </div>
-          <div className="h-2 w-full bg-muted rounded-full overflow-hidden border border-border/50">
-            <div
-              className="h-full bg-purple-500 rounded-full transition-all duration-1000 shadow-[0_0_10px_rgba(99,102,241,0.5)]"
-              style={{ width: `${Math.min((sessionCount / 4) * 100, 100)}%` }}
-            />
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );

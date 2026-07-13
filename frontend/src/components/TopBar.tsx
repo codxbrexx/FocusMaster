@@ -105,7 +105,12 @@ export function TopBar({ onMenuClick }: TopBarProps) {
       </div>
 
       {/* RIGHT — profile pill */}
-      <div className="relative" ref={menuRef}>
+      <div 
+        className="relative" 
+        ref={menuRef}
+        onMouseEnter={() => setIsMenuOpen(true)}
+        onMouseLeave={() => { setIsMenuOpen(false); setShowTheme(false); }}
+      >
         {/* Trigger */}
         <button
           onClick={() => { setIsMenuOpen(!isMenuOpen); setShowTheme(false); }}
@@ -153,7 +158,7 @@ export function TopBar({ onMenuClick }: TopBarProps) {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -6, scale: 0.97 }}
               transition={{ type: 'spring', stiffness: 350, damping: 28 }}
-              className="absolute right-0 top-[calc(100%+8px)] w-64 rounded-2xl border border-border/50 bg-card shadow-2xl overflow-hidden z-50"
+              className="absolute right-0 top-[calc(100%+8px)] w-64 rounded-2xl border border-border/50 bg-background/80 backdrop-blur-2xl shadow-2xl overflow-hidden z-50"
               onClick={(e) => e.stopPropagation()}
             >
               {/* User card header */}

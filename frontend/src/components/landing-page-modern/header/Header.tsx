@@ -50,17 +50,7 @@ const Header = () => {
           : {}
       }
     >
-      <div
-        style={{
-          maxWidth: '1280px',
-          margin: '0 auto',
-          padding: '0 32px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          height: '44px',
-        }}
-      >
+      <div className="mx-auto flex items-center justify-between h-[44px] px-5 md:px-8 max-w-[1280px] w-full">
         {/* ── Logo ── */}
         <a
           href="/"
@@ -91,8 +81,7 @@ const Header = () => {
 
         {/*  Center Nav */}
         <nav
-          className="hidden md:flex"
-          style={{ display: 'flex', alignItems: 'center', gap: '4px' }}
+          className="hidden md:flex items-center gap-1"
         >
           {navLinks.map((link) => (
             <a
@@ -124,7 +113,7 @@ const Header = () => {
         </nav>
 
         {/* ── Right CTAs ── */}
-        <div className="hidden md:flex" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div className="hidden md:flex items-center gap-2">
           {/* Login — ghost */}
           <a
             href="/login"
@@ -196,12 +185,9 @@ const Header = () => {
             </SheetTrigger>
             <SheetContent
               side="right"
+              className="w-full sm:w-[320px] p-0 border-l border-white/5 bg-[#0a0a14]"
               style={{
-                backgroundColor: '#0a0a14',
-                borderLeft: '1px solid rgba(255,255,255,0.07)',
                 color: '#fff',
-                width: '280px',
-                padding: '0',
               }}
             >
               <div style={{ padding: '28px 24px', display: 'flex', flexDirection: 'column', height: '100%' }}>
