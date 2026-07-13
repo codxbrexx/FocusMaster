@@ -1,5 +1,9 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Zap, BarChart3, FolderKanban, Brain, Lock } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../../context/AuthContext';
+import { Zap, BarChart3, FolderKanban, Brain, Lock, Loader2 } from 'lucide-react';
+import { LoadingPage } from '../../ui/LoadingPage';
 
 const sideCards = [
   {
@@ -38,11 +42,29 @@ const features = [
 ];
 
 export const ModernHero = () => {
+  const navigate = useNavigate();
+  const { loginAsGuest } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleGuestLogin = async () => {
+    try {
+      setIsLoading(true);
+      await loginAsGuest();
+      navigate('/dashboard');
+    } catch {
+      // Error is handled by context toast
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <section
-      className="relative w-full overflow-hidden selection:bg-indigo-500 selection:text-white"
-      style={{ minHeight: '100vh', backgroundColor: '#05060a' }}
-    >
+    <>
+      {isLoading && <LoadingPage customMessage="Setting up guest session..." />}
+      <section
+        className="relative w-full overflow-hidden selection:bg-indigo-500 selection:text-white"
+        style={{ minHeight: '100vh', backgroundColor: '#05060a' }}
+      >
 
       <div className="absolute inset-0 z-0">
         <img
@@ -149,8 +171,9 @@ export const ModernHero = () => {
               >
                 Get Started Free
               </a>
-              <a
-                href="/login"
+              <button
+                onClick={handleGuestLogin}
+                disabled={isLoading}
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -167,18 +190,29 @@ export const ModernHero = () => {
                   textDecoration: 'none',
                   transition: 'border-color 0.2s, background-color 0.2s',
                   whiteSpace: 'nowrap',
+                  cursor: isLoading ? 'not-allowed' : 'pointer',
+                  opacity: isLoading ? 0.7 : 1,
                 }}
                 onMouseEnter={e => {
+                  if (isLoading) return;
                   e.currentTarget.style.borderColor = 'rgba(255,255,255,0.5)';
                   e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.05)';
                 }}
                 onMouseLeave={e => {
+                  if (isLoading) return;
                   e.currentTarget.style.borderColor = 'rgba(255,255,255,0.25)';
                   e.currentTarget.style.backgroundColor = 'transparent';
                 }}
               >
-                Try Guest Mode
-              </a>
+                {isLoading ? (
+                  <>
+                    <Loader2 size={16} className="animate-spin" style={{ marginRight: '8px' }} />
+                    Starting...
+                  </>
+                ) : (
+                  'Try Guest Mode'
+                )}
+              </button>
             </motion.div>
           </div>
 
@@ -302,5 +336,6 @@ export const ModernHero = () => {
         </div>
       </div>
     </section>
+    </>
   );
 };

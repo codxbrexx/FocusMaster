@@ -144,7 +144,7 @@ export function Register() {
         <div className="hidden md:block md:w-5/12 lg:w-1/2 relative">
           <img
             className="h-full w-full object-cover"
-            src="https://images.unsplash.com/photo-1776083760576-b238808ec1b1?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            src="/auth_image.png"
             alt="Get started with FocusMaster"
           />
         </div>

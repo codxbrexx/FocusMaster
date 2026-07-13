@@ -89,7 +89,7 @@ const Header = () => {
           </span>
         </a>
 
-        {/* ── Center Nav ── */}
+        {/*  Center Nav */}
         <nav
           className="hidden md:flex"
           style={{ display: 'flex', alignItems: 'center', gap: '4px' }}
