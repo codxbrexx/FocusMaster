@@ -36,7 +36,8 @@ Generate a JSON response with exactly this structure (no markdown, no code fence
 {
   "insights": ["insight1", "insight2", "insight3"],
   "recommendations": ["recommendation1", "recommendation2"],
-  "summary": "one motivational sentence"
+  "summary": "one motivational sentence",
+  "prepAdvice": "A specific piece of advice on their exam/subject preparation based on their streak and focus."
 }
 
 Rules:
@@ -71,6 +72,10 @@ function parseInsightResponse(text) {
         typeof parsed.summary === "string"
           ? parsed.summary
           : "Keep up the great work!",
+      prepAdvice:
+        typeof parsed.prepAdvice === "string"
+          ? parsed.prepAdvice
+          : "Stay consistent with your preparation!",
     };
   } catch {
     // Fallback if parsing fails
@@ -80,6 +85,7 @@ function parseInsightResponse(text) {
         "Complete a few more focus sessions for personalized tips.",
       ],
       summary: "Every session counts — keep going!",
+      prepAdvice: "Consistency is key to mastering your subjects.",
     };
   }
 }
@@ -108,6 +114,7 @@ async function generateInsights(userId, userSettings = {}) {
       insights: cached.insights,
       recommendations: cached.recommendations,
       summary: cached.summary,
+      prepAdvice: cached.prepAdvice || "Keep up your preparation!",
       productivityScore: cached.productivityScore,
       scoreBreakdown: cached.scoreBreakdown,
       stats: cached.stats,
@@ -140,6 +147,7 @@ async function generateInsights(userId, userSettings = {}) {
         insights: stale.insights,
         recommendations: stale.recommendations,
         summary: stale.summary,
+        prepAdvice: stale.prepAdvice || "Keep up your preparation!",
         productivityScore: scoreResult.score,
         scoreBreakdown: scoreResult.breakdown,
         stats,
@@ -164,6 +172,7 @@ async function generateInsights(userId, userSettings = {}) {
       insights: parsed.insights,
       recommendations: parsed.recommendations,
       summary: parsed.summary,
+      prepAdvice: parsed.prepAdvice,
       productivityScore: scoreResult.score,
       scoreBreakdown: scoreResult.breakdown,
       stats,
@@ -177,6 +186,7 @@ async function generateInsights(userId, userSettings = {}) {
     insights: saved.insights,
     recommendations: saved.recommendations,
     summary: saved.summary,
+    prepAdvice: saved.prepAdvice || parsed.prepAdvice,
     productivityScore: scoreResult.score,
     scoreBreakdown: scoreResult.breakdown,
     stats,

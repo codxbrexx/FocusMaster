@@ -9,6 +9,7 @@ const { getRecommendations } = require("../services/ai/recommender");
 const { analyzeFocusDropoff } = require("../services/analytics/focusDropoff");
 const { processDocument } = require("../services/ai/documentProcessor");
 const { askQuestion, generateQuiz } = require("../services/ai/ragAssistant");
+const { handleStudyChat } = require("../services/ai/chatAssistant");
 const Document = require("../models/Document");
 
 // @desc    Get aggregated analytics summary + productivity score
@@ -130,6 +131,20 @@ const getQuiz = asyncHandler(async (req, res) => {
   res.json(result);
 });
 
+// @desc    General chat about study preparation and analytics
+// @route   POST /api/ai/chat
+// @access  Private
+const studyChat = asyncHandler(async (req, res) => {
+  const { message, history } = req.body;
+  if (!message) {
+    res.status(400);
+    throw new Error("Message is required");
+  }
+
+  const result = await handleStudyChat(req.user._id, message, history || []);
+  res.json(result);
+});
+
 module.exports = {
   getAnalyticsSummary,
   getInsights,
@@ -141,6 +156,7 @@ module.exports = {
   getDocuments,
   queryRag,
   getQuiz,
+  studyChat,
 };
 
 

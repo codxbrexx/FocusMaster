@@ -19,6 +19,10 @@ const aiInsightSchema = mongoose.Schema({
     type: String,
     default: "",
   },
+  prepAdvice: {
+    type: String,
+    default: "",
+  },
   productivityScore: {
     type: Number,
     default: 0,
