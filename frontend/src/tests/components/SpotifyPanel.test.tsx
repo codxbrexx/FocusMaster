@@ -35,7 +35,7 @@ describe('SpotifyPanel', () => {
 
   it('shows player controls when connected', async () => {
     // Mock connection check returning true with item
-    mockedAxios.get.mockResolvedValueOnce({
+    mockedAxios.get.mockResolvedValue({
       data: {
         connected: true,
         item: {

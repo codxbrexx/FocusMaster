@@ -11,8 +11,8 @@ vi.mock('@/store/useTaskStore', () => ({
 // Mock framer-motion to avoid animation issues in tests
 vi.mock('framer-motion', () => ({
   motion: {
-    div: ({ children, className, ...props }: any) => (
-      <div className={className} {...props}>
+    div: ({ children, className, 'data-testid': testId, id, onClick, style }: any) => (
+      <div className={className} data-testid={testId} id={id} onClick={onClick} style={style}>
         {children}
       </div>
     ),

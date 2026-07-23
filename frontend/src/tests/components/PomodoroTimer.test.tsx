@@ -117,7 +117,7 @@ describe('PomodoroTimer', () => {
 
   it('switches modes', () => {
     renderTimer();
-    const shortBreakBtn = screen.getByText('Short');
+    const shortBreakBtn = screen.getByText('Short Break');
     fireEvent.click(shortBreakBtn);
     expect(mockSetMode).toHaveBeenCalledWith('short-break');
   });

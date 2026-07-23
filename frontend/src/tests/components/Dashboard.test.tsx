@@ -5,6 +5,7 @@ import { useTaskStore } from '@/store/useTaskStore';
 import { useSettingsStore } from '@/store/useSettingsStore';
 import { useHistoryStore } from '@/store/useHistoryStore';
 import { useAuth } from '@/context/AuthContext';
+import { useAiStore } from '@/store/useAiStore';
 
 // Mock Stores and Auth
 vi.mock('@/store/useTaskStore', () => ({ useTaskStore: vi.fn() }));
@@ -36,6 +37,20 @@ vi.mock('framer-motion', () => ({
   },
 }));
 
+vi.mock('@/store/useAiStore', () => ({ useAiStore: vi.fn() }));
+
+vi.mock('@/components/dashboard/AiInsightsPanel', () => ({
+  AiInsightsPanel: () => <div>AiInsightsPanel</div>,
+}));
+
+vi.mock('@/components/dashboard/StudyPlanCard', () => ({
+  StudyPlanCard: () => <div>StudyPlanCard</div>,
+}));
+
+vi.mock('@/components/dashboard/RecommendationsCard', () => ({
+  RecommendationsCard: () => <div>RecommendationsCard</div>,
+}));
+
 describe('Dashboard', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -54,6 +69,10 @@ describe('Dashboard', () => {
 
     (useHistoryStore as any).mockReturnValue({
       sessions: [],
+    });
+    
+    (useAiStore as any).mockReturnValue({
+      fetchStudyProfile: vi.fn(),
     });
   });
 
