@@ -43,6 +43,9 @@ const EditProfilePage = lazy(() =>
 const Calendar = lazy(() =>
   import('./components/Calendar').then((module) => ({ default: module.Calendar }))
 );
+const StudyPage = lazy(() =>
+  import('./pages/StudyPage').then((module) => ({ default: module.StudyPage }))
+);
 const LandingPageModern = lazy(() =>
   import('./pages/LandingPageModern').then((module) => ({ default: module.LandingPageModern }))
 );

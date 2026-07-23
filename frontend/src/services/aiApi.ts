@@ -141,3 +141,30 @@ export async function fetchAdaptiveTimer(): Promise<AdaptiveTimerSuggestion> {
   return data;
 }
 
+// ── RAG Study Assistant ─────────────────────────────────────────
+export async function uploadDocument(file: File) {
+  const formData = new FormData();
+  formData.append('file', file);
+  const { data } = await api.post('/ai/documents', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+  return data;
+}
+
+export async function fetchDocuments() {
+  const { data } = await api.get('/ai/documents');
+  return data;
+}
+
+export async function queryRag(query: string) {
+  const { data } = await api.post('/ai/rag/query', { query });
+  return data;
+}
+
+export async function generateQuiz(topic?: string) {
+  const { data } = await api.post('/ai/rag/quiz', { topic });
+  return data;
+}
+
