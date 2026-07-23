@@ -99,7 +99,11 @@ export function StudyProfileSettings() {
             {STREAMS.map((s) => (
               <button
                 key={s.value}
-                onClick={() => setStream(s.value)}
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setStream(s.value);
+                }}
                 className={`px-3 py-1.5 text-sm rounded-lg border transition-colors ${
                   stream === s.value
                     ? 'bg-primary text-primary-foreground border-primary'

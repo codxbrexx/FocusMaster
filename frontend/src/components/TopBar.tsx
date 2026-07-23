@@ -83,7 +83,7 @@ export function TopBar({ onMenuClick }: TopBarProps) {
   ];
 
   return (
-    <header className="h-16 border-b border-border bg-card px-4 md:px-6 flex items-center justify-between sticky top-0 z-30 shadow-sm">
+    <header className="h-16 border-b border-border bg-card px-4 md:px-6 flex items-center justify-between sticky top-0 z-30">
       {/* LEFT — hamburger + clock */}
       <div className="flex items-center gap-4">
         <Button

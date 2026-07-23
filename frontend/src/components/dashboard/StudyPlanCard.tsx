@@ -51,13 +51,13 @@ export function StudyPlanCard() {
               </p>
             </div>
 
-            <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-500/10 text-amber-500 text-xs font-medium border border-amber-500/20">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-500/10 text-slate-500 text-xs font-medium border border-slate-500/20">
               <AlertCircle className="w-4 h-4" />
               AI insights unavailable right now
             </div>
             
             <div className="pt-2 flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
-              <Button size="lg" onClick={() => navigate('/settings?tab=study')} className="gap-2 w-full sm:w-auto rounded-xl shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all font-semibold">
+              <Button size="lg" onClick={() => navigate('/settings?tab=study')} className="gap-2 w-full sm:w-auto rounded-xl hover:border-gray-500/80 border transition-all font-semibold">
                 <Settings className="h-5 w-5" />
                 Set Up Profile
               </Button>

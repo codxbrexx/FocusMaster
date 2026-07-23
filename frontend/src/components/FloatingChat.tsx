@@ -77,11 +77,10 @@ export function FloatingChat() {
             <div className="flex-1 overflow-y-auto p-4 space-y-4" ref={scrollRef}>
               {messages.map((msg, i) => (
                 <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm ${
-                    msg.role === 'user' 
-                      ? 'bg-primary text-primary-foreground rounded-br-none' 
+                  <div className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm ${msg.role === 'user'
+                      ? 'bg-primary text-primary-foreground rounded-br-none'
                       : 'bg-muted/50 border border-border/50 rounded-bl-none'
-                  }`}>
+                    }`}>
                     {msg.text}
                   </div>
                 </div>
@@ -98,7 +97,7 @@ export function FloatingChat() {
 
             {/* Input Area */}
             <div className="p-3 bg-card/50 border-t border-border/50">
-              <form 
+              <form
                 onSubmit={(e) => { e.preventDefault(); handleSend(); }}
                 className="flex items-center gap-2 relative"
               >
@@ -109,10 +108,10 @@ export function FloatingChat() {
                   className="pr-10 bg-background/50 border-border/50 rounded-full focus-visible:ring-1"
                   disabled={isLoading}
                 />
-                <Button 
-                  type="submit" 
-                  size="icon" 
-                  className="absolute right-1 top-1 h-7 w-7 rounded-full" 
+                <Button
+                  type="submit"
+                  size="icon"
+                  className="absolute right-1 top-1 h-7 w-7 rounded-full"
                   disabled={!input.trim() || isLoading}
                 >
                   <Send className="w-3.5 h-3.5" />
@@ -127,7 +126,7 @@ export function FloatingChat() {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 w-14 h-14 bg-primary text-primary-foreground rounded-full shadow-xl flex items-center justify-center z-50 hover:shadow-primary/25 transition-all"
+        className="fixed bottom-6 right-6 w-14 h-14 bg-purple-600 hover:bg-purple-700 text-white rounded-full shadow-xl flex items-center justify-center z-50 hover:shadow-purple-500/30 transition-all"
       >
         {isOpen ? <X className="w-6 h-6" /> : <MessageCircle className="w-6 h-6" />}
       </motion.button>

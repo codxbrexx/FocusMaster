@@ -6,9 +6,9 @@ import {
   Clock,
   Calendar as CalendarIcon,
   Music,
-  PanelLeftClose,
-  PanelLeftOpen,
   ShieldCheck,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
@@ -81,15 +81,15 @@ export const Sidebar = ({ open, onOpenChange }: SidebarProps) => {
       }}
       className={cn(
         'h-screen fixed left-0 top-0 z-40 flex flex-col',
-        'bg-background/80 backdrop-blur-2xl border-r border-border/40 shadow-[4px_0_24px_rgba(0,0,0,0.02)] dark:shadow-[4px_0_24px_rgba(0,0,0,0.2)]',
-        isMobile && 'bg-card/95 backdrop-blur-3xl border-r border-border w-full max-w-[80vw] shadow-[10px_0_35px_rgba(0,0,0,0.6)]'
+        'bg-background/80 backdrop-blur-2xl border-r border-border/40',
+        isMobile && 'bg-card/95 backdrop-blur-3xl border-r border-border w-full max-w-[80vw]'
       )}
       onClick={() => !isMobile && onOpenChange(!open)}
     >
       {/* --- HEADER --- */}
       <div
         className={cn(
-          'h-16 lg:h-20 flex items-center mb-4 mt-2 relative group transition-all duration-300 z-10',
+          'h-14 lg:h-16 flex items-center mb-2 relative group transition-all duration-300 z-10',
           open ? 'justify-between px-6' : 'justify-center'
         )}
       >
@@ -152,46 +152,21 @@ export const Sidebar = ({ open, onOpenChange }: SidebarProps) => {
           />
         ))}
 
-        {/* Toggle Button Moved to Bottom */}
-        {!isMobile && (
-          <button
-            onClick={() => onOpenChange(!open)}
-            className={cn(
-              'flex items-center gap-3.5 px-3.5 py-3 rounded-xl transition-all duration-300 group overflow-hidden w-full text-left mt-auto mb-2 border border-transparent hover:border-border/50 shadow-sm',
-              !open && 'justify-center px-2',
-              'text-muted-foreground hover:text-foreground hover:bg-muted/50'
-            )}
-          >
-            <div className="relative z-10 flex items-center justify-center">
-              {open ? (
-                <PanelLeftClose
-                  className="w-[22px] h-[22px] text-muted-foreground/70 group-hover:text-foreground group-hover:scale-110 transition-all duration-300"
-                  strokeWidth={2}
-                />
-              ) : (
-                <PanelLeftOpen
-                  className="w-[22px] h-[22px] text-muted-foreground/70 group-hover:text-foreground group-hover:scale-110 transition-all duration-300"
-                  strokeWidth={2}
-                />
-              )}
-            </div>
-
-            <AnimatePresence>
-              {open && (
-                <motion.span
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -10 }}
-                  transition={{ duration: 0.2 }}
-                  className="relative z-10 text-sm font-medium tracking-wide whitespace-nowrap ml-3.5"
-                >
-                  Close Sidebar
-                </motion.span>
-              )}
-            </AnimatePresence>
-          </button>
-        )}
       </div>
+
+      {/* Edge Toggle Button */}
+      {!isMobile && (
+        <button
+          onClick={() => onOpenChange(!open)}
+          className="absolute top-1/2 -translate-y-1/2 -right-4 w-8 h-8 flex items-center justify-center bg-card border border-border/50 rounded-full shadow-lg text-muted-foreground hover:text-foreground hover:border-border transition-all z-50 group hover:shadow-primary/20"
+        >
+          {open ? (
+            <ChevronLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
+          ) : (
+            <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+          )}
+        </button>
+      )}
 
     </motion.aside>
   );
