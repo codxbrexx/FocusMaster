@@ -1,4 +1,4 @@
-import { Check, UserCog, Timer, Palette, Zap, Monitor } from 'lucide-react';
+import { Check, UserCog, Timer, Palette, Zap, Monitor, GraduationCap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
@@ -10,10 +10,12 @@ import { AppearanceSettings } from './settings/AppearanceSettings';
 import { AutomationSettings } from './settings/AutomationSettings';
 import { SystemSettings } from './settings/SystemSettings';
 import { AccountSettings } from './settings/AccountSettings';
+import { StudyProfileSettings } from './settings/StudyProfileSettings';
 
 export function Settings() {
   const tabs = [
     { id: 'account', label: 'Account', icon: UserCog },
+    { id: 'study', label: 'Study', icon: GraduationCap },
     { id: 'timer', label: 'Timer', icon: Timer },
     { id: 'appearance', label: 'Appearance', icon: Palette },
     { id: 'automation', label: 'Automation', icon: Zap },
@@ -64,6 +66,10 @@ export function Settings() {
         <div className="space-y-6">
           <TabsContent value="account">
             <AccountSettings />
+          </TabsContent>
+
+          <TabsContent value="study">
+            <StudyProfileSettings />
           </TabsContent>
 
           <TabsContent value="timer">
