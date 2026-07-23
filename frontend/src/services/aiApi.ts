@@ -35,6 +35,74 @@ export interface AiInsightsResponse {
   fromCache: boolean;
 }
 
+export interface StudySubject {
+  name: string;
+  difficulty?: 'easy' | 'medium' | 'hard';
+}
+
+export interface StudyProfile {
+  stream: string | null;
+  customStreamName: string;
+  subjects: StudySubject[];
+  examDate: string | null;
+  weeklyGoalHours: number;
+  availableHoursPerDay: number;
+}
+
+export interface DailySubject {
+  name: string;
+  hours: number;
+  activity: string;
+}
+
+export interface DailyPlan {
+  day: string;
+  subjects: DailySubject[];
+}
+
+export interface WeekPlan {
+  weekNumber: number;
+  startDate: string;
+  endDate: string;
+  theme: string;
+  dailyPlans: DailyPlan[];
+}
+
+export interface StudyPlanResponse {
+  plan: {
+    _id: string;
+    weeks: WeekPlan[];
+    examDate: string;
+    totalWeeks: number;
+    stream: string;
+    subjects: string[];
+    generatedAt: string;
+  } | null;
+  fromCache?: boolean;
+  error?: string;
+}
+
+export interface Recommendation {
+  id?: string;
+  type: string;
+  message: string;
+  priority: 'high' | 'medium' | 'low';
+}
+
+export interface RecommendationsResponse {
+  recommendations: Recommendation[];
+}
+
+export interface AdaptiveTimerSuggestion {
+  hasEnoughData: boolean;
+  message?: string;
+  suggestedFocusDuration?: number;
+  suggestedShortBreak?: number;
+  suggestedLongBreak?: number;
+  confidence?: 'low' | 'medium' | 'high';
+}
+
+// ── AI Insights ─────────────────────────────────────────────────
 export async function fetchInsights(): Promise<AiInsightsResponse> {
   const { data } = await api.get('/ai/insights');
   return data;
@@ -44,3 +112,32 @@ export async function fetchAnalyticsSummary(days = 30) {
   const { data } = await api.get(`/ai/summary?days=${days}`);
   return data;
 }
+
+// ── Study Profile ───────────────────────────────────────────────
+export async function fetchStudyProfile(): Promise<{ studyProfile: StudyProfile }> {
+  const { data } = await api.get('/study-profile');
+  return data;
+}
+
+export async function updateStudyProfile(profile: Partial<StudyProfile>): Promise<{ studyProfile: StudyProfile }> {
+  const { data } = await api.put('/study-profile', profile);
+  return data;
+}
+
+// ── Study Plan ──────────────────────────────────────────────────
+export async function fetchStudyPlan(): Promise<StudyPlanResponse> {
+  const { data } = await api.get('/ai/study-plan');
+  return data;
+}
+
+export async function regenerateStudyPlan(): Promise<StudyPlanResponse> {
+  const { data } = await api.post('/ai/study-plan');
+  return data;
+}
+
+// ── Adaptive Timer ──────────────────────────────────────────────
+export async function fetchAdaptiveTimer(): Promise<AdaptiveTimerSuggestion> {
+  const { data } = await api.get('/ai/adaptive-timer');
+  return data;
+}
+
