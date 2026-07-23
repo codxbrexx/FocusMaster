@@ -78,6 +78,27 @@ const userSchema = mongoose.Schema(
       type: String,
       select: false,
     },
+    studyProfile: {
+      stream: {
+        type: String,
+        enum: ["engineering", "medical", "commerce", "competitive", "custom"],
+        default: null,
+      },
+      customStreamName: { type: String, default: "" },
+      subjects: [
+        {
+          name: { type: String, required: true },
+          difficulty: {
+            type: String,
+            enum: ["easy", "medium", "hard"],
+            default: "medium",
+          },
+        },
+      ],
+      examDate: { type: Date, default: null },
+      weeklyGoalHours: { type: Number, default: 20 },
+      availableHoursPerDay: { type: Number, default: 4 },
+    },
   },
   {
     timestamps: true,
