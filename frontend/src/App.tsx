@@ -121,6 +121,7 @@ const App = () => {
                       <Route path="/clock" element={<ClockInOut />} />
                       <Route path="/spotify" element={<SpotifyPanel />} />
                       <Route path="/calendar" element={<Calendar />} />
+                      <Route path="/study" element={<StudyPage />} />
                       <Route path="/settings" element={<Settings />} />
                       <Route path="/profile" element={<Profile />} />
                       <Route path="/profile/edit" element={<EditProfilePage />} />
