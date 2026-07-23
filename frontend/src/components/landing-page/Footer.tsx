@@ -6,8 +6,8 @@ export const Footer = () => {
       <div className="container mx-auto px-4 sm:px-6 flex flex-col md:flex-row justify-between items-center gap-4 sm:gap-6">
         {/* Brand & Copyright */}
         <div className="flex flex-col md:flex-row items-center gap-3 sm:gap-4 text-center md:text-left">
-          <div className="flex items-center gap-2 opacity-90">
-            <img src="/fmasterlogo.png" alt="Logo" className="w-6 h-6 rounded-md shadow-sm" />
+          <div className="flex items-center gap-0.5 opacity-90">
+            <img src="/FM_logo.png" alt="Logo" className="w-6 h-6 rounded-md shadow-sm" />
             <span className="font-bold text-sm sm:text-base tracking-wide">FocusMaster</span>
           </div>
           <span className="hidden md:block text-muted-foreground/30">|</span>

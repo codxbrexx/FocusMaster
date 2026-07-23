@@ -11,6 +11,7 @@ import {
   Target,
   Clock,
   Flame,
+  BookOpen,
 } from 'lucide-react';
 
 const item: Variants = {
@@ -151,7 +152,7 @@ export function AiInsightsPanel() {
 
   if (!insights) return null;
 
-  const { productivityScore, scoreBreakdown, insights: aiInsights, recommendations, summary } = insights;
+  const { productivityScore, scoreBreakdown, insights: aiInsights, recommendations, summary, prepAdvice } = insights;
 
   return (
     <motion.div variants={item} className="lg:col-span-3">
@@ -238,6 +239,13 @@ export function AiInsightsPanel() {
                 <div className="mt-4 p-3 rounded-lg bg-purple-500/5 border border-purple-500/20">
                   <p className="text-xs text-purple-400 font-medium mb-1">✨ Daily Summary</p>
                   <p className="text-sm text-foreground/80">{summary}</p>
+                </div>
+              )}
+
+              {prepAdvice && (
+                <div className="mt-3 p-3 rounded-lg bg-blue-500/5 border border-blue-500/20">
+                  <p className="text-xs text-blue-400 font-medium mb-1 flex items-center gap-1.5"><BookOpen className="h-3 w-3" /> Preparation Advice</p>
+                  <p className="text-sm text-foreground/80">{prepAdvice}</p>
                 </div>
               )}
             </div>

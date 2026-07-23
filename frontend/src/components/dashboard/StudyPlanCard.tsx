@@ -3,7 +3,7 @@ import { motion, type Variants } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useAiStore } from '@/store/useAiStore';
-import { BookOpen, RefreshCw, Calendar, Loader2, Settings } from 'lucide-react';
+import { BookOpen, RefreshCw, Calendar, Loader2, Settings, AlertCircle, Sparkles } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const item: Variants = {
@@ -36,18 +36,38 @@ export function StudyPlanCard() {
   if (!studyProfile?.stream && !studyProfile?.subjects?.length) {
     return (
       <motion.div variants={item}>
-        <Card className="bg-card border border-border/50 shadow-sm">
-          <CardContent className="p-6 text-center space-y-3">
-            <BookOpen className="h-8 w-8 text-muted-foreground mx-auto" />
-            <p className="text-sm text-muted-foreground">
-              Set up your study profile to get an AI-powered study plan.
-            </p>
-            <Button variant="outline" size="sm" onClick={() => navigate('/settings')} className="gap-2">
-              <Settings className="h-3.5 w-3.5" />
-              Set Up Profile
-            </Button>
-          </CardContent>
-        </Card>
+        <div className="relative overflow-hidden rounded-md sm:rounded-xl bg-card border border-border/50 p-5 sm:p-8 lg:p-10 transition-all duration-300 shadow-sm group hover:shadow-md hover:border-primary/30 flex flex-col items-center text-center justify-center min-h-[250px]">
+          <div className="absolute inset-0 bg-none z-0 pointer-events-none" />
+          
+          <div className="relative z-10 space-y-5 flex flex-col items-center">
+            <div className="w-16 h-16 rounded-lg bg-primary/10 flex items-center justify-center group-hover:scale-105 transition-transform duration-500">
+              <BookOpen className="h-8 w-8 text-primary" />
+            </div>
+            
+            <div className="space-y-2">
+              <h3 className="text-xl sm:text-2xl font-bold tracking-tight">AI Study Plan</h3>
+              <p className="text-sm sm:text-base text-muted-foreground max-w-[320px] mx-auto">
+                Set up your study profile to unlock a personalized, AI-powered study schedule.
+              </p>
+            </div>
+
+            <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-500/10 text-amber-500 text-xs font-medium border border-amber-500/20">
+              <AlertCircle className="w-4 h-4" />
+              AI insights unavailable right now
+            </div>
+            
+            <div className="pt-2 flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
+              <Button size="lg" onClick={() => navigate('/settings?tab=study')} className="gap-2 w-full sm:w-auto rounded-xl shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all font-semibold">
+                <Settings className="h-5 w-5" />
+                Set Up Profile
+              </Button>
+              <Button size="lg" variant="secondary" onClick={() => navigate('/settings?tab=study')} className="gap-2 w-full sm:w-auto rounded-xl transition-all border border-border/50 hover:bg-muted/50 font-semibold text-purple-500 hover:text-purple-400">
+                <Sparkles className="h-5 w-5" />
+                AI Auto-Setup
+              </Button>
+            </div>
+          </div>
+        </div>
       </motion.div>
     );
   }
