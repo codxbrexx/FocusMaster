@@ -11,6 +11,9 @@ import {
   SkipForward,
   Coffee,
   LogOut,
+  Sparkles,
+  MessageSquare,
+  Bot,
 } from 'lucide-react';
 
 const detailedFeatures = [
@@ -48,6 +51,18 @@ const detailedFeatures = [
     ],
   },
   {
+    icon: Bot,
+    color: 'cyan',
+    title: 'AI that actually helps you focus.',
+    subtitle: 'FocusMaster AI',
+    features: [
+      'Upload PDFs to chat with your study materials and generate pop quizzes',
+      'Auto-adjusting Pomodoro intervals based on your historical drop-off times',
+      'Generates tailored, week-by-week study schedules for upcoming exams',
+      'Receive daily actionable insights derived strictly from your focus data',
+    ],
+  },
+  {
     icon: Music2,
     color: 'pink',
     title: 'Your music, your flow.',
@@ -71,16 +86,13 @@ const detailedFeatures = [
   },
 ];
 
-const colorMap: Record<string, { bg: string; text: string; badge: string }> = {
-  indigo: { bg: 'bg-indigo-500/10', text: 'text-indigo-400', badge: 'bg-indigo-500/20' },
-  emerald: {
-    bg: 'bg-emerald-500/10',
-    text: 'text-emerald-400',
-    badge: 'bg-emerald-500/20',
-  },
-  violet: { bg: 'bg-violet-500/10', text: 'text-violet-400', badge: 'bg-violet-500/20' },
-  pink: { bg: 'bg-pink-500/10', text: 'text-pink-400', badge: 'bg-pink-500/20' },
-  amber: { bg: 'bg-amber-500/10', text: 'text-amber-400', badge: 'bg-amber-500/20' },
+const colorMap: Record<string, { bg: string; text: string; badge: string; dot: string }> = {
+  indigo: { bg: 'bg-indigo-500/10', text: 'text-indigo-400', badge: 'bg-indigo-500/20', dot: 'bg-indigo-400' },
+  emerald: { bg: 'bg-emerald-500/10', text: 'text-emerald-400', badge: 'bg-emerald-500/20', dot: 'bg-emerald-400' },
+  violet: { bg: 'bg-violet-500/10', text: 'text-violet-400', badge: 'bg-violet-500/20', dot: 'bg-violet-400' },
+  pink: { bg: 'bg-pink-500/10', text: 'text-pink-400', badge: 'bg-pink-500/20', dot: 'bg-pink-400' },
+  amber: { bg: 'bg-amber-500/10', text: 'text-amber-400', badge: 'bg-amber-500/20', dot: 'bg-amber-400' },
+  cyan: { bg: 'bg-cyan-500/10', text: 'text-cyan-400', badge: 'bg-cyan-500/20', dot: 'bg-cyan-400' },
 };
 
 export const DetailedFeaturesSection = () => {
@@ -132,7 +144,7 @@ export const DetailedFeaturesSection = () => {
                         viewport={{ once: true }}
                       >
                         <div
-                          className={`w-1.5 h-1.5 rounded-full flex-shrink-0 mt-2.5 ${colors.text.replace('text-', 'bg-')}`}
+                          className={`w-1.5 h-1.5 rounded-full flex-shrink-0 mt-2.5 ${colors.dot}`}
                         />
                         <span className="text-slate-300 text-lg leading-relaxed">
                           {feat}
@@ -156,7 +168,7 @@ export const DetailedFeaturesSection = () => {
                     
                     <div className={`aspect-video rounded-xl flex items-center justify-center p-4`}>
                       {/* Focus Engine (Timer) */}
-                      {index === 0 && (
+                      {feature.subtitle === 'Focus Engine' && (
                         <div className="flex flex-col items-center justify-center w-full">
                           <div className="relative w-36 h-36 rounded-full border-4 border-indigo-500/20 flex items-center justify-center">
                             {/* Glowing circular progress mask */}
@@ -194,7 +206,7 @@ export const DetailedFeaturesSection = () => {
                       )}
 
                       {/* Task Manager (Kanban) */}
-                      {index === 1 && (
+                      {feature.subtitle === 'Task Manager' && (
                         <div className="flex gap-4 w-full h-full text-left">
                           {/* Column 1 */}
                           <div className="flex-1 flex flex-col bg-slate-900/60 rounded-xl p-3 border border-slate-800/80">
@@ -228,7 +240,7 @@ export const DetailedFeaturesSection = () => {
                       )}
 
                       {/* Productivity Analytics */}
-                      {index === 2 && (
+                      {feature.subtitle === 'Productivity Analytics' && (
                         <div className="flex flex-col w-full h-full justify-between">
                           <div className="flex justify-between items-center border-b border-slate-800 pb-2">
                             <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Weekly Performance</span>
@@ -259,7 +271,7 @@ export const DetailedFeaturesSection = () => {
                       )}
 
                       {/* Spotify Control */}
-                      {index === 3 && (
+                      {feature.subtitle === 'Spotify Control' && (
                         <div className="flex flex-col bg-slate-900/60 p-4 rounded-xl border border-slate-800/80 w-full max-w-[340px]">
                           <div className="flex items-center gap-4">
                             {/* album cover art placeholder */}
@@ -301,7 +313,7 @@ export const DetailedFeaturesSection = () => {
                       )}
 
                       {/* Time Tracking */}
-                      {index === 4 && (
+                      {feature.subtitle === 'Time Tracking' && (
                         <div className="flex flex-col bg-slate-900/60 p-4 rounded-xl border border-slate-800/80 w-full max-w-[340px] text-left">
                           <div className="flex justify-between items-center mb-4">
                             <span className="text-[10px] font-bold text-amber-500 uppercase tracking-wider">Shift Tracker</span>
@@ -321,6 +333,47 @@ export const DetailedFeaturesSection = () => {
                             <button className="flex-1 py-2 rounded-lg bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs uppercase tracking-wide transition-colors flex items-center justify-center gap-1.5">
                               <LogOut className="w-3.5 h-3.5" /> Clock Out
                             </button>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* AI Coach */}
+                      {feature.subtitle === 'FocusMaster AI' && (
+                        <div className="flex flex-col w-full h-full text-left relative overflow-hidden justify-center space-y-4">
+                          {/* Shimmer effect */}
+                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-500/10 to-transparent -translate-x-[100%] animate-[shimmer_3s_infinite] pointer-events-none" />
+                          
+                          <div className="flex justify-between items-center mb-4 relative z-10">
+                            <div className="flex items-center gap-2">
+                              <Bot className="w-5 h-5 text-cyan-400" />
+                              <span className="text-xs font-bold text-white tracking-wide">FocusMaster AI</span>
+                            </div>
+                            <span className="px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 text-[9px] font-bold uppercase">Online</span>
+                          </div>
+                          
+                          <div className="space-y-3 relative z-10">
+                            <div className="bg-slate-800/50 rounded-lg p-3 border border-slate-700/50">
+                              <p className="text-[10px] text-slate-300 leading-relaxed">
+                                <span className="font-semibold text-cyan-400">Insight:</span> I noticed your focus drops off around the 40-minute mark. I've adjusted your timer to 35 minutes for optimal retention.
+                              </p>
+                            </div>
+                            
+                            <div className="bg-slate-800/50 rounded-lg p-3 border border-slate-700/50 ml-6">
+                              <div className="flex items-center gap-2 mb-1">
+                                <MessageSquare className="w-3 h-3 text-slate-400" />
+                                <span className="text-[9px] text-slate-400 font-semibold uppercase">You</span>
+                              </div>
+                              <p className="text-[10px] text-slate-300">Generate a quiz from my physics notes.</p>
+                            </div>
+
+                            <div className="bg-cyan-950/40 rounded-lg p-3 border border-cyan-800/50">
+                              <p className="text-[10px] text-slate-300">
+                                Generating 5 MCQs on <span className="font-semibold text-cyan-300">Quantum Mechanics.pdf</span>...
+                              </p>
+                              <div className="mt-2 h-1 w-full bg-slate-800 rounded-full overflow-hidden">
+                                <div className="h-full bg-cyan-500 w-[60%] animate-pulse" />
+                              </div>
+                            </div>
                           </div>
                         </div>
                       )}
