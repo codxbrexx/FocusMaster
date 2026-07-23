@@ -81,20 +81,20 @@ export const Sidebar = ({ open, onOpenChange }: SidebarProps) => {
       }}
       className={cn(
         'h-screen fixed left-0 top-0 z-40 flex flex-col',
-        'bg-background border-r border-white/10',
-        isMobile && 'bg-card border-r border-border w-full max-w-[80vw] shadow-[10px_0_35px_rgba(0,0,0,0.6)]'
+        'bg-background/80 backdrop-blur-2xl border-r border-border/40 shadow-[4px_0_24px_rgba(0,0,0,0.02)] dark:shadow-[4px_0_24px_rgba(0,0,0,0.2)]',
+        isMobile && 'bg-card/95 backdrop-blur-3xl border-r border-border w-full max-w-[80vw] shadow-[10px_0_35px_rgba(0,0,0,0.6)]'
       )}
       onClick={() => !isMobile && onOpenChange(!open)}
     >
       {/* --- HEADER --- */}
       <div
         className={cn(
-          'h-20 lg:h-28 flex items-center mb-2 relative group transition-all duration-300 z-10',
+          'h-16 lg:h-20 flex items-center mb-4 mt-2 relative group transition-all duration-300 z-10',
           open ? 'justify-between px-6' : 'justify-center'
         )}
       >
         <div
-          className="flex items-center gap-5 cursor-pointer"
+          className="flex items-center gap-1 cursor-pointer"
           onClick={(e) => {
             e.stopPropagation();
             navigate('/dashboard');
@@ -103,9 +103,9 @@ export const Sidebar = ({ open, onOpenChange }: SidebarProps) => {
           <div className="relative shrink-0 flex items-center justify-center">
             <div className="absolute inset-0 bg-primary/40 blur-2xl group-hover:bg-primary/50 transition-all duration-500 rounded-full" />
             <img
-              src="/fmasterlogo.png"
+              src="/FM_logo.png"
               alt="FocusMaster"
-              className="relative w-12 h-12 shadow-2xl transition-transform duration-300 shrink-0 object-contain drop-shadow-[0_0_15px_rgba(124,58,237,0.5)]"
+              className="relative w-14 h-14 shadow-2xl transition-transform duration-300 shrink-0 object-contain drop-shadow-[0_0_15px_rgba(124,58,237,0.5)]"
             />
           </div>
 
@@ -142,7 +142,7 @@ export const Sidebar = ({ open, onOpenChange }: SidebarProps) => {
           onClick={() => isMobile && onOpenChange(false)}
         />
       )}
-      <div className="flex-1 px-4 space-y-1.5 overflow-y-auto overflow-x-hidden scrollbar-none">
+      <div className="flex-1 px-4 space-y-1.5 overflow-y-auto overflow-x-hidden scrollbar-none pb-4">
         {MENU_ITEMS.map((item) => (
           <SidebarItem
             key={item.path}
@@ -157,9 +157,9 @@ export const Sidebar = ({ open, onOpenChange }: SidebarProps) => {
           <button
             onClick={() => onOpenChange(!open)}
             className={cn(
-              'flex items-center gap-3.5 px-3.5 py-3 rounded-xl transition-all duration-300 group overflow-hidden w-full text-left mt-auto',
+              'flex items-center gap-3.5 px-3.5 py-3 rounded-xl transition-all duration-300 group overflow-hidden w-full text-left mt-auto mb-2 border border-transparent hover:border-border/50 shadow-sm',
               !open && 'justify-center px-2',
-              'text-muted-foreground hover:text-foreground hover:bg-black/5 dark:hover:bg-white/5'
+              'text-muted-foreground hover:text-foreground hover:bg-muted/50'
             )}
           >
             <div className="relative z-10 flex items-center justify-center">

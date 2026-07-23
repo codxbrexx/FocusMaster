@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useSearchParams } from 'react-router-dom';
 
 // Sub-components
 import { TimerSettings } from './settings/TimerSettings';
@@ -13,6 +14,13 @@ import { AccountSettings } from './settings/AccountSettings';
 import { StudyProfileSettings } from './settings/StudyProfileSettings';
 
 export function Settings() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const currentTab = searchParams.get('tab') || 'account';
+
+  const handleTabChange = (value: string) => {
+    setSearchParams({ tab: value });
+  };
+
   const tabs = [
     { id: 'account', label: 'Account', icon: UserCog },
     { id: 'study', label: 'Study', icon: GraduationCap },
@@ -44,7 +52,8 @@ export function Settings() {
       </div>
 
       <Tabs
-        defaultValue="account"
+        value={currentTab}
+        onValueChange={handleTabChange}
         className="w-full border border-border rounded-xl"
       >
         <TabsList className="w-full justify-start h-auto p-1 rounded-xl border-border mb-8 overflow-x-auto bg-background">

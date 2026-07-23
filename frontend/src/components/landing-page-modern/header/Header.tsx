@@ -57,13 +57,13 @@ const Header = () => {
         {/* ── Logo ── */}
         <a
           href="/"
-          className="flex items-center gap-2.5 transition-opacity hover:opacity-80"
+          className="flex items-center gap-0.5 transition-opacity hover:opacity-80"
           style={{ textDecoration: 'none' }}
         >
           <img
-            src="/fmasterlogosm.png"
+            src="/FM_logo.png"
             alt="FocusMaster"
-            className="w-auto h-8 md:h-9 object-contain"
+            className="w-auto h-10 md:h-11 object-contain"
           />
           <span className="text-[15px] md:text-base font-bold text-white tracking-tight">
             FocusMaster
@@ -122,7 +122,7 @@ const Header = () => {
               <div className="flex flex-col h-full p-8">
                 {/* Mobile brand */}
                 <a href="/" className="flex items-center gap-3 mb-12">
-                  <img src="/fmasterlogosm.png" alt="FocusMaster" className="h-8 w-auto" />
+                  <img src="/FM_logo.png" alt="FocusMaster" className="h-10 w-auto" />
                   <span className="text-[15px] font-bold text-white tracking-tight">FocusMaster</span>
                 </a>
 
