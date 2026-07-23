@@ -13,3 +13,23 @@ createRoot(document.getElementById('root')!).render(
     </GoogleOAuthProvider>
   </StrictMode>
 );
+
+// Register Service Worker in production, unregister in development
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    if (import.meta.env.PROD) {
+      navigator.serviceWorker
+        .register('/sw.js')
+        .then((reg) => console.log('SW registered: ', reg))
+        .catch((err) => console.log('SW registration failed: ', err));
+    } else {
+      // In Dev, unregister any existing service workers to prevent caching Vite assets
+      navigator.serviceWorker.getRegistrations().then((registrations) => {
+        for (const registration of registrations) {
+          registration.unregister();
+          console.log('SW unregistered for development');
+        }
+      });
+    }
+  });
+}

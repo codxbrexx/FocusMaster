@@ -4,8 +4,8 @@ import { UploadCloud, FileText, Loader2, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { uploadDocument, fetchDocuments } from '@/services/aiApi';
-import { StudyAssistant } from './study/StudyAssistant';
-import { QuizGenerator } from './study/QuizGenerator';
+import { StudyAssistant } from '@/components/study/StudyAssistant';
+import { QuizGenerator } from '@/components/study/QuizGenerator';
 import { toast } from 'sonner';
 
 const item: Variants = {

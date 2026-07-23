@@ -135,6 +135,12 @@ export async function regenerateStudyPlan(): Promise<StudyPlanResponse> {
   return data;
 }
 
+// ── Recommendations ──────────────────────────────────────────────
+export async function fetchRecommendations(): Promise<RecommendationsResponse> {
+  const { data } = await api.get('/ai/recommendations');
+  return data;
+}
+
 // ── Adaptive Timer ──────────────────────────────────────────────
 export async function fetchAdaptiveTimer(): Promise<AdaptiveTimerSuggestion> {
   const { data } = await api.get('/ai/adaptive-timer');
