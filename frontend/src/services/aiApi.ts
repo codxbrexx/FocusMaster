@@ -4,6 +4,7 @@ export interface AiInsightsResponse {
   insights: string[];
   recommendations: string[];
   summary: string;
+  prepAdvice?: string;
   productivityScore: number;
   scoreBreakdown: {
     consistency: { score: number; weight: number; streak: number };
@@ -171,6 +172,11 @@ export async function queryRag(query: string) {
 
 export async function generateQuiz(topic?: string) {
   const { data } = await api.post('/ai/rag/quiz', { topic });
+  return data;
+}
+
+export async function sendStudyChat(message: string, history: any[] = []) {
+  const { data } = await api.post('/ai/chat', { message, history });
   return data;
 }
 

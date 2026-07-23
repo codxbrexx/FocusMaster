@@ -13,6 +13,7 @@ const {
   getDocuments,
   queryRag,
   getQuiz,
+  studyChat,
 } = require("../controllers/aiController");
 
 const router = express.Router();
@@ -34,6 +35,7 @@ router.post("/documents", protect, apiLimiter, upload.single("file"), uploadDocu
 router.get("/documents", protect, apiLimiter, getDocuments);
 router.post("/rag/query", protect, apiLimiter, queryRag);
 router.post("/rag/quiz", protect, apiLimiter, getQuiz);
+router.post("/chat", protect, apiLimiter, studyChat);
 
 module.exports = router;
 

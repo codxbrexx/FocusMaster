@@ -13,6 +13,7 @@ import { useMediaQuery } from '@/hooks/useMediaQuery';
 
 import { BottomMobileNav } from './BottomMobileNav';
 import { Footer } from './Footer';
+import { FloatingChat } from './FloatingChat';
 
 export const Layout = () => {
   const { deviceType } = useDevice();
@@ -88,6 +89,8 @@ export const Layout = () => {
             </div>
           </main>
         </div>
+        
+        <FloatingChat />
       </div>
     </TooltipProvider>
   );
