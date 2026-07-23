@@ -9,6 +9,7 @@ import { WelcomeHeader } from './dashboard/WelcomeHeader';
 import { StatsOverview } from './dashboard/StatsOverview';
 import { PriorityTasks } from './dashboard/PriorityTasks';
 import { DailyOverviewChart } from './dashboard/DailyOverviewChart';
+import { AiInsightsPanel } from './dashboard/AiInsightsPanel';
 
 const MOTIVATIONAL_QUOTES = [
   'Focus is the gateway to thinking, learning, and memory.',
@@ -136,6 +137,8 @@ export function Dashboard() {
           sessionCount={sessions.length}
           averageFocusDuration={averageFocusDuration}
         />
+
+        <AiInsightsPanel />
 
         <div className="block lg:col-span-3">
           <FocusHeatmap />
