@@ -26,6 +26,16 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
+  // Only intercept http and https requests (bypasses chrome-extension:// etc.)
+  if (!event.request.url.startsWith('http')) {
+    return;
+  }
+
+  // Bypass service worker for Vite HMR and dev assets
+  if (event.request.url.includes('@vite/client') || event.request.url.includes('@react-refresh')) {
+    return;
+  }
+
   // Navigation requests: Network first, fall back to cache, then offline page (or index.html)
   if (event.request.mode === 'navigate') {
     event.respondWith(

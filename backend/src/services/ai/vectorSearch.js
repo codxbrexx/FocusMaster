@@ -1,6 +1,5 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const DocumentChunk = require("../../models/DocumentChunk");
-const Anthropic = require("@anthropic-ai/sdk"); // If using Anthropic for embeddings, though Anthropic Voyage is separate. We'll use Gemini since we are mocking/using Google AI or standard implementations.
 
 // In a real scenario, this would use a proper embedding model.
 // Since the llmService currently uses Anthropic or Google, and Anthropic doesn't have a native text-embedding-ada-002 equivalent (except Voyage),
