@@ -11,7 +11,6 @@ import {
   SkipForward,
   Coffee,
   LogOut,
-  Sparkles,
   MessageSquare,
   Bot,
 } from 'lucide-react';

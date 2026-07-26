@@ -2,7 +2,6 @@ const Session = require("../../models/Session");
 const Task = require("../../models/Task");
 const {
   subDays,
-  startOfDay,
   format,
   getHours,
   differenceInCalendarDays,

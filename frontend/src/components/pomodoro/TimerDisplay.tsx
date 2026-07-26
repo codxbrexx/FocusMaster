@@ -43,7 +43,7 @@ const MODE_CONFIG: Record<TimerMode, {
   },
 };
 
-export const TimerDisplay = ({ mode, timeLeft, totalDuration, progress, status, formatTime }: TimerDisplayProps) => {
+export const TimerDisplay = ({ mode, timeLeft, progress, status, formatTime }: TimerDisplayProps) => {
   const cfg = MODE_CONFIG[mode];
 
   const r = 44;

@@ -13,6 +13,7 @@ import {
   Flame,
   BookOpen,
 } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 
 const item: Variants = {
   hidden: { opacity: 0, y: 20 },
@@ -78,7 +79,7 @@ function ScoreBreakdownBar({
 }: {
   label: string;
   score: number;
-  icon: React.ElementType;
+  icon: LucideIcon;
 }) {
   const getBarColor = () => {
     if (score >= 80) return 'bg-emerald-500';
@@ -165,10 +166,9 @@ export function AiInsightsPanel() {
             </CardTitle>
             <button
               onClick={fetchAiInsights}
-              disabled={isLoading}
               className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1 transition-colors bg-muted/30 px-3 py-1.5 rounded-full border border-border/50 hover:border-border"
             >
-              <RefreshCw className={`h-3 w-3 ${isLoading ? 'animate-spin' : ''}`} />
+              <RefreshCw className="h-3 w-3" />
               Refresh
             </button>
           </div>

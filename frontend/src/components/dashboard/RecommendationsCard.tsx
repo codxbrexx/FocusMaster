@@ -12,13 +12,14 @@ import {
   BarChart3,
   AlertCircle,
 } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 
 const item: Variants = {
   hidden: { opacity: 0, y: 20 },
   show: { opacity: 1, y: 0 },
 };
 
-const typeIcons: Record<string, React.ElementType> = {
+const typeIcons: Record<string, LucideIcon> = {
   focus: Zap,
   streak: Flame,
   timing: Clock,

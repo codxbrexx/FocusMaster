@@ -1,4 +1,5 @@
 import { Brain, Coffee, Armchair } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import type { TimerMode } from '@/store/useTimerStore';
 
 interface ModeSelectorProps {
@@ -9,7 +10,7 @@ interface ModeSelectorProps {
 
 const MODES: {
   id: TimerMode;
-  icon: React.ElementType;
+  icon: LucideIcon;
   label: string;
   activeClasses: string;
   dotColor: string;
