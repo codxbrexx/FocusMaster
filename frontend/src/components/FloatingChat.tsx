@@ -39,7 +39,7 @@ export function FloatingChat() {
       } else {
         setMessages(prev => [...prev, { role: 'assistant', text: result.answer }]);
       }
-    } catch (err) {
+    } catch {
       toast.error('Failed to send message.');
     } finally {
       setIsLoading(false);

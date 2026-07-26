@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import type { TimerMode } from '@/store/useTimerStore';
 
 interface TimerDisplayProps {
@@ -43,16 +44,31 @@ const MODE_CONFIG: Record<TimerMode, {
   },
 };
 
+/** Renders the estimated finish time, computing Date.now() in an effect rather than during render. */
+function FinishTimeDisplay({ timeLeft }: { timeLeft: number }) {
+  const [finishStr, setFinishStr] = useState('');
+
+  useEffect(() => {
+    const finishDate = new Date(Date.now() + timeLeft * 1000);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setFinishStr(finishDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }));
+  }, [timeLeft]);
+
+  if (!finishStr) return null;
+
+  return (
+    <span className="text-[9px] sm:text-[10px] text-muted-foreground/60 mt-0.5">
+      ends at {finishStr}
+    </span>
+  );
+}
+
 export const TimerDisplay = ({ mode, timeLeft, progress, status, formatTime }: TimerDisplayProps) => {
   const cfg = MODE_CONFIG[mode];
 
   const r = 44;
   const circumference = 2 * Math.PI * r;
   const offset = circumference * (1 - progress / 100);
-
-  // Estimated finish time
-  const finishDate = new Date(Date.now() + timeLeft * 1000);
-  const finishStr = finishDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
 
   const statusLabel =
     status === 'idle' ? 'READY' :
@@ -101,11 +117,7 @@ export const TimerDisplay = ({ mode, timeLeft, progress, status, formatTime }: T
           </span>
 
           {/* Estimated finish */}
-          {status === 'running' && (
-            <span className="text-[9px] sm:text-[10px] text-muted-foreground/60 mt-0.5">
-              ends at {finishStr}
-            </span>
-          )}
+          {status === 'running' && <FinishTimeDisplay timeLeft={timeLeft} />}
         </div>
       </div>
 

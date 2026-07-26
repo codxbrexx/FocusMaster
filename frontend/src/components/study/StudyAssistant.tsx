@@ -27,7 +27,7 @@ export function StudyAssistant() {
       } else {
         setConversation(prev => [...prev, { role: 'assistant', text: result.answer, context: result.context }]);
       }
-    } catch (err) {
+    } catch {
       setConversation(prev => [...prev, { role: 'assistant', text: 'Sorry, I encountered an error answering your question.' }]);
     } finally {
       setLoading(false);

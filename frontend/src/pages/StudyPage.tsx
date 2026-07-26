@@ -52,7 +52,7 @@ export function StudyPage() {
       await uploadDocument(file);
       toast.success('Document processed successfully!');
       loadDocuments();
-    } catch (err) {
+    } catch {
       toast.error('Failed to process document');
     } finally {
       setUploading(false);
