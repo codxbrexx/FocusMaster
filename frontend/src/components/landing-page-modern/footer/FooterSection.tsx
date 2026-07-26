@@ -10,7 +10,7 @@ export const FooterSection = () => {
           <div className="lg:col-span-2 flex flex-col gap-6">
             <div className="flex items-center gap-3">
               <img
-                src="/fmasterlogosm.png"
+                src="/FM_logo.png"
                 alt="FocusMaster Logo"
                 className="h-9 w-auto"
               />

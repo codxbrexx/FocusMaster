@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
 import { useAuth } from '../context/AuthContext';
 import { Input } from '../components/ui/input';
-import { Lock, Mail, Loader2, Eye, EyeOff, ArrowRight, X } from 'lucide-react';
+import { Loader2, Eye, EyeOff, X } from 'lucide-react';
 import { toast } from 'sonner';
 import { LoadingPage } from '../components/ui/LoadingPage';
 

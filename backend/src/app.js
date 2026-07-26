@@ -17,6 +17,8 @@ const seedRoutes = require("./routes/seedRoutes");
 const feedbackRoutes = require("./routes/feedbackRoutes");
 const gdprRoutes = require("./routes/gdprRoutes");
 const cronRoutes = require("./routes/cronRoutes");
+const aiRoutes = require("./routes/aiRoutes");
+const studyProfileRoutes = require("./routes/studyProfileRoutes");
 
 const app = express();
 app.set("trust proxy", 1);
@@ -87,6 +89,8 @@ app.use("/api/admin", require("./admin/routes/adminRoutes"));
 // Cron endpoint: called by Vercel Cron in production;
 // node-cron handles the same job on traditional/local servers (see server.js).
 app.use("/api/cron", cronRoutes);
+app.use("/api/ai", aiRoutes);
+app.use("/api/study-profile", studyProfileRoutes);
 
 app.get(["/favicon.ico", "/favicon.png"], (req, res) => res.status(204).end());
 

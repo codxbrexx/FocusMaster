@@ -85,8 +85,8 @@ describe('Sidebar Integration', () => {
 
   it('toggles sidebar on click', () => {
     renderSidebar(true);
-    // Find the toggle button (it has "Close Sidebar" text when open)
-    const toggleBtn = screen.getByText('Close Sidebar');
+    // Find the toggle button
+    const toggleBtn = screen.getByLabelText('Close Sidebar');
     fireEvent.click(toggleBtn);
     expect(mockOnOpenChange).toHaveBeenCalledWith(false);
   });

@@ -1,4 +1,22 @@
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useSyncExternalStore } from "react";
+
+/** Subscribe to window resize events and return current client dimensions. */
+function getClientDimensions() {
+  if (typeof window === "undefined") return { width: 0, height: 0 };
+  return {
+    width: document.documentElement.clientWidth,
+    height: document.documentElement.clientHeight,
+  };
+}
+
+function subscribeToResize(callback: () => void) {
+  window.addEventListener("resize", callback);
+  return () => window.removeEventListener("resize", callback);
+}
+
+function useClientDimensions() {
+  return useSyncExternalStore(subscribeToResize, getClientDimensions, () => ({ width: 0, height: 0 }));
+}
 
 export interface TrailGridProps {
   cellSize?: number;
@@ -16,25 +34,13 @@ export default function TrailGrid({
   const timeoutsRef = useRef<Map<number, ReturnType<typeof setTimeout>>>(new Map());
   const lastHoveredRef = useRef<number>(-1);
 
-  const [gridDimensions, setGridDimensions] = useState({ cols: 0, rows: 0 });
-
-  // Calculate perfect squares based on window size and cell size
-  const calculateGrid = useCallback(() => {
-    if (typeof window === "undefined") return;
-    // Use clientWidth/clientHeight to avoid scrollbar width issues that cause horizontal scroll bugs
-    const cols = Math.ceil(document.documentElement.clientWidth / cellSize);
-    const rows = Math.ceil(document.documentElement.clientHeight / cellSize);
-    setGridDimensions({ cols, rows });
-  }, [cellSize]);
+  // Derive grid dimensions from window size without setState-in-effect
+  const { width, height } = useClientDimensions();
+  const cols = width > 0 ? Math.ceil(width / cellSize) : 0;
+  const rows = height > 0 ? Math.ceil(height / cellSize) : 0;
 
   useEffect(() => {
-    calculateGrid();
-    window.addEventListener("resize", calculateGrid);
-    return () => window.removeEventListener("resize", calculateGrid);
-  }, [calculateGrid]);
-
-  useEffect(() => {
-    const { cols: columns, rows } = gridDimensions;
+    const columns = cols;
     if (columns === 0 || rows === 0) return;
 
     cellsRef.current = cellsRef.current.slice(0, columns * rows);
@@ -130,17 +136,19 @@ export default function TrailGrid({
     document.addEventListener("mousemove", handleMouseMove);
     document.addEventListener("mouseleave", handleMouseLeave);
 
+    // Capture ref values before cleanup to avoid stale ref access
+    const timeouts = timeoutsRef.current;
     return () => {
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseleave", handleMouseLeave);
-      timeoutsRef.current.forEach(clearTimeout);
-      timeoutsRef.current.clear();
+      timeouts.forEach(clearTimeout);
+      timeouts.clear();
       lastHoveredRef.current = -1;
       if (rafId !== null) cancelAnimationFrame(rafId);
     };
-  }, [gridDimensions, duration, cellSize]);
+  }, [cols, rows, duration, cellSize]);
 
-  if (gridDimensions.cols === 0) return null;
+  if (cols === 0) return null;
 
   return (
     <div
@@ -153,8 +161,8 @@ export default function TrailGrid({
         width: "100%", // BUGFIX: 100% instead of 100vw prevents horizontal scrollbars
         height: "100%",
         zIndex: 0, // Ensure it stays absolutely behind all foreground content
-        gridTemplateColumns: `repeat(${gridDimensions.cols}, ${cellSize}px)`,
-        gridTemplateRows: `repeat(${gridDimensions.rows}, ${cellSize}px)`,
+        gridTemplateColumns: `repeat(${cols}, ${cellSize}px)`,
+        gridTemplateRows: `repeat(${rows}, ${cellSize}px)`,
         gap: 0,
         padding: 0,
         boxSizing: "border-box",
@@ -181,7 +189,7 @@ export default function TrailGrid({
           transition: none;
         }
       `}</style>
-      {Array.from({ length: gridDimensions.cols * gridDimensions.rows }).map((_, i) => (
+      {Array.from({ length: cols * rows }).map((_, i) => (
         <div
           key={i}
           ref={(el) => {

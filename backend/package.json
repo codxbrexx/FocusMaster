@@ -16,6 +16,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@google/genai": "^2.13.0",
     "axios": "^1.13.2",
     "bcryptjs": "^3.0.3",
     "cookie-parser": "^1.4.7",
@@ -29,7 +30,9 @@
     "jsonwebtoken": "^9.0.3",
     "mongodb": "^7.0.0",
     "mongoose": "^9.0.0",
+    "multer": "^2.2.0",
     "node-cron": "^4.2.1",
+    "pdf-parse": "1.1.1",
     "xss": "^1.0.15",
     "zod": "^4.3.6"
   },

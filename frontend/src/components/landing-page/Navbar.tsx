@@ -39,13 +39,13 @@ export const Navbar = () => {
         <div className="max-w-9xl  px-4 sm:px-4 py-2">
           <div className="flex py-2 items-center justify-between">
             {/* Logo */}
-            <Link to="/" className="flex items-center gap-2 sm:gap-3 group">
+            <Link to="/" className="flex items-center gap-0.5 group">
               <div className="relative">
                 <div className="absolute inset-0 bg-primary/40 blur-lg rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <img
-                  src="/fmasterlogo.png"
+                  src="/FM_logo.png"
                   alt="FocusMaster Logo"
-                  className="w-10 h-10 sm:w-10 sm:h-10 rounded-xl shadow-lg relative z-10"
+                  className="w-12 h-12 sm:w-12 sm:h-12 rounded-xl shadow-lg relative z-10"
                 />
               </div>
               <span className="text-xl sm:text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-white/70">

@@ -200,6 +200,27 @@ const adminFeedbackStatusBodySchema = z
   })
   .strict();
 
+const studyProfileBodySchema = z
+  .object({
+    stream: z
+      .enum(["engineering", "medical", "commerce", "competitive", "custom"])
+      .optional(),
+    customStreamName: optionalTrimmedString(100),
+    subjects: z
+      .array(
+        z.object({
+          name: safeString("Subject name", 100),
+          difficulty: z.enum(["easy", "medium", "hard"]).optional(),
+        }),
+      )
+      .max(20)
+      .optional(),
+    examDate: isoDate.optional().nullable(),
+    weeklyGoalHours: z.coerce.number().min(1).max(100).optional(),
+    availableHoursPerDay: z.coerce.number().min(0.5).max(16).optional(),
+  })
+  .strict();
+
 module.exports = {
   adminFeedbackStatusBodySchema,
   adminUserStatusBodySchema,
@@ -212,6 +233,7 @@ module.exports = {
   sessionQuerySchema,
   sessionUpdateBodySchema,
   spotifyCallbackSchema,
+  studyProfileBodySchema,
   taskBodySchema,
   taskUpdateBodySchema,
   workLogStopSchema,

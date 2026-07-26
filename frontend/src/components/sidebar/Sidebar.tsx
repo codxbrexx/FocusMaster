@@ -6,9 +6,9 @@ import {
   Clock,
   Calendar as CalendarIcon,
   Music,
-  PanelLeftClose,
-  PanelLeftOpen,
   ShieldCheck,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
@@ -23,11 +23,14 @@ interface SidebarProps {
   onOpenChange: (open: boolean) => void;
 }
 
+import { BookOpen } from 'lucide-react';
+
 const MENU_ITEMS = [
   { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { path: '/pomodoro', label: 'Pomodoro', icon: Timer },
   { path: '/clock', label: 'Clock In/Out', icon: Clock },
   { path: '/tasks', label: 'Tasks', icon: ListTodo },
+  { path: '/study', label: 'Study AI', icon: BookOpen },
   { path: '/analytics', label: 'Analytics', icon: BarChart2 },
   { path: '/calendar', label: 'Calendar', icon: CalendarIcon },
   { path: '/spotify', label: 'Spotify', icon: Music },
@@ -78,20 +81,20 @@ export const Sidebar = ({ open, onOpenChange }: SidebarProps) => {
       }}
       className={cn(
         'h-screen fixed left-0 top-0 z-40 flex flex-col',
-        'bg-background border-r border-white/10',
-        isMobile && 'bg-card border-r border-border w-full max-w-[80vw] shadow-[10px_0_35px_rgba(0,0,0,0.6)]'
+        'bg-background/80 backdrop-blur-2xl border-r border-border/40',
+        isMobile && 'bg-card/95 backdrop-blur-3xl border-r border-border w-full max-w-[80vw]'
       )}
       onClick={() => !isMobile && onOpenChange(!open)}
     >
       {/* --- HEADER --- */}
       <div
         className={cn(
-          'h-20 lg:h-28 flex items-center mb-2 relative group transition-all duration-300 z-10',
+          'h-14 lg:h-16 flex items-center mb-2 relative group transition-all duration-300 z-10',
           open ? 'justify-between px-6' : 'justify-center'
         )}
       >
         <div
-          className="flex items-center gap-5 cursor-pointer"
+          className="flex items-center gap-1 cursor-pointer"
           onClick={(e) => {
             e.stopPropagation();
             navigate('/dashboard');
@@ -100,9 +103,9 @@ export const Sidebar = ({ open, onOpenChange }: SidebarProps) => {
           <div className="relative shrink-0 flex items-center justify-center">
             <div className="absolute inset-0 bg-primary/40 blur-2xl group-hover:bg-primary/50 transition-all duration-500 rounded-full" />
             <img
-              src="/fmasterlogo.png"
+              src="/FM_logo.png"
               alt="FocusMaster"
-              className="relative w-12 h-12 shadow-2xl transition-transform duration-300 shrink-0 object-contain drop-shadow-[0_0_15px_rgba(124,58,237,0.5)]"
+              className="relative w-14 h-14 shadow-2xl transition-transform duration-300 shrink-0 object-contain drop-shadow-[0_0_15px_rgba(124,58,237,0.5)]"
             />
           </div>
 
@@ -139,7 +142,7 @@ export const Sidebar = ({ open, onOpenChange }: SidebarProps) => {
           onClick={() => isMobile && onOpenChange(false)}
         />
       )}
-      <div className="flex-1 px-4 space-y-1.5 overflow-y-auto overflow-x-hidden scrollbar-none">
+      <div className="flex-1 px-4 space-y-1.5 overflow-y-auto overflow-x-hidden scrollbar-none pb-4">
         {MENU_ITEMS.map((item) => (
           <SidebarItem
             key={item.path}
@@ -149,46 +152,22 @@ export const Sidebar = ({ open, onOpenChange }: SidebarProps) => {
           />
         ))}
 
-        {/* Toggle Button Moved to Bottom */}
-        {!isMobile && (
-          <button
-            onClick={() => onOpenChange(!open)}
-            className={cn(
-              'flex items-center gap-3.5 px-3.5 py-3 rounded-xl transition-all duration-300 group overflow-hidden w-full text-left mt-auto',
-              !open && 'justify-center px-2',
-              'text-muted-foreground hover:text-foreground hover:bg-black/5 dark:hover:bg-white/5'
-            )}
-          >
-            <div className="relative z-10 flex items-center justify-center">
-              {open ? (
-                <PanelLeftClose
-                  className="w-[22px] h-[22px] text-muted-foreground/70 group-hover:text-foreground group-hover:scale-110 transition-all duration-300"
-                  strokeWidth={2}
-                />
-              ) : (
-                <PanelLeftOpen
-                  className="w-[22px] h-[22px] text-muted-foreground/70 group-hover:text-foreground group-hover:scale-110 transition-all duration-300"
-                  strokeWidth={2}
-                />
-              )}
-            </div>
-
-            <AnimatePresence>
-              {open && (
-                <motion.span
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -10 }}
-                  transition={{ duration: 0.2 }}
-                  className="relative z-10 text-sm font-medium tracking-wide whitespace-nowrap ml-3.5"
-                >
-                  Close Sidebar
-                </motion.span>
-              )}
-            </AnimatePresence>
-          </button>
-        )}
       </div>
+
+      {/* Edge Toggle Button */}
+      {!isMobile && (
+        <button
+          aria-label={open ? "Close Sidebar" : "Open Sidebar"}
+          onClick={() => onOpenChange(!open)}
+          className="absolute top-1/2 -translate-y-1/2 -right-4 w-8 h-8 flex items-center justify-center bg-card border border-border/50 rounded-full shadow-lg text-muted-foreground hover:text-foreground hover:border-border transition-all z-50 group hover:shadow-primary/20"
+        >
+          {open ? (
+            <ChevronLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
+          ) : (
+            <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+          )}
+        </button>
+      )}
 
     </motion.aside>
   );

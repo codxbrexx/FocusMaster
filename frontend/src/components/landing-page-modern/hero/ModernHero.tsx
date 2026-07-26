@@ -94,7 +94,7 @@ export const ModernHero = () => {
 
       <div
         className="relative z-10 w-full"
-        style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}
+        style={{ minHeight: '111.1vh', display: 'flex', flexDirection: 'column', transform: 'scale(0.9)', transformOrigin: 'top center', width: '111.1%', marginLeft: '-5.55%' }}
       >
         {/* Content row — fills the viewport */}
         <div

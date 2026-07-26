@@ -43,6 +43,9 @@ const EditProfilePage = lazy(() =>
 const Calendar = lazy(() =>
   import('./components/Calendar').then((module) => ({ default: module.Calendar }))
 );
+const StudyPage = lazy(() =>
+  import('./pages/StudyPage').then((module) => ({ default: module.StudyPage }))
+);
 const LandingPageModern = lazy(() =>
   import('./pages/LandingPageModern').then((module) => ({ default: module.LandingPageModern }))
 );
@@ -118,6 +121,7 @@ const App = () => {
                       <Route path="/clock" element={<ClockInOut />} />
                       <Route path="/spotify" element={<SpotifyPanel />} />
                       <Route path="/calendar" element={<Calendar />} />
+                      <Route path="/study" element={<StudyPage />} />
                       <Route path="/settings" element={<Settings />} />
                       <Route path="/profile" element={<Profile />} />
                       <Route path="/profile/edit" element={<EditProfilePage />} />

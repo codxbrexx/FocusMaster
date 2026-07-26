@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { FocusHeatmap } from './FocusHeatmap';
 import { motion, type Variants } from 'framer-motion';
 import { useTaskStore } from '@/store/useTaskStore';
@@ -9,6 +9,10 @@ import { WelcomeHeader } from './dashboard/WelcomeHeader';
 import { StatsOverview } from './dashboard/StatsOverview';
 import { PriorityTasks } from './dashboard/PriorityTasks';
 import { DailyOverviewChart } from './dashboard/DailyOverviewChart';
+import { AiInsightsPanel } from './dashboard/AiInsightsPanel';
+import { StudyPlanCard } from './dashboard/StudyPlanCard';
+import { RecommendationsCard } from './dashboard/RecommendationsCard';
+import { useAiStore } from '@/store/useAiStore';
 
 const MOTIVATIONAL_QUOTES = [
   'Focus is the gateway to thinking, learning, and memory.',
@@ -24,6 +28,11 @@ export function Dashboard() {
   const { tasks } = useTaskStore();
   const { settings } = useSettingsStore();
   const { sessions } = useHistoryStore();
+  const { fetchStudyProfile: loadProfile } = useAiStore();
+
+  useEffect(() => {
+    loadProfile();
+  }, [loadProfile]);
 
   const points = useMemo(() => {
     const sessionPoints = sessions.filter((s) => s.type === 'pomodoro').length * 25;
@@ -136,6 +145,13 @@ export function Dashboard() {
           sessionCount={sessions.length}
           averageFocusDuration={averageFocusDuration}
         />
+
+        <AiInsightsPanel />
+
+        <div className="lg:col-span-2">
+          <StudyPlanCard />
+        </div>
+        <RecommendationsCard />
 
         <div className="block lg:col-span-3">
           <FocusHeatmap />

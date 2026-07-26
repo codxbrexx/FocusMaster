@@ -30,7 +30,7 @@ export const SidebarItem = ({ item, isOpen, onClick }: SidebarItemProps) => {
           !isOpen && 'justify-center px-2',
           isActive
             ? 'text-foreground'
-            : 'text-muted-foreground hover:text-foreground hover:bg-black/5 dark:hover:bg-white/5'
+            : 'text-muted-foreground hover:text-foreground hover:bg-muted/50 hover:shadow-sm'
         )
       }
     >

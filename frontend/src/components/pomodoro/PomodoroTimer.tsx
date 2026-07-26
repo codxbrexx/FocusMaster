@@ -12,6 +12,7 @@ import { TimerDisplay } from './TimerDisplay';
 import { TimerControls } from './TimerControls';
 import { SessionManager } from './SessionManager';
 import { ModeSelector } from './ModeSelector';
+import { AdaptiveTimerSuggestion } from './AdaptiveTimerSuggestion';
 
 // Sidebar
 import { CalendarCard } from './sidebar/CalendarCard';
@@ -61,6 +62,7 @@ export function PomodoroTimer() {
 
   const [showMoodModal, setShowMoodModal] = useState(false);
   const [focusMode, setFocusMode] = useState(false);
+  const [overrideDuration, setOverrideDuration] = useState<number | null>(null);
 
   const status = isActive
     ? 'running'
@@ -71,17 +73,23 @@ export function PomodoroTimer() {
   const sessionStartTime = useRef<Date | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // Sync duration from settings
+  // Sync duration from settings or override
   useEffect(() => {
     if (!isActive) {
-      let newDuration = settings.pomodoroDuration * 60;
-      if (mode === 'short-break') newDuration = settings.shortBreakDuration * 60;
-      if (mode === 'long-break') newDuration = settings.longBreakDuration * 60;
-      if (totalDuration !== newDuration) {
-        useTimerStore.getState().setTotalDuration(newDuration);
+      if (overrideDuration !== null && mode === 'pomodoro') {
+        if (totalDuration !== overrideDuration) {
+          useTimerStore.getState().setTotalDuration(overrideDuration);
+        }
+      } else {
+        let newDuration = settings.pomodoroDuration * 60;
+        if (mode === 'short-break') newDuration = settings.shortBreakDuration * 60;
+        if (mode === 'long-break') newDuration = settings.longBreakDuration * 60;
+        if (totalDuration !== newDuration) {
+          useTimerStore.getState().setTotalDuration(newDuration);
+        }
       }
     }
-  }, [settings, mode, isActive, totalDuration]);
+  }, [settings, mode, isActive, totalDuration, overrideDuration]);
 
   const handleStart = useCallback(() => {
     if (!isActive) {
@@ -98,6 +106,7 @@ export function PomodoroTimer() {
   const handleReset = useCallback(() => {
     resetTimer();
     sessionStartTime.current = null;
+    setOverrideDuration(null); // Clear override on reset
   }, [resetTimer]);
 
   useEffect(() => {
@@ -148,6 +157,7 @@ export function PomodoroTimer() {
     setShowMoodModal(false);
     resetTimer();
     sessionStartTime.current = null;
+    setOverrideDuration(null); // Clear override on completion
   };
 
   const formatTime = (seconds: number) => {
@@ -201,7 +211,15 @@ export function PomodoroTimer() {
         {/* ════════════════════════════
             CENTER — TIMER
             ════════════════════════════ */}
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center w-full">
+          {mode === 'pomodoro' && (
+            <div className="w-full">
+              <AdaptiveTimerSuggestion
+                onApply={(focus) => setOverrideDuration(focus * 60)}
+              />
+            </div>
+          )}
+
           {/* Card shell */}
           <div className="w-full bg-card border border-border/50 shadow-sm rounded-2xl flex flex-col items-center overflow-hidden">
 
