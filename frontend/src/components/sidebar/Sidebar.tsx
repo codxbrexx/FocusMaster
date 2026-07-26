@@ -157,6 +157,7 @@ export const Sidebar = ({ open, onOpenChange }: SidebarProps) => {
       {/* Edge Toggle Button */}
       {!isMobile && (
         <button
+          aria-label={open ? "Close Sidebar" : "Open Sidebar"}
           onClick={() => onOpenChange(!open)}
           className="absolute top-1/2 -translate-y-1/2 -right-4 w-8 h-8 flex items-center justify-center bg-card border border-border/50 rounded-full shadow-lg text-muted-foreground hover:text-foreground hover:border-border transition-all z-50 group hover:shadow-primary/20"
         >

@@ -60,6 +60,7 @@ GOOGLE_CLIENT_SECRET=your_google_client_secret
 SPOTIFY_CLIENT_ID=your_spotify_client_id
 SPOTIFY_CLIENT_SECRET=your_spotify_client_secret
 GEMINI_API_KEY=your_google_gemini_api_key
+DEFAULT_LLM_MODEL=gemini-2.0-flash
 ```
 
 ```bash
