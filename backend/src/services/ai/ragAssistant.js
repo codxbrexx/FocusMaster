@@ -1,16 +1,17 @@
-const { searchSimilarChunks } = require("./vectorSearch");
 const { generate } = require("../llmService");
 
 /**
- * Ask a question based on uploaded documents.
- * 
- * @param {string} query 
- * @param {string} userId 
+ * Ask a question based on pre-fetched document chunks.
+ *
+ * This function is a pure data-transformation layer. It does NOT access
+ * the database. The caller (controller) performs the vector search and
+ * passes the relevant chunks in.
+ *
+ * @param {string} query
+ * @param {Array<{ content: string }>} chunks
+ * @returns {Promise<Object>}
  */
-async function askQuestion(query, userId) {
-  // 1. Retrieve relevant chunks
-  const chunks = await searchSimilarChunks(query, userId, 5);
-  
+async function askQuestion(query, chunks) {
   if (!chunks || chunks.length === 0) {
     return {
       answer: "I couldn't find any relevant information in your uploaded notes. Please try rephrasing or upload more documents.",
@@ -18,10 +19,10 @@ async function askQuestion(query, userId) {
     };
   }
 
-  // 2. Build context
+  // Build context
   const contextText = chunks.map((c, i) => `[Source ${i + 1}]:\n${c.content}`).join("\n\n");
   
-  // 3. Build prompt
+  // Build prompt
   const prompt = `You are an intelligent study assistant. Answer the student's question using ONLY the provided context from their notes. 
 If the answer is not contained in the context, politely state that you don't know based on the provided notes.
 
@@ -32,7 +33,7 @@ Question: ${query}
 
 Answer in a clear, educational tone.`;
 
-  // 4. Generate answer
+  // Generate answer
   try {
     const answer = await generate(prompt, null, {
       temperature: 0.2, // Low temp for factual answers
@@ -52,23 +53,16 @@ Answer in a clear, educational tone.`;
 }
 
 /**
- * Generates a multiple-choice quiz from the user's documents.
- * We just get random chunks or chunks related to a topic.
- * 
- * @param {string} topic (Optional topic to focus the quiz on)
- * @param {string} userId 
+ * Generates a multiple-choice quiz from pre-fetched document chunks.
+ *
+ * This function is a pure data-transformation layer. It does NOT access
+ * the database. The caller (controller) performs the vector search and
+ * passes the relevant chunks in.
+ *
+ * @param {Array<{ content: string }>} chunks - Pre-fetched relevant chunks
+ * @returns {Promise<Object>}
  */
-async function generateQuiz(topic, userId) {
-  let chunks = [];
-  
-  if (topic) {
-    chunks = await searchSimilarChunks(topic, userId, 5);
-  } else {
-    // If no topic, we'd ideally sample random chunks.
-    // For simplicity, we search for a broad query or just return an error if we can't do random easily via vector search.
-    chunks = await searchSimilarChunks("key concepts overview summary", userId, 5);
-  }
-
+async function generateQuiz(chunks) {
   if (!chunks || chunks.length === 0) {
     return {
       error: "Not enough document content to generate a quiz. Upload notes first."

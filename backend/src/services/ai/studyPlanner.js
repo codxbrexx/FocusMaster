@@ -1,8 +1,5 @@
-const User = require("../../models/User");
-const StudyPlan = require("../../models/StudyPlan");
-const { aggregateUserStats } = require("../analytics/aggregator");
 const { generate } = require("../llmService");
-const { differenceInWeeks, addWeeks, format } = require("date-fns");
+const { differenceInWeeks, format } = require("date-fns");
 
 /**
  * Build a compact prompt for study plan generation.
@@ -92,91 +89,46 @@ function parsePlanResponse(text, weeksCount) {
 }
 
 /**
- * Generate or retrieve a study plan for a user.
+ * Generate a study plan from a user's profile and aggregated stats.
  *
- * @param {string} userId
- * @param {boolean} [forceRegenerate=false] - If true, regenerate even if a plan exists
+ * This function is a pure data-transformation layer:
+ *   1. Build prompt from profile + stats
+ *   2. Call LLM
+ *   3. Parse response into structured weeks
+ *   4. Return the parsed weeks array (or null on failure)
+ *
+ * It does NOT access the database. The caller (controller) is responsible
+ * for fetching the profile/stats, checking for existing plans, and saving.
+ *
+ * @param {Object} profile 
+ * @param {Object} stats 
+ * @returns {Promise<{ weeks: Array|null, error: string|null }>}
  */
-async function generateStudyPlan(userId, forceRegenerate = false) {
-  // Check for existing plan if not forcing regeneration
-  if (!forceRegenerate) {
-    const existing = await StudyPlan.findOne({ user: userId })
-      .sort({ generatedAt: -1 })
-      .lean();
-
-    if (existing) {
-      return { plan: existing, fromCache: true };
-    }
-  }
-
-  // Fetch user profile and stats
-  const user = await User.findById(userId).select("studyProfile settings");
-  const profile = user.studyProfile || {};
-
+async function generateStudyPlan(profile, stats) {
   if (!profile.stream && (!profile.subjects || profile.subjects.length === 0)) {
     return {
-      plan: null,
+      weeks: null,
       error: "Please set up your study profile first (stream and subjects).",
     };
   }
-
-  const stats = await aggregateUserStats(userId, 30);
 
   const weeksUntilExam = profile.examDate
     ? Math.max(differenceInWeeks(new Date(profile.examDate), new Date()), 1)
     : 4;
   const planWeeks = Math.min(weeksUntilExam, 8);
 
-  // Call LLM
-  let weeks;
-  try {
-    const prompt = buildPlannerPrompt(profile, stats);
-    const llmResponse = await generate(prompt, null, {
-      max_tokens: 2000,
-      temperature: 0.3,
-    });
-    weeks = parsePlanResponse(llmResponse, planWeeks);
-  } catch (err) {
-    // If LLM fails, return existing plan or error
-    const fallback = await StudyPlan.findOne({ user: userId })
-      .sort({ generatedAt: -1 })
-      .lean();
-
-    if (fallback) {
-      return { plan: fallback, fromCache: true, stale: true };
-    }
-    return { plan: null, error: "Failed to generate study plan. Please try again later." };
-  }
+  const prompt = buildPlannerPrompt(profile, stats);
+  const llmResponse = await generate(prompt, null, {
+    max_tokens: 2000,
+    temperature: 0.3,
+  });
+  const weeks = parsePlanResponse(llmResponse, planWeeks);
 
   if (!weeks) {
-    return { plan: null, error: "Could not parse AI response. Please try again." };
+    return { weeks: null, error: "Could not parse AI response. Please try again." };
   }
 
-  // Add dates to weeks
-  const now = new Date();
-  const weeksWithDates = weeks.map((week, i) => ({
-    ...week,
-    weekNumber: i + 1,
-    startDate: addWeeks(now, i),
-    endDate: addWeeks(now, i + 1),
-  }));
-
-  // Save plan (replace existing)
-  const saved = await StudyPlan.findOneAndUpdate(
-    { user: userId },
-    {
-      user: userId,
-      weeks: weeksWithDates,
-      examDate: profile.examDate,
-      totalWeeks: planWeeks,
-      stream: profile.stream,
-      subjects: (profile.subjects || []).map((s) => s.name),
-      generatedAt: new Date(),
-    },
-    { upsert: true, new: true },
-  );
-
-  return { plan: saved, fromCache: false };
+  return { weeks, error: null };
 }
 
 module.exports = { generateStudyPlan, buildPlannerPrompt, parsePlanResponse };

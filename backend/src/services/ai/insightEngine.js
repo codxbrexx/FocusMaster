@@ -1,11 +1,13 @@
-const AiInsight = require("../../models/AiInsight");
-const { aggregateUserStats } = require("../analytics/aggregator");
-const {
-  calculateProductivityScore,
-} = require("../analytics/productivityScore");
-const { generate } = require("../llmService");
+const { generateJSON } = require("../llmService");
 
-const CACHE_HOURS = 24;
+const INSIGHT_SYSTEM_INSTRUCTION = `You are a productivity coach analyzing a student's study data.
+
+Rules:
+- Insights should be specific observations about the user's patterns (e.g., "You focus best between 7–10 PM")
+- Recommendations should be actionable changes (e.g., "Try 35-minute sessions instead of 25")
+- Summary should be encouraging and personalized
+- Keep each item under 100 characters
+- Be conversational, not robotic`;
 
 /**
  * Build a compact prompt from pre-aggregated stats.
@@ -20,9 +22,7 @@ function buildInsightPrompt(stats, scoreResult) {
     })
     .join(", ");
 
-  return `You are a productivity coach analyzing a student's study data.
-
-User Statistics:
+  return `User Statistics:
 - Average focus session: ${stats.focus.avgDurationMin} minutes
 - Session completion rate: ${stats.focus.completionRate}%
 - Total focus this week: ${stats.focus.weeklyMinutes} minutes
@@ -32,35 +32,21 @@ User Statistics:
 - Task completion rate: ${stats.tasks.completionRate}%
 - Productivity score: ${scoreResult.score}/100
 
-Generate a JSON response with exactly this structure (no markdown, no code fences):
+Generate a JSON response with exactly this structure:
 {
   "insights": ["insight1", "insight2", "insight3"],
   "recommendations": ["recommendation1", "recommendation2"],
   "summary": "one motivational sentence",
   "prepAdvice": "A specific piece of advice on their exam/subject preparation based on their streak and focus."
-}
-
-Rules:
-- Insights should be specific observations about the user's patterns (e.g., "You focus best between 7–10 PM")
-- Recommendations should be actionable changes (e.g., "Try 35-minute sessions instead of 25")
-- Summary should be encouraging and personalized
-- Keep each item under 100 characters
-- Be conversational, not robotic`;
+}`;
 }
 
 /**
- * Parse the LLM response into structured data.
- * Handles common issues: markdown fences, partial JSON, etc.
+ * Validate and clean the parsed LLM JSON response.
  */
-function parseInsightResponse(text) {
+function parseInsightResponse(parsed) {
+  if (!parsed) parsed = {};
   try {
-    // Strip markdown code fences if present
-    let cleaned = text.trim();
-    if (cleaned.startsWith("```")) {
-      cleaned = cleaned.replace(/^```(?:json)?\n?/, "").replace(/\n?```$/, "");
-    }
-    const parsed = JSON.parse(cleaned);
-
     return {
       insights: Array.isArray(parsed.insights)
         ? parsed.insights.slice(0, 3)
@@ -91,108 +77,34 @@ function parseInsightResponse(text) {
 }
 
 /**
- * Generate AI insights for a user.
+ * Generate AI insights from pre-aggregated stats and a pre-computed score.
  *
- * Flow:
- *   1. Check cache → return if valid
- *   2. Aggregate stats → build prompt → call LLM → parse
- *   3. Save to cache → return
+ * This function is a pure data-transformation layer:
+ *   1. Build prompt from stats + score
+ *   2. Call LLM
+ *   3. Parse response
+ *   4. Return structured result
  *
- * If LLM fails, returns stale cache or a fallback.
+ * It does NOT access the database. The caller (controller) is responsible
+ * for cache checks, cache writes, and fetching stats/score.
+ *
+ * @param {Object} stats       
+ * @param {Object} scoreResult 
+ * @returns {Promise<Object>}  
  */
-async function generateInsights(userId, userSettings = {}) {
-  // ── 1. Check cache ──────────────────────────────────────────────
-  const cached = await AiInsight.findOne({
-    user: userId,
-    expiresAt: { $gt: new Date() },
-  })
-    .sort({ generatedAt: -1 })
-    .lean();
-
-  if (cached) {
-    return {
-      insights: cached.insights,
-      recommendations: cached.recommendations,
-      summary: cached.summary,
-      prepAdvice: cached.prepAdvice || "Keep up your preparation!",
-      productivityScore: cached.productivityScore,
-      scoreBreakdown: cached.scoreBreakdown,
-      stats: cached.stats,
-      generatedAt: cached.generatedAt,
-      fromCache: true,
-    };
-  }
-
-  // ── 2. Aggregate + Score ────────────────────────────────────────
-  const stats = await aggregateUserStats(userId, 30);
-  const scoreResult = calculateProductivityScore(stats, userSettings);
-
-  // ── 3. Call LLM ─────────────────────────────────────────────────
-  let parsed;
+async function generateInsights(stats, scoreResult) {
+  const prompt = buildInsightPrompt(stats, scoreResult);
   try {
-    const prompt = buildInsightPrompt(stats, scoreResult);
-    const llmResponse = await generate(prompt, null, {
+    const llmResponse = await generateJSON(prompt, {
       max_tokens: 400,
       temperature: 0.4,
+      systemInstruction: INSIGHT_SYSTEM_INSTRUCTION,
     });
-    parsed = parseInsightResponse(llmResponse);
-  } catch (err) {
-    // LLM failed — try stale cache
-    const stale = await AiInsight.findOne({ user: userId })
-      .sort({ generatedAt: -1 })
-      .lean();
-
-    if (stale) {
-      return {
-        insights: stale.insights,
-        recommendations: stale.recommendations,
-        summary: stale.summary,
-        prepAdvice: stale.prepAdvice || "Keep up your preparation!",
-        productivityScore: scoreResult.score,
-        scoreBreakdown: scoreResult.breakdown,
-        stats,
-        generatedAt: stale.generatedAt,
-        fromCache: true,
-        stale: true,
-      };
-    }
-
-    // No cache at all — return fallback
-    parsed = parseInsightResponse("invalid");
+    return parseInsightResponse(llmResponse);
+  } catch (error) {
+    console.error("Error generating insights:", error);
+    return parseInsightResponse(null);
   }
-
-  // ── 4. Save to cache ────────────────────────────────────────────
-  const now = new Date();
-  const expiresAt = new Date(now.getTime() + CACHE_HOURS * 60 * 60 * 1000);
-
-  const saved = await AiInsight.findOneAndUpdate(
-    { user: userId },
-    {
-      user: userId,
-      insights: parsed.insights,
-      recommendations: parsed.recommendations,
-      summary: parsed.summary,
-      prepAdvice: parsed.prepAdvice,
-      productivityScore: scoreResult.score,
-      scoreBreakdown: scoreResult.breakdown,
-      stats,
-      generatedAt: now,
-      expiresAt,
-    },
-    { upsert: true, new: true },
-  );
-
-  return {
-    insights: saved.insights,
-    recommendations: saved.recommendations,
-    summary: saved.summary,
-    prepAdvice: saved.prepAdvice || parsed.prepAdvice,
-    productivityScore: scoreResult.score,
-    scoreBreakdown: scoreResult.breakdown,
-    stats,
-    generatedAt: saved.generatedAt,
-    fromCache: false,
-  };
 }
 
 module.exports = { generateInsights, buildInsightPrompt, parseInsightResponse };

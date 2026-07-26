@@ -1,7 +1,4 @@
 const pdfParse = require("pdf-parse");
-const Document = require("../../models/Document");
-const DocumentChunk = require("../../models/DocumentChunk");
-const { generateEmbedding } = require("./vectorSearch");
 
 /**
  * Splits text into chunks of ~1000 characters with 100 character overlap.
@@ -50,58 +47,26 @@ function chunkText(text) {
 }
 
 /**
- * Processes an uploaded PDF document, chunks it, generates embeddings, and saves to MongoDB.
- * 
- * @param {Buffer} fileBuffer 
- * @param {string} filename 
- * @param {number} size 
- * @param {string} userId 
+ * Parses a PDF buffer and returns chunked text strings.
+ *
+ * This function is a pure data-transformation layer. It does NOT access
+ * the database. The caller (controller) is responsible for creating the
+ * Document record, generating embeddings, and saving DocumentChunk records.
+ *
+ * @param {Buffer} fileBuffer - Raw PDF file buffer
+ * @returns {Promise<{ text: string, chunks: string[], pageCount: number }>}
  */
-async function processDocument(fileBuffer, filename, size, userId) {
+async function processDocument(fileBuffer) {
   // 1. Parse PDF
   const data = await pdfParse(fileBuffer);
-  const text = data.text;
   
-  // 2. Create Document record
-  const doc = await Document.create({
-    user: userId,
-    title: filename.replace(/\.[^/.]+$/, ""), // Strip extension
-    filename,
-    size,
-    pageCount: data.numpages || 0,
-  });
-  
-  // 3. Chunk text
-  const chunks = chunkText(text);
-  
-  // 4. Generate embeddings and save chunks
-  // We process chunks in batches to avoid rate limits
-  const batchSize = 10;
-  let chunkIndex = 0;
-  
-  for (let i = 0; i < chunks.length; i += batchSize) {
-    const batch = chunks.slice(i, i + batchSize);
-    
-    const chunkDocs = await Promise.all(
-      batch.map(async (content) => {
-        const embedding = await generateEmbedding(content);
-        return {
-          document: doc._id,
-          user: userId,
-          chunkIndex: chunkIndex++,
-          content,
-          embedding,
-        };
-      })
-    );
-    
-    await DocumentChunk.insertMany(chunkDocs);
-  }
+  // 2. Chunk text
+  const chunks = chunkText(data.text);
   
   return {
-    documentId: doc._id,
-    title: doc.title,
-    chunksProcessed: chunkIndex,
+    text: data.text,
+    chunks,
+    pageCount: data.numpages || 0,
   };
 }
 
