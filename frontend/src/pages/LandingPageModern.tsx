@@ -1,5 +1,4 @@
 import { Suspense } from 'react';
-import { motion } from 'framer-motion';
 import { ModernHero } from '../components/landing-page-modern/hero/ModernHero';
 import { DetailedFeaturesSection } from '../components/landing-page-modern/detailed-features/DetailedFeaturesSection';
 import { FinalCTASection } from '../components/landing-page-modern/cta/FinalCTASection';

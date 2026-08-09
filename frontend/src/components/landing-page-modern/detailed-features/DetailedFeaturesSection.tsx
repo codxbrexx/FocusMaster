@@ -5,13 +5,6 @@ import {
   BarChart2,
   Music2,
   Clock,
-  Play,
-  Pause,
-  SkipBack,
-  SkipForward,
-  Coffee,
-  LogOut,
-  MessageSquare,
   Bot,
 } from 'lucide-react';
 
