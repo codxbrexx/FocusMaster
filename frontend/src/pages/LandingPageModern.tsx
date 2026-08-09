@@ -8,7 +8,7 @@ import { Loader } from '../components/ui/Loader';
 import Header from '../components/landing-page-modern/header/Header';
 
 const LoadingFallback = () => (
-  <div className="min-h-screen w-full bg-[#020202] flex items-center justify-center">
+  <div className="min-h-screen w-full bg-[#f8f9fc] flex items-center justify-center">
     <div className="text-center">
       <Loader message="Preparing your experience" size={50} />
     </div>
@@ -18,7 +18,7 @@ const LoadingFallback = () => (
 export function LandingPageModern() {
   return (
     <div 
-      className="dark min-h-screen text-white overflow-x-hidden selection:bg-indigo-500 selection:text-white relative bg-[#05060A]"
+      className="light min-h-screen overflow-x-hidden selection:bg-indigo-500 selection:text-white relative bg-[#f8f9fc]"
     >
       <Suspense fallback={<LoadingFallback />}>
         {/* Foreground Content */}

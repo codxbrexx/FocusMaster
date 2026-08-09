@@ -117,7 +117,7 @@ export const DetailedFeaturesSection = () => {
                 {/* Text Content */}
                 <div className="lg:w-1/2 space-y-6">
                   {/* Badge */}
-                  <div className="inline-flex items-center gap-3 px-4 py-2 rounded-lg bg-slate-900/50">
+                  <div className="inline-flex items-center gap-3 px-4 py-2 rounded-lg bg-slate-100/80">
                     <div className={`p-2 rounded-lg ${colors.bg}`}>
                       <Icon className={`w-5 h-5 ${colors.text}`} />
                     </div>
@@ -127,7 +127,7 @@ export const DetailedFeaturesSection = () => {
                   </div>
 
                   {/* Title */}
-                  <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white tracking-tight leading-tight">
+                  <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-slate-900 tracking-tight leading-tight">
                     {feature.title}
                   </h3>
 
@@ -145,7 +145,7 @@ export const DetailedFeaturesSection = () => {
                         <div
                           className={`w-1.5 h-1.5 rounded-full flex-shrink-0 mt-2.5 ${colors.dot}`}
                         />
-                        <span className="text-slate-300 text-lg leading-relaxed">
+                        <span className="text-slate-600 text-lg leading-relaxed">
                           {feat}
                         </span>
                       </motion.li>
@@ -162,7 +162,7 @@ export const DetailedFeaturesSection = () => {
                   viewport={{ once: true }}
                 >
                   <div
-                    className={`p-6 rounded-2xl border border-slate-800 bg-slate-950/80 backdrop-blur-md shadow-lg relative overflow-hidden`}
+                    className={`p-6 rounded-2xl border border-slate-200 bg-white/90 backdrop-blur-md shadow-sm relative overflow-hidden`}
                   >
                     
                     <div className={`aspect-video rounded-xl flex items-center justify-center p-4`}>
@@ -185,7 +185,7 @@ export const DetailedFeaturesSection = () => {
                               />
                             </svg>
                             <div className="flex flex-col items-center">
-                              <span className="text-4xl font-mono font-bold text-white tracking-wider">
+                              <span className="text-4xl font-mono font-bold text-slate-900 tracking-wider">
                                 25:00
                               </span>
                               <span className="text-[10px] uppercase tracking-widest text-indigo-400 font-semibold mt-1">
@@ -197,7 +197,7 @@ export const DetailedFeaturesSection = () => {
                             <button className="w-10 h-10 rounded-full bg-indigo-600 hover:bg-indigo-500 flex items-center justify-center text-white transition-transform hover:scale-105 shadow-md">
                               <Play className="w-4 h-4 fill-white ml-0.5" />
                             </button>
-                            <button className="w-10 h-10 rounded-full bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-300 transition-transform hover:scale-105 border border-slate-700">
+                            <button className="w-10 h-10 rounded-full bg-slate-200 hover:bg-slate-300 flex items-center justify-center text-slate-600 transition-transform hover:scale-105 border border-slate-300">
                               <Coffee className="w-4 h-4" />
                             </button>
                           </div>
@@ -208,27 +208,27 @@ export const DetailedFeaturesSection = () => {
                       {feature.subtitle === 'Task Manager' && (
                         <div className="flex gap-4 w-full h-full text-left">
                           {/* Column 1 */}
-                          <div className="flex-1 flex flex-col bg-slate-900/60 rounded-xl p-3 border border-slate-800/80">
+                          <div className="flex-1 flex flex-col bg-slate-50 rounded-xl p-3 border border-slate-200">
                             <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-wider mb-3">To Do</span>
                             <div className="space-y-2 overflow-y-auto pr-0.5">
-                              <div className="bg-slate-950 p-2.5 rounded-lg border border-slate-800 hover:border-slate-700 transition-all cursor-pointer">
-                                <p className="text-xs font-semibold text-white">Database Migration</p>
+                              <div className="bg-white p-2.5 rounded-lg border border-slate-200 hover:border-slate-300 transition-all cursor-pointer">
+                                <p className="text-xs font-semibold text-slate-800">Database Migration</p>
                                 <span className="inline-block mt-2 px-1.5 py-0.5 text-[8px] bg-indigo-500/10 text-indigo-400 rounded font-bold uppercase">High</span>
                               </div>
-                              <div className="bg-slate-950 p-2.5 rounded-lg border border-slate-800">
-                                <p className="text-xs font-semibold text-white">Update API docs</p>
+                              <div className="bg-white p-2.5 rounded-lg border border-slate-200">
+                                <p className="text-xs font-semibold text-slate-800">Update API docs</p>
                               </div>
                             </div>
                           </div>
                           {/* Column 2 */}
-                          <div className="flex-1 flex flex-col bg-slate-900/60 rounded-xl p-3 border border-slate-800/80">
+                          <div className="flex-1 flex flex-col bg-slate-50 rounded-xl p-3 border border-slate-200">
                             <div className="flex justify-between items-center mb-3">
                               <span className="text-[10px] font-bold text-indigo-400 uppercase tracking-wider">In Progress</span>
                               <span className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse" />
                             </div>
                             <div className="space-y-2">
-                              <div className="bg-slate-950 p-2.5 rounded-lg border border-indigo-500/30">
-                                <p className="text-xs font-semibold text-white">Design Landing Page</p>
+                              <div className="bg-white p-2.5 rounded-lg border border-indigo-400/40">
+                                <p className="text-xs font-semibold text-slate-800">Design Landing Page</p>
                                 <div className="mt-3 w-full bg-slate-800 h-1 rounded-full overflow-hidden">
                                   <div className="bg-indigo-500 h-full w-[70%]" />
                                 </div>
@@ -241,8 +241,8 @@ export const DetailedFeaturesSection = () => {
                       {/* Productivity Analytics */}
                       {feature.subtitle === 'Productivity Analytics' && (
                         <div className="flex flex-col w-full h-full justify-between">
-                          <div className="flex justify-between items-center border-b border-slate-800 pb-2">
-                            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Weekly Performance</span>
+                          <div className="flex justify-between items-center border-b border-slate-200 pb-2">
+                            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Weekly Performance</span>
                             <span className="text-[10px] px-2 py-0.5 bg-violet-500/20 text-violet-400 rounded-full font-bold">Peak Focus: 4.8h</span>
                           </div>
                           <div className="flex items-end justify-between w-full px-4 h-32 gap-3 mt-4">
@@ -254,7 +254,7 @@ export const DetailedFeaturesSection = () => {
                               { h: 70, day: 'Fri' }
                             ].map((item, i) => (
                               <div key={i} className="flex-1 flex flex-col items-center gap-2">
-                                <div className="w-full bg-slate-900 rounded-t-lg h-24 relative overflow-hidden flex items-end">
+                                <div className="w-full bg-slate-100 rounded-t-lg h-24 relative overflow-hidden flex items-end">
                                   <motion.div
                                     initial={{ height: 0 }}
                                     whileInView={{ height: `${item.h}%` }}
@@ -262,7 +262,7 @@ export const DetailedFeaturesSection = () => {
                                     className="w-full bg-violet-600 rounded-t-lg"
                                   />
                                 </div>
-                                <span className="text-[9px] text-slate-500 font-bold uppercase">{item.day}</span>
+                                <span className="text-[9px] text-slate-400 font-bold uppercase">{item.day}</span>
                               </div>
                             ))}
                           </div>
@@ -271,40 +271,40 @@ export const DetailedFeaturesSection = () => {
 
                       {/* Spotify Control */}
                       {feature.subtitle === 'Spotify Control' && (
-                        <div className="flex flex-col bg-slate-900/60 p-4 rounded-xl border border-slate-800/80 w-full max-w-[340px]">
+                        <div className="flex flex-col bg-slate-50 p-4 rounded-xl border border-slate-200 w-full max-w-[340px]">
                           <div className="flex items-center gap-4">
                             {/* album cover art placeholder */}
                             <div className="w-16 h-16 rounded-lg bg-pink-600 flex items-center justify-center relative overflow-hidden flex-shrink-0">
                               <Music2 className="w-8 h-8 text-white" />
                             </div>
                             <div className="min-w-0 flex-1 text-left">
-                              <h4 className="text-sm font-bold text-white truncate">Lofi Focus Beats</h4>
+                              <h4 className="text-sm font-bold text-slate-900 truncate">Lofi Focus Beats</h4>
                               <p className="text-xs text-rose-400 truncate mt-0.5">FocusMaster Radio</p>
                               <div className="mt-3 flex items-center gap-1.5">
                                 <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
-                                <span className="text-[9px] uppercase tracking-wider text-slate-400 font-bold">Connected</span>
+                                <span className="text-[9px] uppercase tracking-wider text-slate-500 font-bold">Connected</span>
                               </div>
                             </div>
                           </div>
                           {/* Seek bar */}
                           <div className="mt-4">
-                            <div className="w-full bg-slate-800 h-1 rounded-full overflow-hidden">
+                            <div className="w-full bg-slate-200 h-1 rounded-full overflow-hidden">
                               <div className="bg-rose-500 h-full w-[45%]" />
                             </div>
                             <div className="flex justify-between items-center mt-1.5">
-                              <span className="text-[9px] text-slate-500 font-mono">1:24</span>
-                              <span className="text-[9px] text-slate-500 font-mono">3:45</span>
+                              <span className="text-[9px] text-slate-400 font-mono">1:24</span>
+                              <span className="text-[9px] text-slate-400 font-mono">3:45</span>
                             </div>
                           </div>
                           {/* Controls */}
                           <div className="flex items-center justify-center gap-6 mt-2">
-                            <button className="text-slate-400 hover:text-white transition-colors">
+                            <button className="text-slate-400 hover:text-slate-600 transition-colors">
                               <SkipBack className="w-4 h-4 fill-current" />
                             </button>
                             <button className="w-8 h-8 rounded-full bg-rose-600 hover:bg-rose-500 text-white flex items-center justify-center transition-transform hover:scale-110 shadow-md">
                               <Pause className="w-3.5 h-3.5 fill-white" />
                             </button>
-                            <button className="text-slate-400 hover:text-white transition-colors">
+                            <button className="text-slate-400 hover:text-slate-600 transition-colors">
                               <SkipForward className="w-4 h-4 fill-current" />
                             </button>
                           </div>
@@ -313,7 +313,7 @@ export const DetailedFeaturesSection = () => {
 
                       {/* Time Tracking */}
                       {feature.subtitle === 'Time Tracking' && (
-                        <div className="flex flex-col bg-slate-900/60 p-4 rounded-xl border border-slate-800/80 w-full max-w-[340px] text-left">
+                        <div className="flex flex-col bg-slate-50 p-4 rounded-xl border border-slate-200 w-full max-w-[340px] text-left">
                           <div className="flex justify-between items-center mb-4">
                             <span className="text-[10px] font-bold text-amber-500 uppercase tracking-wider">Shift Tracker</span>
                             <div className="flex items-center gap-1.5 bg-amber-500/10 px-2.5 py-0.5 rounded-full border border-amber-500/20">
@@ -323,10 +323,10 @@ export const DetailedFeaturesSection = () => {
                           </div>
                           <div className="mb-4">
                             <span className="text-[10px] uppercase tracking-wider text-slate-400 font-bold block mb-1">Time Elapsed</span>
-                            <span className="text-3xl font-mono font-bold text-white tracking-widest">04:32:18</span>
+                            <span className="text-3xl font-mono font-bold text-slate-900 tracking-widest">04:32:18</span>
                           </div>
                           <div className="flex gap-2">
-                            <button className="flex-1 py-2 rounded-lg bg-slate-950 hover:bg-slate-900 border border-slate-800 text-slate-300 font-bold text-xs uppercase tracking-wide transition-colors flex items-center justify-center gap-1.5">
+                            <button className="flex-1 py-2 rounded-lg bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-bold text-xs uppercase tracking-wide transition-colors flex items-center justify-center gap-1.5">
                               <Coffee className="w-3.5 h-3.5" /> Break
                             </button>
                             <button className="flex-1 py-2 rounded-lg bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs uppercase tracking-wide transition-colors flex items-center justify-center gap-1.5">
@@ -345,31 +345,31 @@ export const DetailedFeaturesSection = () => {
                           <div className="flex justify-between items-center mb-4 relative z-10">
                             <div className="flex items-center gap-2">
                               <Bot className="w-5 h-5 text-cyan-400" />
-                              <span className="text-xs font-bold text-white tracking-wide">FocusMaster AI</span>
+                              <span className="text-xs font-bold text-slate-900 tracking-wide">FocusMaster AI</span>
                             </div>
-                            <span className="px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 text-[9px] font-bold uppercase">Online</span>
+                            <span className="px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-600 text-[9px] font-bold uppercase">Online</span>
                           </div>
                           
                           <div className="space-y-3 relative z-10">
-                            <div className="bg-slate-800/50 rounded-lg p-3 border border-slate-700/50">
-                              <p className="text-[10px] text-slate-300 leading-relaxed">
-                                <span className="font-semibold text-cyan-400">Insight:</span> I noticed your focus drops off around the 40-minute mark. I've adjusted your timer to 35 minutes for optimal retention.
+                            <div className="bg-slate-100/80 rounded-lg p-3 border border-slate-200">
+                              <p className="text-[10px] text-slate-600 leading-relaxed">
+                                <span className="font-semibold text-cyan-600">Insight:</span> I noticed your focus drops off around the 40-minute mark. I've adjusted your timer to 35 minutes for optimal retention.
                               </p>
                             </div>
                             
-                            <div className="bg-slate-800/50 rounded-lg p-3 border border-slate-700/50 ml-6">
+                            <div className="bg-slate-100/80 rounded-lg p-3 border border-slate-200 ml-6">
                               <div className="flex items-center gap-2 mb-1">
                                 <MessageSquare className="w-3 h-3 text-slate-400" />
-                                <span className="text-[9px] text-slate-400 font-semibold uppercase">You</span>
+                                <span className="text-[9px] text-slate-500 font-semibold uppercase">You</span>
                               </div>
-                              <p className="text-[10px] text-slate-300">Generate a quiz from my physics notes.</p>
+                              <p className="text-[10px] text-slate-700">Generate a quiz from my physics notes.</p>
                             </div>
 
-                            <div className="bg-cyan-950/40 rounded-lg p-3 border border-cyan-800/50">
-                              <p className="text-[10px] text-slate-300">
-                                Generating 5 MCQs on <span className="font-semibold text-cyan-300">Quantum Mechanics.pdf</span>...
+                            <div className="bg-cyan-50 rounded-lg p-3 border border-cyan-200/60">
+                              <p className="text-[10px] text-slate-600">
+                                Generating 5 MCQs on <span className="font-semibold text-cyan-600">Quantum Mechanics.pdf</span>...
                               </p>
-                              <div className="mt-2 h-1 w-full bg-slate-800 rounded-full overflow-hidden">
+                              <div className="mt-2 h-1 w-full bg-slate-200 rounded-full overflow-hidden">
                                 <div className="h-full bg-cyan-500 w-[60%] animate-pulse" />
                               </div>
                             </div>

@@ -60,9 +60,9 @@ export function Login() {
   }
 
   return (
-    <div className="flex min-h-[100dvh] w-full items-center justify-center bg-[#050505] p-4 sm:p-6 lg:p-8">
+    <div className="flex min-h-[100dvh] w-full items-center justify-center bg-[#f0f2f7] p-4 sm:p-6 lg:p-8">
       {/* Card Container */}
-      <div className="flex w-full max-w-[1000px] overflow-hidden rounded-2xl bg-[#0f111a] shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-white/5">
+      <div className="flex w-full max-w-[1000px] overflow-hidden rounded-2xl bg-white shadow-[0_8px_40px_rgba(0,0,0,0.12)] border border-slate-200/80">
         {/* Left side - Image */}
         <div className="hidden md:block md:w-5/12 lg:w-1/2 relative">
           <img
@@ -73,24 +73,24 @@ export function Login() {
         </div>
 
         {/* Right side - Form */}
-        <div className="w-full md:w-7/12 lg:w-1/2 p-8 sm:p-12 relative flex flex-col justify-center min-h-[600px]">
+        <div className="w-full md:w-7/12 lg:w-1/2 p-8 sm:p-12 relative flex flex-col justify-center min-h-[600px] bg-white">
           {/* Close Button */}
-          <Link to="/" className="absolute right-6 top-6 text-slate-500 hover:text-white transition-colors bg-[#1a1d27]/50 hover:bg-[#1a1d27] p-2 rounded-md">
+          <Link to="/" className="absolute right-6 top-6 text-slate-400 hover:text-slate-700 transition-colors bg-slate-100 hover:bg-slate-200 p-2 rounded-md">
             <X className="h-4 w-4" />
           </Link>
 
           <div className="w-full max-w-[400px] mx-auto">
             {/* Header */}
             <div className="mb-8">
-              <h1 className="text-3xl font-bold text-white mb-2">Log in</h1>
-              <p className="text-sm text-slate-400">
-                New user? <Link to="/register" className="text-indigo-400 hover:text-indigo-300 font-medium">Register Now</Link>
+              <h1 className="text-3xl font-bold text-slate-900 mb-2">Log in</h1>
+              <p className="text-sm text-slate-500">
+                New user? <Link to="/register" className="text-indigo-600 hover:text-indigo-500 font-medium">Register Now</Link>
               </p>
             </div>
 
             {/* Error Message */}
             {error && (
-              <div className="mb-4 p-3 rounded-lg bg-red-900/50 border border-red-500/30 text-red-400 text-sm">
+              <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-200 text-red-600 text-sm">
                 {error}
               </div>
             )}
@@ -125,23 +125,23 @@ export function Login() {
 
             {/* Divider */}
             <div className="flex items-center gap-3 mb-6">
-              <div className="flex-1 h-px bg-[#2a2d3a]"></div>
-              <span className="text-xs text-slate-500">or</span>
-              <div className="flex-1 h-px bg-[#2a2d3a]"></div>
+              <div className="flex-1 h-px bg-slate-200"></div>
+              <span className="text-xs text-slate-400">or</span>
+              <div className="flex-1 h-px bg-slate-200"></div>
             </div>
 
             {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-4">
               {/* Email Field */}
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-slate-300 mb-2">
+                <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-2">
                   Username or Email
                 </label>
                 <Input
                   id="email"
                   type="email"
                   placeholder="Username or Email"
-                  className="h-11 bg-[#1a1d27] border-[#2a2d3a] text-white placeholder:text-slate-500 focus:border-indigo-500 focus-visible:ring-0 focus-visible:ring-offset-0 rounded-md"
+                  className="h-11 bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 focus:border-indigo-400 focus-visible:ring-0 focus-visible:ring-offset-0 rounded-md"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   disabled={isAnyLoading}
@@ -150,7 +150,7 @@ export function Login() {
 
               {/* Password Field */}
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-slate-300 mb-2">
+                <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-2">
                   Password
                 </label>
                 <div className="relative">
@@ -158,7 +158,7 @@ export function Login() {
                     id="password"
                     type={isPasswordVisible ? 'text' : 'password'}
                     placeholder="Enter password"
-                    className="h-11 bg-[#1a1d27] border-[#2a2d3a] text-white placeholder:text-slate-500 focus:border-indigo-500 focus-visible:ring-0 focus-visible:ring-offset-0 pr-10 rounded-md"
+                    className="h-11 bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 focus:border-indigo-400 focus-visible:ring-0 focus-visible:ring-offset-0 pr-10 rounded-md"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     disabled={isAnyLoading}
@@ -166,7 +166,7 @@ export function Login() {
                   <button
                     type="button"
                     onClick={() => setIsPasswordVisible(!isPasswordVisible)}
-                    className="absolute right-3 top-3 text-slate-400 hover:text-slate-200"
+                    className="absolute right-3 top-3 text-slate-400 hover:text-slate-600"
                     tabIndex={-1}
                     disabled={isAnyLoading}
                   >
@@ -181,7 +181,7 @@ export function Login() {
 
               {/* Forgot */}
               <div className="pt-1">
-                <a href="#" className="text-sm text-[#5b52ff] hover:text-indigo-400 font-medium">
+                <a href="#" className="text-sm text-indigo-600 hover:text-indigo-500 font-medium">
                   Forgot password
                 </a>
               </div>
@@ -189,7 +189,7 @@ export function Login() {
               {/* Sign In Button */}
               <button
                 type="submit"
-                className="w-full h-11 mt-4 bg-[#5b52ff] hover:bg-[#4f46e5] text-white font-medium rounded-md transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full h-11 mt-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-md transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={isAnyLoading}
               >
                 {isLoading ? (
@@ -205,7 +205,7 @@ export function Login() {
               {/* Guest Login */}
               <button
                 type="button"
-                className="w-full h-11 border border-[#2a2d3a] text-slate-300 font-medium rounded-md hover:bg-[#1a1d27] transition-colors cursor-pointer"
+                className="w-full h-11 border border-slate-200 text-slate-600 font-medium rounded-md hover:bg-slate-50 transition-colors cursor-pointer"
                 onClick={async () => {
                   try {
                     setIsLoading(true);
@@ -224,10 +224,10 @@ export function Login() {
             </form>
 
             {/* Bottom Text */}
-            <p className="text-center text-xs text-slate-500 mt-8">
+            <p className="text-center text-xs text-slate-400 mt-8">
               By creating this account, you agree to our{' '}
-              <a href="#" className="text-slate-300 hover:text-white transition-colors">Privacy Policy</a> &{' '}
-              <a href="#" className="text-slate-300 hover:text-white transition-colors">Cookie Policy</a>.
+              <a href="#" className="text-slate-600 hover:text-slate-900 transition-colors">Privacy Policy</a> &{' '}
+              <a href="#" className="text-slate-600 hover:text-slate-900 transition-colors">Cookie Policy</a>.
             </p>
           </div>
         </div>

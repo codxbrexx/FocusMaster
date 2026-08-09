@@ -41,11 +41,11 @@ const Header = () => {
       style={
         isScrolled
           ? {
-              background: 'rgba(10, 10, 16, 0.65)',
+              background: 'rgba(248, 249, 252, 0.88)',
               backdropFilter: 'blur(24px)',
               WebkitBackdropFilter: 'blur(24px)',
-              border: '1px solid rgba(255,255,255,0.08)',
-              boxShadow: '0 20px 40px -10px rgba(0,0,0,0.5)',
+              border: '1px solid rgba(15,23,42,0.1)',
+              boxShadow: '0 4px 24px rgba(15,23,42,0.08)',
             }
           : {
               background: 'transparent',
@@ -65,7 +65,7 @@ const Header = () => {
             alt="FocusMaster"
             className="w-auto h-10 md:h-11 object-contain"
           />
-          <span className="text-[15px] md:text-base font-bold text-white tracking-tight">
+          <span className="text-[15px] md:text-base font-bold text-slate-900 tracking-tight">
             FocusMaster
           </span>
         </a>
@@ -77,7 +77,7 @@ const Header = () => {
               key={link.href}
               href={link.href}
               onClick={(e) => scrollToSection(e, link.href)}
-              className="px-4 py-2 text-[13px] font-semibold text-slate-400 hover:text-white rounded-full transition-all duration-300 hover:bg-white/5"
+              className="px-4 py-2 text-[13px] font-semibold text-slate-500 hover:text-slate-900 rounded-full transition-all duration-300 hover:bg-slate-100"
             >
               {link.label}
             </a>
@@ -88,7 +88,7 @@ const Header = () => {
         <div className="hidden md:flex items-center gap-3">
           <a
             href="/login"
-            className="text-[13px] font-semibold text-slate-300 hover:text-white transition-colors px-4 py-2"
+            className="text-[13px] font-semibold text-slate-600 hover:text-slate-900 transition-colors px-4 py-2"
           >
             Log in
           </a>
@@ -110,20 +110,20 @@ const Header = () => {
             <SheetTrigger asChild>
               <button
                 aria-label="Open navigation menu"
-                className="flex items-center justify-center w-10 h-10 rounded-full bg-white/5 border border-white/10 text-white hover:bg-white/10 transition-colors"
+                className="flex items-center justify-center w-10 h-10 rounded-full bg-slate-100 border border-slate-200 text-slate-700 hover:bg-slate-200 transition-colors"
               >
                 {mobileOpen ? <X size={18} /> : <Menu size={18} />}
               </button>
             </SheetTrigger>
             <SheetContent
               side="right"
-              className="w-full sm:w-[320px] p-0 border-l border-white/10 bg-[#070710]/95 backdrop-blur-2xl"
+              className="w-full sm:w-[320px] p-0 border-l border-slate-200 bg-white/95 backdrop-blur-2xl"
             >
               <div className="flex flex-col h-full p-8">
                 {/* Mobile brand */}
                 <a href="/" className="flex items-center gap-3 mb-12">
                   <img src="/FM_logo.png" alt="FocusMaster" className="h-10 w-auto" />
-                  <span className="text-[15px] font-bold text-white tracking-tight">FocusMaster</span>
+                  <span className="text-[15px] font-bold text-slate-900 tracking-tight">FocusMaster</span>
                 </a>
 
                 {/* Nav links */}
@@ -133,7 +133,7 @@ const Header = () => {
                       key={link.href}
                       href={link.href}
                       onClick={(e) => scrollToSection(e, link.href)}
-                      className="px-4 py-3 text-sm font-semibold text-slate-300 hover:text-white hover:bg-white/5 rounded-xl transition-colors"
+                      className="px-4 py-3 text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-colors"
                     >
                       {link.label}
                     </a>
@@ -141,10 +141,10 @@ const Header = () => {
                 </nav>
 
                 {/* Auth buttons */}
-                <div className="flex flex-col gap-3 pt-8 border-t border-white/10">
+                <div className="flex flex-col gap-3 pt-8 border-t border-slate-200">
                   <a
                     href="/login"
-                    className="w-full text-center py-3 text-sm font-semibold text-slate-300 hover:text-white border border-white/10 hover:border-white/20 rounded-xl transition-all"
+                    className="w-full text-center py-3 text-sm font-semibold text-slate-700 hover:text-slate-900 border border-slate-200 hover:border-slate-300 rounded-xl transition-all"
                   >
                     Log in
                   </a>

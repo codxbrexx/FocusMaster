@@ -15,11 +15,11 @@ export const FinalCTASection = () => {
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-5xl md:text-6xl lg:text-7xl font-black text-white mb-6 leading-tight">
+          <h2 className="text-5xl md:text-6xl lg:text-7xl font-black text-slate-900 mb-6 leading-tight">
             Ready to Transform Your Workflow?
           </h2>
 
-          <p className="text-lg md:text-xl text-slate-300 mb-12 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-lg md:text-xl text-slate-600 mb-12 max-w-2xl mx-auto leading-relaxed">
             Join thousands of professionals who have reclaimed their focus and
             transformed how they work. Start your free trial today.
           </p>
@@ -47,7 +47,7 @@ export const FinalCTASection = () => {
 
           <motion.button
             onClick={() => window.open('https://demo.focusmaster.dev', '_blank')}
-            className="px-8 py-4 border border-slate-700 hover:border-indigo-500/50 text-slate-300 hover:text-indigo-400 font-semibold rounded-lg transition-all hover:bg-indigo-500/5"
+            className="px-8 py-4 border border-slate-300 hover:border-indigo-400 text-slate-600 hover:text-indigo-600 font-semibold rounded-lg transition-all hover:bg-indigo-50"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -57,7 +57,7 @@ export const FinalCTASection = () => {
 
         {/* Trust statement */}
         <motion.p
-          className="mt-12 text-sm text-slate-500 font-mono uppercase tracking-widest"
+          className="mt-12 text-sm text-slate-400 font-mono uppercase tracking-widest"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.2 }}
