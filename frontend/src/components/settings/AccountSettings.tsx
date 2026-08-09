@@ -156,6 +156,7 @@ const DeleteAccountDialog = () => {
     try {
       await api.delete('/gdpr/delete');
       toast.success('Account deleted successfully');
+      window.location.href = '/';
       logout();
     } catch (error: any) {
       console.error(error);

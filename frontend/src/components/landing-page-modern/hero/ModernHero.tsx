@@ -93,8 +93,7 @@ export const ModernHero = () => {
       </div>
 
       <div
-        className="relative z-10 w-full"
-        style={{ minHeight: '111.1vh', display: 'flex', flexDirection: 'column', transform: 'scale(0.9)', transformOrigin: 'top center', width: '111.1%', marginLeft: '-5.55%' }}
+        className="relative z-10 w-full min-h-[100vh] flex flex-col"
       >
         {/* Content row — fills the viewport */}
         <div
@@ -112,8 +111,8 @@ export const ModernHero = () => {
               transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.05 }}
             >
               <h2
-                className="font-black uppercase tracking-tighter"
-                style={{ fontSize: 'clamp(2.75rem, 8vw, 6.5rem)', color: '#0f172a', lineHeight: 0.88 }}
+                className="font-black uppercase tracking-tighter text-5xl md:text-6xl lg:text-7xl xl:text-[6.5rem]"
+                style={{ color: '#0f172a', lineHeight: 0.95 }}
               >
                 Transform<br />
                 Your<br />
@@ -139,7 +138,7 @@ export const ModernHero = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1], delay: 0.28 }}
-              style={{ marginTop: '36px', marginBottom: '32px', display: 'flex', gap: '14px', flexWrap: 'wrap' }}
+              className="mt-8 mb-8 flex flex-col sm:flex-row w-full sm:w-auto gap-3.5"
             >
               <a
                 href="/register"

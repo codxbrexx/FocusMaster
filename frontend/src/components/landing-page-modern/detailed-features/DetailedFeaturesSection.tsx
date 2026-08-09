@@ -161,76 +161,50 @@ export const DetailedFeaturesSection = () => {
                   transition={{ duration: 0.6 }}
                   viewport={{ once: true }}
                 >
-                  {['Focus Engine', 'Task Manager', 'Productivity Analytics', 'FocusMaster AI', 'Spotify Control'].includes(feature.subtitle) ? (
-                    <div className="w-full flex justify-center items-center overflow-visible">
-                      {feature.subtitle === 'Focus Engine' && (
-                        <img
-                          src="/deep_work_elements.png"
-                          alt="Deep Work Focus Session"
-                          className="w-full h-auto object-contain drop-shadow-2xl"
-                        />
-                      )}
-                      {feature.subtitle === 'Task Manager' && (
-                        <img
-                          src="/plan_focus.png"
-                          alt="Plan & Focus Task Manager"
-                          className="w-full h-auto object-contain drop-shadow-2xl"
-                        />
-                      )}
-                      {feature.subtitle === 'Productivity Analytics' && (
-                        <img
-                          src="/productivity_element.png"
-                          alt="Productivity Analytics"
-                          className="w-full h-auto object-contain drop-shadow-2xl"
-                        />
-                      )}
-                      {feature.subtitle === 'FocusMaster AI' && (
-                        <img
-                          src="/ai_elements.png"
-                          alt="FocusMaster AI"
-                          className="w-full h-auto object-contain drop-shadow-2xl"
-                        />
-                      )}
-                      {feature.subtitle === 'Spotify Control' && (
-                        <img
-                          src="/sportify_elements.png"
-                          alt="Spotify Control"
-                          className="w-full h-auto object-contain drop-shadow-2xl"
-                        />
-                      )}
-                    </div>
-                  ) : (
-                    <div
-                      className={`p-6 rounded-2xl border border-slate-200 bg-white/90 backdrop-blur-md shadow-sm relative overflow-hidden w-full`}
-                    >
-                      <div className={`aspect-video rounded-xl flex items-center justify-center p-4`}>
-                        {/* Time Tracking */}
-                        {feature.subtitle === 'Time Tracking' && (
-                          <div className="flex flex-col bg-slate-50 p-4 rounded-xl border border-slate-200 w-full max-w-[340px] text-left">
-                            <div className="flex justify-between items-center mb-4">
-                              <span className="text-[10px] font-bold text-amber-500 uppercase tracking-wider">Shift Tracker</span>
-                              <div className="flex items-center gap-1.5 bg-amber-500/10 px-2.5 py-0.5 rounded-full border border-amber-500/20">
-                                <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
-                                <span className="text-[8px] uppercase tracking-wider text-amber-400 font-bold">Clocked In</span>
-                              </div>
-                            </div>
-                            <div className="mb-4">
-                              <span className="text-[10px] uppercase tracking-wider text-slate-400 font-bold block mb-1">Time Elapsed</span>
-                              <span className="text-3xl font-mono font-bold text-slate-900 tracking-widest">04:32:18</span>
-                            </div>
-                            <div className="flex gap-2">
-                              <button className="flex-1 py-2 rounded-lg bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-bold text-xs uppercase tracking-wide transition-colors flex items-center justify-center gap-1.5">
-                                <Coffee className="w-3.5 h-3.5" /> Break
-                              </button>
-                              <button className="flex-1 py-2 rounded-lg bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs uppercase tracking-wide transition-colors flex items-center justify-center gap-1.5">
-                                <LogOut className="w-3.5 h-3.5" /> Clock Out
-                              </button>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  )}
+                  <div className="w-full flex justify-center items-center overflow-visible">
+                    {feature.subtitle === 'Focus Engine' && (
+                      <img
+                        src="/deep_work_elements.png"
+                        alt="Deep Work Focus Session"
+                        className="w-full h-auto object-contain drop-shadow-2xl"
+                      />
+                    )}
+                    {feature.subtitle === 'Task Manager' && (
+                      <img
+                        src="/plan_focus.png"
+                        alt="Plan & Focus Task Manager"
+                        className="w-full h-auto object-contain drop-shadow-2xl"
+                      />
+                    )}
+                    {feature.subtitle === 'Productivity Analytics' && (
+                      <img
+                        src="/productivity_element.png"
+                        alt="Productivity Analytics"
+                        className="w-full h-auto object-contain drop-shadow-2xl"
+                      />
+                    )}
+                    {feature.subtitle === 'FocusMaster AI' && (
+                      <img
+                        src="/ai_elements.png"
+                        alt="FocusMaster AI"
+                        className="w-full h-auto object-contain drop-shadow-2xl"
+                      />
+                    )}
+                    {feature.subtitle === 'Spotify Control' && (
+                      <img
+                        src="/sportify_elements.png"
+                        alt="Spotify Control"
+                        className="w-full h-auto object-contain drop-shadow-2xl"
+                      />
+                    )}
+                    {feature.subtitle === 'Time Tracking' && (
+                      <img
+                        src="/time_tracker_elements.png"
+                        alt="Time Tracking"
+                        className="w-full h-auto object-contain drop-shadow-2xl"
+                      />
+                    )}
+                  </div>
                 </motion.div>
               </motion.div>
             );

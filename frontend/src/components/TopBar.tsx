@@ -72,8 +72,8 @@ export function TopBar({ onMenuClick }: TopBarProps) {
   };
 
   const handleLogout = () => {
+    navigate('/');
     logout();
-    navigate('/login');
   };
 
   const themes = [

@@ -101,11 +101,11 @@ export const Sidebar = ({ open, onOpenChange }: SidebarProps) => {
           }}
         >
           <div className="relative shrink-0 flex items-center justify-center">
-            <div className="absolute inset-0 bg-primary/40 blur-2xl group-hover:bg-primary/50 transition-all duration-500 rounded-full" />
+            <div className="absolute inset-0 bg-primary blur-2xl group-hover:bg-primary/50 transition-all duration-500 rounded-full" />
             <img
               src="/FM_logo.png"
               alt="FocusMaster"
-              className="relative w-14 h-14 shadow-2xl transition-transform duration-300 shrink-0 object-contain drop-shadow-[0_0_15px_rgba(124,58,237,0.5)]"
+              className="relative w-14 h-14 transition-transform duration-300 shrink-0 object-contain drop-shadow-[0_0_15px_rgba(124,58,237,0.5)]"
             />
           </div>
 

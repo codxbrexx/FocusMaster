@@ -34,8 +34,8 @@ export const ProfileMenu = ({ isOpen }: ProfileMenuProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const handleLogout = () => {
+    navigate('/');
     logout();
-    navigate('/login');
   };
 
   useEffect(() => {

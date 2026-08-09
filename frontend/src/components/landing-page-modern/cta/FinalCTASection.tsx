@@ -47,20 +47,8 @@ export const FinalCTASection = () => {
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
         >
-          {/* Badge */}
-          <span
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-widest mb-8"
-            style={{
-              color: '#6D5EF9',
-              backgroundColor: 'rgba(109,94,249,0.08)',
-              border: '1px solid rgba(109,94,249,0.2)',
-            }}
-          >
-            <Sparkles size={11} />
-            Free, forever
-          </span>
 
-          <h2 className="text-5xl md:text-6xl lg:text-7xl font-black text-slate-900 mb-6 leading-[0.95] tracking-tight">
+          <h2 className="text-4xl md:text-5xl lg:text-7xl font-black text-slate-900 mb-6 leading-[0.95] tracking-tight">
             Ready to do your<br />
             <span
               style={{
