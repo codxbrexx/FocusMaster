@@ -166,6 +166,10 @@ export const DetailedFeaturesSection = () => {
                       <img
                         src="/deep_work_elements.png"
                         alt="Deep Work Focus Session"
+                        width="1254"
+                        height="1254"
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-auto object-contain drop-shadow-2xl"
                       />
                     )}
@@ -173,6 +177,10 @@ export const DetailedFeaturesSection = () => {
                       <img
                         src="/plan_focus.png"
                         alt="Plan & Focus Task Manager"
+                        width="1254"
+                        height="1254"
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-auto object-contain drop-shadow-2xl"
                       />
                     )}
@@ -180,6 +188,10 @@ export const DetailedFeaturesSection = () => {
                       <img
                         src="/productivity_element.png"
                         alt="Productivity Analytics"
+                        width="1254"
+                        height="1254"
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-auto object-contain drop-shadow-2xl"
                       />
                     )}
@@ -187,6 +199,10 @@ export const DetailedFeaturesSection = () => {
                       <img
                         src="/ai_elements.png"
                         alt="FocusMaster AI"
+                        width="1536"
+                        height="1024"
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-auto object-contain drop-shadow-2xl"
                       />
                     )}
@@ -194,6 +210,10 @@ export const DetailedFeaturesSection = () => {
                       <img
                         src="/sportify_elements.png"
                         alt="Spotify Control"
+                        width="1254"
+                        height="1254"
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-auto object-contain drop-shadow-2xl"
                       />
                     )}
@@ -201,6 +221,10 @@ export const DetailedFeaturesSection = () => {
                       <img
                         src="/time_tracker_elements.png"
                         alt="Time Tracking"
+                        width="1254"
+                        height="1254"
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-auto object-contain drop-shadow-2xl"
                       />
                     )}

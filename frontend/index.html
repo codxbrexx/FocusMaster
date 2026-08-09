@@ -60,13 +60,25 @@
     <meta name="theme-color" content="#09090b" />
     <meta name="msapplication-TileColor" content="#09090b" />
 
-    <!-- GOOGLE FONTS — PRECONNECT + FONT LOAD                       -->
+    <!-- SECURITY HEADERS (Lighthouse & Best Practices)              -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://accounts.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: https: blob:; media-src 'self' data:; connect-src 'self' https: ws: wss:; frame-ancestors 'none';" />
+    <meta http-equiv="Cross-Origin-Opener-Policy" content="same-origin" />
+
+    <!-- GOOGLE FONTS — PRECONNECT + ASYNC FONT LOAD                 -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
-      rel="stylesheet"
+      rel="preload"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'"
     />
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet"
+      />
+    </noscript>
 
     <!-- JSON-LD STRUCTURED DATA (Rich Snippets)                     -->
     <script type="application/ld+json">

@@ -1,9 +1,21 @@
-import { Suspense } from 'react';
+import { Suspense, lazy } from 'react';
 import { motion } from 'framer-motion';
 import { ModernHero } from '../components/landing-page-modern/hero/ModernHero';
-import { DetailedFeaturesSection } from '../components/landing-page-modern/detailed-features/DetailedFeaturesSection';
-import { FinalCTASection } from '../components/landing-page-modern/cta/FinalCTASection';
-import { FooterSection } from '../components/landing-page-modern/footer/FooterSection';
+const DetailedFeaturesSection = lazy(() =>
+  import('../components/landing-page-modern/detailed-features/DetailedFeaturesSection').then((m) => ({
+    default: m.DetailedFeaturesSection,
+  }))
+);
+const FinalCTASection = lazy(() =>
+  import('../components/landing-page-modern/cta/FinalCTASection').then((m) => ({
+    default: m.FinalCTASection,
+  }))
+);
+const FooterSection = lazy(() =>
+  import('../components/landing-page-modern/footer/FooterSection').then((m) => ({
+    default: m.FooterSection,
+  }))
+);
 import { Loader } from '../components/ui/Loader';
 import Header from '../components/landing-page-modern/header/Header';
 

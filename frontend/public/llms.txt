@@ -1,0 +1,21 @@
+# FocusMaster Application
+
+FocusMaster is a modern productivity application designed to help users enter deep work sessions, manage tasks, and track productivity. It features a built-in Pomodoro timer, smart task manager, focus analytics, calendar, and Spotify integration.
+
+## Key Links
+
+- [Landing Page](https://focusmaster-tau.vercel.app/) - Explore the main features of FocusMaster.
+- [Dashboard](https://focusmaster-tau.vercel.app/dashboard) - Access your productivity tools (requires login).
+- [Sign Up](https://focusmaster-tau.vercel.app/register) - Start your free trial.
+- [Log In](https://focusmaster-tau.vercel.app/login) - Sign in to your account.
+- [Privacy Policy](https://focusmaster-tau.vercel.app/privacy-policy) - Read our data and privacy commitments.
+- [Terms of Service](https://focusmaster-tau.vercel.app/terms-of-service) - Read our usage terms.
+- [GitHub Repository](https://github.com/codxbrexx/FocusMaster) - View the open-source code.
+
+## Application Architecture
+
+The application is built using React, TypeScript, and Vite on the frontend, featuring state management via Zustand and styling with TailwindCSS. The UI relies on Radix UI primitives and Framer Motion for animations. The backend utilizes a scalable Node.js/Express architecture.
+
+## Accessibility & SEO
+
+FocusMaster is optimized for screen readers and agentic browsing, ensuring full ARIA compatibility, clear heading hierarchy, and performance-first image loading via WebP formatting.

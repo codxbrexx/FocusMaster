@@ -77,6 +77,10 @@ const FeatureCard = ({
         <img
           src={card.image}
           alt={card.title}
+          width="1254"
+          height="1254"
+          loading="lazy"
+          decoding="async"
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
           style={{ objectPosition: card.imagePosition }}
         />
@@ -123,7 +127,7 @@ const FeatureCard = ({
             (e.currentTarget as HTMLElement).style.gap = '6px';
           }}
         >
-          Learn more
+          Learn more about {card.tag}
           <ArrowRight size={13} className="transition-transform group-hover:translate-x-1" />
         </button>
       </div>

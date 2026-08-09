@@ -18,7 +18,7 @@ export const FooterSection = () => {
                 FocusMaster
               </span>
             </div>
-            <p className="text-slate-500 leading-relaxed max-w-sm">
+            <p className="text-slate-600 leading-relaxed max-w-sm">
               Elevate your productivity with our modern focus engine. Track time, manage tasks, and achieve deep work effortlessly without context switching.
             </p>
             <div className="flex items-center gap-3 mt-2">
@@ -42,8 +42,8 @@ export const FooterSection = () => {
 
           {/* Links - Product */}
           <div>
-            <h4 className="text-slate-700 font-bold mb-6 tracking-wide uppercase text-xs">Product</h4>
-            <ul className="space-y-4 text-sm text-slate-500 font-medium">
+            <h3 className="text-slate-800 font-bold mb-6 tracking-wide uppercase text-xs">Product</h3>
+            <ul className="space-y-4 text-sm text-slate-600 font-medium">
               <li><a href="#features" className="hover:text-indigo-600 transition-colors">Features</a></li>
               <li><a href="#pricing" className="hover:text-indigo-600 transition-colors">Pricing</a></li>
               <li><a href="/login" className="hover:text-indigo-600 transition-colors">Login</a></li>
@@ -53,8 +53,8 @@ export const FooterSection = () => {
 
           {/* Links - Resources */}
           <div>
-            <h4 className="text-slate-700 font-bold mb-6 tracking-wide uppercase text-xs">Resources</h4>
-            <ul className="space-y-4 text-sm text-slate-500 font-medium">
+            <h3 className="text-slate-800 font-bold mb-6 tracking-wide uppercase text-xs">Resources</h3>
+            <ul className="space-y-4 text-sm text-slate-600 font-medium">
               <li><a href="#" className="hover:text-indigo-600 transition-colors">Blog</a></li>
               <li><a href="#" className="hover:text-indigo-600 transition-colors">Help Center</a></li>
               <li><a href="#" className="hover:text-indigo-600 transition-colors">Community</a></li>
@@ -64,8 +64,8 @@ export const FooterSection = () => {
 
           {/* Links - Legal */}
           <div>
-            <h4 className="text-slate-700 font-bold mb-6 tracking-wide uppercase text-xs">Legal</h4>
-            <ul className="space-y-4 text-sm text-slate-500 font-medium">
+            <h3 className="text-slate-800 font-bold mb-6 tracking-wide uppercase text-xs">Legal</h3>
+            <ul className="space-y-4 text-sm text-slate-600 font-medium">
               <li><a href="/privacy-policy" className="hover:text-indigo-600 transition-colors">Privacy Policy</a></li>
               <li><a href="/terms-of-service" className="hover:text-indigo-600 transition-colors">Terms of Service</a></li>
               <li><a href="/cookie-settings" className="hover:text-indigo-600 transition-colors">Cookie Policy</a></li>
@@ -77,7 +77,7 @@ export const FooterSection = () => {
         <div className="border-t border-slate-200 my-8" />
 
         {/* Bottom Section */}
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-slate-400 font-medium">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-slate-600 font-medium">
           <p>© {new Date().getFullYear()} FocusMaster. All rights reserved.</p>
           <p className="flex items-center gap-1.5">
             Built with focus by{' '}
@@ -110,7 +110,7 @@ const SocialLink = ({
     target="_blank"
     rel="noopener noreferrer"
     aria-label={label}
-    className="p-2.5 rounded-lg bg-slate-100 border border-slate-200 text-slate-500 hover:text-indigo-600 hover:border-indigo-300 hover:bg-indigo-50 transition-all duration-300 hover:-translate-y-1 shadow-sm"
+    className="p-2.5 rounded-lg bg-slate-100 border border-slate-200 text-slate-600 hover:text-indigo-600 hover:border-indigo-300 hover:bg-indigo-50 transition-all duration-300 hover:-translate-y-1 shadow-sm"
   >
     {icon}
   </a>

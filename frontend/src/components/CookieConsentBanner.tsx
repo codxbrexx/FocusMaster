@@ -49,7 +49,7 @@ export function CookieConsentBanner() {
           <h3 className="font-semibold text-foreground mb-1 text-lg">Cookie Preferences</h3>
           <p className="text-sm text-muted-foreground">
             We use cookies to enhance your experience and improve our services.
-            <a href="/privacy-policy" className="text-primary hover:underline ml-1">Learn more</a>
+            <a href="/privacy-policy" className="text-primary hover:underline ml-1">Read our Privacy Policy</a>
           </p>
         </div>
         <div className="flex flex-wrap justify-center sm:justify-end gap-3 w-full sm:w-auto">

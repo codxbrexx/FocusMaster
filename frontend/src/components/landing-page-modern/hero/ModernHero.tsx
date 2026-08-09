@@ -68,9 +68,13 @@ export const ModernHero = () => {
 
       <div className="absolute inset-0 z-0">
         <img
-          src="/hero_light.png"
+          src="/hero_light.webp"
           alt=""
           aria-hidden="true"
+          width="1920"
+          height="1080"
+          fetchPriority="high"
+          decoding="async"
           className="w-full h-full object-cover"
           style={{ objectPosition: 'center center' }}
         />
