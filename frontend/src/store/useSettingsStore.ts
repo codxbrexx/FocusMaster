@@ -32,7 +32,7 @@ const defaultSettings: PomodoroSettings = {
   motivationalQuotes: true,
   strictMode: false,
   dailyGoal: 8,
-  theme: 'dark',
+  theme: 'light',
 };
 
 export const useSettingsStore = create<SettingsState>((set, get) => ({
