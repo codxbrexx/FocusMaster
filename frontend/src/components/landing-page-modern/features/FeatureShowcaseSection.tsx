@@ -36,7 +36,7 @@ const cards = [
     tagColor: '#f59e0b',
     tagBg: 'rgba(245,158,11,0.08)',
     tagBorder: 'rgba(245,158,11,0.2)',
-    title: 'Track what you've actually done',
+    title: "Track what you've actually done",
     description:
       'Visual analytics show your productive hours, streaks, and patterns — so you can improve what matters most.',
     image: '/productivity_element.png',

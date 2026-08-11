@@ -61,8 +61,8 @@
     <meta name="msapplication-TileColor" content="#09090b" />
 
     <!-- SECURITY HEADERS (Lighthouse & Best Practices)              -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://accounts.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: https: blob:; media-src 'self' data:; connect-src 'self' https: ws: wss:; frame-ancestors 'none';" />
-    <meta http-equiv="Cross-Origin-Opener-Policy" content="same-origin" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://accounts.google.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://accounts.google.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: https: blob:; media-src 'self' data:; connect-src 'self' https: ws: wss: %VITE_API_URL%; frame-src 'self' https://accounts.google.com;" />
+    <meta http-equiv="Cross-Origin-Opener-Policy" content="same-origin-allow-popups" />
 
     <!-- GOOGLE FONTS — PRECONNECT + ASYNC FONT LOAD                 -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
