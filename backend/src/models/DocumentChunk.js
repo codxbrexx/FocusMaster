@@ -16,7 +16,7 @@ const documentChunkSchema = mongoose.Schema(
     },
     chunkIndex: { type: Number, required: true },
     content: { type: String, required: true },
-    // 1536 is standard for text-embedding-ada-002, adjust if using other models like Google embeddings
+    // 768 dimensions for Gemini embedding-001 (default). Adjust if using a different embedding model.
     embedding: { type: [Number] }, 
   },
   {
@@ -31,7 +31,7 @@ const documentChunkSchema = mongoose.Schema(
 //     "dynamic": true,
 //     "fields": {
 //       "embedding": {
-//         "dimensions": 1536,
+//         "dimensions": 768,
 //         "similarity": "cosine",
 //         "type": "knnVector"
 //       }

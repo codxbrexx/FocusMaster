@@ -1,5 +1,18 @@
-const { generate } = require("../llmService");
+const { generateJSON } = require("../llmService");
 const { differenceInWeeks, format } = require("date-fns");
+
+/**
+ * Build a compact prompt for study plan generation.
+ */
+const PLANNER_SYSTEM_INSTRUCTION = `You are a study planner AI. Generate structured, realistic weekly study plans.
+
+Rules:
+- Spread subjects across the week, harder subjects during peak hours
+- Include revision and practice days
+- Last 1-2 weeks should focus on revision and mock tests
+- Activity types: Study, Revision, Practice, Mock Test
+- Include all 7 days (Monday to Sunday) with lighter loads on weekends
+- Keep it realistic and achievable`;
 
 /**
  * Build a compact prompt for study plan generation.
@@ -25,9 +38,7 @@ function buildPlannerPrompt(profile, stats) {
     ? Math.max(differenceInWeeks(new Date(profile.examDate), new Date()), 1)
     : 4;
 
-  return `You are a study planner for a ${profile.stream || "general"} student.
-
-Student Profile:
+  return `Student Profile:
 - Stream: ${profile.stream || "general"}${profile.customStreamName ? ` (${profile.customStreamName})` : ""}
 - Subjects: ${subjectList || "not specified"}
 - Exam date: ${examDate}
@@ -40,7 +51,9 @@ Productivity Data:
 - Average focus duration: ${stats.focus.avgDurationMin} minutes
 - Session completion rate: ${stats.focus.completionRate}%
 
-Generate a study plan for ${Math.min(weeksUntilExam, 8)} weeks as JSON (no markdown fences):
+Generate a study plan for ${Math.min(weeksUntilExam, 8)} weeks. Total daily hours must not exceed ${profile.availableHoursPerDay || 4}.
+
+Return a JSON object with this exact structure:
 {
   "weeks": [
     {
@@ -56,30 +69,16 @@ Generate a study plan for ${Math.min(weeksUntilExam, 8)} weeks as JSON (no markd
       ]
     }
   ]
-}
-
-Rules:
-- Spread subjects across the week, harder subjects during peak hours
-- Include revision and practice days
-- Total daily hours must not exceed ${profile.availableHoursPerDay || 4}
-- Last 1-2 weeks should focus on revision and mock tests
-- Activity types: Study, Revision, Practice, Mock Test
-- Include all 7 days (Monday to Sunday) with lighter loads on weekends
-- Keep it realistic and achievable`;
+}`;
 }
 
 /**
- * Parse the LLM study plan response.
+ * Validate the parsed LLM study plan response.
+ * With generateJSON(), the response is already a parsed JS object.
  */
-function parsePlanResponse(text, weeksCount) {
+function parsePlanResponse(parsed, weeksCount) {
   try {
-    let cleaned = text.trim();
-    if (cleaned.startsWith("```")) {
-      cleaned = cleaned.replace(/^```(?:json)?\n?/, "").replace(/\n?```$/, "");
-    }
-    const parsed = JSON.parse(cleaned);
-
-    if (Array.isArray(parsed.weeks) && parsed.weeks.length > 0) {
+    if (parsed && Array.isArray(parsed.weeks) && parsed.weeks.length > 0) {
       return parsed.weeks.slice(0, weeksCount);
     }
     return null;
@@ -118,9 +117,11 @@ async function generateStudyPlan(profile, stats) {
   const planWeeks = Math.min(weeksUntilExam, 8);
 
   const prompt = buildPlannerPrompt(profile, stats);
-  const llmResponse = await generate(prompt, null, {
-    max_tokens: 2000,
+  const llmResponse = await generateJSON(prompt, {
+    maxOutputTokens: 2000,
     temperature: 0.3,
+    systemInstruction: PLANNER_SYSTEM_INSTRUCTION,
+    label: "study-planner",
   });
   const weeks = parsePlanResponse(llmResponse, planWeeks);
 

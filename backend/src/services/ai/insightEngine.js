@@ -94,17 +94,17 @@ function parseInsightResponse(parsed) {
  */
 async function generateInsights(stats, scoreResult) {
   const prompt = buildInsightPrompt(stats, scoreResult);
-  try {
-    const llmResponse = await generateJSON(prompt, {
-      max_tokens: 400,
-      temperature: 0.4,
-      systemInstruction: INSIGHT_SYSTEM_INSTRUCTION,
-    });
-    return parseInsightResponse(llmResponse);
-  } catch (error) {
-    console.error("Error generating insights:", error);
-    return parseInsightResponse(null);
-  }
+
+  // Let LLM errors propagate to the caller so the controller's
+  // stale-cache → fallback hierarchy can kick in.
+  const llmResponse = await generateJSON(prompt, {
+    maxOutputTokens: 400,
+    temperature: 0.4,
+    systemInstruction: INSIGHT_SYSTEM_INSTRUCTION,
+    label: "insights",
+  });
+
+  return parseInsightResponse(llmResponse);
 }
 
 module.exports = { generateInsights, buildInsightPrompt, parseInsightResponse };

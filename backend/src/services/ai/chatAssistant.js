@@ -41,16 +41,16 @@ async function handleStudyChat(message, history = [], contextData = {}) {
     contextStr += `- Current Study Plan Week: ${currentWeek.weekNumber} (${currentWeek.theme})\n`;
   }
 
-  // Build the system prompt
-  let prompt = `You are an expert, encouraging AI study coach and preparation analyzer.
+  // Build system instruction (separated from user prompt for lower token cost)
+  const systemInstruction = `You are an expert, encouraging AI study coach and preparation analyzer.
 You are helping a student prepare and analyze their study progress based on their personalized data.
 
 ${contextStr}
 
-Be concise, supportive, and highly actionable. Answer the user's latest message based on this context. Do not use Markdown headings like # or ## if possible, just use bold text and lists for clean chat rendering.
+Be concise, supportive, and highly actionable. Answer the user's latest message based on this context. Do not use Markdown headings like # or ## if possible, just use bold text and lists for clean chat rendering.`;
 
-Chat History:
-`;
+  // Build the user prompt with chat history
+  let prompt = "Chat History:\n";
 
   // Append history (limit to last 6 messages to save tokens)
   const recentHistory = history.slice(-6);
@@ -60,9 +60,11 @@ Chat History:
 
   prompt += `Student: ${message}\nCoach:`;
 
-  const answer = await generate(prompt, null, {
+  const answer = await generate(prompt, {
     temperature: 0.7,
-    max_tokens: 600,
+    maxOutputTokens: 600,
+    systemInstruction,
+    label: "study-chat",
   });
 
   return { answer: answer.trim() };

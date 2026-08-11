@@ -1,4 +1,4 @@
-const { generate } = require("../llmService");
+const { generate, generateJSON } = require("../llmService");
 
 /**
  * Ask a question based on pre-fetched document chunks.
@@ -23,21 +23,22 @@ async function askQuestion(query, chunks) {
   const contextText = chunks.map((c, i) => `[Source ${i + 1}]:\n${c.content}`).join("\n\n");
   
   // Build prompt
-  const prompt = `You are an intelligent study assistant. Answer the student's question using ONLY the provided context from their notes. 
-If the answer is not contained in the context, politely state that you don't know based on the provided notes.
-
-Context:
+  const prompt = `Context from student's notes:
 ${contextText}
 
-Question: ${query}
+Question: ${query}`;
 
+  const systemInstruction = `You are an intelligent study assistant. Answer the student's question using ONLY the provided context from their notes.
+If the answer is not contained in the context, politely state that you don't know based on the provided notes.
 Answer in a clear, educational tone.`;
 
   // Generate answer
   try {
-    const answer = await generate(prompt, null, {
+    const answer = await generate(prompt, {
       temperature: 0.2, // Low temp for factual answers
-      max_tokens: 500,
+      maxOutputTokens: 500,
+      systemInstruction,
+      label: "rag-query",
     });
     
     return {
@@ -70,10 +71,14 @@ async function generateQuiz(chunks) {
   }
 
   const contextText = chunks.map(c => c.content).join("\n\n");
-  
-  const prompt = `You are a strict teacher. Based on the following study notes, generate a 5-question multiple choice quiz.
-Each question must have exactly 4 options and 1 correct answer.
-Return the result strictly as a JSON object matching this schema (no markdown fences):
+
+  const systemInstruction = `You are a strict teacher. Generate a 5-question multiple choice quiz based on the provided study notes.
+Each question must have exactly 4 options and 1 correct answer.`;
+
+  const prompt = `Study Notes:
+${contextText}
+
+Generate a quiz with this exact JSON structure:
 {
   "title": "Quiz Title",
   "questions": [
@@ -84,23 +89,16 @@ Return the result strictly as a JSON object matching this schema (no markdown fe
       "explanation": "Brief explanation of why this is correct"
     }
   ]
-}
-
-Study Notes:
-${contextText}`;
+}`;
 
   try {
-    let response = await generate(prompt, null, {
+    const quiz = await generateJSON(prompt, {
       temperature: 0.3,
-      max_tokens: 1500,
+      maxOutputTokens: 1500,
+      systemInstruction,
+      label: "rag-quiz",
     });
-    
-    let cleaned = response.trim();
-    if (cleaned.startsWith("```")) {
-      cleaned = cleaned.replace(/^```(?:json)?\n?/, "").replace(/\n?```$/, "");
-    }
-    
-    const quiz = JSON.parse(cleaned);
+
     return { quiz };
   } catch (error) {
     console.error("Failed to generate quiz:", error);
