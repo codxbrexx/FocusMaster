@@ -178,27 +178,27 @@ export function AiInsightsPanel() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Productivity Score */}
             <div className="flex flex-col items-center gap-3">
-              <ScoreRing score={productivityScore} />
+              <ScoreRing score={productivityScore ?? 0} />
               <p className="text-sm font-medium">Productivity Score</p>
               <div className="w-full space-y-2">
                 <ScoreBreakdownBar
                   label="Consistency"
-                  score={scoreBreakdown.consistency.score}
+                  score={scoreBreakdown?.consistency?.score ?? 0}
                   icon={Flame}
                 />
                 <ScoreBreakdownBar
                   label="Completion"
-                  score={scoreBreakdown.completion.score}
+                  score={scoreBreakdown?.completion?.score ?? 0}
                   icon={Target}
                 />
                 <ScoreBreakdownBar
                   label="Focus Quality"
-                  score={scoreBreakdown.focusQuality.score}
+                  score={scoreBreakdown?.focusQuality?.score ?? 0}
                   icon={Zap}
                 />
                 <ScoreBreakdownBar
                   label="Time Mgmt"
-                  score={scoreBreakdown.timeManagement.score}
+                  score={scoreBreakdown?.timeManagement?.score ?? 0}
                   icon={Clock}
                 />
               </div>
@@ -210,7 +210,7 @@ export function AiInsightsPanel() {
                 <Lightbulb className="h-4 w-4 text-amber-500" />
                 Insights
               </h4>
-              {aiInsights.map((insight, i) => (
+              {(aiInsights || []).map((insight, i) => (
                 <div
                   key={i}
                   className="p-3 rounded-lg bg-muted/20 border border-border/30 text-sm text-foreground/80"
@@ -226,7 +226,7 @@ export function AiInsightsPanel() {
                 <TrendingUp className="h-4 w-4 text-emerald-500" />
                 Recommendations
               </h4>
-              {recommendations.map((rec, i) => (
+              {(recommendations || []).map((rec, i) => (
                 <div
                   key={i}
                   className="p-3 rounded-lg bg-emerald-500/5 border border-emerald-500/20 text-sm text-foreground/80"

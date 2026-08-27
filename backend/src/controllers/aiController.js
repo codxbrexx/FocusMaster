@@ -152,7 +152,13 @@ const getStudyPlan = asyncHandler(async (req, res) => {
   const profile = user.studyProfile || {};
   const stats = await aggregateUserStats(userId, 30);
 
-  const result = await generateStudyPlan(profile, stats);
+  let result;
+  try {
+    result = await generateStudyPlan(profile, stats);
+  } catch (err) {
+    console.error("[aiController] Error generating study plan:", err.message);
+    return res.status(500).json({ plan: null, error: "Failed to generate study plan." });
+  }
 
   if (result.error) {
     return res.status(result.weeks ? 200 : 400).json({ plan: null, error: result.error });
@@ -328,9 +334,28 @@ async function _searchSimilarChunks(query, userId, topK = 5) {
       }
     ]);
 
-    return results;
+    if (results && results.length > 0) {
+      return results;
+    }
   } catch (err) {
-    console.error("Atlas Vector Search failed. Is it enabled on this cluster?", err.message);
+    console.warn("Atlas Vector Search unavailable, falling back to keyword search:", err.message);
+  }
+
+  // Fallback for local MongoDB / standard deployments without Atlas Vector Search
+  try {
+    const keywords = (query || "").split(/\s+/).filter(w => w.length > 2);
+    const regexPattern = keywords.length > 0 ? keywords.join("|") : query;
+    const fallbackChunks = await DocumentChunk.find({
+      user: userId,
+      ...(regexPattern ? { content: { $regex: regexPattern, $options: "i" } } : {}),
+    })
+      .limit(topK)
+      .select("content")
+      .lean();
+
+    return fallbackChunks;
+  } catch (fallbackErr) {
+    console.error("Local chunk search fallback error:", fallbackErr.message);
     return [];
   }
 }

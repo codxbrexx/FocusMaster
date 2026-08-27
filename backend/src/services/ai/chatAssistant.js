@@ -60,14 +60,22 @@ Be concise, supportive, and highly actionable. Answer the user's latest message 
 
   prompt += `Student: ${message}\nCoach:`;
 
-  const answer = await generate(prompt, {
-    temperature: 0.7,
-    maxOutputTokens: 600,
-    systemInstruction,
-    label: "study-chat",
-  });
+  try {
+    const answer = await generate(prompt, {
+      temperature: 0.7,
+      maxOutputTokens: 600,
+      systemInstruction,
+      label: "study-chat",
+    });
 
-  return { answer: answer.trim() };
+    return { answer: answer.trim() };
+  } catch (err) {
+    console.error("[StudyChat] LLM error:", err.message);
+    return {
+      answer:
+        "I'm having trouble connecting to the AI model right now. Please ensure your GEMINI_API_KEY is properly configured in the environment settings.",
+    };
+  }
 }
 
 module.exports = {

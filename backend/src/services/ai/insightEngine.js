@@ -45,31 +45,35 @@ Generate a JSON response with exactly this structure:
  * Validate and clean the parsed LLM JSON response.
  */
 function parseInsightResponse(parsed) {
-  if (!parsed) parsed = {};
+  if (!parsed || typeof parsed !== "object") parsed = {};
+  const defaultInsights = ["We're analyzing your study patterns — keep recording focus sessions!"];
+  const defaultRecommendations = ["Try starting with a 25-minute Pomodoro session to build momentum."];
+
   try {
+    const rawInsights = Array.isArray(parsed.insights)
+      ? parsed.insights.filter((i) => typeof i === "string" && i.trim()).slice(0, 3)
+      : [];
+    const rawRecommendations = Array.isArray(parsed.recommendations)
+      ? parsed.recommendations.filter((r) => typeof r === "string" && r.trim()).slice(0, 2)
+      : [];
+
     return {
-      insights: Array.isArray(parsed.insights)
-        ? parsed.insights.slice(0, 3)
-        : [],
-      recommendations: Array.isArray(parsed.recommendations)
-        ? parsed.recommendations.slice(0, 2)
-        : [],
+      insights: rawInsights.length > 0 ? rawInsights : defaultInsights,
+      recommendations: rawRecommendations.length > 0 ? rawRecommendations : defaultRecommendations,
       summary:
-        typeof parsed.summary === "string"
+        typeof parsed.summary === "string" && parsed.summary.trim()
           ? parsed.summary
-          : "Keep up the great work!",
+          : "Every session counts — keep going!",
       prepAdvice:
-        typeof parsed.prepAdvice === "string"
+        typeof parsed.prepAdvice === "string" && parsed.prepAdvice.trim()
           ? parsed.prepAdvice
-          : "Stay consistent with your preparation!",
+          : "Consistency is key to mastering your subjects.",
     };
   } catch {
     // Fallback if parsing fails
     return {
-      insights: ["We're still analyzing your patterns — check back soon."],
-      recommendations: [
-        "Complete a few more focus sessions for personalized tips.",
-      ],
+      insights: defaultInsights,
+      recommendations: defaultRecommendations,
       summary: "Every session counts — keep going!",
       prepAdvice: "Consistency is key to mastering your subjects.",
     };

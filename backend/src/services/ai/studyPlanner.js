@@ -117,19 +117,27 @@ async function generateStudyPlan(profile, stats) {
   const planWeeks = Math.min(weeksUntilExam, 8);
 
   const prompt = buildPlannerPrompt(profile, stats);
-  const llmResponse = await generateJSON(prompt, {
-    maxOutputTokens: 2000,
-    temperature: 0.3,
-    systemInstruction: PLANNER_SYSTEM_INSTRUCTION,
-    label: "study-planner",
-  });
-  const weeks = parsePlanResponse(llmResponse, planWeeks);
+  try {
+    const llmResponse = await generateJSON(prompt, {
+      maxOutputTokens: 2000,
+      temperature: 0.3,
+      systemInstruction: PLANNER_SYSTEM_INSTRUCTION,
+      label: "study-planner",
+    });
+    const weeks = parsePlanResponse(llmResponse, planWeeks);
 
-  if (!weeks) {
-    return { weeks: null, error: "Could not parse AI response. Please try again." };
+    if (!weeks) {
+      return { weeks: null, error: "Could not parse AI response. Please try again." };
+    }
+
+    return { weeks, error: null };
+  } catch (err) {
+    console.error("[StudyPlanner] LLM error:", err.message);
+    return {
+      weeks: null,
+      error: "Failed to generate study plan from AI. Please verify API configuration or try again.",
+    };
   }
-
-  return { weeks, error: null };
 }
 
 module.exports = { generateStudyPlan, buildPlannerPrompt, parsePlanResponse };
