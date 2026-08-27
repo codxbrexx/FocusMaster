@@ -44,7 +44,6 @@ const MODE_CONFIG: Record<TimerMode, {
   },
 };
 
-<<<<<<< Updated upstream
 /** Renders the estimated finish time, computing Date.now() in an effect rather than during render. */
 function FinishTimeDisplay({ timeLeft }: { timeLeft: number }) {
   const [finishStr, setFinishStr] = useState('');

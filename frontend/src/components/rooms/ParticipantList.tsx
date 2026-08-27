@@ -1,4 +1,4 @@
-import { Users, ShieldCheck } from 'lucide-react';
+import { Users, Crown, Flame } from 'lucide-react';
 import type { Participant } from '@/store/useRoomStore';
 
 interface ParticipantListProps {
@@ -8,50 +8,83 @@ interface ParticipantListProps {
 
 export function ParticipantList({ participants, hostId }: ParticipantListProps) {
   return (
-    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4 space-y-3">
-      <div className="flex items-center justify-between border-b pb-2 border-slate-100 dark:border-slate-800">
-        <div className="flex items-center gap-2 font-bold text-slate-800 dark:text-slate-200 text-sm">
-          <Users className="w-4 h-4 text-blue-500" />
-          <span>Active Participants</span>
+    <div className="bg-white border border-[#E6E4DF] rounded-2xl p-5 space-y-4 shadow-[0_4px_16px_rgba(0,0,0,0.03)] text-[#191918]">
+      {/* Header */}
+      <div className="flex items-center justify-between border-b pb-3 border-[#E6E4DF]">
+        <div className="flex items-center gap-2 font-semibold text-[#191918] text-sm">
+          <div className="p-1.5 rounded-lg bg-[#F4F4F0] text-[#191918] border border-[#E6E4DF]">
+            <Users className="w-4 h-4 text-[#191918]" />
+          </div>
+          <span>Active Co-Workers</span>
         </div>
-        <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
-          {participants.length}
+
+        <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-[#F4F4F0] text-[#191918] border border-[#E6E4DF]">
+          {participants.length} Online
         </span>
       </div>
 
-      <div className="space-y-2 max-h-[300px] overflow-y-auto pr-1">
+      {/* Participant List */}
+      <div className="space-y-2.5 max-h-[280px] overflow-y-auto pr-1 scrollbar-thin">
         {participants.map((p, idx) => {
           const isHost = p.user._id === hostId;
+          const status = p.status || 'Focusing';
+
           return (
             <div
               key={p.user._id || idx}
-              className="flex items-center justify-between p-2 rounded-lg bg-slate-50 dark:bg-slate-800/50 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+              className={`flex items-center justify-between p-3 rounded-xl border transition-all ${
+                isHost
+                  ? 'bg-amber-50/60 border-amber-200'
+                  : 'bg-[#F4F4F0]/60 border-[#E6E4DF] hover:border-[#191918]/20'
+              }`}
             >
-              <div className="flex items-center gap-2.5">
+              <div className="flex items-center gap-3">
+                {/* Avatar with Status Dot */}
                 <div className="relative">
                   <img
                     src={p.user.picture || 'https://github.com/shadcn.png'}
                     alt={p.user.name}
-                    className="w-7 h-7 rounded-full border border-slate-200"
+                    className="w-9 h-9 rounded-full object-cover border-2 border-white shadow-xs"
                   />
-                  <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-white dark:border-slate-900" />
+                  <span className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-emerald-500 border-2 border-white shadow-xs" />
                 </div>
+
+                {/* User Info */}
                 <div className="flex flex-col">
-                  <div className="flex items-center gap-1">
-                    <span className="text-xs font-semibold text-slate-800 dark:text-slate-200">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-xs font-medium text-[#191918]">
                       {p.user.name}
                     </span>
                     {isHost && (
-                      <span title="Host">
-                        <ShieldCheck className="w-3.5 h-3.5 text-amber-500" />
+                      <span
+                        title="Room Host"
+                        className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 text-[10px] font-bold uppercase"
+                      >
+                        <Crown className="w-3 h-3 text-amber-600 fill-amber-500" />
+                        Host
                       </span>
                     )}
+                  </div>
+
+                  {/* Level / Streak indicator */}
+                  <div className="flex items-center gap-2 text-[10px] text-[#666560] mt-0.5 font-medium">
+                    <span className="flex items-center gap-0.5 text-orange-600 font-semibold">
+                      <Flame className="w-3 h-3 fill-orange-500 text-orange-500" />
+                      Active Streak
+                    </span>
                   </div>
                 </div>
               </div>
 
-              <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 capitalize">
-                {p.status || 'Focusing'}
+              {/* Status Pill */}
+              <span
+                className={`text-[10px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-md border ${
+                  status === 'Focusing'
+                    ? 'bg-indigo-50 text-indigo-700 border-indigo-200'
+                    : 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                }`}
+              >
+                {status}
               </span>
             </div>
           );

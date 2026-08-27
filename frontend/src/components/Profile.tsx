@@ -1,6 +1,8 @@
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { useHistoryStore } from '@/store/useHistoryStore';
+import { useBadgeStore } from '@/store/useBadgeStore';
 import { motion } from 'framer-motion';
 import {
   Mail,
@@ -12,15 +14,24 @@ import {
   CheckCircle2,
   MoreHorizontal,
   Edit3,
+  ShieldAlert,
+  ShieldCheck,
 } from 'lucide-react';
 import { FocusHeatmap } from './FocusHeatmap';
 import { format } from 'date-fns';
 import { getLevelInfo, getProgressPercent } from '@/utils/levelUtils';
+import { BadgeGrid } from './badges/BadgeGrid';
+import { BadgeUnlockToast } from './badges/BadgeUnlockToast';
 
 export function Profile() {
   const { user } = useAuth();
   const { sessions } = useHistoryStore();
+  const { xpSummary, fetchXpSummary, activateShield } = useBadgeStore();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchXpSummary();
+  }, [fetchXpSummary]);
 
   // Stats Calculations
   const totalSessions = sessions.filter((s) => s.type === 'pomodoro').length;
@@ -36,51 +47,14 @@ export function Profile() {
     return uniqueDays > 0 ? (totalSessions / uniqueDays).toFixed(1) : 0;
   };
 
-  const getCurrentStreak = () => {
-    if (sessions.length === 0) return 0;
-    const today = new Date().toDateString();
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-    const yesterdayStr = yesterday.toDateString();
-
-    const dates = [...new Set(sessions.map((s) => new Date(s.startTime).toDateString()))];
-    const sortedDates = dates.sort((a, b) => new Date(b).getTime() - new Date(a).getTime());
-
-    const lastFocus = sortedDates[0];
-    if (lastFocus !== today && lastFocus !== yesterdayStr) {
-      return 0;
-    }
-
-    // Simple streak calculation
-    let streak = 0;
-    let currentCheck = new Date();
-    currentCheck.setHours(0, 0, 0, 0);
-
-    const lastFocusDate = new Date(sortedDates[0]);
-    lastFocusDate.setHours(0, 0, 0, 0);
-    currentCheck = lastFocusDate;
-
-    for (const dateStr of sortedDates) {
-      const date = new Date(dateStr);
-      date.setHours(0, 0, 0, 0);
-
-      if (date.getTime() === currentCheck.getTime()) {
-        streak++;
-        currentCheck.setDate(currentCheck.getDate() - 1);
-      } else {
-        break;
-      }
-    }
-    return streak;
-  };
-
-  const streak = getCurrentStreak();
+  const streak = xpSummary?.currentStreak || 0;
   const dailyAverage = getDailyAverage();
   const isGuest = user?.isGuest || localStorage.getItem('isGuest') === 'true';
-  const userPoints = user?.points || 0;
+  const userPoints = xpSummary?.totalXP || user?.points || 0;
 
   const currentLevel = getLevelInfo(userPoints);
-  const progressPercent = getProgressPercent(userPoints);
+  const progressPercent = xpSummary?.progressPercent ?? getProgressPercent(userPoints);
+  const streakShieldActive = xpSummary?.streakShield?.active || false;
 
   return (
     <motion.div
@@ -88,6 +62,8 @@ export function Profile() {
       animate={{ opacity: 1, y: 0 }}
       className="max-w-6xl mx-auto space-y-8 pb-24"
     >
+      <BadgeUnlockToast />
+
       <div className="relative rounded-3xl overflow-hidden bg-card border border-border/50 shadow-sm group">
         {/* Cover Image Area */}
         <div className="h-40 bg-gradient-to-r from-zinc-900 via-slate-900 to-indigo-950 relative overflow-hidden backdrop-blur-3xl">
@@ -275,13 +251,12 @@ export function Profile() {
           </div>
         </div>
 
-        {/* --- Achievements / Rank --- */}
+        {/* --- Gamification & Rank Sidebar --- */}
         <div className="space-y-6">
-          {/* Rank Card */}
+          {/* Rank & XP Card */}
           <div
             className={`border rounded-2xl p-6 shadow-sm relative overflow-hidden group transition-all duration-500 ${currentLevel.border} bg-card`}
           >
-            {/* Dynamic Background Gradient Glow */}
             <div
               className={`absolute top-0 right-0 w-48 h-48 rounded-full blur-[80px] -mr-16 -mt-16 pointer-events-none opacity-20 bg-gradient-to-br ${currentLevel.gradient}`}
             />
@@ -299,7 +274,7 @@ export function Profile() {
                 <div
                   className={`mb-1.5 text-[8px] md:text-[12px] px-2 py-0.5 rounded border font-bold uppercase ${currentLevel.bg} ${currentLevel.color} ${currentLevel.border}`}
                 >
-                  LVL {currentLevel.level}
+                  LVL {xpSummary?.level || currentLevel.level}
                 </div>
               </div>
 
@@ -313,54 +288,43 @@ export function Profile() {
 
               <div className="flex justify-between items-center text-xs font-medium text-muted-foreground mt-1">
                 <span className={currentLevel.color}>{userPoints.toLocaleString()} XP</span>
-                {currentLevel.next !== Infinity && (
-                  <span>Next: {currentLevel.next.toLocaleString()} XP</span>
+                {xpSummary?.nextLevelXPThreshold && (
+                  <span>Next: {xpSummary.nextLevelXPThreshold.toLocaleString()} XP</span>
                 )}
-                {currentLevel.next === Infinity && (
-                  <span className="text-amber-500 animate-pulse">Max Level!</span>
+              </div>
+
+              {/* Streak Shield Control */}
+              <div className="mt-6 pt-4 border-t border-border/50 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  {streakShieldActive ? (
+                    <ShieldCheck className="w-4 h-4 text-emerald-500" />
+                  ) : (
+                    <ShieldAlert className="w-4 h-4 text-amber-500" />
+                  )}
+                  <div>
+                    <span className="text-xs font-bold block text-foreground">Streak Shield</span>
+                    <span className="text-[10px] text-muted-foreground">
+                      {streakShieldActive ? 'Active (Missed day protection)' : 'Inactive'}
+                    </span>
+                  </div>
+                </div>
+
+                {!streakShieldActive && (
+                  <button
+                    onClick={activateShield}
+                    className="px-2.5 py-1 text-[11px] font-bold bg-amber-500/10 text-amber-500 hover:bg-amber-500/20 border border-amber-500/30 rounded-lg transition"
+                  >
+                    Activate
+                  </button>
                 )}
               </div>
             </div>
           </div>
-
-          {/* Achievements List */}
-          <div className="bg-card border border-border/50 rounded-2xl p-6 shadow-sm">
-            <h3 className="font-semibold text-lg mb-6 flex items-center gap-2">
-              <Trophy className="w-4 h-4 text-primary" />
-              Achievements
-            </h3>
-
-            <div className="space-y-3">
-              <AchievementItem
-                title="Early Bird"
-                desc="Complete a session before 8AM"
-                icon="🌅"
-                unlocked={true}
-              />
-              <AchievementItem
-                title="Focus Master"
-                desc="Reach 100 total hours"
-                icon="🧘"
-                unlocked={parseFloat(totalHours) >= 100}
-                progress={Math.min(parseFloat(totalHours), 100)}
-                total={100}
-              />
-              <AchievementItem
-                title="Streak King"
-                desc="7 day streak"
-                icon="🔥"
-                unlocked={streak >= 7}
-                progress={streak}
-                total={7}
-              />
-            </div>
-
-            <button className="w-full mt-6 py-2.5 text-xs font-semibold text-center text-primary bg-primary/5 hover:bg-primary/10 border border-primary/20 rounded-xl transition-all duration-200">
-              View All Achievements
-            </button>
-          </div>
         </div>
       </div>
+
+      {/* --- Full-width Badge Grid Shelf --- */}
+      <BadgeGrid />
     </motion.div>
   );
 }
@@ -390,32 +354,6 @@ function StatCard({ icon: Icon, label, value, subvalue, color, bg, trend }: any)
           </span>
           <span className="text-[10px] text-muted-foreground/60">• {subvalue}</span>
         </div>
-      </div>
-    </div>
-  );
-}
-
-function AchievementItem({ title, desc, icon, unlocked, progress, total }: any) {
-  return (
-    <div
-      className={`flex items-start gap-3 p-3 rounded-xl border transition-all duration-300 ${unlocked ? 'bg-gradient-to-br from-card to-background border-border/50 shadow-sm' : 'bg-muted/20 border-transparent opacity-60 grayscale hover:grayscale-0 hover:opacity-100'}`}
-    >
-      <div className="text-2xl shrink-0">{icon}</div>
-      <div className="flex-1 min-w-0">
-        <div className="flex justify-between items-center mb-0.5">
-          <p className="text-sm font-semibold truncate">{title}</p>
-          {unlocked && <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />}
-        </div>
-        <p className="text-xs text-muted-foreground truncate">{desc}</p>
-
-        {typeof progress !== 'undefined' && !unlocked && (
-          <div className="mt-2 h-1.5 w-full bg-muted rounded-full overflow-hidden">
-            <div
-              className="h-full bg-primary transition-all duration-500"
-              style={{ width: `${(progress / total) * 100}%` }}
-            />
-          </div>
-        )}
       </div>
     </div>
   );
