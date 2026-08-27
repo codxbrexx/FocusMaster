@@ -1,9 +1,7 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-import { ChevronLeft, ChevronRight, Plus, Loader2 } from 'lucide-react';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { ChevronLeft, ChevronRight, Plus, Loader2, Calendar as CalendarIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import {
@@ -33,7 +31,7 @@ export function Calendar() {
 
   // Fetch Tasks (Events)
   const { data: tasks = [], isLoading } = useQuery({
-    queryKey: ['tasks'], // ideally filter by month range in future optimization
+    queryKey: ['tasks'],
     queryFn: async () => {
       const res = await axios.get(`${API_URL}/tasks`, { withCredentials: true });
       return res.data;
@@ -92,7 +90,7 @@ export function Calendar() {
   const handleEventClick = (e: React.MouseEvent, event: any) => {
     e.stopPropagation();
     setEditingEvent(event);
-    setSelectedDate(undefined); // Using event date
+    setSelectedDate(undefined);
     setIsDialogOpen(true);
   };
 
@@ -109,19 +107,16 @@ export function Calendar() {
     end: endOfMonth(currentDate),
   });
 
-  // Padding days for grid alignment
   const startDay = startOfMonth(currentDate).getDay();
   const paddingDays = Array.from({ length: startDay });
 
   const getEventsForDay = (date: Date) => {
     return tasks.filter((task: any) => {
-      // Fallback or legacy support
       if (!task.dueDate && !task.deadline) return false;
 
       const start = task.dueDate ? parseISO(task.dueDate) : parseISO(task.deadline);
       const end = task.deadline ? parseISO(task.deadline) : start;
 
-      // Check if 'date' is within the start-end range (inclusive)
       return (
         isSameDay(date, start) ||
         isSameDay(date, end) ||
@@ -130,70 +125,96 @@ export function Calendar() {
     });
   };
 
+  const categoryPills: Record<string, string> = {
+    Sprint: 'bg-purple-50 text-[#6E36E4] border-purple-100 font-semibold',
+    Review: 'bg-blue-50 text-blue-700 border-blue-100 font-semibold',
+    Deadline: 'bg-red-50 text-red-700 border-red-100 font-semibold',
+    'Deep Work': 'bg-emerald-50 text-emerald-700 border-emerald-100 font-semibold',
+    Work: 'bg-slate-100 text-slate-800 border-slate-200 font-semibold',
+  };
+
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.98 }}
+      initial={{ opacity: 0, scale: 0.99 }}
       animate={{ opacity: 1, scale: 1 }}
-      className="max-w-7xl mx-auto space-y-8 pb-20"
+      className="max-w-7xl mx-auto space-y-6 p-4 md:p-6 pb-24 font-sans text-slate-900"
     >
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div>
-          <h2 className="text-4xl font-bold font-heading tracking-tight text-foreground">
-            Calendar
-          </h2>
-          <p className="text-muted-foreground mt-1">Plan your Schedule, Events, and Goals.</p>
+      {/* Hero Header Card */}
+      <div className="bg-white border border-slate-200/80 rounded-2xl p-6 sm:p-8 shadow-2xs flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className="space-y-1">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-50 text-[#6E36E4] border border-purple-100 text-xs font-semibold">
+            <CalendarIcon className="w-3.5 h-3.5 text-[#6E36E4]" />
+            <span>Schedule & Milestones</span>
+          </div>
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+            Interactive Calendar & Task Events
+          </h1>
+          <p className="text-xs text-slate-500 font-medium max-w-xl">
+            Plan sprints, track task deadlines, schedule deep work blocks, and manage upcoming milestones.
+          </p>
         </div>
 
-        <div className="flex items-center gap-4 bg-card p-2 rounded-2xl border border-border shadow-sm">
-          <Button variant="ghost" size="icon" onClick={handlePrevMonth} className="hover:bg-muted">
-            <ChevronLeft className="w-5 h-5" />
-          </Button>
-          <span className="text-lg font-bold min-w-[160px] text-center selecting-none font-heading text-foreground">
-            {format(currentDate, 'MMMM yyyy')}
-          </span>
-          <Button variant="ghost" size="icon" onClick={handleNextMonth} className="hover:bg-muted">
-            <ChevronRight className="w-5 h-5" />
-          </Button>
-        </div>
+        <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+          {/* Month Navigator */}
+          <div className="flex items-center gap-2 bg-slate-50 p-1.5 rounded-xl border border-slate-200/80">
+            <button
+              onClick={handlePrevMonth}
+              className="p-1 text-slate-500 hover:text-slate-900 hover:bg-slate-200/60 rounded-lg transition-colors cursor-pointer"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+            <span className="text-xs font-bold font-mono min-w-[120px] text-center text-slate-900 uppercase tracking-wide">
+              {format(currentDate, 'MMMM yyyy')}
+            </span>
+            <button
+              onClick={handleNextMonth}
+              className="p-1 text-slate-500 hover:text-slate-900 hover:bg-slate-200/60 rounded-lg transition-colors cursor-pointer"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
 
-        <Button
-          onClick={() => {
-            setSelectedDate(new Date());
-            setEditingEvent(null);
-            setIsDialogOpen(true);
-          }}
-          className="hidden md:flex bg-primary hover:bg-primary/90 text-primary-foreground shadow-glow"
-        >
-          <Plus className="w-4 h-4 mr-2" /> Add Event
-        </Button>
+          {/* Add Event Button */}
+          <button
+            onClick={() => {
+              setSelectedDate(new Date());
+              setEditingEvent(null);
+              setIsDialogOpen(true);
+            }}
+            className="bg-[#6E36E4] hover:bg-[#5B2AC6] text-white font-bold px-4 py-2.5 rounded-xl text-xs shadow-2xs transition-colors flex items-center gap-2 cursor-pointer shrink-0"
+          >
+            <Plus className="w-4 h-4" />
+            <span>Add Event</span>
+          </button>
+        </div>
       </div>
 
-      <Card className="border border-border shadow-lg bg-card overflow-hidden rounded-xl">
-        <CardHeader className="border-b border-border pb-4 bg-card">
-          <div className="grid grid-cols-7 text-center">
-            {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
-              <div
-                key={day}
-                className="text-sm font-semibold text-muted-foreground uppercase tracking-widest py-2"
-              >
-                {day}
-              </div>
-            ))}
-          </div>
-        </CardHeader>
-        <CardContent className="p-0">
+      {/* Calendar Grid Container */}
+      <div className="bg-white border border-slate-200/80 rounded-2xl shadow-2xs overflow-hidden">
+        {/* Days Header */}
+        <div className="grid grid-cols-7 text-center bg-slate-50/60 border-b border-slate-100 py-3">
+          {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
+            <div
+              key={day}
+              className="text-xs font-bold text-slate-400 uppercase tracking-widest"
+            >
+              {day}
+            </div>
+          ))}
+        </div>
+
+        {/* Days Body */}
+        <div>
           {isLoading ? (
-            <div className="h-[600px] flex items-center justify-center">
-              <Loader2 className="w-10 h-10 animate-spin text-primary" />
+            <div className="h-[550px] flex items-center justify-center">
+              <Loader2 className="w-8 h-8 animate-spin text-[#6E36E4]" />
             </div>
           ) : (
-            <div className="grid grid-cols-7 auto-rows-[110px]">
-              {/* Empty padding cells */}
+            <div className="grid grid-cols-7 auto-rows-[115px]">
               {paddingDays.map((_, i) => (
-                <div key={`empty-${i}`} className="border-b border-r border-border bg-muted/20" />
+                <div key={`empty-${i}`} className="border-b border-r border-slate-100 bg-slate-50/30" />
               ))}
 
-              {/* Calendar Days */}
               {days.map((day, i) => {
                 const isToday = isSameDay(day, new Date());
                 const dayEvents = getEventsForDay(day);
@@ -203,47 +224,39 @@ export function Calendar() {
                     key={day.toISOString()}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ delay: i * 0.01 }}
+                    transition={{ delay: i * 0.005 }}
                     onClick={() => handleDateClick(day)}
                     className={cn(
-                      'p-2 border-b border-r border-border relative hover:bg-muted/50 transition-all cursor-pointer group h-[110px] flex flex-col gap-1 overflow-hidden',
-                      isToday && 'bg-primary/5'
+                      'p-2 border-b border-r border-slate-100 relative hover:bg-purple-50/30 transition-all cursor-pointer group h-[115px] flex flex-col gap-1 overflow-hidden',
+                      isToday && 'bg-purple-50/40'
                     )}
                   >
                     <div className="flex justify-between items-start">
                       <span
                         className={cn(
-                          'text-[11px] font-medium w-6 h-6 flex items-center justify-center rounded-full transition-colors',
+                          'text-xs font-bold w-6 h-6 flex items-center justify-center rounded-full transition-colors',
                           isToday
-                            ? 'bg-primary text-primary-foreground shadow-glow-sm'
-                            : 'text-muted-foreground group-hover:text-foreground'
+                            ? 'bg-[#6E36E4] text-white shadow-2xs'
+                            : 'text-slate-600 group-hover:text-slate-900'
                         )}
                       >
                         {format(day, 'd')}
                       </span>
                       {dayEvents.length > 2 && (
-                        <span className="text-[9px] text-muted-foreground bg-muted px-1.5 rounded-full border border-border">
+                        <span className="text-[10px] font-bold text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded-full border border-slate-200/60">
                           +{dayEvents.length - 2}
                         </span>
                       )}
                     </div>
 
-                    <div className="flex-1 flex flex-col gap-1 overflow-y-auto pr-1 custom-scrollbar">
-                      {dayEvents.slice(0, 4).map((evt: any) => (
+                    <div className="flex-1 flex flex-col gap-1 overflow-y-auto pr-1">
+                      {dayEvents.slice(0, 3).map((evt: any) => (
                         <div
                           key={evt._id}
                           onClick={(e) => handleEventClick(e, evt)}
                           className={cn(
-                            'text-[10px] px-1.5 py-0.5 rounded-[4px] truncate font-medium border hover:scale-[1.02] transition-transform cursor-pointer shadow-sm shrink-0',
-                            evt.category === 'Sprint'
-                              ? 'bg-purple-100 dark:bg-purple-500/10 text-black dark:text-purple-500 border-purple-500 dark:border-purple-500/20'
-                              : evt.category === 'Review'
-                                ? 'bg-cyan-100 dark:bg-cyan-500/10 text-black dark:text-cyan-500 border-cyan-500 dark:border-cyan-500/20'
-                                : evt.category === 'Deadline'
-                                  ? 'bg-red-100 dark:bg-red-500/10 text-black dark:text-red-500 border-red-500 dark:border-red-500/20'
-                                  : evt.category === 'Deep Work'
-                                    ? 'bg-blue-100 dark:bg-blue-500/10 text-black dark:text-blue-500 border-blue-500 dark:border-blue-500/20'
-                                    : 'bg-muted/50 text-foreground border-border'
+                            'text-[10px] px-2 py-1 rounded-lg truncate border transition-transform cursor-pointer shadow-2xs shrink-0',
+                            categoryPills[evt.category] || categoryPills.Work
                           )}
                         >
                           {evt.title}
@@ -255,8 +268,8 @@ export function Calendar() {
               })}
             </div>
           )}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       <CalendarEventDialog
         isOpen={isDialogOpen}

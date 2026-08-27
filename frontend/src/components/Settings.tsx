@@ -1,5 +1,4 @@
-import { Check, UserCog, Timer, Palette, Zap, Monitor, GraduationCap } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Check, UserCog, Timer, Palette, Zap, Monitor, GraduationCap, Settings as SettingsIcon } from 'lucide-react';
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -34,66 +33,80 @@ export function Settings() {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="max-w-4xl mx-auto space-y-8 pb-24"
+      className="max-w-5xl mx-auto space-y-6 p-4 md:p-6 pb-24 font-sans text-slate-900"
     >
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h2 className="text-3xl font-bold tracking-tight">Settings</h2>
-          <p className="text-muted-foreground mt-1">Configure your focus environment.</p>
+      {/* Hero Header Card */}
+      <div className="bg-white border border-slate-200/80 rounded-2xl p-6 sm:p-8 shadow-2xs flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className="space-y-1">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-50 text-[#6E36E4] border border-purple-100 text-xs font-semibold">
+            <SettingsIcon className="w-3.5 h-3.5 text-[#6E36E4]" />
+            <span>Preferences & System Config</span>
+          </div>
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+            Workspace & Account Settings
+          </h1>
+          <p className="text-xs text-slate-500 font-medium max-w-xl">
+            Configure timer intervals, study stream profile, appearance themes, and automation rules.
+          </p>
         </div>
-        <Button
-          onClick={() => toast.success('Settings saved')}
-          variant="outline"
-          className="gap-2 w-full sm:w-auto"
+
+        <button
+          onClick={() => toast.success('Settings updated successfully!')}
+          className="bg-[#6E36E4] hover:bg-[#5B2AC6] text-white font-bold px-5 py-2.5 rounded-xl text-xs shadow-2xs transition-colors flex items-center gap-2 cursor-pointer shrink-0"
         >
-          <Check className="w-4 h-4" /> Saved
-        </Button>
+          <Check className="w-4 h-4" /> Save Preferences
+        </button>
       </div>
 
+      {/* Tabs Container */}
       <Tabs
         value={currentTab}
         onValueChange={handleTabChange}
-        className="w-full border border-border rounded-xl"
+        className="w-full space-y-6"
       >
-        <TabsList className="w-full justify-start h-auto p-1 rounded-xl border-border mb-8 overflow-x-auto bg-background">
+        <TabsList className="w-full justify-start h-auto p-1.5 rounded-2xl border border-slate-200/60 bg-slate-100/80 overflow-x-auto flex gap-1">
           {tabs.map((tab) => {
             const Icon = tab.icon;
+            const isActive = currentTab === tab.id;
             return (
               <TabsTrigger
                 key={tab.id}
                 value={tab.id}
-                className="gap-2 rounded-lg px-6 py-2.5 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:font-semibold capitalize transition-all"
+                className={`flex-1 min-w-[130px] gap-2 rounded-xl py-2.5 px-4 text-xs font-bold transition-all cursor-pointer ${
+                  isActive
+                    ? 'bg-white text-[#6E36E4] shadow-2xs border border-slate-200/60'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/50'
+                }`}
               >
-                <Icon className="w-4 h-4" />
+                <Icon className={`w-4 h-4 ${isActive ? 'text-[#6E36E4]' : 'text-slate-400'}`} />
                 {tab.label}
               </TabsTrigger>
             );
           })}
         </TabsList>
 
-        <div className="space-y-6">
-          <TabsContent value="account">
+        <div className="bg-white border border-slate-200/80 rounded-2xl p-6 sm:p-8 shadow-2xs">
+          <TabsContent value="account" className="mt-0">
             <AccountSettings />
           </TabsContent>
 
-          <TabsContent value="study">
+          <TabsContent value="study" className="mt-0">
             <StudyProfileSettings />
           </TabsContent>
 
-          <TabsContent value="timer">
+          <TabsContent value="timer" className="mt-0">
             <TimerSettings />
           </TabsContent>
 
-          <TabsContent value="appearance">
+          <TabsContent value="appearance" className="mt-0">
             <AppearanceSettings />
           </TabsContent>
 
-          <TabsContent value="automation">
+          <TabsContent value="automation" className="mt-0">
             <AutomationSettings />
           </TabsContent>
 
-          <TabsContent value="system">
+          <TabsContent value="system" className="mt-0">
             <SystemSettings />
           </TabsContent>
         </div>
