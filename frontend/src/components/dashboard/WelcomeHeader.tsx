@@ -37,13 +37,13 @@ export function WelcomeHeader({ user, settings, randomQuote, points }: WelcomeHe
           <div className="inline-flex items-center gap-2 py-1 bg-primary/10 text-primary text-xs font-medium mb-2">
             <span>Welcome to Focus Master</span>
           </div>
-          <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-foreground">
+          <h1 className="font-serif text-2xl md:text-3xl font-bold tracking-tight text-foreground">
             {getTimeGreeting()},{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-purple-400">
+            <span className="text-foreground font-bold">
               {user?.name || 'Focus Master'}
             </span>
           </h1>
-          <p className="text-sm md:text-md text-muted-foreground leading-relaxed">
+          <p className="font-serif italic text-sm md:text-base text-muted-foreground leading-relaxed">
             "{settings.motivationalQuotes ? randomQuote : 'Ready to focus?'}"
           </p>
           <div className="flex flex-wrap gap-4 pt-4">

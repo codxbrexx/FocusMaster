@@ -6,6 +6,7 @@ import { useTimerStore } from '@/store/useTimerStore';
 import { useSettingsStore } from '@/store/useSettingsStore';
 import { useTaskStore } from '@/store/useTaskStore';
 import { useHistoryStore } from '@/store/useHistoryStore';
+import { useAiStore } from '@/store/useAiStore';
 
 // Mock stores
 vi.mock('@/store/useTimerStore', () => ({
@@ -22,6 +23,10 @@ vi.mock('@/store/useTaskStore', () => ({
 
 vi.mock('@/store/useHistoryStore', () => ({
   useHistoryStore: vi.fn(),
+}));
+
+vi.mock('@/store/useAiStore', () => ({
+  useAiStore: vi.fn(),
 }));
 
 // Mock Audio (Constructible)
@@ -87,6 +92,13 @@ describe('PomodoroTimer', () => {
     // Mock History
     (useHistoryStore as unknown as any).mockReturnValue({
       sessions: [],
+    });
+
+    // Mock AI Store
+    (useAiStore as unknown as any).mockReturnValue({
+      adaptiveSuggestion: null,
+      adaptiveLoading: false,
+      fetchAdaptiveTimer: vi.fn(),
     });
   });
 
