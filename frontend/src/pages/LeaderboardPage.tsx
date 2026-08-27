@@ -93,13 +93,12 @@ export function LeaderboardPage() {
     stream,
     rankings,
     totalParticipants,
-    isLoading,
     setPeriod,
     setStream,
     fetchLeaderboard,
   } = useLeaderboardStore();
 
-  const userRankRef = useRef<HTMLDivElement>(null);
+  const userRankRef = useRef<HTMLTableRowElement>(null);
 
   useEffect(() => {
     fetchLeaderboard();

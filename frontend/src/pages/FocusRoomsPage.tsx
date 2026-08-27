@@ -42,18 +42,6 @@ export function FocusRoomsPage() {
       {/* Hero Header Card with Create Room Button at the Bottom */}
       <div className="relative overflow-hidden rounded-2xl bg-white border border-slate-200/80 p-5 sm:p-6 shadow-2xs flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="space-y-3 max-w-xl relative z-10 w-full">
-          {/* Top Badges Row */}
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="bg-[#F0EBFE] text-[#6E36E4] px-3 py-1 rounded-full text-[11px] font-bold inline-flex items-center gap-1.5">
-              <Sparkles className="w-3 h-3 text-[#6E36E4]" />
-              LIVE CO-WORKING HUB
-            </span>
-            <span className="bg-[#E6F9F0] text-[#10B981] px-3 py-1 rounded-full text-[11px] font-bold inline-flex items-center gap-1.5">
-              <Zap className="w-3 h-3 text-[#10B981]" />
-              +15 XP Bonus
-            </span>
-          </div>
-
           {/* Main Title */}
           <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
             Synchronized Focus Rooms
