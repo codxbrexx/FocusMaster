@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Plus, Users, Search, RefreshCw, Trophy, SlidersHorizontal, Laptop, Stethoscope, TrendingUp, Sparkles, Zap } from 'lucide-react';
+import { Plus, Users, Search, RefreshCw, Trophy, SlidersHorizontal, Laptop, Stethoscope, TrendingUp } from 'lucide-react';
 import { RoomCard } from '@/components/rooms/RoomCard';
 import { CreateRoomModal } from '@/components/rooms/CreateRoomModal';
 import { useRoomStore } from '@/store/useRoomStore';

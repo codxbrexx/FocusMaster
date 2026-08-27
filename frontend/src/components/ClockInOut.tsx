@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
+import { Clock, ShieldCheck } from 'lucide-react';
 import { useHistoryStore } from '@/store/useHistoryStore';
 import { DateNavigator } from './clock-in-out/DateNavigator';
 import { WorkClock } from './clock-in-out/WorkClock';
@@ -132,10 +133,31 @@ export function ClockInOut() {
   const todayTotal = getTodayTotalHours();
 
   return (
-    <div className="max-w-7xl mx-auto space-y-6 p-4 md:p-6 pb-20">
+    <div className="max-w-7xl mx-auto space-y-6 p-4 md:p-6 pb-20 font-sans text-slate-900 animate-fade-in">
+      {/* Top Banner Card */}
+      <div className="bg-white border border-slate-200/80 rounded-2xl p-6 sm:p-8 shadow-2xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="space-y-1">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-50 text-[#6E36E4] border border-purple-100 text-xs font-semibold">
+            <Clock className="w-3.5 h-3.5 text-[#6E36E4]" />
+            <span>Attendance & Work Clock</span>
+          </div>
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+            Work Time Clock
+          </h1>
+          <p className="text-xs text-slate-500 font-medium max-w-xl">
+            Log your daily focus sessions, maintain study discipline, and review detailed timeline history.
+          </p>
+        </div>
+
+        <div className="flex items-center gap-2 bg-slate-50 border border-slate-200/80 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-700 shrink-0">
+          <ShieldCheck className="w-4 h-4 text-emerald-600" />
+          <span>Active Session Sync</span>
+        </div>
+      </div>
+
       <DateNavigator selectedDate={selectedDate} changeDate={changeDate} isToday={isToday} />
 
-      {/* Main Work Clock Section - Full Width with Internal Grid */}
+      {/* Main Work Clock Section */}
       <WorkClock
         todayEntry={todayEntry}
         isToday={isToday}
@@ -145,8 +167,8 @@ export function ClockInOut() {
         onBreak={handleBreak}
       />
 
-      {/* Info Panel & Timeline - Side by Side Below */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      {/* Info Panel & Timeline Side-by-Side */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <InfoPanel
           todayEntry={todayEntry}
           isToday={isToday}
@@ -157,7 +179,7 @@ export function ClockInOut() {
         <WorkTimeline entries={selectedDayEntries} />
       </div>
 
-      {/* Stats Grid - Full Width */}
+      {/* Stats Grid */}
       <StatsGrid
         isToday={isToday}
         todayTotal={todayTotal}
