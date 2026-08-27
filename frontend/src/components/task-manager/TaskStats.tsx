@@ -1,4 +1,3 @@
-import { Card, CardContent } from '@/components/ui/card';
 import { Target, CheckCircle2, Trophy } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -18,61 +17,53 @@ export function TaskStats({
   totalPomodoros,
 }: TaskStatsProps) {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-      <Card className="bg-card shadow-sm border border-l-4 border-l-purple-500">
-        <CardContent className="p-4 flex items-center justify-between">
-          <div>
-            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
-              Active
-            </p>
-            <h3 className="text-2xl font-bold">{activeCount}</h3>
-          </div>
-          <div className="p-2 bg-primary/10 rounded-full text-primary">
-            <Target className="w-5 h-5" />
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card className="bg-card shadow-sm border border-l-4 border-l-green-500">
-        <CardContent className="p-4 flex items-center justify-between">
-          <div>
-            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
-              Done
-            </p>
-            <h3 className="text-2xl font-bold">{completedCount}</h3>
-          </div>
-          <div className="p-2 bg-green-500/10 rounded-full text-green-600">
-            <CheckCircle2 className="w-5 h-5" />
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card className="bg-card shadow-sm border border-l-4 border-l-blue-500 md:col-span-2 relative overflow-hidden">
-        <div className="absolute top-0 right-0 p-3 opacity-10">
-          <Trophy className="w-24 h-24" />
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 font-sans text-slate-900">
+      <div className="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-2xs flex items-center justify-between">
+        <div className="space-y-1">
+          <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+            Active Tasks
+          </p>
+          <h3 className="text-3xl font-bold text-slate-900">{activeCount}</h3>
         </div>
-        <CardContent className="p-4 flex flex-col justify-center h-full">
-          <div className="flex justify-between items-end mb-2">
-            <div>
-              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
-                Productivity Score
-              </p>
-              <h3 className="text-2xl font-bold text-blue-600">{Math.round(progress)}%</h3>
-            </div>
-            <span className="text-xs text-muted-foreground">
-              {finishedPomodoros} / {totalPomodoros} Sessions
+        <div className="p-3 bg-purple-50 text-[#6E36E4] rounded-xl border border-purple-100">
+          <Target className="w-5 h-5" />
+        </div>
+      </div>
+
+      <div className="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-2xs flex items-center justify-between">
+        <div className="space-y-1">
+          <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+            Completed
+          </p>
+          <h3 className="text-3xl font-bold text-slate-900">{completedCount}</h3>
+        </div>
+        <div className="p-3 bg-emerald-50 text-emerald-600 rounded-xl border border-emerald-100">
+          <CheckCircle2 className="w-5 h-5" />
+        </div>
+      </div>
+
+      <div className="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-2xs md:col-span-2 flex flex-col justify-between space-y-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Trophy className="w-4 h-4 text-[#6E36E4]" />
+            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+              Productivity Velocity
             </span>
           </div>
-          <div className="h-2 w-full bg-secondary rounded-full overflow-hidden">
-            <motion.div
-              initial={{ width: 0 }}
-              animate={{ width: `${progress}%` }}
-              transition={{ duration: 1.5, ease: 'circOut' }}
-              className="h-full bg-blue-500 rounded-full"
-            />
-          </div>
-        </CardContent>
-      </Card>
+          <span className="text-xs font-bold font-mono text-[#6E36E4]">
+            {finishedPomodoros} / {totalPomodoros} Sessions ({Math.round(progress)}%)
+          </span>
+        </div>
+
+        <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: `${progress}%` }}
+            transition={{ duration: 1, ease: 'easeOut' }}
+            className="h-full bg-[#6E36E4] rounded-full"
+          />
+        </div>
+      </div>
     </div>
   );
 }

@@ -1,15 +1,5 @@
 import { motion } from 'framer-motion';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Pencil, Plus, Timer } from 'lucide-react';
-import { Input } from '@/components/ui/input';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { Button } from '@/components/ui/button';
 
 interface TaskFormState {
   title: string;
@@ -45,56 +35,55 @@ export function TaskForm({
       initial={{ height: 0, opacity: 0 }}
       animate={{ height: 'auto', opacity: 1 }}
       exit={{ height: 0, opacity: 0 }}
-      className="overflow-hidden mb-6"
+      className="overflow-hidden font-sans text-slate-900"
     >
-      <Card className="bg-card border border-border/50 shadow-md">
-        <CardHeader className="pb-4">
-          <CardTitle className="text-xl flex items-center gap-2">
-            {editingTaskId ? (
-              <Pencil className="w-5 h-5 text-primary" />
-            ) : (
-              <Plus className="w-5 h-5 text-primary" />
-            )}
-            {editingTaskId ? 'Edit Task' : 'Create New Task'}
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="grid gap-3">
-            <label className="text-sm font-medium">What needs to be done?</label>
-            <Input
-              placeholder="Eg. Add your Task here..."
+      <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-2xs space-y-6">
+        <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
+          {editingTaskId ? (
+            <Pencil className="w-4 h-4 text-[#6E36E4]" />
+          ) : (
+            <Plus className="w-4 h-4 text-[#6E36E4]" />
+          )}
+          <h3 className="text-base font-bold text-slate-900">
+            {editingTaskId ? 'Edit Task Details' : 'Create New Focus Task'}
+          </h3>
+        </div>
+
+        <div className="space-y-4">
+          <div className="space-y-1.5">
+            <label className="text-xs font-bold text-slate-700">Task Title</label>
+            <input
+              type="text"
+              placeholder="e.g., Complete System Architecture Review"
               value={taskForm.title}
               onChange={(e) => setTaskForm({ ...taskForm, title: e.target.value })}
-              className="text-lg py-6 px-4"
+              className="w-full bg-slate-50 border border-slate-200/80 rounded-xl px-4 py-2.5 text-sm font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#6E36E4]/40"
               autoFocus
             />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Category</label>
-              <Select
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold text-slate-700">Category</label>
+              <select
                 value={taskForm.category}
-                onValueChange={(v) => setTaskForm({ ...taskForm, category: v })}
+                onChange={(e) => setTaskForm({ ...taskForm, category: e.target.value })}
+                className="w-full bg-slate-50 border border-slate-200/80 rounded-xl px-3 py-2.5 text-xs font-semibold text-slate-800 focus:outline-none cursor-pointer"
               >
-                <SelectTrigger className="h-10">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {categories.map((c) => (
-                    <SelectItem key={c} value={c}>
-                      {c}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                {categories.map((c) => (
+                  <option key={c} value={c}>
+                    {c}
+                  </option>
+                ))}
+              </select>
             </div>
 
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Priority</label>
-              <Select
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold text-slate-700">Priority</label>
+              <select
                 value={taskForm.priority}
-                onValueChange={(v: 'low' | 'medium' | 'high') => {
+                onChange={(e) => {
+                  const v = e.target.value as 'low' | 'medium' | 'high';
                   const defaults = { low: 2, medium: 3, high: 4 };
                   setTaskForm({
                     ...taskForm,
@@ -102,28 +91,18 @@ export function TaskForm({
                     estimatedPomodoros: defaults[v],
                   });
                 }}
+                className="w-full bg-slate-50 border border-slate-200/80 rounded-xl px-3 py-2.5 text-xs font-semibold text-slate-800 focus:outline-none cursor-pointer"
               >
-                <SelectTrigger className="h-10">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="high" className="text-red-600 dark:text-red-400 font-semibold">
-                    High Priority
-                  </SelectItem>
-                  <SelectItem value="medium" className="text-amber-600 dark:text-amber-400 font-semibold">
-                    Medium Priority
-                  </SelectItem>
-                  <SelectItem value="low" className="text-blue-600 dark:text-blue-400 font-semibold">
-                    Low Priority
-                  </SelectItem>
-                </SelectContent>
-              </Select>
+                <option value="high">High Priority</option>
+                <option value="medium">Medium Priority</option>
+                <option value="low">Low Priority</option>
+              </select>
             </div>
 
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Est. Pomodoros</label>
-              <div className="flex items-center gap-2 relative">
-                <Input
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold text-slate-700">Est. Sessions</label>
+              <div className="relative">
+                <input
                   type="number"
                   min="1"
                   max="10"
@@ -134,35 +113,41 @@ export function TaskForm({
                       estimatedPomodoros: parseInt(e.target.value) || 1,
                     })
                   }
-                  className="h-10 pr-8"
+                  className="w-full bg-slate-50 border border-slate-200/80 rounded-xl pl-3 pr-8 py-2.5 text-xs font-semibold text-slate-800 focus:outline-none"
                 />
-                <Timer className="w-4 h-4 text-muted-foreground absolute right-3" />
+                <Timer className="w-3.5 h-3.5 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
               </div>
             </div>
 
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Due Date</label>
-              <div className="flex w-full items-center">
-                <Input
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold text-slate-700">Due Date</label>
+              <div className="relative">
+                <input
                   type="date"
                   value={taskForm.deadline}
                   onChange={(e) => setTaskForm({ ...taskForm, deadline: e.target.value })}
-                  className="h-10 w-full"
+                  className="w-full bg-slate-50 border border-slate-200/80 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 focus:outline-none"
                 />
               </div>
             </div>
           </div>
 
-          <div className="flex justify-end gap-3 pt-4">
-            <Button variant="ghost" onClick={onCancel}>
+          <div className="flex justify-end items-center gap-3 pt-3 border-t border-slate-100">
+            <button
+              onClick={onCancel}
+              className="bg-white border border-slate-200/80 text-slate-600 hover:bg-slate-50 font-semibold px-4 py-2 rounded-xl text-xs transition-colors cursor-pointer"
+            >
               Cancel
-            </Button>
-            <Button onClick={handleSubmit} className="px-8">
+            </button>
+            <button
+              onClick={handleSubmit}
+              className="bg-[#6E36E4] hover:bg-[#5B2AC6] text-white font-bold px-6 py-2 rounded-xl text-xs shadow-2xs transition-colors cursor-pointer"
+            >
               {editingTaskId ? 'Save Changes' : 'Create Task'}
-            </Button>
+            </button>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </motion.div>
   );
 }

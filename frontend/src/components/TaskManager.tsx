@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { Trash2, CheckCircle2, ListTodo } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Trash2, CheckCircle2, ListTodo, Target } from 'lucide-react';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTaskStore, type Task } from '@/store/useTaskStore';
@@ -117,8 +116,24 @@ export function TaskManager() {
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="max-w-5xl mx-auto space-y-8 pb-24"
+      className="max-w-6xl mx-auto space-y-6 pb-24 font-sans text-slate-900 animate-fade-in"
     >
+      {/* Top Banner Card */}
+      <div className="bg-white border border-slate-200/80 rounded-2xl p-6 sm:p-8 shadow-2xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="space-y-1">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-50 text-[#6E36E4] border border-purple-100 text-xs font-semibold">
+            <Target className="w-3.5 h-3.5 text-[#6E36E4]" />
+            <span>Focus Priority Planner</span>
+          </div>
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+            Task Management & Priority Backlog
+          </h1>
+          <p className="text-xs text-slate-500 font-medium max-w-xl">
+            Break down your study objectives into focused Pomodoro sessions and track your completion velocity.
+          </p>
+        </div>
+      </div>
+
       <TaskStats
         activeCount={activeTasks.length}
         completedCount={completedTasks.length}
@@ -127,8 +142,8 @@ export function TaskManager() {
         totalPomodoros={totalPomodoros}
       />
 
-      {/* --- MAIN CONTENT --- */}
-      <div className="w-full space-y-12">
+      {/* Main Task List & Filter Section */}
+      <div className="w-full space-y-6">
         <TaskFilters
           categoryFilter={categoryFilter}
           setCategoryFilter={setCategoryFilter}
@@ -154,13 +169,15 @@ export function TaskManager() {
           />
         </AnimatePresence>
 
-        {/* --- ACTIVE LIST --- */}
-        <div className="space-y-6">
-          <div className="flex items-center gap-2 pb-2 border-b border-white/5">
-            <h2 className="text-xl font-semibold tracking-tight">To Do</h2>
-            <span className="text-sm text-muted-foreground bg-secondary/50 px-2 py-0.5 rounded-full">
-              {sortedTasks.length}
-            </span>
+        {/* --- ACTIVE TASK LIST --- */}
+        <div className="space-y-4">
+          <div className="flex items-center justify-between border-b border-slate-200/60 pb-3">
+            <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+              <span>To Do Tasks</span>
+              <span className="text-xs font-bold text-[#6E36E4] bg-purple-50 border border-purple-100 px-2 py-0.5 rounded-full">
+                {sortedTasks.length}
+              </span>
+            </h3>
           </div>
 
           <AnimatePresence mode="popLayout">
@@ -168,16 +185,21 @@ export function TaskManager() {
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="text-center py-16 bg-secondary/20 rounded-xl border border-dashed"
+                className="text-center py-12 bg-white border border-slate-200/80 rounded-2xl p-6 shadow-2xs space-y-3"
               >
-                <ListTodo className="w-12 h-12 mx-auto text-muted-foreground/30 mb-3" />
-                <h3 className="font-semibold text-lg">No active tasks</h3>
-                <p className="text-muted-foreground mb-4">
-                  You're all caught up! Or maybe it's time to add one?
-                </p>
-                <Button variant="outline" onClick={() => setIsAdding(true)}>
-                  Add First Task
-                </Button>
+                <ListTodo className="w-10 h-10 mx-auto text-slate-300" />
+                <div className="space-y-1">
+                  <h4 className="font-bold text-sm text-slate-900">No Active Tasks Found</h4>
+                  <p className="text-xs text-slate-500 font-medium">
+                    You're all caught up! Click 'Add Task' to create your next study objective.
+                  </p>
+                </div>
+                <button
+                  onClick={() => setIsAdding(true)}
+                  className="bg-[#6E36E4] hover:bg-[#5B2AC6] text-white font-bold px-4 py-2 rounded-xl text-xs shadow-2xs transition-colors cursor-pointer inline-flex items-center gap-1.5"
+                >
+                  Create First Task
+                </button>
               </motion.div>
             ) : (
               <div className="space-y-3">
@@ -195,9 +217,15 @@ export function TaskManager() {
           </AnimatePresence>
         </div>
 
-        {/* --- COMPLETED LIST --- */}
+        {/* --- COMPLETED TASK LIST --- */}
         {completedTasks.length > 0 && (
-          <div className="space-y-6 pt-6 border-t border-white/5">
+          <div className="space-y-4 pt-6 border-t border-slate-200/60">
+            <div className="flex items-center gap-2">
+              <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+                Completed Objectives ({completedTasks.length})
+              </h3>
+            </div>
+
             <div className="space-y-2">
               <AnimatePresence>
                 {completedTasks.map((task) => (
@@ -205,29 +233,28 @@ export function TaskManager() {
                     key={task._id}
                     layout
                     initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 0.6, scale: 1 }}
+                    animate={{ opacity: 0.7, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.95 }}
-                    className="flex items-center justify-between p-4 rounded-xl bg-card border border-border/40 hover:border-primary/20 transition-all shadow-sm opacity-60 hover:opacity-100"
+                    className="flex items-center justify-between p-3.5 rounded-2xl bg-slate-50 border border-slate-200/60 transition-all font-sans text-xs text-slate-700 hover:opacity-100"
                   >
                     <div className="flex items-center gap-3">
                       <button
                         onClick={() => handleToggleComplete(task)}
-                        className="text-green-600 hover:text-green-500 transition-colors"
+                        className="text-emerald-600 hover:text-emerald-700 transition-colors cursor-pointer"
                       >
-                        <CheckCircle2 className="w-5 h-5" />
+                        <CheckCircle2 className="w-4 h-4" />
                       </button>
-                      <span className="line-through text-muted-foreground font-medium">
+                      <span className="line-through text-slate-500 font-medium">
                         {task.title}
                       </span>
                     </div>
-                    <Button
-                      variant="ghost"
-                      size="icon"
+
+                    <button
                       onClick={() => deleteTask(task._id)}
-                      className="text-muted-foreground hover:text-destructive"
+                      className="p-1 text-slate-400 hover:text-red-600 transition-colors cursor-pointer"
                     >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
                   </motion.div>
                 ))}
               </AnimatePresence>
