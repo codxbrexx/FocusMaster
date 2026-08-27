@@ -66,7 +66,7 @@ describe("AI Subsystem Endpoints", () => {
   });
 
   describe("GET /api/ai/insights", () => {
-    it("should return structured insights with fallback defaults when LLM is offline", async () => {
+    it("should return structured insights, exam readiness score, and burnout risk level", async () => {
       const res = await request(app)
         .get("/api/ai/insights")
         .set("Authorization", `Bearer ${token}`);
@@ -78,6 +78,8 @@ describe("AI Subsystem Endpoints", () => {
       expect(res.body.recommendations.length).toBeGreaterThan(0);
       expect(typeof res.body.summary).toBe("string");
       expect(typeof res.body.productivityScore).toBe("number");
+      expect(typeof res.body.examReadinessScore).toBe("number");
+      expect(["low", "moderate", "high"]).toContain(res.body.burnoutRisk);
     });
 
     it("should return cached insights if unexpired cache exists", async () => {
@@ -116,13 +118,13 @@ describe("AI Subsystem Endpoints", () => {
   });
 
   describe("GET /api/ai/study-plan", () => {
-    it("should return cached plan if exists", async () => {
+    it("should generate or return cached study plan with themes and daily plans", async () => {
       await StudyPlan.create({
         user: userId,
         weeks: [
           {
             weekNumber: 1,
-            theme: "Core Fundamentals",
+            theme: "Core Fundamentals & Problem Sprints",
             dailyPlans: [{ day: "Monday", subjects: [{ name: "Computer Science", hours: 2, activity: "Study" }] }],
           },
         ],
@@ -138,7 +140,7 @@ describe("AI Subsystem Endpoints", () => {
       expect(res.statusCode).toBe(200);
       expect(res.body.fromCache).toBe(true);
       expect(res.body.plan).toBeDefined();
-      expect(res.body.plan.weeks[0].theme).toBe("Core Fundamentals");
+      expect(res.body.plan.weeks[0].theme).toBe("Core Fundamentals & Problem Sprints");
     });
   });
 
@@ -154,29 +156,74 @@ describe("AI Subsystem Endpoints", () => {
   });
 
   describe("GET /api/ai/adaptive-timer", () => {
-    it("should return adaptive timer suggestion structure", async () => {
+    it("should return stream-aware timer suggestions", async () => {
       const res = await request(app)
         .get("/api/ai/adaptive-timer")
         .set("Authorization", `Bearer ${token}`);
 
       expect(res.statusCode).toBe(200);
-      expect(typeof res.body.hasEnoughData).toBe("boolean");
+      expect(res.body.suggestedFocusDuration).toBeGreaterThan(0);
+      expect(res.body.suggestedShortBreak).toBeGreaterThan(0);
     });
   });
 
   describe("POST /api/ai/chat", () => {
-    it("should process study chat and return response without throwing 500", async () => {
+    it("should process study chat with senior academic coach persona", async () => {
       const res = await request(app)
         .post("/api/ai/chat")
         .set("Authorization", `Bearer ${token}`)
         .send({
-          message: "How should I structure my revision?",
+          message: "How should I approach revision for my computer science topics?",
           history: [],
         });
 
       expect(res.statusCode).toBe(200);
       expect(typeof res.body.answer).toBe("string");
       expect(res.body.answer.length).toBeGreaterThan(0);
+    });
+  });
+
+  describe("POST /api/ai/rag/quiz", () => {
+    it("should generate practice quiz with questions and option explanations", async () => {
+      const doc = await Document.create({
+        user: userId,
+        title: "CS Notes",
+        filename: "cs_notes.pdf",
+        size: 1024,
+      });
+
+      await DocumentChunk.create({
+        document: doc._id,
+        user: userId,
+        chunkIndex: 0,
+        content: "Data structures such as arrays and linked lists are foundational in computer science.",
+        embedding: Array.from({ length: 768 }, () => 0.1),
+      });
+
+      const res = await request(app)
+        .post("/api/ai/rag/quiz")
+        .set("Authorization", `Bearer ${token}`)
+        .send({ topic: "Data Structures" });
+
+      expect(res.statusCode).toBe(200);
+      expect(res.body.quiz).toBeDefined();
+      expect(Array.isArray(res.body.quiz.questions)).toBe(true);
+      expect(res.body.quiz.questions.length).toBeGreaterThan(0);
+      expect(res.body.quiz.questions[0].explanation).toBeDefined();
+    });
+  });
+
+  describe("GET /api/ai/weekly-digest", () => {
+    it("should return AI weekly performance digest", async () => {
+      const res = await request(app)
+        .get("/api/ai/weekly-digest")
+        .set("Authorization", `Bearer ${token}`);
+
+      expect(res.statusCode).toBe(200);
+      expect(typeof res.body.weeklyFocusHours).toBe("number");
+      expect(typeof res.body.headline).toBe("string");
+      expect(Array.isArray(res.body.keyHighlights)).toBe(true);
+      expect(typeof res.body.nextWeekAction).toBe("string");
     });
   });
 });
