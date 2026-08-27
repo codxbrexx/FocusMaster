@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useHistoryStore } from '@/store/useHistoryStore';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Trophy } from 'lucide-react';
 
 interface Achievement {
   icon: string;
@@ -41,34 +41,35 @@ export const AchievementsCard = () => {
   }, [sessions]);
 
   return (
-    <Card className="bg-card border border-border/50 shadow-sm rounded-2xl">
-      <CardHeader className="pb-3 px-5 pt-5">
-        <CardTitle className="text-sm font-semibold text-foreground">Achievements</CardTitle>
-      </CardHeader>
-      <CardContent className="px-5 pb-5">
-        <div className="space-y-2">
-          {achievements.map(({ icon, label, unlocked }) => (
-            <div
-              key={label}
-              className={`flex items-center gap-3 p-2.5 rounded-xl transition-all duration-200 ${
-                unlocked
-                  ? 'bg-primary/10 border border-primary/20'
-                  : 'opacity-40 bg-secondary/50'
-              }`}
-            >
-              <span className="text-lg">{icon}</span>
-              <span className={`text-sm font-medium flex-1 ${unlocked ? 'text-foreground' : 'text-muted-foreground'}`}>
-                {label}
+    <div className="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-2xs space-y-4 font-sans text-slate-900">
+      <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+        <h3 className="font-bold text-sm text-slate-900 flex items-center gap-2">
+          <Trophy className="w-4 h-4 text-amber-500" />
+          Key Milestones
+        </h3>
+        <span className="text-xs font-semibold text-slate-400">Unlocked</span>
+      </div>
+
+      <div className="space-y-2">
+        {achievements.map(({ icon, label, unlocked }) => (
+          <div
+            key={label}
+            className={`flex items-center gap-2.5 p-2 rounded-xl transition-all border ${
+              unlocked
+                ? 'bg-purple-50/60 border-purple-100 text-slate-900'
+                : 'bg-slate-50/60 border-slate-100 text-slate-400 opacity-60'
+            }`}
+          >
+            <span className="text-base">{icon}</span>
+            <span className="text-xs font-bold flex-1">{label}</span>
+            {unlocked && (
+              <span className="text-[9px] font-bold text-[#6E36E4] bg-white border border-purple-200 px-2 py-0.5 rounded-full shadow-2xs">
+                Unlocked
               </span>
-              {unlocked && (
-                <span className="text-[10px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">
-                  Unlocked
-                </span>
-              )}
-            </div>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
   );
 };

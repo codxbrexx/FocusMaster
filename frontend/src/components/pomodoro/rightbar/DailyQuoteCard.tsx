@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Quote } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 const QUOTES = [
   { text: 'The secret of getting ahead is getting started.', author: 'Mark Twain' },
@@ -19,21 +18,25 @@ export const DailyQuoteCard = () => {
   const quote = QUOTES[idx];
 
   return (
-    <Card className="bg-card border border-border/50 shadow-sm rounded-2xl">
-      <CardHeader className="pb-3 px-5 pt-5">
-        <CardTitle className="text-sm font-semibold text-foreground">Daily Quote</CardTitle>
-      </CardHeader>
-      <CardContent className="px-5 pb-5">
-        <div className="flex gap-3">
-          <Quote className="w-7 h-7 text-primary/30 flex-shrink-0 mt-0.5" />
-          <div>
-            <p className="text-sm text-foreground leading-relaxed italic">
-              "{quote.text}"
-            </p>
-            <p className="text-xs text-muted-foreground mt-2 font-medium">— {quote.author}</p>
-          </div>
+    <div className="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-2xs space-y-4 font-sans text-slate-900">
+      <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+        <h3 className="font-bold text-sm text-slate-900 flex items-center gap-2">
+          <Quote className="w-4 h-4 text-[#6E36E4]" />
+          Daily Focus Mindset
+        </h3>
+      </div>
+
+      <div className="flex gap-3">
+        <Quote className="w-6 h-6 text-[#6E36E4]/40 shrink-0 mt-0.5" />
+        <div>
+          <p className="text-xs font-semibold text-slate-700 leading-relaxed italic">
+            "{quote.text}"
+          </p>
+          <p className="text-[10px] font-bold text-slate-400 mt-2 uppercase tracking-wider">
+            — {quote.author}
+          </p>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 };
