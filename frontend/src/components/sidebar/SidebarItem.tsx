@@ -42,7 +42,7 @@ export const SidebarItem = ({ item, isOpen, onClick }: SidebarItemProps) => {
               <motion.div
                 layoutId="sidebar-active-bg"
                 className="absolute inset-0 bg-purple-500/10 dark:bg-purple-500/15 rounded-xl"
-                initial={false}
+                initial={undefined}
                 transition={{ type: 'spring', stiffness: 300, damping: 24 }}
               />
 
