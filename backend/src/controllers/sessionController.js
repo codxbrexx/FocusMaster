@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler");
 const Session = require("../models/Session");
 const User = require("../models/User");
 const Task = require("../models/Task");
+const { awardXP } = require("../services/xpService");
 
 // @desc    Log a completed session
 // @route   POST /api/sessions
@@ -19,10 +20,16 @@ const createSession = asyncHandler(async (req, res) => {
     mood,
   });
 
+  let xpResult = null;
+
   if (type === "focus") {
-    const user = await User.findById(req.user._id);
-    user.points += 10;
-    await user.save();
+    // Calculate session total pomodoros for badges
+    const userSessions = await Session.countDocuments({ user: req.user._id, type: "focus" });
+    xpResult = await awardXP(req.user._id, 10, "solo_focus_session", {
+      totalPomodoroCount: userSessions,
+      dailyFocusMinutes: (duration || 25),
+    });
+
     if (task) {
       const taskDoc = await Task.findById(task);
       if (taskDoc) {
@@ -32,7 +39,14 @@ const createSession = asyncHandler(async (req, res) => {
     }
   }
 
-  res.status(201).json(session);
+  res.status(201).json({
+    ...session.toObject(),
+    xpEarned: xpResult ? xpResult.xpEarned : 0,
+    totalXP: xpResult ? xpResult.totalXP : 0,
+    level: xpResult ? xpResult.level : 1,
+    leveledUp: xpResult ? xpResult.leveledUp : false,
+    newlyEarnedBadges: xpResult ? xpResult.newlyEarnedBadges : [],
+  });
 });
 
 // @desc    Get user sessions

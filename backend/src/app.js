@@ -20,6 +20,7 @@ const cronRoutes = require("./routes/cronRoutes");
 const aiRoutes = require("./routes/aiRoutes");
 const studyProfileRoutes = require("./routes/studyProfileRoutes");
 const roomRoutes = require("./routes/roomRoutes");
+const xpRoutes = require("./routes/xpRoutes");
 
 const app = express();
 app.set("trust proxy", 1);
@@ -110,6 +111,7 @@ app.use("/api/admin", require("./admin/routes/adminRoutes"));
 app.use("/api/cron", cronRoutes);
 app.use("/api/ai", aiRoutes);
 app.use("/api/study-profile", studyProfileRoutes);
+app.use("/api/xp", xpRoutes);
 
 app.get(["/favicon.ico", "/favicon.png"], (req, res) => res.status(204).end());
 
