@@ -1,5 +1,4 @@
-import { Brain, Coffee, Armchair } from 'lucide-react';
-import type { LucideIcon } from 'lucide-react';
+import { Brain, Coffee, Armchair, type LucideIcon } from 'lucide-react';
 import type { TimerMode } from '@/store/useTimerStore';
 
 interface ModeSelectorProps {

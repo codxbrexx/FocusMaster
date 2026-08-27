@@ -9,6 +9,7 @@ import {
   ShieldCheck,
   ChevronLeft,
   ChevronRight,
+  Users,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
@@ -28,6 +29,7 @@ import { BookOpen } from 'lucide-react';
 const MENU_ITEMS = [
   { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { path: '/pomodoro', label: 'Pomodoro', icon: Timer },
+  { path: '/rooms', label: 'Focus Rooms', icon: Users },
   { path: '/clock', label: 'Clock In/Out', icon: Clock },
   { path: '/tasks', label: 'Tasks', icon: ListTodo },
   { path: '/study', label: 'Study AI', icon: BookOpen },

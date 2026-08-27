@@ -56,6 +56,12 @@ const Register = lazy(() =>
 const SpotifyCallback = lazy(() =>
   import('./pages/SpotifyCallback').then((module) => ({ default: module.SpotifyCallback }))
 );
+const FocusRoomsPage = lazy(() =>
+  import('./pages/FocusRoomsPage').then((module) => ({ default: module.FocusRoomsPage }))
+);
+const FocusRoomPage = lazy(() =>
+  import('./pages/FocusRoomPage').then((module) => ({ default: module.FocusRoomPage }))
+);
 
 // Admin Components
 const AdminShell = lazy(() =>
@@ -117,6 +123,8 @@ const App = () => {
                       <Route path="/dashboard" element={<Dashboard />} />
                       <Route path="/tasks" element={<TaskManager />} />
                       <Route path="/pomodoro" element={<PomodoroTimer />} />
+                      <Route path="/rooms" element={<FocusRoomsPage />} />
+                      <Route path="/rooms/:roomId" element={<FocusRoomPage />} />
                       <Route path="/analytics" element={<Analytics />} />
                       <Route path="/clock" element={<ClockInOut />} />
                       <Route path="/spotify" element={<SpotifyPanel />} />
