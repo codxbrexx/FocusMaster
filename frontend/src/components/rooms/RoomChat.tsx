@@ -1,30 +1,37 @@
 import { useState, useRef, useEffect } from 'react';
-import { Send, MessageSquare, Sparkles } from 'lucide-react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { useRoomStore } from '@/store/useRoomStore';
+import { MessageSquare, Users, Send, Crown, Flame, Sparkles } from 'lucide-react';
+import { useRoomStore, type Participant } from '@/store/useRoomStore';
+import { useAuth } from '@/context/AuthContext';
 
-const QUICK_REACTIONS = [
-  { emoji: '🔥', label: 'Fire' },
-  { emoji: '👏', label: 'Clap' },
-  { emoji: '☕', label: 'Coffee' },
-  { emoji: '💪', label: 'Power' },
-  { emoji: '🚀', label: 'Rocket' },
-  { emoji: '💡', label: 'Idea' },
+interface RoomChatProps {
+  participants?: Participant[];
+  hostId?: string;
+}
+
+const QUICK_CHEERS = [
+  '🔥 Keep grinding!',
+  '☕ Coffee break time',
+  '💪 Stay focused!',
+  '🚀 25m Pomodoro done',
+  '💡 Almost at the goal!',
 ];
 
-export function RoomChat() {
+export function RoomChat({ participants = [], hostId }: RoomChatProps) {
   const { messages, sendChatMessage } = useRoomStore();
+  const { user } = useAuth();
+  const [activeTab, setActiveTab] = useState<'chat' | 'coworkers'>('chat');
   const [text, setText] = useState('');
-  const chatEndRef = useRef<HTMLDivElement | null>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+    if (activeTab === 'chat') {
+      scrollToBottom();
+    }
+  }, [messages, activeTab]);
 
   const handleSend = (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,96 +40,201 @@ export function RoomChat() {
     setText('');
   };
 
-  const handleQuickReaction = (emoji: string) => {
-    sendChatMessage(emoji);
+  const handleQuickCheer = (cheerText: string) => {
+    sendChatMessage(cheerText);
   };
 
   return (
-    <div className="bg-white border border-[#E6E4DF] rounded-2xl p-4 flex flex-col h-[400px] shadow-[0_4px_16px_rgba(0,0,0,0.03)] text-[#191918]">
-      {/* Chat Header */}
-      <div className="flex items-center justify-between border-b pb-3 border-[#E6E4DF]">
-        <div className="flex items-center gap-2">
-          <div className="p-1.5 rounded-lg bg-[#F4F4F0] text-[#191918] border border-[#E6E4DF]">
-            <MessageSquare className="w-4 h-4 text-[#191918]" />
-          </div>
-          <h3 className="text-sm font-semibold text-[#191918]">
-            Live Room Chat
-          </h3>
+    <div className="bg-white border border-slate-200/80 rounded-2xl shadow-2xs flex flex-col justify-between overflow-hidden h-full text-slate-900">
+      {/* Header Tab Bar */}
+      <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100 bg-slate-50/50 shrink-0">
+        <div className="flex items-center gap-1.5 p-1 bg-slate-200/60 rounded-xl">
+          <button
+            onClick={() => setActiveTab('chat')}
+            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+              activeTab === 'chat'
+                ? 'bg-white text-slate-900 shadow-2xs'
+                : 'text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            <MessageSquare className="w-3.5 h-3.5 text-[#6E36E4]" />
+            <span>Room Chat</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('coworkers')}
+            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+              activeTab === 'coworkers'
+                ? 'bg-white text-slate-900 shadow-2xs'
+                : 'text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            <Users className="w-3.5 h-3.5 text-[#6E36E4]" />
+            <span>Co-Workers</span>
+            <span className="bg-[#F0EBFE] text-[#6E36E4] text-[10px] font-extrabold px-1.5 py-0.2 rounded-full ml-0.5">
+              {participants.length}
+            </span>
+          </button>
         </div>
-        <span className="text-[10px] font-semibold text-[#9C9A92] uppercase tracking-wider flex items-center gap-1">
+
+        <div className="flex items-center gap-1 text-[10px] font-bold text-amber-500 uppercase tracking-wider">
           <Sparkles className="w-3 h-3 text-amber-500" />
-          Realtime
-        </span>
+          <span>REALTIME</span>
+        </div>
       </div>
 
-      {/* Messages Scroll Feed */}
-      <div className="flex-1 overflow-y-auto space-y-3 py-3 pr-1 scrollbar-thin">
-        {messages.length === 0 ? (
-          <div className="h-full flex flex-col items-center justify-center text-center p-4 text-[#9C9A92] space-y-2">
-            <MessageSquare className="w-8 h-8 text-[#9C9A92]" />
-            <p className="text-xs font-semibold text-[#191918]">No room messages yet</p>
-            <p className="text-[11px] text-[#666560]">
-              Send an encouragement message or use quick emoji cheers below!
-            </p>
-          </div>
-        ) : (
-          messages.map((msg) => (
-            <div key={msg.id} className="flex items-start gap-2.5">
-              <img
-                src={msg.user.picture || 'https://github.com/shadcn.png'}
-                alt={msg.user.name}
-                className="w-7 h-7 rounded-full object-cover mt-0.5 border border-[#E6E4DF]"
-              />
-              <div className="flex-1 bg-[#F4F4F0] p-2.5 rounded-xl border border-[#E6E4DF] text-xs">
-                <div className="flex items-center justify-between font-semibold text-[#191918]">
-                  <span>{msg.user.name}</span>
-                  <span className="text-[10px] text-[#9C9A92] font-normal">
-                    {new Date(msg.timestamp).toLocaleTimeString([], {
-                      hour: '2-digit',
-                      minute: '2-digit',
-                    })}
-                  </span>
+      {/* Main Content Area */}
+      {activeTab === 'chat' ? (
+        <div className="flex-1 flex flex-col justify-between min-h-0">
+          {/* Live Chat Stream */}
+          <div className="flex-1 overflow-y-auto p-4 space-y-3">
+            {messages.length === 0 ? (
+              <div className="h-full flex flex-col items-center justify-center text-center space-y-2 py-12">
+                <div className="w-10 h-10 rounded-2xl bg-purple-50 text-[#6E36E4] flex items-center justify-center mx-auto">
+                  <MessageSquare className="w-5 h-5" />
                 </div>
-                <p className="text-[#666560] mt-1 leading-relaxed break-words font-normal">
-                  {msg.text}
+                <p className="text-xs font-bold text-slate-800">No room messages yet</p>
+                <p className="text-[11px] text-slate-400 max-w-xs leading-relaxed font-medium">
+                  Send an encouragement message or use quick cheers below to study together!
                 </p>
               </div>
+            ) : (
+              messages.map((m, idx) => {
+                const msgUser = m.user || (m as any).sender;
+                const isMe = msgUser?._id === user?._id;
+                const isMsgHost = msgUser?._id === hostId || (msgUser as any) === hostId;
+
+                return (
+                  <div key={m.id || (m as any)._id || idx} className="flex items-start gap-2.5">
+                    <img
+                      src={msgUser?.picture || 'https://github.com/shadcn.png'}
+                      alt={msgUser?.name || 'User'}
+                      className="w-7 h-7 rounded-full object-cover border border-slate-200 mt-0.5 shrink-0"
+                    />
+
+                    <div className="flex-1 min-w-0 space-y-0.5">
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        <span className="text-xs font-bold text-slate-900 truncate">
+                          {msgUser?.name || 'Peer'}
+                        </span>
+
+                        {isMsgHost && (
+                          <span className="bg-amber-50 text-amber-700 border border-amber-200 text-[10px] font-bold px-1.5 py-0.2 rounded-full inline-flex items-center gap-0.5">
+                            <Crown className="w-2.5 h-2.5 text-amber-500 fill-amber-500" />
+                            HOST
+                          </span>
+                        )}
+
+                        {isMe && (
+                          <span className="bg-purple-50 text-[#6E36E4] text-[10px] font-bold px-1.5 py-0.2 rounded-full">
+                            YOU
+                          </span>
+                        )}
+                      </div>
+
+                      <p className="text-xs text-slate-700 leading-relaxed font-medium bg-slate-50 p-2.5 rounded-xl border border-slate-100 break-words">
+                        {m.text}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })
+            )}
+            <div ref={messagesEndRef} />
+          </div>
+
+          {/* Bottom Area: Quick Cheer Chips & Input Box */}
+          <div className="p-3 border-t border-slate-100 bg-slate-50/50 space-y-2.5 shrink-0">
+            {/* Quick Cheers Bar */}
+            <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none pb-0.5">
+              {QUICK_CHEERS.map((cheer, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => handleQuickCheer(cheer)}
+                  className="px-2.5 py-1 rounded-lg bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 text-[11px] font-semibold transition-colors cursor-pointer shrink-0 shadow-2xs"
+                >
+                  {cheer}
+                </button>
+              ))}
             </div>
-          ))
-        )}
-        <div ref={chatEndRef} />
-      </div>
 
-      {/* Quick Reaction Cheer Buttons */}
-      <div className="flex items-center gap-1.5 py-2 border-t border-[#E6E4DF] overflow-x-auto scrollbar-none">
-        <span className="text-[10px] font-semibold text-[#9C9A92] uppercase tracking-wider shrink-0 mr-1">
-          Cheer:
-        </span>
-        {QUICK_REACTIONS.map((r) => (
-          <button
-            key={r.emoji}
-            type="button"
-            onClick={() => handleQuickReaction(r.emoji)}
-            className="p-1.5 rounded-lg bg-[#F4F4F0] hover:bg-[#EFECE6] text-sm transition transform active:scale-125 shrink-0 border border-[#E6E4DF]"
-            title={r.label}
-          >
-            {r.emoji}
-          </button>
-        ))}
-      </div>
+            {/* Form Input */}
+            <form onSubmit={handleSend} className="flex items-center gap-2">
+              <input
+                type="text"
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+                placeholder="Send a room message..."
+                className="bg-white border border-slate-200 text-slate-800 placeholder:text-slate-400 rounded-xl px-3.5 py-2 text-xs w-full focus:outline-none focus:border-[#6E36E4] font-medium shadow-2xs"
+              />
+              <button
+                type="submit"
+                disabled={!text.trim()}
+                className="bg-[#6E36E4] hover:bg-[#5B2AC6] text-white p-2.5 rounded-xl transition-colors disabled:opacity-40 cursor-pointer shrink-0 shadow-2xs"
+              >
+                <Send className="w-3.5 h-3.5" />
+              </button>
+            </form>
+          </div>
+        </div>
+      ) : (
+        /* Tab 2: Active Co-Workers List */
+        <div className="flex-1 overflow-y-auto p-4 space-y-2.5">
+          <div className="pb-2 border-b border-slate-100">
+            <h3 className="text-xs font-bold text-slate-900">Studying Together Now</h3>
+            <p className="text-[11px] text-slate-500 font-medium">
+              {participants.length} peers currently in this Pomodoro session
+            </p>
+          </div>
 
-      {/* Input Bar */}
-      <form onSubmit={handleSend} className="flex gap-2 pt-2 border-t border-[#E6E4DF]">
-        <Input
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          placeholder="Send a message..."
-          className="text-xs rounded-xl bg-[#F4F4F0] border-[#E6E4DF] text-[#191918] placeholder:text-[#9C9A92] focus:bg-white focus:border-[#191918] focus-visible:ring-0"
-        />
-        <Button type="submit" size="sm" disabled={!text.trim()} className="rounded-xl shrink-0 gap-1 font-medium bg-[#191918] hover:bg-[#333330] text-white">
-          <Send className="w-3.5 h-3.5" />
-        </Button>
-      </form>
+          {participants.map((p, idx) => {
+            const isRoomHost = (p.user as any)?._id === hostId || (p.user as any) === hostId;
+
+            return (
+              <div
+                key={p.user?._id || idx}
+                className={`p-3 rounded-xl border flex items-center justify-between transition-colors ${
+                  isRoomHost
+                    ? 'border-amber-300/80 bg-amber-50/40'
+                    : 'border-slate-200 bg-white hover:bg-slate-50'
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <img
+                    src={p.user?.picture || 'https://github.com/shadcn.png'}
+                    alt={p.user?.name || 'User'}
+                    className="w-8 h-8 rounded-full object-cover border border-slate-200"
+                  />
+
+                  <div>
+                    <div className="flex items-center gap-1.5">
+                      <span className="font-bold text-slate-900 text-xs truncate max-w-[110px]">
+                        {p.user?.name || 'Anonymous Student'}
+                      </span>
+                      {isRoomHost && (
+                        <span className="text-[10px] font-bold text-amber-600 flex items-center gap-0.5">
+                          <Crown className="w-3 h-3 fill-amber-500 text-amber-500" />
+                          HOST
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="flex items-center gap-1 text-[10px] text-amber-600 font-semibold">
+                      <Flame className="w-3 h-3 fill-amber-500 text-amber-500" />
+                      <span>Active Streak</span>
+                    </div>
+                  </div>
+                </div>
+
+                <span className="border border-emerald-300 text-emerald-700 bg-emerald-50 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">
+                  IDLE
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

@@ -8,83 +8,62 @@ interface ParticipantListProps {
 
 export function ParticipantList({ participants, hostId }: ParticipantListProps) {
   return (
-    <div className="bg-white border border-[#E6E4DF] rounded-2xl p-5 space-y-4 shadow-[0_4px_16px_rgba(0,0,0,0.03)] text-[#191918]">
+    <div className="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-2xs space-y-4 text-slate-900">
       {/* Header */}
-      <div className="flex items-center justify-between border-b pb-3 border-[#E6E4DF]">
-        <div className="flex items-center gap-2 font-semibold text-[#191918] text-sm">
-          <div className="p-1.5 rounded-lg bg-[#F4F4F0] text-[#191918] border border-[#E6E4DF]">
-            <Users className="w-4 h-4 text-[#191918]" />
-          </div>
-          <span>Active Co-Workers</span>
+      <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+        <div className="flex items-center gap-2">
+          <Users className="w-4 h-4 text-slate-600" />
+          <h2 className="text-sm font-bold text-slate-900">Active Co-Workers</h2>
         </div>
-
-        <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-[#F4F4F0] text-[#191918] border border-[#E6E4DF]">
+        <span className="bg-slate-100 text-slate-700 text-xs font-semibold px-2.5 py-0.5 rounded-full">
           {participants.length} Online
         </span>
       </div>
 
-      {/* Participant List */}
-      <div className="space-y-2.5 max-h-[280px] overflow-y-auto pr-1 scrollbar-thin">
+      {/* Participant Items List */}
+      <div className="space-y-2.5 max-h-72 overflow-y-auto pr-1">
         {participants.map((p, idx) => {
-          const isHost = p.user._id === hostId;
-          const status = p.status || 'Focusing';
+          const isRoomHost = (p.user as any)?._id === hostId || (p.user as any) === hostId;
 
           return (
             <div
-              key={p.user._id || idx}
-              className={`flex items-center justify-between p-3 rounded-xl border transition-all ${
-                isHost
-                  ? 'bg-amber-50/60 border-amber-200'
-                  : 'bg-[#F4F4F0]/60 border-[#E6E4DF] hover:border-[#191918]/20'
+              key={p.user?._id || idx}
+              className={`p-3 rounded-xl border flex items-center justify-between transition-colors ${
+                isRoomHost
+                  ? 'border-amber-300/80 bg-amber-50/40'
+                  : 'border-slate-200 bg-white hover:bg-slate-50'
               }`}
             >
               <div className="flex items-center gap-3">
-                {/* Avatar with Status Dot */}
-                <div className="relative">
-                  <img
-                    src={p.user.picture || 'https://github.com/shadcn.png'}
-                    alt={p.user.name}
-                    className="w-9 h-9 rounded-full object-cover border-2 border-white shadow-xs"
-                  />
-                  <span className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-emerald-500 border-2 border-white shadow-xs" />
-                </div>
+                <img
+                  src={p.user?.picture || 'https://github.com/shadcn.png'}
+                  alt={p.user?.name || 'User'}
+                  className="w-8 h-8 rounded-full object-cover border border-slate-200"
+                />
 
-                {/* User Info */}
-                <div className="flex flex-col">
+                <div>
                   <div className="flex items-center gap-1.5">
-                    <span className="text-xs font-medium text-[#191918]">
-                      {p.user.name}
+                    <span className="font-bold text-slate-900 text-xs truncate max-w-[120px]">
+                      {p.user?.name || 'Anonymous Student'}
                     </span>
-                    {isHost && (
-                      <span
-                        title="Room Host"
-                        className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 text-[10px] font-bold uppercase"
-                      >
-                        <Crown className="w-3 h-3 text-amber-600 fill-amber-500" />
-                        Host
+                    {isRoomHost && (
+                      <span className="text-[10px] font-bold text-amber-600 flex items-center gap-0.5">
+                        <Crown className="w-3 h-3 fill-amber-500 text-amber-500" />
+                        HOST
                       </span>
                     )}
                   </div>
 
-                  {/* Level / Streak indicator */}
-                  <div className="flex items-center gap-2 text-[10px] text-[#666560] mt-0.5 font-medium">
-                    <span className="flex items-center gap-0.5 text-orange-600 font-semibold">
-                      <Flame className="w-3 h-3 fill-orange-500 text-orange-500" />
-                      Active Streak
-                    </span>
+                  <div className="flex items-center gap-1 text-[10px] text-amber-600 font-semibold">
+                    <Flame className="w-3 h-3 fill-amber-500 text-amber-500" />
+                    <span>Active Streak</span>
                   </div>
                 </div>
               </div>
 
               {/* Status Pill */}
-              <span
-                className={`text-[10px] font-semibold uppercase tracking-wider px-2.5 py-1 rounded-md border ${
-                  status === 'Focusing'
-                    ? 'bg-indigo-50 text-indigo-700 border-indigo-200'
-                    : 'bg-emerald-50 text-emerald-700 border-emerald-200'
-                }`}
-              >
-                {status}
+              <span className="border border-emerald-300 text-emerald-700 bg-emerald-50 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">
+                IDLE
               </span>
             </div>
           );
