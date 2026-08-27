@@ -6,6 +6,8 @@ export interface AiInsightsResponse {
   summary: string;
   prepAdvice?: string;
   productivityScore: number;
+  examReadinessScore?: number;
+  burnoutRisk?: string;
   scoreBreakdown: {
     consistency: { score: number; weight: number; streak: number };
     completion: { score: number; weight: number };
@@ -177,6 +179,24 @@ export async function generateQuiz(topic?: string) {
 
 export async function sendStudyChat(message: string, history: any[] = []) {
   const { data } = await api.post('/ai/chat', { message, history });
+  return data;
+}
+
+export interface WeeklyDigestResponse {
+  weeklyFocusHours: number;
+  sessionsCompleted: number;
+  streakDays: number;
+  productivityScore: number;
+  examReadinessScore: number;
+  burnoutRisk: 'low' | 'moderate' | 'high';
+  headline: string;
+  keyHighlights: string[];
+  nextWeekAction: string;
+  generatedAt: string;
+}
+
+export async function fetchWeeklyDigest(): Promise<WeeklyDigestResponse> {
+  const { data } = await api.get('/ai/weekly-digest');
   return data;
 }
 

@@ -38,6 +38,8 @@ const configuredOrigins = (
 app.use((req, res, next) => {
   req.id = crypto.randomUUID();
   res.setHeader("X-Request-Id", req.id);
+  res.setHeader("Cross-Origin-Opener-Policy", "same-origin-allow-popups");
+  res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
 
   logger.info("Incoming request", {
     requestId: req.id,

@@ -104,7 +104,7 @@ function ScoreBreakdownBar({
 }
 
 export function AiInsightsPanel() {
-  const { insights, isLoading, error, fetchAiInsights } = useAiStore();
+  const { insights, isLoading, error, fetchAiInsights, studyProfile } = useAiStore();
 
   useEffect(() => {
     fetchAiInsights();
@@ -153,24 +153,65 @@ export function AiInsightsPanel() {
 
   if (!insights) return null;
 
-  const { productivityScore, scoreBreakdown, insights: aiInsights, recommendations, summary, prepAdvice } = insights;
+  const {
+    productivityScore,
+    examReadinessScore,
+    burnoutRisk,
+    scoreBreakdown,
+    insights: aiInsights,
+    recommendations,
+    summary,
+    prepAdvice,
+  } = insights;
+
+  const activeStreamName = studyProfile?.stream || studyProfile?.customStreamName || null;
+
+  const burnoutBadgeColors: Record<string, string> = {
+    low: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20',
+    moderate: 'bg-amber-500/10 text-amber-500 border-amber-500/20',
+    high: 'bg-red-500/10 text-red-500 border-red-500/20',
+  };
 
   return (
     <motion.div variants={item} className="lg:col-span-3">
       <Card className="bg-card border border-border/50 shadow-sm overflow-hidden">
         <CardHeader className="p-4 sm:p-6 pb-4 border-b border-border/50">
-          <div className="flex items-center justify-between">
-            <CardTitle className="flex items-center gap-2 text-lg font-medium text-foreground">
-              <Sparkles className="h-5 w-5 text-purple-500 fill-purple-500/20" />
-              AI Insights
-            </CardTitle>
-            <button
-              onClick={fetchAiInsights}
-              className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1 transition-colors bg-muted/30 px-3 py-1.5 rounded-full border border-border/50 hover:border-border"
-            >
-              <RefreshCw className="h-3 w-3" />
-              Refresh
-            </button>
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div className="flex items-center gap-3">
+              <CardTitle className="flex items-center gap-2 text-lg font-medium text-foreground">
+                <Sparkles className="h-5 w-5 text-purple-500 fill-purple-500/20" />
+                AI Insights
+              </CardTitle>
+              {activeStreamName && (
+                <span className="px-2.5 py-0.5 text-xs font-semibold rounded-full bg-purple-500/10 text-purple-500 border border-purple-500/20">
+                  🎯 {activeStreamName} Stream
+                </span>
+              )}
+            </div>
+
+            <div className="flex items-center gap-2">
+              {examReadinessScore !== undefined && (
+                <span className="px-2.5 py-1 text-xs font-bold rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
+                  Readiness: {examReadinessScore}%
+                </span>
+              )}
+              {burnoutRisk && (
+                <span
+                  className={`px-2.5 py-1 text-xs font-semibold rounded-lg border capitalize ${
+                    burnoutBadgeColors[burnoutRisk.toLowerCase()] || 'bg-muted/20 text-muted-foreground'
+                  }`}
+                >
+                  {burnoutRisk} Burnout Risk
+                </span>
+              )}
+              <button
+                onClick={fetchAiInsights}
+                className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1 transition-colors bg-muted/30 px-3 py-1.5 rounded-full border border-border/50 hover:border-border cursor-pointer"
+              >
+                <RefreshCw className="h-3 w-3" />
+                Refresh
+              </button>
+            </div>
           </div>
         </CardHeader>
 
