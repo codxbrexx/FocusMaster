@@ -1,8 +1,5 @@
 import { motion } from 'framer-motion';
-import { Play, Lock, Volume2, Crown } from 'lucide-react';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { MoreHorizontal, Volume2, Crown } from 'lucide-react';
 import type { FocusRoom } from '@/store/useRoomStore';
 
 interface RoomCardProps {
@@ -12,135 +9,115 @@ interface RoomCardProps {
 
 export function RoomCard({ room, onJoin }: RoomCardProps) {
   const isFull = room.participants.length >= room.maxParticipants;
+  const isSession = room.status === 'focusing';
 
-  const streamStyles: Record<string, { bg: string; text: string }> = {
-    engineering: {
-      bg: 'bg-blue-50 text-blue-700 border-blue-200',
-      text: 'Engineering',
-    },
-    medical: {
-      bg: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-      text: 'Medical',
-    },
-    commerce: {
-      bg: 'bg-amber-50 text-amber-700 border-amber-200',
-      text: 'Commerce',
-    },
-    competitive: {
-      bg: 'bg-purple-50 text-purple-700 border-purple-200',
-      text: 'Competitive',
-    },
-  };
-
-  const streamStyle =
-    room.stream && streamStyles[room.stream] ? streamStyles[room.stream] : streamStyles.engineering;
+  // Dynamic user avatar list
+  const avatars = room.participants.slice(0, 3);
+  const remainingCount = room.participants.length > 3 ? room.participants.length - 3 : 0;
 
   return (
-    <motion.div whileHover={{ y: -4 }} transition={{ duration: 0.2 }}>
-      <Card className="h-full border border-[#E6E4DF] hover:border-[#191918]/30 shadow-[0_4px_16px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] transition-all rounded-2xl overflow-hidden bg-white flex flex-col justify-between">
-        {/* Accent top line */}
-        <div className="h-1.5 w-full bg-[#191918]" />
-
-        <div>
-          <CardHeader className="pb-3 space-y-2">
+    <motion.div whileHover={{ y: -3 }} transition={{ duration: 0.2 }}>
+      <div className="bg-white border border-slate-200/80 rounded-2xl shadow-2xs hover:shadow-md transition-all overflow-hidden flex flex-col justify-between relative h-full">
+        <div className="p-5 space-y-3.5 flex-1 flex flex-col justify-between">
+          {/* Header Row: Title & Options */}
+          <div>
             <div className="flex items-start justify-between gap-2">
-              <div className="space-y-1 min-w-0">
-                <div className="flex items-center gap-2">
-                  <CardTitle className="text-base font-semibold truncate text-[#191918]">
-                    {room.name}
-                  </CardTitle>
-                  {room.visibility === 'private' && (
-                    <span title="Private Room">
-                      <Lock className="w-3.5 h-3.5 text-amber-600 shrink-0" />
-                    </span>
-                  )}
-                </div>
-
+              <div>
+                <h3 className="text-base font-bold text-slate-900 tracking-tight truncate max-w-[180px]">
+                  {room.name}
+                </h3>
                 {room.description && (
-                  <p className="text-xs text-[#666560] line-clamp-2 leading-relaxed">
+                  <p className="text-xs text-slate-400 font-medium line-clamp-1 mt-0.5">
                     {room.description}
                   </p>
                 )}
               </div>
 
-              {room.stream && (
-                <Badge
-                  className={`text-[10px] font-medium uppercase px-2.5 py-0.5 border ${streamStyle.bg} shrink-0 rounded-full`}
-                >
-                  {streamStyle.text}
-                </Badge>
-              )}
+              <button
+                className="text-slate-400 hover:text-slate-600 transition-colors p-1 rounded-lg hover:bg-slate-50 cursor-pointer"
+                title="Room Options"
+              >
+                <MoreHorizontal className="w-4 h-4" />
+              </button>
             </div>
-          </CardHeader>
 
-          <CardContent className="space-y-4">
-            {/* Live Status & Ambient Audio */}
-            <div className="flex items-center justify-between text-xs text-[#666560] border-t border-b border-[#E6E4DF] py-2.5">
-              <div className="flex items-center gap-2 font-medium">
-                <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-medium text-[11px] border border-emerald-200">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  <span>{room.status === 'focusing' ? 'In Session' : 'Lobby'}</span>
-                </div>
-              </div>
+            {/* Status Pill & Ambient Audio */}
+            <div className="flex items-center justify-between mt-3">
+              {isSession ? (
+                <span className="bg-[#E6F9F0] text-[#10B981] px-3 py-0.5 rounded-full text-[11px] font-bold inline-flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#10B981] animate-pulse" />
+                  In Session
+                </span>
+              ) : (
+                <span className="bg-[#F0EBFE] text-[#6E36E4] px-3 py-0.5 rounded-full text-[11px] font-bold inline-flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#6E36E4]" />
+                  Lobby
+                </span>
+              )}
 
               {room.ambientPreset && room.ambientPreset !== 'none' && (
-                <div className="flex items-center gap-1.5 text-[11px] font-medium text-[#666560] capitalize">
-                  <Volume2 className="w-3.5 h-3.5 text-[#191918]" />
+                <div className="text-xs font-semibold text-slate-600 flex items-center gap-1.5 capitalize">
+                  <Volume2 className="w-3.5 h-3.5 text-slate-500" />
                   <span>{room.ambientPreset}</span>
                 </div>
               )}
             </div>
+          </div>
 
-            {/* Participants Avatar Stack & Count */}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <div className="flex -space-x-2 overflow-hidden">
-                  {room.participants.slice(0, 4).map((p, idx) => (
-                    <img
-                      key={idx}
-                      src={p.user?.picture || 'https://github.com/shadcn.png'}
-                      alt={p.user?.name || 'User'}
-                      className="inline-block h-6 w-6 rounded-full ring-2 ring-white object-cover"
-                    />
-                  ))}
-                  {room.participants.length > 4 && (
-                    <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#F4F4F0] text-[10px] font-semibold text-[#191918] ring-2 ring-white border border-[#E6E4DF]">
-                      +{room.participants.length - 4}
-                    </div>
-                  )}
-                </div>
-
-                <span className="text-xs font-medium text-[#666560]">
-                  {room.participants.length} / {room.maxParticipants} online
-                </span>
+          {/* Avatars & Online Counter */}
+          <div className="border-t border-slate-100 pt-3 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="flex -space-x-2">
+                {avatars.map((p, idx) => (
+                  <img
+                    key={idx}
+                    src={p.user?.picture || 'https://github.com/shadcn.png'}
+                    alt={p.user?.name || 'User'}
+                    className="w-6 h-6 rounded-full ring-2 ring-white object-cover border border-slate-200"
+                  />
+                ))}
               </div>
+
+              {remainingCount > 0 && (
+                <span className="bg-[#F0EBFE] text-[#6E36E4] text-[11px] font-bold px-2 py-0.5 rounded-full">
+                  +{remainingCount}
+                </span>
+              )}
             </div>
-          </CardContent>
+
+            <div className="text-xs font-semibold text-slate-600 flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+              <span>
+                {room.participants.length} / {room.maxParticipants} online
+              </span>
+            </div>
+          </div>
         </div>
 
         {/* Footer Actions */}
-        <div className="p-4 pt-0 flex items-center justify-between border-t border-[#E6E4DF] mt-3 pt-3">
-          <div className="flex items-center gap-1.5 text-xs text-[#666560] font-medium">
-            <Crown className="w-3.5 h-3.5 text-amber-600" />
-            <span className="truncate max-w-[110px] text-[11px] text-[#191918]">
-              Host: {room.host?.name || 'Anonymous'}
+        <div className="px-5 pb-4 pt-2 flex items-center justify-between border-t border-slate-100 mt-auto">
+          <div className="text-xs font-medium text-slate-500 flex items-center gap-1">
+            <Crown className="w-3.5 h-3.5 text-purple-600" />
+            <span className="truncate max-w-[100px]">
+              Host: {room.host?.name || 'Ali'}
             </span>
           </div>
 
-          <Button
-            size="sm"
-            disabled={isFull}
-            onClick={() => onJoin(room._id)}
-            className="gap-1.5 font-medium bg-[#191918] hover:bg-[#333330] text-white rounded-xl shadow-xs transition-colors"
-          >
-            <Play className="w-3.5 h-3.5 fill-current" />
-            <span>{isFull ? 'Room Full' : 'Join Room'}</span>
-            <span className="text-[10px] bg-white/20 px-1.5 py-0.5 rounded text-white font-mono">
+          <div className="flex items-center gap-1.5">
+            <button
+              disabled={isFull}
+              onClick={() => onJoin(room._id)}
+              className="bg-[#6E36E4] hover:bg-[#5B2AC6] text-white font-semibold px-4 py-2 rounded-xl text-xs transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer shadow-2xs"
+            >
+              {isFull ? 'Full' : 'Join Room'}
+            </button>
+
+            <span className="bg-[#F0EBFE] text-[#6E36E4] font-bold px-2.5 py-1.5 rounded-xl text-[11px] flex items-center justify-center">
               +15 XP
             </span>
-          </Button>
+          </div>
         </div>
-      </Card>
+      </div>
     </motion.div>
   );
 }

@@ -24,12 +24,13 @@ interface SidebarProps {
   onOpenChange: (open: boolean) => void;
 }
 
-import { BookOpen } from 'lucide-react';
+import { BookOpen, Trophy } from 'lucide-react';
 
 const MENU_ITEMS = [
   { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { path: '/pomodoro', label: 'Pomodoro', icon: Timer },
   { path: '/rooms', label: 'Focus Rooms', icon: Users },
+  { path: '/leaderboard', label: 'Leaderboards', icon: Trophy },
   { path: '/clock', label: 'Clock In/Out', icon: Clock },
   { path: '/tasks', label: 'Tasks', icon: ListTodo },
   { path: '/study', label: 'Study AI', icon: BookOpen },

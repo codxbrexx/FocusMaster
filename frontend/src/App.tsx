@@ -62,6 +62,9 @@ const FocusRoomsPage = lazy(() =>
 const FocusRoomPage = lazy(() =>
   import('./pages/FocusRoomPage').then((module) => ({ default: module.FocusRoomPage }))
 );
+const LeaderboardPage = lazy(() =>
+  import('./pages/LeaderboardPage').then((module) => ({ default: module.LeaderboardPage }))
+);
 
 // Admin Components
 const AdminShell = lazy(() =>
@@ -125,6 +128,7 @@ const App = () => {
                       <Route path="/pomodoro" element={<PomodoroTimer />} />
                       <Route path="/rooms" element={<FocusRoomsPage />} />
                       <Route path="/rooms/:roomId" element={<FocusRoomPage />} />
+                      <Route path="/leaderboard" element={<LeaderboardPage />} />
                       <Route path="/analytics" element={<Analytics />} />
                       <Route path="/clock" element={<ClockInOut />} />
                       <Route path="/spotify" element={<SpotifyPanel />} />

@@ -28,16 +28,19 @@ export function RoomTimer() {
   const strokeDashoffset = circumference - (progressPercent / 100) * circumference;
 
   return (
-    <div className="relative flex flex-col items-center justify-center p-8 bg-white text-[#191918] rounded-3xl shadow-[0_8px_30px_rgba(0,0,0,0.04)] space-y-6 overflow-hidden border border-[#E6E4DF]">
+    <div className="relative flex flex-col items-center justify-center p-8 bg-card text-foreground rounded-3xl shadow-sm space-y-6 overflow-hidden border border-border/50">
+      {/* Top Accent Gradient Line */}
+      <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-primary via-purple-500 to-cyan-500" />
+
       {/* Radial Soft Ambient Glow */}
       <div
-        className={`absolute -top-24 -left-24 w-72 h-72 rounded-full blur-3xl pointer-events-none opacity-30 ${
-          isFocus ? 'bg-indigo-100' : 'bg-emerald-100'
+        className={`absolute -top-24 -left-24 w-72 h-72 rounded-full blur-3xl pointer-events-none opacity-20 ${
+          isFocus ? 'bg-primary' : 'bg-emerald-500'
         }`}
       />
       <div
-        className={`absolute -bottom-24 -right-24 w-72 h-72 rounded-full blur-3xl pointer-events-none opacity-30 ${
-          isFocus ? 'bg-blue-100' : 'bg-teal-100'
+        className={`absolute -bottom-24 -right-24 w-72 h-72 rounded-full blur-3xl pointer-events-none opacity-20 ${
+          isFocus ? 'bg-purple-500' : 'bg-teal-500'
         }`}
       />
 
@@ -46,15 +49,15 @@ export function RoomTimer() {
         <div
           className={`flex items-center gap-2 text-xs font-semibold uppercase tracking-wider px-4 py-1.5 rounded-full border shadow-2xs ${
             isFocus
-              ? 'bg-indigo-50 text-indigo-700 border-indigo-200'
-              : 'bg-emerald-50 text-emerald-700 border-emerald-200'
+              ? 'bg-primary/10 text-primary border-primary/20'
+              : 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20'
           }`}
         >
-          {isFocus ? <Flame className="w-4 h-4 text-indigo-600" /> : <Coffee className="w-4 h-4 text-emerald-600" />}
+          {isFocus ? <Flame className="w-4 h-4 text-primary" /> : <Coffee className="w-4 h-4 text-emerald-500" />}
           <span>{timer.mode} Session</span>
         </div>
 
-        <div className="flex items-center gap-1.5 text-xs font-medium px-3 py-1 rounded-full bg-[#F4F4F0] text-[#191918] border border-[#E6E4DF]">
+        <div className="flex items-center gap-1.5 text-xs font-medium px-3 py-1 rounded-full bg-muted/50 text-foreground border border-border/50">
           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
           <span>Synced Live</span>
         </div>
@@ -70,7 +73,7 @@ export function RoomTimer() {
             r={radius}
             stroke="currentColor"
             strokeWidth="10"
-            className="text-[#E6E4DF]"
+            className="text-muted/40"
             fill="transparent"
           />
           {/* Progress Animated Ring */}
@@ -88,30 +91,30 @@ export function RoomTimer() {
           />
           <defs>
             <linearGradient id="focusGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#191918" />
-              <stop offset="100%" stopColor="#4f46e5" />
+              <stop offset="0%" stopColor="hsl(var(--primary))" />
+              <stop offset="100%" stopColor="#a855f7" />
             </linearGradient>
             <linearGradient id="breakGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#059669" />
-              <stop offset="100%" stopColor="#0d9488" />
+              <stop offset="0%" stopColor="#10b981" />
+              <stop offset="100%" stopColor="#06b6d4" />
             </linearGradient>
           </defs>
         </svg>
 
         {/* Center Clock Readout */}
         <div className="absolute flex flex-col items-center justify-center text-center">
-          <span className="font-mono text-5xl sm:text-6xl font-black tracking-widest text-[#191918]">
+          <span className="font-mono text-5xl sm:text-6xl font-black tracking-widest text-foreground">
             {formatTime(timer.timeLeft)}
           </span>
-          <span className="text-[11px] font-semibold text-[#9C9A92] mt-1 uppercase tracking-wider">
+          <span className="text-[11px] font-semibold text-muted-foreground mt-1 uppercase tracking-wider">
             {timer.isActive ? 'Active Ticking' : 'Paused'}
           </span>
         </div>
       </div>
 
       {/* Bonus XP Reward Banner */}
-      <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-xs font-medium z-10">
-        <Zap className="w-4 h-4 fill-amber-500 text-amber-600" />
+      <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 text-xs font-medium z-10">
+        <Zap className="w-4 h-4 fill-amber-500 text-amber-500" />
         <span>Co-working Bonus: Earn +15 XP on session complete!</span>
       </div>
 
@@ -123,7 +126,7 @@ export function RoomTimer() {
               <Button
                 size="lg"
                 onClick={pauseRoomTimer}
-                className="gap-2 bg-white hover:bg-[#F4F4F0] text-[#191918] border border-[#E6E4DF] font-medium px-6 shadow-xs"
+                className="gap-2 bg-card hover:bg-muted/50 text-foreground border border-border/50 font-medium px-6 shadow-2xs"
               >
                 <Pause className="w-5 h-5 fill-current" />
                 Pause Session
@@ -132,7 +135,7 @@ export function RoomTimer() {
               <Button
                 size="lg"
                 onClick={() => startRoomTimer(25)}
-                className="gap-2 bg-[#191918] hover:bg-[#333330] text-white font-medium px-8 shadow-sm"
+                className="gap-2 bg-primary hover:bg-primary/90 text-primary-foreground font-medium px-8 shadow-xs"
               >
                 <Play className="w-5 h-5 fill-current" />
                 {timer.timeLeft === timer.totalDuration ? 'Start Focus Session' : 'Resume Session'}
@@ -144,14 +147,14 @@ export function RoomTimer() {
               variant="outline"
               onClick={() => startRoomTimer(25)}
               title="Reset Timer to 25m"
-              className="bg-white hover:bg-[#F4F4F0] text-[#191918] border-[#E6E4DF]"
+              className="bg-card hover:bg-muted/50 text-foreground border-border/50"
             >
               <RotateCcw className="w-4 h-4" />
             </Button>
           </>
         ) : (
-          <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#F4F4F0] text-[#666560] text-xs font-medium border border-[#E6E4DF]">
-            <ShieldCheck className="w-4 h-4 text-amber-600" />
+          <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-muted/50 text-muted-foreground text-xs font-medium border border-border/50">
+            <ShieldCheck className="w-4 h-4 text-amber-500" />
             <span>Host controls room timer parameters</span>
           </div>
         )}

@@ -1,175 +1,210 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Users, Plus, Sparkles, Search, Zap, Globe, Laptop, Stethoscope, TrendingUp, Trophy } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { motion } from 'framer-motion';
+import { Plus, Users, Search, RefreshCw, Trophy, SlidersHorizontal, Laptop, Stethoscope, TrendingUp, Sparkles, Zap } from 'lucide-react';
 import { RoomCard } from '@/components/rooms/RoomCard';
 import { CreateRoomModal } from '@/components/rooms/CreateRoomModal';
 import { useRoomStore } from '@/store/useRoomStore';
 
-export function FocusRoomsPage() {
-  const navigate = useNavigate();
-  const { rooms, fetchRooms, isLoading, joinRoom } = useRoomStore();
+const STREAM_TABS = [
+  { id: 'all', label: 'All Rooms', icon: SlidersHorizontal },
+  { id: 'engineering', label: 'Engineering', icon: Laptop },
+  { id: 'medical', label: 'Medical', icon: Stethoscope },
+  { id: 'commerce', label: 'Commerce', icon: TrendingUp },
+  { id: 'competitive', label: 'Competitive', icon: Trophy },
+];
 
-  const [activeStream, setActiveStream] = useState<string>('all');
-  const [searchQuery, setSearchQuery] = useState<string>('');
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+export function FocusRoomsPage() {
+  const { rooms, fetchRooms, isLoading, error } = useRoomStore();
+  const [selectedStream, setSelectedStream] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   useEffect(() => {
-    fetchRooms(activeStream);
-  }, [activeStream, fetchRooms]);
+    fetchRooms();
+  }, [fetchRooms]);
 
-  const handleJoin = async (roomId: string) => {
-    await joinRoom(roomId);
-    navigate(`/rooms/${roomId}`);
-  };
-
-  const streams = [
-    { id: 'all', label: 'All Rooms', icon: Globe },
-    { id: 'engineering', label: 'Engineering', icon: Laptop },
-    { id: 'medical', label: 'Medical', icon: Stethoscope },
-    { id: 'commerce', label: 'Commerce', icon: TrendingUp },
-    { id: 'competitive', label: 'Competitive', icon: Trophy },
-  ];
-
-  const filteredRooms = rooms.filter((room) => {
-    if (!searchQuery.trim()) return true;
-    const q = searchQuery.toLowerCase();
-    return (
-      room.name.toLowerCase().includes(q) ||
-      (room.description && room.description.toLowerCase().includes(q)) ||
-      (room.host?.name && room.host.name.toLowerCase().includes(q))
-    );
+  const filteredRooms = rooms.filter((r) => {
+    const matchesStream =
+      selectedStream === 'all' || (r.stream && r.stream.toLowerCase() === selectedStream.toLowerCase());
+    const hostName = r.host?.name || '';
+    const matchesSearch =
+      r.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (r.description && r.description.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      hostName.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesStream && matchesSearch;
   });
 
-  const totalParticipants = rooms.reduce((acc, r) => acc + (r.participants?.length || 0), 0);
+  const activeRoomsCount = rooms.length;
+  const activeFocusersCount = rooms.reduce((acc, r) => acc + (r.participants?.length || 0), 0);
 
   return (
-    <div className="min-h-screen bg-[#FAF9F5] p-6 sm:p-8 space-y-8 max-w-7xl mx-auto pb-24 font-sans text-[#191918]">
-      {/* Co-Working Hero Header Banner - Premium Light Theme */}
-      <div className="relative rounded-3xl overflow-hidden bg-white border border-[#E6E4DF] p-8 sm:p-10 shadow-[0_8px_30px_rgba(0,0,0,0.04)]">
-        <div className="absolute top-0 right-0 w-[450px] h-[450px] bg-gradient-to-bl from-[#EFECE6] to-transparent rounded-full blur-3xl pointer-events-none opacity-70" />
-
-        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="space-y-3.5 max-w-2xl">
-            <div className="flex items-center gap-2">
-              <span className="px-3.5 py-1 rounded-full bg-[#F4F4F0] text-[#191918] text-xs font-semibold uppercase tracking-wider border border-[#E6E4DF] flex items-center gap-1.5 shadow-2xs">
-                <Sparkles className="w-3.5 h-3.5 text-[#191918]" />
-                Live Co-Working Hub
-              </span>
-              <span className="px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-semibold flex items-center gap-1 border border-emerald-200/80">
-                <Zap className="w-3.5 h-3.5 fill-emerald-500 text-emerald-600" />
-                +15 XP Bonus
-              </span>
-            </div>
-
-            <h1 className="text-3xl sm:text-4xl lg:text-[42px] font-serif font-normal tracking-tight text-[#191918] leading-tight">
-              Synchronized Focus Rooms
-            </h1>
-            <p className="text-sm text-[#666560] leading-relaxed">
-              Study alongside peers in real-time Pomodoro rooms. Synchronized focus timers prevent drift,
-              built-in ambient audio keeps you in the zone, and group completion yields bonus XP.
-            </p>
-
-            {/* Live Stats Row */}
-            <div className="flex flex-wrap items-center gap-6 pt-2 text-xs font-medium text-[#666560]">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="text-[#191918] font-semibold">{rooms.length} Active Rooms</span>
-              </div>
-              <div className="w-px h-4 bg-[#E6E4DF]" />
-              <div className="flex items-center gap-2">
-                <Users className="w-4 h-4 text-[#191918]" />
-                <span className="text-[#191918] font-semibold">{totalParticipants} Online Co-Workers</span>
-              </div>
-            </div>
+    <div className="max-w-7xl mx-auto space-y-5 pb-16 px-1 sm:px-0 font-sans text-slate-900">
+      {/* Hero Header Card with Create Room Button at the Bottom */}
+      <div className="relative overflow-hidden rounded-2xl bg-white border border-slate-200/80 p-5 sm:p-6 shadow-2xs flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="space-y-3 max-w-xl relative z-10 w-full">
+          {/* Top Badges Row */}
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="bg-[#F0EBFE] text-[#6E36E4] px-3 py-1 rounded-full text-[11px] font-bold inline-flex items-center gap-1.5">
+              <Sparkles className="w-3 h-3 text-[#6E36E4]" />
+              LIVE CO-WORKING HUB
+            </span>
+            <span className="bg-[#E6F9F0] text-[#10B981] px-3 py-1 rounded-full text-[11px] font-bold inline-flex items-center gap-1.5">
+              <Zap className="w-3 h-3 text-[#10B981]" />
+              +15 XP Bonus
+            </span>
           </div>
 
-          <Button
-            onClick={() => setIsModalOpen(true)}
-            size="lg"
-            className="gap-2 font-medium bg-[#191918] hover:bg-[#333330] text-white rounded-2xl px-6 py-6 text-sm shrink-0 shadow-sm transition-all active:scale-[0.98]"
-          >
-            <Plus className="w-5 h-5" />
-            Create Focus Room
-          </Button>
+          {/* Main Title */}
+          <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
+            Synchronized Focus Rooms
+          </h1>
+
+          {/* Description */}
+          <p className="text-xs text-slate-500 font-medium leading-relaxed">
+            Study alongside peers in real-time Pomodoro rooms with synchronized timers, ambient audio, and bonus XP rewards.
+          </p>
+
+          {/* Bottom Actions Row (Stats + Create Room Button at bottom) */}
+          <div className="flex flex-wrap items-center justify-between gap-4 pt-2 border-t border-slate-100">
+            <div className="flex items-center gap-3 text-xs font-semibold">
+              <div className="flex items-center gap-1.5 text-[#6E36E4]">
+                <span className="w-2 h-2 rounded-full bg-[#6E36E4]" />
+                <span>{activeRoomsCount} Active Rooms</span>
+              </div>
+              <span className="text-slate-300">|</span>
+              <div className="flex items-center gap-1.5 text-slate-600">
+                <Users className="w-3.5 h-3.5 text-slate-500" />
+                <span>{activeFocusersCount} Online Co-Workers</span>
+              </div>
+            </div>
+
+            {/* Create Room Button positioned at the bottom */}
+            <button
+              onClick={() => setIsCreateModalOpen(true)}
+              className="bg-[#6E36E4] hover:bg-[#5B2AC6] text-white font-semibold rounded-xl px-4 py-2 text-xs shadow-2xs transition-all flex items-center gap-1.5 cursor-pointer"
+            >
+              <Plus className="w-3.5 h-3.5 stroke-[3]" />
+              <span>Create Focus Room</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Right Graphic */}
+        <div className="relative z-10 shrink-0 hidden md:block">
+          <img
+            src="/room-ui.png"
+            alt="Room Elements"
+            className="w-36 h-auto object-contain max-h-32"
+          />
         </div>
       </div>
 
-      {/* Controls Bar: Search & Stream Filter Tabs */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        {/* Stream Filter Tabs */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
-          {streams.map((s) => {
-            const Icon = s.icon;
-            const isSelected = activeStream === s.id;
+      {/* Stream Tabs & Search Bar Row */}
+      <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+        {/* Stream Filter Pills */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0 scrollbar-none">
+          {STREAM_TABS.map((tab) => {
+            const Icon = tab.icon;
             return (
               <button
-                key={s.id}
-                onClick={() => setActiveStream(s.id)}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-medium transition-all shrink-0 cursor-pointer ${
-                  isSelected
-                    ? 'bg-[#191918] text-white shadow-sm font-semibold'
-                    : 'bg-white text-[#666560] border border-[#E6E4DF] hover:bg-[#F4F4F0] hover:text-[#191918]'
+                key={tab.id}
+                onClick={() => setSelectedStream(tab.id)}
+                className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all shrink-0 flex items-center gap-1.5 cursor-pointer ${
+                  selectedStream === tab.id
+                    ? 'bg-[#6E36E4] text-white shadow-2xs'
+                    : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 hover:text-slate-900'
                 }`}
               >
-                <Icon className="w-4 h-4" />
-                <span>{s.label}</span>
+                <Icon className="w-3.5 h-3.5" />
+                <span>{tab.label}</span>
               </button>
             );
           })}
         </div>
 
-        {/* Search Bar */}
-        <div className="relative max-w-xs w-full">
-          <Search className="w-4 h-4 absolute left-3.5 top-3 text-[#9C9A92]" />
-          <Input
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search rooms or hosts..."
-            className="pl-9 text-xs rounded-xl bg-white border-[#E6E4DF] text-[#191918] placeholder:text-[#9C9A92] focus:border-[#191918] focus:bg-white focus-visible:ring-0"
-          />
+        {/* Search Input Bar */}
+        <div className="flex items-center gap-2">
+          <div className="relative flex-1 md:w-72">
+            <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search rooms or hosts..."
+              className="bg-white border border-slate-200 text-slate-800 placeholder:text-slate-400 rounded-xl pl-9 pr-3.5 py-2 text-xs w-full focus:outline-none focus:border-[#6E36E4] transition-all shadow-2xs font-medium"
+            />
+          </div>
+
+          <button
+            onClick={() => fetchRooms()}
+            title="Refresh Rooms"
+            className="p-2 rounded-xl bg-white border border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-50 transition-all cursor-pointer shrink-0"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
+          </button>
         </div>
       </div>
 
       {/* Rooms Grid */}
-      {isLoading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {error ? (
+        <div className="p-10 rounded-2xl bg-red-50 border border-red-200 text-center space-y-2 max-w-md mx-auto">
+          <p className="text-xs font-semibold text-red-600">{error}</p>
+          <button
+            onClick={() => fetchRooms()}
+            className="px-3.5 py-1.5 bg-white border border-red-300 rounded-lg text-xs font-semibold text-red-600 hover:bg-red-50"
+          >
+            Retry Loading
+          </button>
+        </div>
+      ) : isLoading && rooms.length === 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {[1, 2, 3, 4, 5, 6].map((i) => (
             <div
               key={i}
-              className="h-56 bg-white border border-[#E6E4DF] rounded-2xl animate-pulse"
+              className="h-48 rounded-2xl bg-white border border-slate-200 animate-pulse"
             />
           ))}
         </div>
       ) : filteredRooms.length === 0 ? (
-        <div className="text-center py-20 bg-white border border-[#E6E4DF] rounded-3xl p-8 space-y-4 shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
-          <div className="w-14 h-14 rounded-2xl bg-[#F4F4F0] text-[#191918] flex items-center justify-center mx-auto border border-[#E6E4DF]">
-            <Sparkles className="w-7 h-7 text-[#191918]" />
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="p-12 text-center rounded-2xl bg-white border border-slate-200/80 shadow-2xs space-y-3 max-w-md mx-auto"
+        >
+          <div className="w-10 h-10 rounded-xl bg-purple-50 text-[#6E36E4] flex items-center justify-center mx-auto">
+            <Trophy className="w-5 h-5" />
           </div>
-          <h3 className="text-xl font-serif font-normal text-[#191918]">
-            {searchQuery ? 'No Matching Focus Rooms' : 'No Active Focus Rooms Found'}
-          </h3>
-          <p className="text-sm text-[#666560] max-w-md mx-auto">
-            {searchQuery
-              ? `No rooms matched your search for "${searchQuery}". Try a different keyword.`
-              : 'Be the first to start a room for your study stream and invite peers to study together!'}
-          </p>
-          <Button onClick={() => setIsModalOpen(true)} className="gap-2 font-medium bg-[#191918] hover:bg-[#333330] text-white rounded-xl px-6">
-            <Plus className="w-4 h-4" />
-            Create First Room
-          </Button>
-        </div>
+          <div className="space-y-1">
+            <h3 className="text-sm font-bold text-slate-900">No rooms match your filter</h3>
+            <p className="text-xs text-slate-500 font-medium">
+              Create a new focus room to start co-working with fellow students!
+            </p>
+          </div>
+          <button
+            onClick={() => setIsCreateModalOpen(true)}
+            className="bg-[#6E36E4] text-white hover:bg-[#5B2AC6] font-semibold px-4 py-2 rounded-xl text-xs transition-all inline-flex items-center gap-1.5 cursor-pointer"
+          >
+            <Plus className="w-3.5 h-3.5" />
+            <span>Create Room</span>
+          </button>
+        </motion.div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
           {filteredRooms.map((room) => (
-            <RoomCard key={room._id} room={room} onJoin={handleJoin} />
+            <RoomCard
+              key={room._id}
+              room={room}
+              onJoin={(roomId) => (window.location.href = `/rooms/${roomId}`)}
+            />
           ))}
         </div>
       )}
 
-      {/* Creation Modal */}
-      <CreateRoomModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      {/* Create Room Modal */}
+      <CreateRoomModal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+      />
     </div>
   );
 }
