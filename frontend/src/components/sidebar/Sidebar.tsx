@@ -94,18 +94,17 @@ export const Sidebar = ({ open, onOpenChange }: SidebarProps) => {
         )}
       >
         <div
-          className="flex items-center gap-1 cursor-pointer"
+          className="flex items-center gap-3 cursor-pointer"
           onClick={(e) => {
             e.stopPropagation();
             navigate('/dashboard');
           }}
         >
           <div className="relative shrink-0 flex items-center justify-center">
-            <div className="absolute inset-0 bg-primary blur-2xl group-hover:bg-primary/50 transition-all duration-500 rounded-full" />
             <img
               src="/FM_logo.png"
-              alt="FocusMaster"
-              className="relative w-14 h-14 transition-transform duration-300 shrink-0 object-contain drop-shadow-[0_0_15px_rgba(124,58,237,0.5)]"
+              alt="FocusMaster Logo"
+              className="w-8 h-8 transition-transform duration-300 shrink-0 object-contain group-hover:scale-105"
             />
           </div>
 
@@ -118,12 +117,12 @@ export const Sidebar = ({ open, onOpenChange }: SidebarProps) => {
                 transition={{ duration: 0.2 }}
                 className="flex flex-col"
               >
-                <h1 className="font-bold text-xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-purple-500/80">
+                <h1 className="font-serif font-bold text-xl tracking-tight text-foreground">
                   FocusMaster
                 </h1>
                 <div className="flex items-center gap-1.5">
-                  <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-[0.2em]">
-                    Pro Workspace
+                  <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-[0.15em]">
+                    Deep Work Workspace
                   </p>
                 </div>
               </motion.div>

@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const User = require("../models/User");
 const generateToken = require("../utils/generateToken");
+const sendEmail = require("../utils/sendEmail");
 const { OAuth2Client } = require("google-auth-library");
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 const bcrypt = require("bcryptjs");
@@ -354,17 +355,27 @@ const sendEmailOTP = asyncHandler(async (req, res) => {
 
   await user.save();
 
-  // LOG TO CONSOLE (Simulation)
-  console.log(`----------------------------------------`);
-  console.log(`[FocusMaster] Ref Email Change Request`);
-  console.log(`User: ${user.name} (${user.email})`);
-  console.log(`New Email: ${newEmail}`);
-  console.log(`OTP CODE: ${otp}`);
-  console.log(`----------------------------------------`);
+  // Send OTP Email using sendEmail utility
+  await sendEmail({
+    to: newEmail,
+    subject: "FocusMaster - Email Verification OTP",
+    text: `Hello ${user.name},\n\nYour 6-digit verification code to update your FocusMaster email is: ${otp}\n\nThis code will expire in 10 minutes. If you did not request this change, please secure your account immediately.`,
+    html: `
+      <div style="font-family: Arial, sans-serif; padding: 20px; color: #333; max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0; rounded-lg: 12px;">
+        <h2 style="color: #6366f1; margin-bottom: 8px;">FocusMaster Email Verification</h2>
+        <p>Hello <strong>${user.name}</strong>,</p>
+        <p>You requested to update your email address. Use the 6-digit verification code below to verify this change:</p>
+        <div style="background-color: #f1f5f9; padding: 16px; border-radius: 8px; text-align: center; font-size: 28px; font-weight: bold; letter-spacing: 4px; color: #1e293b; margin: 20px 0;">
+          ${otp}
+        </div>
+        <p style="font-size: 13px; color: #64748b;">This code expires in 10 minutes. If you did not request this, please ignore this email.</p>
+      </div>
+    `,
+  });
 
   res
     .status(200)
-    .json({ message: "OTP sent to new email (Check server console)" });
+    .json({ message: "OTP sent to new email address" });
 });
 
 // @desc    Verify Email OTP

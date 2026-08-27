@@ -23,7 +23,19 @@ const apiLimiter = rateLimit({
   },
 });
 
+const otpLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: isProduction ? 5 : 1000,
+  standardHeaders: true,
+  legacyHeaders: false,
+  keyGenerator: (req) => req.user?._id?.toString() || ipKeyGenerator(req.ip),
+  message: {
+    message: "Too many OTP requests. Please try again in 15 minutes.",
+  },
+});
+
 module.exports = {
   apiLimiter,
   authLimiter,
+  otpLimiter,
 };

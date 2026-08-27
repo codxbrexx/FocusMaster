@@ -13,6 +13,7 @@ function chunkText(text) {
   
   let index = 0;
   while (index < text.length) {
+    const prevIndex = index;
     let end = index + chunkSize;
     
     // If not at the end of text, try to find a natural break point (newline or period)
@@ -35,11 +36,10 @@ function chunkText(text) {
       chunks.push(chunk);
     }
     
+    // Apply overlap, but guarantee forward progress
     index = end - overlap;
-    
-    // Ensure we move forward
-    if (index <= index - (end - index)) {
-      index = end;
+    if (index <= prevIndex) {
+      index = prevIndex + 1;
     }
   }
   

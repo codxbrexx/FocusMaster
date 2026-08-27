@@ -109,9 +109,9 @@ export const FinalCTASection = () => {
           transition={{ duration: 0.6, delay: 0.2 }}
           viewport={{ once: true }}
         >
-          {['No credit card', 'Free forever', 'Open source'].map((item) => (
-            <span key={item} className="flex items-center gap-1.5">
-              <svg className="w-3.5 h-3.5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+          {['AI Study Digest', 'Pomodoro & Heatmap', 'Custom Study Streams'].map((item) => (
+            <span key={item} className="flex items-center gap-1.5 font-medium text-slate-600">
+              <svg className="w-4 h-4 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
               </svg>
               {item}

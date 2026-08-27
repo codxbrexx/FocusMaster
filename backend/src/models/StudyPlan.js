@@ -20,6 +20,7 @@ const dailyPlanSchema = mongoose.Schema(
 const weekPlanSchema = mongoose.Schema(
   {
     weekNumber: { type: Number, required: true },
+    theme: { type: String, default: "" },
     startDate: { type: Date },
     endDate: { type: Date },
     dailyPlans: [dailyPlanSchema],

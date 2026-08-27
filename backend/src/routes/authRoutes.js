@@ -18,6 +18,7 @@ const { protect } = require("../middleware/authMiddleware");
 const {
   apiLimiter,
   authLimiter,
+  otpLimiter,
 } = require("../middleware/rateLimitMiddleware");
 const { sanitizeBody } = require("../middleware/sanitizeMiddleware");
 const { validate } = require("../middleware/validateMiddleware");
@@ -63,7 +64,7 @@ router.route("/profile/stats").delete(protect, apiLimiter, resetUserStats);
 router.post(
   "/otp/send",
   protect,
-  apiLimiter,
+  otpLimiter,
   sanitizeBody(),
   validate({ body: authSchemas.otpSend }),
   sendEmailOTP,
@@ -71,7 +72,7 @@ router.post(
 router.put(
   "/otp/verify",
   protect,
-  apiLimiter,
+  otpLimiter,
   sanitizeBody(["otp"]),
   validate({ body: authSchemas.otpVerify }),
   verifyEmailOTP,

@@ -51,6 +51,10 @@ vi.mock('@/components/dashboard/RecommendationsCard', () => ({
   RecommendationsCard: () => <div>RecommendationsCard</div>,
 }));
 
+vi.mock('@/components/dashboard/WeeklyDigestCard', () => ({
+  WeeklyDigestCard: () => <div>WeeklyDigestCard</div>,
+}));
+
 describe('Dashboard', () => {
   beforeEach(() => {
     vi.clearAllMocks();

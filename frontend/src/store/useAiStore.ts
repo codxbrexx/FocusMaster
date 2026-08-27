@@ -7,11 +7,13 @@ import {
   regenerateStudyPlan as regenerateStudyPlanApi,
   fetchRecommendations,
   fetchAdaptiveTimer,
+  fetchWeeklyDigest,
   type AiInsightsResponse,
   type StudyProfile,
   type StudyPlanResponse,
   type Recommendation,
   type AdaptiveTimerSuggestion,
+  type WeeklyDigestResponse,
 } from '../services/aiApi';
 
 interface AiState {
@@ -22,6 +24,11 @@ interface AiState {
   lastFetched: Date | null;
   fetchAiInsights: () => Promise<void>;
   clearInsights: () => void;
+
+  // Weekly Digest
+  weeklyDigest: WeeklyDigestResponse | null;
+  digestLoading: boolean;
+  fetchWeeklyDigest: () => Promise<void>;
 
   // Study Profile
   studyProfile: StudyProfile | null;
@@ -47,7 +54,7 @@ interface AiState {
   fetchAdaptiveTimer: () => Promise<void>;
 }
 
-export const useAiStore = create<AiState>((set) => ({
+export const useAiStore = create<AiState>((set, get) => ({
   // ── Insights ────────────────────────────────────────────────────
   insights: null,
   isLoading: false,
@@ -69,6 +76,20 @@ export const useAiStore = create<AiState>((set) => ({
     set({ insights: null, error: null, lastFetched: null });
   },
 
+  // ── Weekly Digest ──────────────────────────────────────────────
+  weeklyDigest: null,
+  digestLoading: false,
+
+  fetchWeeklyDigest: async () => {
+    set({ digestLoading: true });
+    try {
+      const digest = await fetchWeeklyDigest();
+      set({ weeklyDigest: digest, digestLoading: false });
+    } catch {
+      set({ digestLoading: false });
+    }
+  },
+
   // ── Study Profile ──────────────────────────────────────────────
   studyProfile: null,
   profileLoading: false,
@@ -88,6 +109,9 @@ export const useAiStore = create<AiState>((set) => ({
     try {
       const { studyProfile } = await updateStudyProfileApi(profile);
       set({ studyProfile, profileLoading: false });
+      // Automatically refresh study plan & insights with the new stream context
+      get().fetchStudyPlan();
+      get().fetchAiInsights();
     } catch {
       set({ profileLoading: false });
     }

@@ -11,8 +11,8 @@ export function CookieConsentBanner() {
   const logConsentToDatabase = async (preferences: any) => {
     try {
       await api.post('/gdpr/log-consent', { preferences });
-    } catch (error) {
-      console.error('Failed to log consent', error);
+    } catch {
+      // Backend may be offline or unauthenticated during consent log
     }
   };
 

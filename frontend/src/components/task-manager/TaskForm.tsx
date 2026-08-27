@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Pencil, Plus, Timer, Calendar } from 'lucide-react';
+import { Pencil, Plus, Timer } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import {
   Select,
@@ -9,7 +9,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Popover, PopoverTrigger } from '@/components/ui/popover';
 import { Button } from '@/components/ui/button';
 
 interface TaskFormState {
@@ -108,14 +107,14 @@ export function TaskForm({
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="high" className="text-red-500">
-                    High
+                  <SelectItem value="high" className="text-red-600 dark:text-red-400 font-semibold">
+                    High Priority
                   </SelectItem>
-                  <SelectItem value="medium" className="text-orange-500">
-                    Medium
+                  <SelectItem value="medium" className="text-amber-600 dark:text-amber-400 font-semibold">
+                    Medium Priority
                   </SelectItem>
-                  <SelectItem value="low" className="text-blue-500">
-                    Low
+                  <SelectItem value="low" className="text-blue-600 dark:text-blue-400 font-semibold">
+                    Low Priority
                   </SelectItem>
                 </SelectContent>
               </Select>
@@ -140,28 +139,16 @@ export function TaskForm({
                 <Timer className="w-4 h-4 text-muted-foreground absolute right-3" />
               </div>
             </div>
-            {/* date */}
+
             <div className="space-y-2">
               <label className="text-sm font-medium">Due Date</label>
               <div className="flex w-full items-center">
                 <Input
-                  type="text"
-                  placeholder="MM-DD-YYYY"
+                  type="date"
                   value={taskForm.deadline}
                   onChange={(e) => setTaskForm({ ...taskForm, deadline: e.target.value })}
-                  className="rounded-r-none focus-visible:z-10"
+                  className="h-10 w-full"
                 />
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      className="rounded-l-none -ml-px focus-visible:z-10"
-                    >
-                      <Calendar className="h-4 w-4 text-muted-foreground" />
-                    </Button>
-                  </PopoverTrigger>
-                </Popover>
               </div>
             </div>
           </div>

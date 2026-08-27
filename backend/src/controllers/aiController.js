@@ -4,7 +4,11 @@ const { aggregateUserStats } = require("../services/analytics/aggregator");
 const {
   calculateProductivityScore,
 } = require("../services/analytics/productivityScore");
-const { generateInsights, parseInsightResponse } = require("../services/ai/insightEngine");
+const {
+  generateInsights,
+  parseInsightResponse,
+  calculateExamReadinessAndBurnout,
+} = require("../services/ai/insightEngine");
 const { generateStudyPlan } = require("../services/ai/studyPlanner");
 const { getRecommendations } = require("../services/ai/recommender");
 const { analyzeFocusDropoff } = require("../services/analytics/focusDropoff");
@@ -12,6 +16,7 @@ const { processDocument } = require("../services/ai/documentProcessor");
 const { generateEmbedding } = require("../services/ai/vectorSearch");
 const { askQuestion, generateQuiz } = require("../services/ai/ragAssistant");
 const { handleStudyChat } = require("../services/ai/chatAssistant");
+const { generateWeeklyDigest } = require("../services/ai/weeklyDigestService");
 
 // Models (only the controller touches the database)
 const AiInsight = require("../models/AiInsight");
@@ -43,6 +48,15 @@ const getAnalyticsSummary = asyncHandler(async (req, res) => {
 const getInsights = asyncHandler(async (req, res) => {
   const userId = req.user._id;
 
+  // Fetch profile for context & calculation
+  const user = await User.findById(userId).select("studyProfile settings").lean();
+  const profile = user?.studyProfile || {};
+
+  // Aggregate + Score
+  const stats = await aggregateUserStats(userId, 30);
+  const scoreResult = calculateProductivityScore(stats, user?.settings || {});
+  const metrics = calculateExamReadinessAndBurnout(stats, scoreResult, profile);
+
   // Check cache
   const cached = await AiInsight.findOne({
     user: userId,
@@ -56,8 +70,10 @@ const getInsights = asyncHandler(async (req, res) => {
       insights: cached.insights,
       recommendations: cached.recommendations,
       summary: cached.summary,
-      prepAdvice: cached.prepAdvice || "Keep up your preparation!",
+      prepAdvice: cached.prepAdvice || "Focus on active recall and peak-hour sessions.",
       productivityScore: cached.productivityScore,
+      examReadinessScore: metrics.examReadinessScore,
+      burnoutRisk: metrics.burnoutRisk,
       scoreBreakdown: cached.scoreBreakdown,
       stats: cached.stats,
       generatedAt: cached.generatedAt,
@@ -65,14 +81,10 @@ const getInsights = asyncHandler(async (req, res) => {
     });
   }
 
-  // Aggregate + Score
-  const stats = await aggregateUserStats(userId, 30);
-  const scoreResult = calculateProductivityScore(stats, req.user.settings || {});
-
   // Call AI service (pure LLM, no DB)
   let parsed;
   try {
-    parsed = await generateInsights(stats, scoreResult);
+    parsed = await generateInsights(stats, scoreResult, profile);
   } catch (err) {
     // LLM failed — try stale cache
     const stale = await AiInsight.findOne({ user: userId })
@@ -84,8 +96,10 @@ const getInsights = asyncHandler(async (req, res) => {
         insights: stale.insights,
         recommendations: stale.recommendations,
         summary: stale.summary,
-        prepAdvice: stale.prepAdvice || "Keep up your preparation!",
+        prepAdvice: stale.prepAdvice || "Focus on active recall and peak-hour sessions.",
         productivityScore: scoreResult.score,
+        examReadinessScore: metrics.examReadinessScore,
+        burnoutRisk: metrics.burnoutRisk,
         scoreBreakdown: scoreResult.breakdown,
         stats,
         generatedAt: stale.generatedAt,
@@ -95,7 +109,7 @@ const getInsights = asyncHandler(async (req, res) => {
     }
 
     // No cache at all — return fallback
-    parsed = parseInsightResponse("invalid");
+    parsed = parseInsightResponse("invalid", profile.stream);
   }
 
   // Save to cache
@@ -125,6 +139,8 @@ const getInsights = asyncHandler(async (req, res) => {
     summary: saved.summary,
     prepAdvice: saved.prepAdvice || parsed.prepAdvice,
     productivityScore: scoreResult.score,
+    examReadinessScore: metrics.examReadinessScore,
+    burnoutRisk: metrics.burnoutRisk,
     scoreBreakdown: scoreResult.breakdown,
     stats,
     generatedAt: saved.generatedAt,
@@ -152,7 +168,13 @@ const getStudyPlan = asyncHandler(async (req, res) => {
   const profile = user.studyProfile || {};
   const stats = await aggregateUserStats(userId, 30);
 
-  const result = await generateStudyPlan(profile, stats);
+  let result;
+  try {
+    result = await generateStudyPlan(profile, stats);
+  } catch (err) {
+    console.error("[aiController] Error generating study plan:", err.message);
+    return res.status(500).json({ plan: null, error: "Failed to generate study plan." });
+  }
 
   if (result.error) {
     return res.status(result.weeks ? 200 : 400).json({ plan: null, error: result.error });
@@ -328,9 +350,28 @@ async function _searchSimilarChunks(query, userId, topK = 5) {
       }
     ]);
 
-    return results;
+    if (results && results.length > 0) {
+      return results;
+    }
   } catch (err) {
-    console.error("Atlas Vector Search failed. Is it enabled on this cluster?", err.message);
+    console.warn("Atlas Vector Search unavailable, falling back to keyword search:", err.message);
+  }
+
+  // Fallback for local MongoDB / standard deployments without Atlas Vector Search
+  try {
+    const keywords = (query || "").split(/\s+/).filter(w => w.length > 2);
+    const regexPattern = keywords.length > 0 ? keywords.join("|") : query;
+    const fallbackChunks = await DocumentChunk.find({
+      user: userId,
+      ...(regexPattern ? { content: { $regex: regexPattern, $options: "i" } } : {}),
+    })
+      .limit(topK)
+      .select("content")
+      .lean();
+
+    return fallbackChunks;
+  } catch (fallbackErr) {
+    console.error("Local chunk search fallback error:", fallbackErr.message);
     return [];
   }
 }
@@ -394,6 +435,16 @@ const studyChat = asyncHandler(async (req, res) => {
   res.json(result);
 });
 
+// @desc    Get AI-generated weekly performance digest
+// @route   GET /api/ai/weekly-digest
+// @access  Private
+const getWeeklyDigest = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+  const user = await User.findById(userId).select("studyProfile settings").lean();
+  const digest = await generateWeeklyDigest(userId, user?.settings || {}, user?.studyProfile || {});
+  res.json(digest);
+});
+
 module.exports = {
   getAnalyticsSummary,
   getInsights,
@@ -406,4 +457,5 @@ module.exports = {
   queryRag,
   getQuiz,
   studyChat,
+  getWeeklyDigest,
 };

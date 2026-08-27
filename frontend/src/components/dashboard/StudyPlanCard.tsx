@@ -142,9 +142,9 @@ export function StudyPlanCard() {
                 </div>
               ))}
 
-              {plan && plan.weeks.length > 1 && (
+              {plan && (plan.weeks?.length ?? 0) > 1 && (
                 <p className="text-[11px] text-muted-foreground text-center pt-2">
-                  {plan.totalWeeks} weeks planned · Showing week {currentWeek.weekNumber}
+                  {plan.totalWeeks || plan.weeks?.length} weeks planned · Showing week {currentWeek.weekNumber}
                 </p>
               )}
             </div>

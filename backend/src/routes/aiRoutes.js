@@ -14,6 +14,7 @@ const {
   queryRag,
   getQuiz,
   studyChat,
+  getWeeklyDigest,
 } = require("../controllers/aiController");
 
 const router = express.Router();
@@ -25,6 +26,7 @@ const upload = multer({
 // All AI routes require authentication + rate limiting
 router.get("/summary", protect, apiLimiter, getAnalyticsSummary);
 router.get("/insights", protect, apiLimiter, getInsights);
+router.get("/weekly-digest", protect, apiLimiter, getWeeklyDigest);
 router.get("/study-plan", protect, apiLimiter, getStudyPlan);
 router.post("/study-plan", protect, apiLimiter, regenerateStudyPlan);
 router.get("/recommendations", protect, apiLimiter, getRecommendationsHandler);

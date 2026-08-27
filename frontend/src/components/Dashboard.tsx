@@ -12,6 +12,7 @@ import { DailyOverviewChart } from './dashboard/DailyOverviewChart';
 import { AiInsightsPanel } from './dashboard/AiInsightsPanel';
 import { StudyPlanCard } from './dashboard/StudyPlanCard';
 import { RecommendationsCard } from './dashboard/RecommendationsCard';
+import { WeeklyDigestCard } from './dashboard/WeeklyDigestCard';
 import { useAiStore } from '@/store/useAiStore';
 
 const MOTIVATIONAL_QUOTES = [
@@ -152,6 +153,10 @@ export function Dashboard() {
           <StudyPlanCard />
         </div>
         <RecommendationsCard />
+
+        <div className="block lg:col-span-3">
+          <WeeklyDigestCard />
+        </div>
 
         <div className="block lg:col-span-3">
           <FocusHeatmap />
