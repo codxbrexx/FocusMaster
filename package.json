@@ -1,6 +1,7 @@
 {
     "name": "focusmaster-root",
     "version": "1.0.0",
+    "description": "FocusMaster is an AI-powered productivity web app that helps users stay focused, track study and work hours, manage tasks, and build lasting habits using AI insights, goals, and streaks.",
     "private": true,
     "scripts": {
         "start": "node backend/src/server.js",

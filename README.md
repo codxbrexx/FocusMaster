@@ -3,7 +3,7 @@
 <div align="center">
   <img src="./frontend/public/FM_logo.png" alt="FocusMaster Logo" width="120" />
   <h3>The Ultimate AI-Powered Productivity Workspace</h3>
-  <p>A beautifully designed, unified dashboard engineered to maximize cognitive potential, maintain deep work flow states, and intelligently adapt to your study and work patterns.</p>
+  <p>FocusMaster is an AI-powered productivity web app that helps users stay focused, track study and work hours, manage tasks, and build lasting habits using AI insights, goals, and streaks.</p>
 </div>
 
 <p align="center">
@@ -12,23 +12,34 @@
   <img src="https://img.shields.io/badge/backend-Node.js-339933?logo=nodedotjs&logoColor=white" alt="Node" />
   <img src="https://img.shields.io/badge/database-MongoDB-47A248?logo=mongodb&logoColor=white" alt="MongoDB" />
   <img src="https://img.shields.io/badge/ai-Google_Gemini-8E75B2?logo=google&logoColor=white" alt="Gemini AI" />
+  <img src="https://img.shields.io/badge/realtime-Socket.io-010101?logo=socketdotio&logoColor=white" alt="Socket.io" />
 </p>
 
 ## Key Features
 
-### Intelligent AI Study Coach & Planner
+### 👥 Multiplayer Focus Rooms & Social Accountability
+- **Real-Time Focus Rooms**: Join public or private study spaces with synchronized Pomodoro timers and live participant status.
+- **Ambient Sound Mixer**: Built-in sound machine for Lofi, Rain, White Noise, and Nature soundscapes to curate your study environment.
+- **Live Productivity Counters**: Track collective group focus hours and study streaks in real-time.
+
+### 🏆 Gamification & Progression System
+- **Focus XP & Leaderboards**: Earn Focus XP for every completed timer session and daily streak to rank on global leaderboards.
+- **Milestone Badges**: Unlock achievements and advance through productivity tiers (Beginner → Deep Work Specialist → Focus Legend).
+- **Streak Protection**: Protect hard-earned daily study streaks with built-in streak shields.
+
+### 🤖 Intelligent AI Study Coach & Planner
 - **Dynamic Study Planner**: Automatically generates weekly subject schedules based on your stream, exam dates, and available hours.
 - **RAG Notes Assistant**: Upload your PDF study materials and chat instantly with an AI that retrieves precise answers directly from your notes.
 - **Smart Nudges & Preparation Advice**: Daily AI-generated insights analyzing your focus history to give actionable productivity advice.
 - **Floating AI Widget**: A premium, globally accessible AI chat assistant ready to provide coaching and context-aware feedback at any moment.
 
-### Advanced Productivity Tools
+### ⏱️ Advanced Productivity Tools
 - **Pomodoro Timer**: Customizable focus intervals, visual progress rings, and adaptive timer suggestions based on drop-off analysis.
 - **Kanban Task Manager**: Drag-and-drop workflow tracking with custom tags, priority levels, and daily persistence.
 - **Clock In/Out Ecosystem**: Comprehensive daily session tracking with rich, calendar-based activity logs.
 - **Deep Analytics**: Interactive productivity heatmaps, focus trends, task completion rates, and gamified level progressions.
 
-### Seamless Integrations
+### 🎵 Seamless Integrations
 - **Spotify Premium Controller**: Manage your deep-work playlists and control playback directly from your dashboard without breaking focus.
 - **Secure Authentication**: Robust JWT-based auth and integrated Google OAuth sign-in.
 - **Admin Panel**: User role management (RBAC), system metrics, and audit logs.
@@ -37,9 +48,9 @@
 
 | Domain | Technologies |
 |---|---|
-| **Frontend** | React 19, TypeScript, Tailwind CSS 4, Framer Motion, Zustand, Shadcn/ui, Vite |
-| **Backend** | Node.js, Express 5, MongoDB (Mongoose), Google Generative AI (Gemini), Multer |
-| **DevOps & Testing** | Vercel (CI/CD), Jest, Supertest, Vitest, Playwright (E2E) |
+| **Frontend** | React 19, TypeScript, Tailwind CSS 4, Framer Motion, Zustand, Socket.io-client, Vite |
+| **Backend** | Node.js, Express 5, Socket.io, MongoDB (Mongoose), Google Generative AI (Gemini), Multer |
+| **DevOps & Testing** | Vercel (CI/CD), GitHub Actions, Jest, Supertest, Vitest, Playwright (E2E) |
 
 ## Quick Start
 
