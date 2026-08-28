@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import type { TimerMode } from '@/store/useTimerStore';
 
 interface TimerDisplayProps {
@@ -48,20 +48,13 @@ const MODE_CONFIG: Record<
 };
 
 function FinishTimeDisplay({ timeLeft }: { timeLeft: number }) {
-  const [finishStr, setFinishStr] = useState('');
-
-  useEffect(() => {
-    const finishDate = new Date(Date.now() + timeLeft * 1000);
-    setFinishStr(
-      finishDate.toLocaleTimeString('en-US', {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true,
-      })
-    );
-  }, [timeLeft]);
-
-  if (!finishStr) return null;
+  const [initialNow] = useState(() => Date.now());
+  const finishDate = new Date(initialNow + timeLeft * 1000);
+  const finishStr = finishDate.toLocaleTimeString('en-US', {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true,
+  });
 
   return (
     <span className="text-[11px] font-semibold font-mono text-slate-400 mt-1">

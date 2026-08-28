@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -38,7 +38,14 @@ export function CalendarEventDialog({
   const [description, setDescription] = useState('');
   const [error, setError] = useState('');
 
-  useEffect(() => {
+  const [prevIsOpen, setPrevIsOpen] = useState(isOpen);
+  const [prevEvent, setPrevEvent] = useState(existingEvent);
+  const [prevInitialDate, setPrevInitialDate] = useState(initialDate);
+
+  if (isOpen !== prevIsOpen || existingEvent !== prevEvent || initialDate !== prevInitialDate) {
+    setPrevIsOpen(isOpen);
+    setPrevEvent(existingEvent);
+    setPrevInitialDate(initialDate);
     if (isOpen) {
       setError('');
       if (existingEvent) {
@@ -67,7 +74,7 @@ export function CalendarEventDialog({
         setDescription('');
       }
     }
-  }, [isOpen, existingEvent, initialDate]);
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

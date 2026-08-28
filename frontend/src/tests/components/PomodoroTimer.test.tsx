@@ -136,7 +136,7 @@ describe('PomodoroTimer', () => {
 
   it('renders task section', () => {
     renderTimer();
-    // Use flexible matcher for "Working On" label
-    expect(screen.getByText(/Working On/i)).toBeInTheDocument();
+    // Use flexible matcher for "Linked Task" label
+    expect(screen.getByText(/Linked Task/i)).toBeInTheDocument();
   });
 });
