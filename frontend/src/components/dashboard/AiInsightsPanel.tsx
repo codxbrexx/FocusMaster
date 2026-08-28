@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { motion, type Variants } from 'framer-motion';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAiStore } from '@/store/useAiStore';
 import {
   Sparkles,
@@ -25,16 +24,9 @@ function ScoreRing({ score }: { score: number }) {
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (score / 100) * circumference;
 
-  const getScoreColor = () => {
-    if (score >= 80) return 'text-emerald-500';
-    if (score >= 60) return 'text-blue-500';
-    if (score >= 40) return 'text-amber-500';
-    return 'text-red-500';
-  };
-
   const getStrokeColor = () => {
     if (score >= 80) return '#10b981';
-    if (score >= 60) return '#3b82f6';
+    if (score >= 60) return '#6E36E4';
     if (score >= 40) return '#f59e0b';
     return '#ef4444';
   };
@@ -47,9 +39,8 @@ function ScoreRing({ score }: { score: number }) {
           cy="50"
           r={radius}
           fill="none"
-          stroke="currentColor"
-          strokeWidth="6"
-          className="text-muted/30"
+          stroke="#f1f5f9"
+          strokeWidth="7"
         />
         <circle
           cx="50"
@@ -57,7 +48,7 @@ function ScoreRing({ score }: { score: number }) {
           r={radius}
           fill="none"
           stroke={getStrokeColor()}
-          strokeWidth="6"
+          strokeWidth="7"
           strokeLinecap="round"
           strokeDasharray={circumference}
           strokeDashoffset={offset}
@@ -65,8 +56,8 @@ function ScoreRing({ score }: { score: number }) {
         />
       </svg>
       <div className="absolute flex flex-col items-center">
-        <span className={`text-2xl font-bold ${getScoreColor()}`}>{score}</span>
-        <span className="text-[10px] text-muted-foreground">/ 100</span>
+        <span className="text-2xl font-bold font-mono text-slate-900">{score}</span>
+        <span className="text-[10px] text-slate-400 font-semibold">/ 100</span>
       </div>
     </div>
   );
@@ -83,22 +74,22 @@ function ScoreBreakdownBar({
 }) {
   const getBarColor = () => {
     if (score >= 80) return 'bg-emerald-500';
-    if (score >= 60) return 'bg-blue-500';
+    if (score >= 60) return 'bg-[#6E36E4]';
     if (score >= 40) return 'bg-amber-500';
     return 'bg-red-500';
   };
 
   return (
-    <div className="flex items-center gap-2">
-      <Icon className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
-      <span className="text-xs text-muted-foreground w-24 shrink-0">{label}</span>
-      <div className="flex-1 h-1.5 bg-muted/30 rounded-full overflow-hidden">
+    <div className="flex items-center gap-2 text-xs">
+      <Icon className="h-3.5 w-3.5 text-slate-400 shrink-0" />
+      <span className="text-slate-500 font-medium w-24 shrink-0">{label}</span>
+      <div className="flex-1 h-2 bg-slate-100 rounded-full overflow-hidden">
         <div
           className={`h-full rounded-full transition-all duration-700 ease-out ${getBarColor()}`}
           style={{ width: `${Math.min(score, 100)}%` }}
         />
       </div>
-      <span className="text-xs font-medium w-8 text-right">{score}</span>
+      <span className="font-mono font-bold text-slate-800 w-7 text-right">{score}</span>
     </div>
   );
 }
@@ -113,21 +104,15 @@ export function AiInsightsPanel() {
   if (isLoading) {
     return (
       <motion.div variants={item}>
-        <Card className="bg-card border border-border/50 shadow-sm">
-          <CardContent className="p-6">
-            <div className="flex items-center gap-3 animate-pulse">
-              <div className="h-10 w-10 rounded-full bg-muted" />
-              <div className="space-y-2 flex-1">
-                <div className="h-4 w-32 bg-muted rounded" />
-                <div className="h-3 w-48 bg-muted/50 rounded" />
-              </div>
+        <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-2xs">
+          <div className="flex items-center gap-3 animate-pulse">
+            <div className="h-10 w-10 rounded-full bg-slate-100" />
+            <div className="space-y-2 flex-1">
+              <div className="h-4 w-32 bg-slate-100 rounded" />
+              <div className="h-3 w-48 bg-slate-100/60 rounded" />
             </div>
-            <div className="mt-4 space-y-3">
-              <div className="h-16 bg-muted/30 rounded-lg" />
-              <div className="h-16 bg-muted/30 rounded-lg" />
-            </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </motion.div>
     );
   }
@@ -135,18 +120,16 @@ export function AiInsightsPanel() {
   if (error && !insights) {
     return (
       <motion.div variants={item}>
-        <Card className="bg-card border border-border/50 shadow-sm">
-          <CardContent className="p-6 text-center">
-            <Sparkles className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
-            <p className="text-sm text-muted-foreground">AI insights unavailable right now.</p>
-            <button
-              onClick={fetchAiInsights}
-              className="mt-3 text-xs text-primary hover:underline flex items-center gap-1 mx-auto"
-            >
-              <RefreshCw className="h-3 w-3" /> Try again
-            </button>
-          </CardContent>
-        </Card>
+        <div className="bg-white border border-slate-200/80 rounded-2xl p-6 text-center shadow-2xs space-y-3 font-sans text-slate-900">
+          <Sparkles className="h-8 w-8 text-slate-300 mx-auto" />
+          <p className="text-xs text-slate-500 font-medium">AI insights unavailable right now.</p>
+          <button
+            onClick={fetchAiInsights}
+            className="text-xs text-[#6E36E4] font-bold hover:underline inline-flex items-center gap-1 mx-auto cursor-pointer"
+          >
+            <RefreshCw className="h-3 w-3" /> Try again
+          </button>
+        </div>
       </motion.div>
     );
   }
@@ -167,132 +150,139 @@ export function AiInsightsPanel() {
   const activeStreamName = studyProfile?.stream || studyProfile?.customStreamName || null;
 
   const burnoutBadgeColors: Record<string, string> = {
-    low: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20',
-    moderate: 'bg-amber-500/10 text-amber-500 border-amber-500/20',
-    high: 'bg-red-500/10 text-red-500 border-red-500/20',
+    low: 'bg-emerald-50 text-emerald-700 border-emerald-200/80',
+    moderate: 'bg-amber-50 text-amber-700 border-amber-200/80',
+    high: 'bg-red-50 text-red-700 border-red-200/80',
   };
 
   return (
-    <motion.div variants={item} className="lg:col-span-3">
-      <Card className="bg-card border border-border/50 shadow-sm overflow-hidden">
-        <CardHeader className="p-4 sm:p-6 pb-4 border-b border-border/50">
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <div className="flex items-center gap-3">
-              <CardTitle className="flex items-center gap-2 text-lg font-medium text-foreground">
-                <Sparkles className="h-5 w-5 text-purple-500 fill-purple-500/20" />
-                AI Insights
-              </CardTitle>
-              {activeStreamName && (
-                <span className="px-2.5 py-0.5 text-xs font-semibold rounded-full bg-purple-500/10 text-purple-500 border border-purple-500/20">
-                  🎯 {activeStreamName} Stream
-                </span>
-              )}
+    <motion.div variants={item} className="font-sans text-slate-900">
+      <div className="bg-white border border-slate-200/80 rounded-2xl shadow-2xs p-6 space-y-6">
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-4">
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-xl bg-purple-50 text-[#6E36E4]">
+              <Sparkles className="h-5 w-5" />
             </div>
-
-            <div className="flex items-center gap-2">
-              {examReadinessScore !== undefined && (
-                <span className="px-2.5 py-1 text-xs font-bold rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
-                  Readiness: {examReadinessScore}%
+            <div>
+              <h3 className="text-base font-bold text-slate-900">AI Productivity Diagnostics</h3>
+              {activeStreamName && (
+                <span className="text-[11px] font-bold text-[#6E36E4]">
+                  Stream: {activeStreamName}
                 </span>
               )}
-              {burnoutRisk && (
-                <span
-                  className={`px-2.5 py-1 text-xs font-semibold rounded-lg border capitalize ${
-                    burnoutBadgeColors[burnoutRisk.toLowerCase()] || 'bg-muted/20 text-muted-foreground'
-                  }`}
-                >
-                  {burnoutRisk} Burnout Risk
-                </span>
-              )}
-              <button
-                onClick={fetchAiInsights}
-                className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1 transition-colors bg-muted/30 px-3 py-1.5 rounded-full border border-border/50 hover:border-border cursor-pointer"
-              >
-                <RefreshCw className="h-3 w-3" />
-                Refresh
-              </button>
             </div>
           </div>
-        </CardHeader>
 
-        <CardContent className="p-4 sm:p-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Productivity Score */}
-            <div className="flex flex-col items-center gap-3">
-              <ScoreRing score={productivityScore ?? 0} />
-              <p className="text-sm font-medium">Productivity Score</p>
-              <div className="w-full space-y-2">
-                <ScoreBreakdownBar
-                  label="Consistency"
-                  score={scoreBreakdown?.consistency?.score ?? 0}
-                  icon={Flame}
-                />
-                <ScoreBreakdownBar
-                  label="Completion"
-                  score={scoreBreakdown?.completion?.score ?? 0}
-                  icon={Target}
-                />
-                <ScoreBreakdownBar
-                  label="Focus Quality"
-                  score={scoreBreakdown?.focusQuality?.score ?? 0}
-                  icon={Zap}
-                />
-                <ScoreBreakdownBar
-                  label="Time Mgmt"
-                  score={scoreBreakdown?.timeManagement?.score ?? 0}
-                  icon={Clock}
-                />
-              </div>
+          <div className="flex items-center gap-2">
+            {examReadinessScore !== undefined && (
+              <span className="px-2.5 py-1 text-xs font-bold rounded-xl bg-blue-50 text-blue-700 border border-blue-100">
+                Exam Readiness: {examReadinessScore}%
+              </span>
+            )}
+            {burnoutRisk && (
+              <span
+                className={`px-2.5 py-1 text-xs font-bold rounded-xl border capitalize ${
+                  burnoutBadgeColors[burnoutRisk.toLowerCase()] || 'bg-slate-100 text-slate-600'
+                }`}
+              >
+                {burnoutRisk} Burnout Risk
+              </span>
+            )}
+            <button
+              onClick={fetchAiInsights}
+              className="text-xs text-slate-600 hover:text-slate-900 font-semibold flex items-center gap-1.5 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200/80 hover:bg-slate-100 cursor-pointer transition-colors"
+            >
+              <RefreshCw className="h-3 w-3" />
+              Refresh
+            </button>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Productivity Score Ring */}
+          <div className="flex flex-col items-center justify-center p-4 bg-slate-50/80 rounded-2xl border border-slate-100 space-y-3">
+            <ScoreRing score={productivityScore ?? 0} />
+            <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">
+              Productivity Score
+            </span>
+
+            <div className="w-full space-y-2.5 pt-2 border-t border-slate-200/60">
+              <ScoreBreakdownBar
+                label="Consistency"
+                score={scoreBreakdown?.consistency?.score ?? 0}
+                icon={Flame}
+              />
+              <ScoreBreakdownBar
+                label="Completion"
+                score={scoreBreakdown?.completion?.score ?? 0}
+                icon={Target}
+              />
+              <ScoreBreakdownBar
+                label="Focus Quality"
+                score={scoreBreakdown?.focusQuality?.score ?? 0}
+                icon={Zap}
+              />
+              <ScoreBreakdownBar
+                label="Time Mgmt"
+                score={scoreBreakdown?.timeManagement?.score ?? 0}
+                icon={Clock}
+              />
             </div>
+          </div>
 
-            {/* Insights */}
-            <div className="space-y-3">
-              <h4 className="text-sm font-medium flex items-center gap-1.5">
-                <Lightbulb className="h-4 w-4 text-amber-500" />
-                Insights
-              </h4>
+          {/* AI Key Insights */}
+          <div className="space-y-3">
+            <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+              <Lightbulb className="h-4 w-4 text-amber-500" />
+              Key AI Diagnostics
+            </h4>
+            <div className="space-y-2.5">
               {(aiInsights || []).map((insight, i) => (
                 <div
                   key={i}
-                  className="p-3 rounded-lg bg-muted/20 border border-border/30 text-sm text-foreground/80"
+                  className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 text-xs font-medium text-slate-700 leading-relaxed"
                 >
                   {insight}
                 </div>
               ))}
             </div>
+          </div>
 
-            {/* Recommendations + Summary */}
-            <div className="space-y-3">
-              <h4 className="text-sm font-medium flex items-center gap-1.5">
-                <TrendingUp className="h-4 w-4 text-emerald-500" />
-                Recommendations
-              </h4>
+          {/* AI Recommendations */}
+          <div className="space-y-3">
+            <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+              <TrendingUp className="h-4 w-4 text-emerald-500" />
+              Strategic Recommendations
+            </h4>
+            <div className="space-y-2.5">
               {(recommendations || []).map((rec, i) => (
                 <div
                   key={i}
-                  className="p-3 rounded-lg bg-emerald-500/5 border border-emerald-500/20 text-sm text-foreground/80"
+                  className="p-3.5 rounded-xl bg-emerald-50/60 border border-emerald-100 text-xs font-medium text-emerald-900 leading-relaxed"
                 >
                   {rec}
                 </div>
               ))}
 
               {summary && (
-                <div className="mt-4 p-3 rounded-lg bg-purple-500/5 border border-purple-500/20">
-                  <p className="text-xs text-purple-400 font-medium mb-1">✨ Daily Summary</p>
-                  <p className="text-sm text-foreground/80">{summary}</p>
+                <div className="p-3.5 rounded-xl bg-purple-50/60 border border-purple-100 space-y-1">
+                  <p className="text-[11px] text-[#6E36E4] font-bold uppercase tracking-wider">✨ Daily AI Summary</p>
+                  <p className="text-xs text-slate-700 font-medium">{summary}</p>
                 </div>
               )}
 
               {prepAdvice && (
-                <div className="mt-3 p-3 rounded-lg bg-blue-500/5 border border-blue-500/20">
-                  <p className="text-xs text-blue-400 font-medium mb-1 flex items-center gap-1.5"><BookOpen className="h-3 w-3" /> Preparation Advice</p>
-                  <p className="text-sm text-foreground/80">{prepAdvice}</p>
+                <div className="p-3.5 rounded-xl bg-blue-50/60 border border-blue-100 space-y-1">
+                  <p className="text-[11px] text-blue-700 font-bold uppercase tracking-wider flex items-center gap-1">
+                    <BookOpen className="h-3 w-3" /> Exam Prep Advice
+                  </p>
+                  <p className="text-xs text-slate-700 font-medium">{prepAdvice}</p>
                 </div>
               )}
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </motion.div>
   );
 }

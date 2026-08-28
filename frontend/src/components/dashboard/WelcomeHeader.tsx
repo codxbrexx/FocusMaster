@@ -1,9 +1,9 @@
 import { motion } from 'framer-motion';
-import { Target } from 'lucide-react';
+import { Target, Layers } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
-
 import { getLevelInfo, getProgressPercent } from '@/utils/levelUtils';
+import { useAiStore } from '@/store/useAiStore';
 
 interface WelcomeHeaderProps {
   user: any;
@@ -12,10 +12,23 @@ interface WelcomeHeaderProps {
   points: number;
 }
 
+const STREAM_LABELS: Record<string, string> = {
+  engineering: 'Engineering',
+  medical: 'Medical',
+  commerce: 'Commerce',
+  competitive: 'Competitive Exams',
+  custom: 'General',
+};
+
 export function WelcomeHeader({ user, settings, randomQuote, points }: WelcomeHeaderProps) {
   const navigate = useNavigate();
+  const { studyProfile } = useAiStore();
   const currentLevel = getLevelInfo(points);
   const progressPercent = getProgressPercent(points);
+
+  // Dynamic user stream from profile or store
+  const activeStream = (studyProfile?.stream || user?.stream || 'engineering').toLowerCase();
+  const streamDisplay = STREAM_LABELS[activeStream] || 'Engineering Stream';
 
   const getTimeGreeting = () => {
     const hour = new Date().getHours();
@@ -34,18 +47,26 @@ export function WelcomeHeader({ user, settings, randomQuote, points }: WelcomeHe
     >
       <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
         <div className="space-y-4 max-w-2xl">
-          <div className="inline-flex items-center gap-2 py-1 bg-primary/10 text-primary text-xs font-medium mb-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold">
             <span>Welcome to Focus Master</span>
+            <span className="text-muted-foreground">•</span>
+            <span className="flex items-center gap-1 text-primary">
+              <Layers className="w-3 h-3" />
+              {streamDisplay}
+            </span>
           </div>
+
           <h1 className="font-serif text-2xl md:text-3xl font-bold tracking-tight text-foreground">
             {getTimeGreeting()},{' '}
             <span className="text-foreground font-bold">
               {user?.name || 'Focus Master'}
             </span>
           </h1>
+
           <p className="font-serif italic text-sm md:text-base text-muted-foreground leading-relaxed">
             "{settings.motivationalQuotes ? randomQuote : 'Ready to focus?'}"
           </p>
+
           <div className="flex flex-wrap gap-4 pt-4">
             <Button
               onClick={() => navigate('/pomodoro')}
@@ -98,31 +119,19 @@ export function WelcomeHeader({ user, settings, randomQuote, points }: WelcomeHe
           </div>
 
           <div className="relative z-10 mt-auto space-y-2">
-            <div className="h-2.5 w-full bg-black/50 rounded-full overflow-hidden backdrop-blur-sm border border-white/10 shadow-inner">
-              <motion.div
-                initial={{ width: 0 }}
-                animate={{ width: `${progressPercent}%` }}
-                transition={{ duration: 1.5, ease: 'circOut' }}
-                className={`h-full rounded-full bg-gradient-to-r ${currentLevel.gradient} shadow-[0_0_10px_rgba(255,255,255,0.3)] relative overflow-hidden`}
-              >
-                <div className="absolute inset-0 bg-white/20 animate-[shimmer_2s_infinite]" />
-              </motion.div>
+            <div className="flex justify-between text-xs text-white/80 font-medium">
+              <span>Progress</span>
+              <span>{progressPercent}%</span>
             </div>
-
-            <div className="flex justify-between items-center text-[11px] font-bold uppercase tracking-wide text-white/80 drop-shadow">
-              <span>{points.toLocaleString()} XP</span>
-              <span>
-                {currentLevel.next === Infinity
-                  ? 'MAX'
-                  : `Next: ${currentLevel.next.toLocaleString()} XP`}
-              </span>
+            <div className="h-1.5 w-full bg-black/30 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-white transition-all duration-500"
+                style={{ width: `${progressPercent}%` }}
+              />
             </div>
           </div>
         </motion.div>
       </div>
-
-      <div className="absolute top-0 right-0 -mr-32 -mt-32 w-96 h-96 bg-primary/5 rounded-full blur-3xl opacity-50" />
-      <div className="absolute bottom-0 left-0 -ml-32 -mb-32 w-80 h-80 bg-purple-500/5 rounded-full blur-3xl opacity-50" />
     </motion.div>
   );
 }

@@ -36,7 +36,30 @@ const userSchema = mongoose.Schema(
       type: Number,
       default: 0,
     },
+    xp: {
+      total: { type: Number, default: 0, index: true },
+      weekly: { type: Number, default: 0 },
+      monthly: { type: Number, default: 0 },
+      level: { type: Number, default: 1 },
+    },
     badges: [{ type: String }],
+    earnedBadges: [
+      {
+        id: { type: String, required: true },
+        name: { type: String, required: true },
+        icon: { type: String },
+        earnedAt: { type: Date, default: Date.now },
+        tier: { type: String, enum: ["bronze", "silver", "gold", "platinum"], default: "bronze" },
+      },
+    ],
+    currentStreak: { type: Number, default: 0 },
+    longestStreak: { type: Number, default: 0 },
+    lastFocusDate: { type: Date, default: null },
+    streakShield: {
+      active: { type: Boolean, default: false },
+      expiresAt: { type: Date, default: null },
+    },
+    roomsJoined: { type: Number, default: 0 },
     isGuest: {
       type: Boolean,
       default: false,

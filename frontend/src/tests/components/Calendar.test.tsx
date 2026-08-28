@@ -61,7 +61,7 @@ describe('Calendar', () => {
     render(<Calendar />);
     const currentMonthYear = format(new Date(), 'MMMM yyyy');
     expect(screen.getByText(currentMonthYear)).toBeInTheDocument();
-    expect(screen.getByText('Calendar')).toBeInTheDocument();
+    expect(screen.getByText(/Calendar/i)).toBeInTheDocument();
   });
 
   it('renders days of the week', () => {

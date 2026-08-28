@@ -5,7 +5,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
 
 const SESSION_TAGS = ['Study', 'Work', 'Reading', 'Coding', 'Writing', 'Research', 'Design'];
 
@@ -27,42 +26,55 @@ export const SessionManager = ({
   sessionCount,
 }: SessionManagerProps) => {
   return (
-    <div className="w-full space-y-4 sm:space-y-6 pt-4 sm:pt-6">
+    <div className="w-full space-y-5 pt-4 font-sans text-slate-900">
       {/* Tag pills */}
       <div>
-        <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-2 sm:mb-3">Session Tag</p>
-        <div className="flex flex-wrap gap-1.5 sm:gap-2">
-          {SESSION_TAGS.map((tag) => (
-            <Badge
-              key={tag}
-              variant={selectedTag === tag ? 'default' : 'outline'}
-              onClick={() => setSelectedTag(tag)}
-              className={`px-2.5 sm:px-3 py-0.5 sm:py-1 cursor-pointer text-[10px] sm:text-xs font-normal rounded-full transition-all duration-200 border ${
-                selectedTag === tag
-                  ? 'bg-primary text-primary-foreground border-primary hover:bg-primary/90'
-                  : 'border-border text-muted-foreground hover:border-primary/50 hover:text-primary hover:bg-primary/5'
-              }`}
-            >
-              {tag}
-            </Badge>
-          ))}
+        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">
+          Session Category
+        </p>
+        <div className="flex flex-wrap gap-2">
+          {SESSION_TAGS.map((tag) => {
+            const isSelected = selectedTag === tag;
+            return (
+              <button
+                key={tag}
+                type="button"
+                onClick={() => setSelectedTag(tag)}
+                className={`px-3 py-1 text-xs font-bold rounded-xl transition-all cursor-pointer border ${
+                  isSelected
+                    ? 'bg-purple-50 text-[#6E36E4] border-purple-200 shadow-2xs'
+                    : 'bg-slate-50 text-slate-600 border-slate-200/80 hover:bg-slate-100'
+                }`}
+              >
+                {tag}
+              </button>
+            );
+          })}
         </div>
       </div>
 
       {/* Task select */}
       <div>
-        <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-2 sm:mb-3">Working On</p>
+        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">
+          Linked Task
+        </p>
         <Select value={selectedTaskId} onValueChange={setSelectedTaskId}>
           <SelectTrigger
             id="task-select"
-            className="h-8 sm:h-10 text-xs sm:text-sm bg-card border-border text-foreground rounded-lg sm:rounded-xl hover:border-primary/40 transition-colors focus:ring-primary/30"
+            className="h-10 text-xs font-semibold bg-white border border-slate-200/80 text-slate-900 rounded-xl hover:border-slate-300 shadow-2xs"
           >
             <SelectValue placeholder="No task selected" />
           </SelectTrigger>
-          <SelectContent className="bg-popover border-border rounded-lg sm:rounded-xl">
-            <SelectItem value="none" className="text-xs sm:text-sm cursor-pointer">No task selected</SelectItem>
+          <SelectContent className="bg-white border border-slate-200/80 rounded-xl shadow-lg">
+            <SelectItem value="none" className="text-xs font-semibold cursor-pointer">
+              No task selected
+            </SelectItem>
             {activeTasks.map((t) => (
-              <SelectItem key={t._id} value={t._id} className="text-xs sm:text-sm cursor-pointer focus:bg-primary/10 focus:text-primary">
+              <SelectItem
+                key={t._id}
+                value={t._id}
+                className="text-xs font-semibold cursor-pointer focus:bg-purple-50 focus:text-[#6E36E4]"
+              >
                 {t.title}
               </SelectItem>
             ))}
@@ -71,18 +83,20 @@ export const SessionManager = ({
       </div>
 
       {/* Mini stat cards */}
-      <div className="grid grid-cols-3 gap-2 sm:gap-3">
+      <div className="grid grid-cols-3 gap-3 pt-1">
         {[
-          { label: "Today's Focus", value: sessionCount > 0 ? `${sessionCount * 25}m` : '—' },
-          { label: 'Current Cycle', value: `${sessionCount} / 8` },
-          { label: 'Focus Score', value: sessionCount > 0 ? `${Math.min(sessionCount * 12, 100)}%` : '—' },
+          { label: "Today's Focus", value: sessionCount > 0 ? `${sessionCount * 25}m` : '0m' },
+          { label: 'Completed Cycles', value: `${sessionCount} / 8` },
+          { label: 'Focus Efficiency', value: sessionCount > 0 ? `${Math.min(sessionCount * 12, 100)}%` : '100%' },
         ].map(({ label, value }) => (
           <div
             key={label}
-            className="bg-secondary rounded-lg sm:rounded-xl p-2 sm:p-3 border border-border/40 text-center"
+            className="bg-slate-50 rounded-xl p-3 border border-slate-200/60 text-center"
           >
-            <p className="text-sm sm:text-base font-bold text-foreground">{value}</p>
-            <p className="text-[9px] sm:text-[10px] text-muted-foreground mt-0 sm:mt-0.5 leading-tight">{label}</p>
+            <p className="text-base font-bold font-mono text-slate-900">{value}</p>
+            <p className="text-[10px] font-semibold text-slate-400 mt-0.5 uppercase tracking-wider">
+              {label}
+            </p>
           </div>
         ))}
       </div>

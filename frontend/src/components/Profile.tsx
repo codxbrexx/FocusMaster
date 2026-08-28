@@ -1,6 +1,8 @@
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { useHistoryStore } from '@/store/useHistoryStore';
+import { useBadgeStore } from '@/store/useBadgeStore';
 import { motion } from 'framer-motion';
 import {
   Mail,
@@ -10,17 +12,25 @@ import {
   Flame,
   Zap,
   CheckCircle2,
-  MoreHorizontal,
   Edit3,
+  ShieldAlert,
+  ShieldCheck,
 } from 'lucide-react';
 import { FocusHeatmap } from './FocusHeatmap';
 import { format } from 'date-fns';
 import { getLevelInfo, getProgressPercent } from '@/utils/levelUtils';
+import { BadgeGrid } from './badges/BadgeGrid';
+import { BadgeUnlockToast } from './badges/BadgeUnlockToast';
 
 export function Profile() {
   const { user } = useAuth();
   const { sessions } = useHistoryStore();
+  const { xpSummary, fetchXpSummary, activateShield } = useBadgeStore();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchXpSummary();
+  }, [fetchXpSummary]);
 
   // Stats Calculations
   const totalSessions = sessions.filter((s) => s.type === 'pomodoro').length;
@@ -36,386 +46,274 @@ export function Profile() {
     return uniqueDays > 0 ? (totalSessions / uniqueDays).toFixed(1) : 0;
   };
 
-  const getCurrentStreak = () => {
-    if (sessions.length === 0) return 0;
-    const today = new Date().toDateString();
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-    const yesterdayStr = yesterday.toDateString();
-
-    const dates = [...new Set(sessions.map((s) => new Date(s.startTime).toDateString()))];
-    const sortedDates = dates.sort((a, b) => new Date(b).getTime() - new Date(a).getTime());
-
-    const lastFocus = sortedDates[0];
-    if (lastFocus !== today && lastFocus !== yesterdayStr) {
-      return 0;
-    }
-
-    // Simple streak calculation
-    let streak = 0;
-    let currentCheck = new Date();
-    currentCheck.setHours(0, 0, 0, 0);
-
-    const lastFocusDate = new Date(sortedDates[0]);
-    lastFocusDate.setHours(0, 0, 0, 0);
-    currentCheck = lastFocusDate;
-
-    for (const dateStr of sortedDates) {
-      const date = new Date(dateStr);
-      date.setHours(0, 0, 0, 0);
-
-      if (date.getTime() === currentCheck.getTime()) {
-        streak++;
-        currentCheck.setDate(currentCheck.getDate() - 1);
-      } else {
-        break;
-      }
-    }
-    return streak;
-  };
-
-  const streak = getCurrentStreak();
+  const streak = xpSummary?.currentStreak || 0;
   const dailyAverage = getDailyAverage();
   const isGuest = user?.isGuest || localStorage.getItem('isGuest') === 'true';
-  const userPoints = user?.points || 0;
+  const userPoints = xpSummary?.totalXP || user?.points || 0;
 
   const currentLevel = getLevelInfo(userPoints);
-  const progressPercent = getProgressPercent(userPoints);
+  const progressPercent = xpSummary?.progressPercent ?? getProgressPercent(userPoints);
+  const streakShieldActive = xpSummary?.streakShield?.active || false;
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="max-w-6xl mx-auto space-y-8 pb-24"
+      className="max-w-6xl mx-auto space-y-6 p-4 md:p-6 pb-24 font-sans text-slate-900"
     >
-      <div className="relative rounded-3xl overflow-hidden bg-card border border-border/50 shadow-sm group">
-        {/* Cover Image Area */}
-        <div className="h-40 bg-gradient-to-r from-zinc-900 via-slate-900 to-indigo-950 relative overflow-hidden backdrop-blur-3xl">
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-500/10 rounded-full blur-[120px] -mr-32 -mt-32 mix-blend-screen animate-pulse" />
-          <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-purple-500/10 rounded-full blur-[100px] -ml-20 -mb-20 mix-blend-screen" />
+      <BadgeUnlockToast />
+
+      {/* Hero Cover & Profile Container */}
+      <div className="bg-white border border-slate-200/80 rounded-2xl overflow-hidden shadow-2xs">
+        {/* Cover Banner */}
+        <div className="h-36 bg-gradient-to-r from-[#6E36E4] via-indigo-600 to-purple-800 relative overflow-hidden">
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff12_1px,transparent_1px),linear-gradient(to_bottom,#ffffff12_1px,transparent_1px)] bg-[size:24px_24px]" />
+          <div className="absolute -top-10 -right-10 w-48 h-48 bg-purple-400/20 rounded-full blur-2xl" />
         </div>
 
-        {/* Profile Content */}
-        <div className="px-8 pb-8">
-          <div className="flex flex-col md:flex-row items-center md:items-end -mt-16 gap-6">
+        {/* Profile Details */}
+        <div className="px-6 pb-6 relative z-10">
+          <div className="flex flex-col md:flex-row items-center md:items-end -mt-14 gap-5">
             {/* Avatar */}
-            <div className="relative group/avatar">
-              <div className="w-36 h-36 rounded-2xl border-[6px] border-background bg-background shadow-xl overflow-hidden relative z-10 ring-1 ring-border/20">
-                <img
-                  src={user?.picture || '/profilelogo.png'}
-                  alt={user?.name}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover/avatar:scale-110"
-                />
-              </div>
-              <div className="absolute bottom-2 -right-2 z-20 bg-background p-1.5 rounded-full shadow-sm ring-1 ring-border/10">
-                <div className="w-4 h-4 rounded-full bg-emerald-500 border-2 border-emerald-500" />
-              </div>
+            <div className="w-28 h-28 rounded-2xl border-4 border-white bg-white shadow-lg overflow-hidden shrink-0 relative z-20">
+              <img
+                src={user?.picture || '/profilelogo.png'}
+                alt={user?.name}
+                className="w-full h-full object-cover"
+              />
             </div>
 
-            {/* Text Info */}
-            <div className="flex-1 min-w-0 pb-2 text-center md:text-left">
-              <div className="flex items-center justify-center md:justify-start gap-4">
-                <h1 className="text-4xl font-bold tracking-tight text-foreground/90 font-display">
-                  {user?.name || 'Guest User'}
+            {/* User Info */}
+            <div className="flex-1 min-w-0 text-center md:text-left space-y-1">
+              <div className="flex items-center justify-center md:justify-start gap-3">
+                <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+                  {user?.name || 'Focus User'}
                 </h1>
                 {user?.role === 'admin' && (
-                  <span className="px-2.5 py-1 rounded-md bg-indigo-500/20 text-indigo-400 text-[10px] font-bold uppercase tracking-wider border border-indigo-500/20 shadow-[0_0_15px_rgba(99,102,241,0.2)]">
+                  <span className="px-2.5 py-0.5 rounded-full bg-purple-50 text-[#6E36E4] border border-purple-100 text-xs font-bold uppercase tracking-wider">
                     Admin
                   </span>
                 )}
               </div>
 
-              <div className="flex flex-wrap items-center justify-center md:justify-start gap-5 mt-3 text-sm text-muted-foreground/80 font-medium">
-                <div className="flex items-center gap-2 hover:text-foreground transition-colors">
-                  <div className="p-1 rounded bg-muted/50">
-                    <Mail className="w-3.5 h-3.5" />
-                  </div>
+              <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 text-xs font-medium text-slate-500">
+                <div className="flex items-center gap-1.5">
+                  <Mail className="w-3.5 h-3.5 text-slate-400" />
                   <span>{user?.email || 'No email provided'}</span>
                 </div>
-                <div className="hidden md:block w-px h-4 bg-border" />
-                <div className="flex items-center gap-2 hover:text-foreground transition-colors">
-                  <div className="p-1 rounded bg-muted/50">
-                    <Calendar className="w-3.5 h-3.5" />
-                  </div>
+                <div className="hidden md:block w-px h-3 bg-slate-200" />
+                <div className="flex items-center gap-1.5">
+                  <Calendar className="w-3.5 h-3.5 text-slate-400" />
                   <span>
-                    Joined{' '}
-                    {new Date().toLocaleDateString(undefined, { month: 'long', year: 'numeric' })}
+                    Member since {new Date().toLocaleDateString(undefined, { month: 'short', year: 'numeric' })}
                   </span>
                 </div>
-
-                {/* Badge */}
-                <div className="hidden md:block w-px h-4 bg-border" />
-                <div
-                  className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wide border shadow-sm ${isGuest ? 'bg-orange-500/10 text-orange-400 border-orange-500/20' : 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20 shadow-[0_0_10px_rgba(16,185,129,0.1)]'}`}
-                >
-                  {isGuest ? 'Guest' : 'Pro Member'}
-                </div>
+                <div className="hidden md:block w-px h-3 bg-slate-200" />
+                <span className={`px-2.5 py-0.5 rounded-full text-xs font-bold border ${
+                  isGuest ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                }`}>
+                  {isGuest ? 'Guest Account' : 'Pro Member'}
+                </span>
               </div>
             </div>
 
-            {/* Actions */}
-            <div className="flex items-center gap-3 pb-2 w-full md:w-auto justify-center md:justify-end">
+            {/* Edit Action Button */}
+            <div className="pt-2 md:pt-0">
               <button
                 onClick={() => navigate('/profile/edit')}
-                className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-primary-foreground font-medium shadow-sm hover:bg-primary/90 transition-all active:scale-[0.98]"
+                className="bg-[#6E36E4] hover:bg-[#5B2AC6] text-white font-bold px-5 py-2.5 rounded-xl text-xs shadow-2xs transition-colors flex items-center gap-2 cursor-pointer"
               >
                 <Edit3 className="w-4 h-4" />
                 <span>Edit Profile</span>
-              </button>
-
-              <div className="h-10 w-px bg-border/50 hidden md:block mx-2" />
-
-              <button className="p-2.5 rounded-xl hover:bg-muted/80 transition-colors border border-transparent hover:border-border text-muted-foreground hover:text-foreground">
-                <MoreHorizontal className="w-5 h-5" />
               </button>
             </div>
           </div>
         </div>
       </div>
 
-      {/* --- Stats Grid --- */}
+      {/* Stats Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
           icon={Clock}
           label="Focus Hours"
           value={totalHours}
           subvalue="hrs"
-          color="text-blue-500"
-          bg="bg-blue-500/10"
-          trend="+12% vs last week"
+          color="text-blue-600"
+          bg="bg-blue-50 border-blue-100"
+          trend="Top performance"
         />
         <StatCard
           icon={CheckCircle2}
           label="Sessions"
           value={totalSessions}
           subvalue="total"
-          color="text-emerald-500"
-          bg="bg-emerald-500/10"
-          trend="Top 5% of users"
+          color="text-emerald-600"
+          bg="bg-emerald-50 border-emerald-100"
+          trend="Regular worker"
         />
         <StatCard
           icon={Flame}
-          label="Streak"
+          label="Day Streak"
           value={streak}
           subvalue="days"
-          color="text-orange-500"
-          bg="bg-orange-500/10"
-          trend="Keep it up!"
+          color="text-amber-600"
+          bg="bg-amber-50 border-amber-100"
+          trend="Active streak"
         />
         <StatCard
           icon={Trophy}
           label="Daily Avg"
           value={dailyAverage}
           subvalue="sess"
-          color="text-purple-500"
-          bg="bg-purple-500/10"
+          color="text-purple-600"
+          bg="bg-purple-50 border-purple-100"
           trend="Consistent"
         />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* --- Consistency Heatmap (Spans 2 columns) --- */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Heatmap & Recent Sessions */}
         <div className="lg:col-span-2 space-y-6">
           <FocusHeatmap />
 
-          {/* Recent Activity List */}
-          <div className="bg-card border border-border/50 rounded-2xl p-6 shadow-sm">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="font-semibold text-lg flex items-center gap-2">
-                <Zap className="w-4 h-4 text-yellow-500" />
-                Recent Activity
+          {/* Recent Activity Card */}
+          <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-2xs space-y-4">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+              <h3 className="font-bold text-base text-slate-900 flex items-center gap-2">
+                <Zap className="w-4 h-4 text-amber-500" />
+                Recent Work Sessions
               </h3>
-              <button className="text-xs font-medium text-primary hover:text-primary/80 transition-colors">
-                View History
-              </button>
             </div>
 
-            <div className="space-y-1">
+            <div className="space-y-2">
               {sessions.slice(0, 5).map((session, i) => (
                 <div
                   key={i}
-                  className="group flex items-center justify-between p-3.5 hover:bg-gradient-to-r hover:from-muted/50 hover:to-transparent rounded-xl transition-all duration-300 border border-transparent hover:border-border/40"
+                  className="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-100"
                 >
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-3">
                     <div
-                      className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 shadow-sm ${session.type === 'pomodoro' ? 'bg-purple-500/10 text-purple-500' : 'bg-blue-500/10 text-blue-500'}`}
+                      className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${
+                        session.type === 'pomodoro'
+                          ? 'bg-purple-50 text-[#6E36E4] border border-purple-100'
+                          : 'bg-blue-50 text-blue-600 border border-blue-100'
+                      }`}
                     >
                       {session.type === 'pomodoro' ? (
-                        <Flame className="w-5 h-5" />
+                        <Flame className="w-4 h-4" />
                       ) : (
-                        <Clock className="w-5 h-5" />
+                        <Clock className="w-4 h-4" />
                       )}
                     </div>
-                    <div className="min-w-0">
-                      <p className="text-sm font-medium text-foreground capitalize truncate">
-                        {session.type === 'pomodoro'
-                          ? 'Deep Focus Session'
-                          : session.type.replace('-', ' ')}
+                    <div>
+                      <p className="text-xs font-bold text-slate-900 capitalize">
+                        {session.type === 'pomodoro' ? 'Deep Focus Session' : session.type.replace('-', ' ')}
                       </p>
-                      <p className="text-xs text-muted-foreground flex items-center gap-1.5">
+                      <p className="text-[10px] text-slate-400 font-medium">
                         {format(new Date(session.startTime), 'MMM d, h:mm a')}
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <span className="px-2.5 py-1 rounded-md bg-secondary/50 text-xs font-medium text-secondary-foreground border border-border/30">
-                      {Math.floor(session.duration / 60)}m
-                    </span>
-                  </div>
+                  <span className="px-2.5 py-1 rounded-lg bg-white border border-slate-200/80 text-xs font-bold font-mono text-slate-800">
+                    {Math.floor(session.duration / 60)}m
+                  </span>
                 </div>
               ))}
               {sessions.length === 0 && (
-                <div className="text-center py-12 opacity-50 border-2 border-dashed border-border/50 rounded-xl bg-muted/20">
-                  <Clock className="w-10 h-10 mx-auto mb-3 text-muted-foreground" />
-                  <p className="text-sm font-medium">No recent sessions found</p>
+                <div className="text-center py-8 text-slate-400 bg-slate-50 rounded-xl border border-slate-200/80 space-y-1">
+                  <Clock className="w-8 h-8 mx-auto text-slate-300" />
+                  <p className="text-xs font-bold text-slate-600">No sessions recorded yet</p>
                 </div>
               )}
             </div>
           </div>
         </div>
 
-        {/* --- Achievements / Rank --- */}
+        {/* Gamification Level & Streak Shield Card */}
         <div className="space-y-6">
-          {/* Rank Card */}
-          <div
-            className={`border rounded-2xl p-6 shadow-sm relative overflow-hidden group transition-all duration-500 ${currentLevel.border} bg-card`}
-          >
-            {/* Dynamic Background Gradient Glow */}
-            <div
-              className={`absolute top-0 right-0 w-48 h-48 rounded-full blur-[80px] -mr-16 -mt-16 pointer-events-none opacity-20 bg-gradient-to-br ${currentLevel.gradient}`}
-            />
-
-            <div className="relative z-10">
-              <span
-                className={`text-xs font-bold uppercase tracking-widest mb-2 block ${currentLevel.color}`}
-              >
-                Current Rank
+          <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-2xs space-y-4">
+            <div className="border-b border-slate-100 pb-3">
+              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1">
+                Gamification Rank
               </span>
-              <div className="flex items-end gap-3 mb-4">
-                <h3 className="text-1xl md:text-2xl font-bold text-foreground tracking-tight">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xl font-bold text-slate-900 tracking-tight">
                   {currentLevel.name}
                 </h3>
-                <div
-                  className={`mb-1.5 text-[8px] md:text-[12px] px-2 py-0.5 rounded border font-bold uppercase ${currentLevel.bg} ${currentLevel.color} ${currentLevel.border}`}
-                >
-                  LVL {currentLevel.level}
-                </div>
+                <span className="px-2.5 py-1 rounded-xl bg-purple-50 text-[#6E36E4] border border-purple-100 text-xs font-bold">
+                  LVL {xpSummary?.level || currentLevel.level}
+                </span>
               </div>
+            </div>
 
-              {/* Progress Bar */}
-              <div className="h-2.5 w-full bg-secondary/50 rounded-full overflow-hidden mb-2 border border-border/50">
+            {/* Progress Bar */}
+            <div className="space-y-1.5 pt-1">
+              <div className="h-2.5 w-full bg-slate-100 rounded-full overflow-hidden">
                 <div
-                  className={`h-full rounded-full bg-gradient-to-r ${currentLevel.gradient} shadow-lg shadow-current/20 transition-all duration-1000 ease-out`}
+                  className="h-full bg-[#6E36E4] rounded-full transition-all duration-1000"
                   style={{ width: `${progressPercent}%` }}
                 />
               </div>
-
-              <div className="flex justify-between items-center text-xs font-medium text-muted-foreground mt-1">
-                <span className={currentLevel.color}>{userPoints.toLocaleString()} XP</span>
-                {currentLevel.next !== Infinity && (
-                  <span>Next: {currentLevel.next.toLocaleString()} XP</span>
-                )}
-                {currentLevel.next === Infinity && (
-                  <span className="text-amber-500 animate-pulse">Max Level!</span>
+              <div className="flex justify-between items-center text-xs font-bold font-mono text-slate-500">
+                <span className="text-[#6E36E4]">{userPoints.toLocaleString()} XP</span>
+                {xpSummary?.nextLevelXPThreshold && (
+                  <span>Next: {xpSummary.nextLevelXPThreshold.toLocaleString()} XP</span>
                 )}
               </div>
             </div>
-          </div>
 
-          {/* Achievements List */}
-          <div className="bg-card border border-border/50 rounded-2xl p-6 shadow-sm">
-            <h3 className="font-semibold text-lg mb-6 flex items-center gap-2">
-              <Trophy className="w-4 h-4 text-primary" />
-              Achievements
-            </h3>
+            {/* Streak Shield Control */}
+            <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                {streakShieldActive ? (
+                  <ShieldCheck className="w-5 h-5 text-emerald-600" />
+                ) : (
+                  <ShieldAlert className="w-5 h-5 text-amber-500" />
+                )}
+                <div>
+                  <span className="text-xs font-bold block text-slate-900">Streak Shield</span>
+                  <span className="text-[10px] text-slate-500 font-medium">
+                    {streakShieldActive ? 'Active Protection' : 'Inactive'}
+                  </span>
+                </div>
+              </div>
 
-            <div className="space-y-3">
-              <AchievementItem
-                title="Early Bird"
-                desc="Complete a session before 8AM"
-                icon="🌅"
-                unlocked={true}
-              />
-              <AchievementItem
-                title="Focus Master"
-                desc="Reach 100 total hours"
-                icon="🧘"
-                unlocked={parseFloat(totalHours) >= 100}
-                progress={Math.min(parseFloat(totalHours), 100)}
-                total={100}
-              />
-              <AchievementItem
-                title="Streak King"
-                desc="7 day streak"
-                icon="🔥"
-                unlocked={streak >= 7}
-                progress={streak}
-                total={7}
-              />
+              {!streakShieldActive && (
+                <button
+                  onClick={activateShield}
+                  className="px-3 py-1.5 text-xs font-bold bg-amber-50 text-amber-700 hover:bg-amber-100 border border-amber-200 rounded-xl transition cursor-pointer"
+                >
+                  Activate
+                </button>
+              )}
             </div>
-
-            <button className="w-full mt-6 py-2.5 text-xs font-semibold text-center text-primary bg-primary/5 hover:bg-primary/10 border border-primary/20 rounded-xl transition-all duration-200">
-              View All Achievements
-            </button>
           </div>
         </div>
       </div>
+
+      <BadgeGrid />
     </motion.div>
   );
 }
 
-// --- Micro-Components ---
-
 function StatCard({ icon: Icon, label, value, subvalue, color, bg, trend }: any) {
   return (
-    <div className="bg-card border border-border/50 rounded-2xl p-5 shadow-sm hover:shadow-md hover:border-primary/20 transition-all duration-300 group">
-      <div className="flex items-start justify-between mb-4">
-        <div
-          className={`p-2.5 rounded-xl ${bg} group-hover:scale-110 transition-transform duration-300`}
-        >
+    <div className="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-2xs space-y-3">
+      <div className="flex items-center justify-between">
+        <div className={`p-2.5 rounded-xl border ${bg}`}>
           <Icon className={`w-5 h-5 ${color}`} />
         </div>
         {trend && (
-          <span className="text-[10px] font-medium text-emerald-500 bg-emerald-500/5 px-2 py-1 rounded-full border border-emerald-500/10">
+          <span className="text-[10px] font-semibold text-slate-500 bg-slate-100 px-2.5 py-0.5 rounded-full border border-slate-200/80">
             {trend}
           </span>
         )}
       </div>
       <div>
-        <h4 className="text-2xl font-bold tracking-tight text-foreground">{value}</h4>
-        <div className="flex items-center gap-1.5 mt-1">
-          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
-            {label}
-          </span>
-          <span className="text-[10px] text-muted-foreground/60">• {subvalue}</span>
+        <div className="text-2xl font-bold font-mono text-slate-900">{value}</div>
+        <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider mt-0.5">
+          {label} · {subvalue}
         </div>
-      </div>
-    </div>
-  );
-}
-
-function AchievementItem({ title, desc, icon, unlocked, progress, total }: any) {
-  return (
-    <div
-      className={`flex items-start gap-3 p-3 rounded-xl border transition-all duration-300 ${unlocked ? 'bg-gradient-to-br from-card to-background border-border/50 shadow-sm' : 'bg-muted/20 border-transparent opacity-60 grayscale hover:grayscale-0 hover:opacity-100'}`}
-    >
-      <div className="text-2xl shrink-0">{icon}</div>
-      <div className="flex-1 min-w-0">
-        <div className="flex justify-between items-center mb-0.5">
-          <p className="text-sm font-semibold truncate">{title}</p>
-          {unlocked && <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />}
-        </div>
-        <p className="text-xs text-muted-foreground truncate">{desc}</p>
-
-        {typeof progress !== 'undefined' && !unlocked && (
-          <div className="mt-2 h-1.5 w-full bg-muted rounded-full overflow-hidden">
-            <div
-              className="h-full bg-primary transition-all duration-500"
-              style={{ width: `${(progress / total) * 100}%` }}
-            />
-          </div>
-        )}
       </div>
     </div>
   );

@@ -1,9 +1,10 @@
-import { Suspense, lazy } from 'react';
+import { useState, Suspense, lazy } from 'react';
 import { motion } from 'framer-motion';
+import { BarChart2 } from 'lucide-react';
 import { useHistoryStore } from '@/store/useHistoryStore';
 import { useSettingsStore } from '@/store/useSettingsStore';
 import { AnalyticsStats } from './analytics/AnalyticsStats';
-import { LoadingSpinner } from './ui/LoadingSpinner'; // Keeping simple spinner for chart placeholders
+import { LoadingSpinner } from './ui/LoadingSpinner';
 
 const FocusActivityChart = lazy(() =>
   import('./analytics/FocusActivityChart').then((m) => ({ default: m.FocusActivityChart }))
@@ -20,6 +21,7 @@ const CategoryDistributionChart = lazy(() =>
 export function Analytics() {
   const { sessions, clockEntries } = useHistoryStore();
   const { settings } = useSettingsStore();
+  const [selectedPeriod, setSelectedPeriod] = useState<'Week' | 'Month' | 'Year'>('Week');
 
   const today = new Date();
   const todayStr = today.toDateString();
@@ -123,13 +125,7 @@ export function Analytics() {
   const completionRate =
     settings.dailyGoal > 0 ? Math.round((todayPomodoros / settings.dailyGoal) * 100) : 0;
 
-  const COLORS = [
-    'hsl(var(--primary))',
-    'hsl(var(--chart-2))',
-    'hsl(var(--chart-3))',
-    'hsl(var(--chart-4))',
-    'hsl(var(--chart-5))',
-  ];
+  const COLORS = ['#6E36E4', '#3b82f6', '#10b981', '#f59e0b', '#ec4899'];
 
   const heatmapData = getWeeklyHeatmap();
   const categoryData = getCategoryDistribution();
@@ -150,18 +146,34 @@ export function Analytics() {
       variants={container}
       initial="hidden"
       animate="show"
-      className="max-w-7xl mx-auto space-y-6 pb-20"
+      className="max-w-7xl mx-auto space-y-6 p-4 md:p-6 pb-24 font-sans text-slate-900"
     >
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h2 className="text-3xl font-bold tracking-tight">Analytics Dashboard</h2>
-          <p className="text-muted-foreground">Gain insights into your productivity patterns.</p>
+      {/* Hero Banner Card */}
+      <div className="bg-white border border-slate-200/80 rounded-2xl p-6 sm:p-8 shadow-2xs flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className="space-y-1">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-50 text-[#6E36E4] border border-purple-100 text-xs font-semibold">
+            <BarChart2 className="w-3.5 h-3.5 text-[#6E36E4]" />
+            <span>Productivity Intelligence</span>
+          </div>
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+            Analytics & Performance Insights
+          </h1>
+          <p className="text-xs text-slate-500 font-medium max-w-xl">
+            Track daily goal completion, focus time volume, streaks, and activity category distribution.
+          </p>
         </div>
-        <div className="flex items-center gap-2 bg-accent p-1 rounded-lg">
-          {['Week', 'Month', 'Year'].map((period) => (
+
+        {/* Period Selector */}
+        <div className="bg-slate-100 p-1.5 rounded-xl border border-slate-200/60 flex items-center gap-1">
+          {(['Week', 'Month', 'Year'] as const).map((period) => (
             <button
               key={period}
-              className={`px-3 py-1 text-xs font-medium rounded-md transition-colors ${period === 'Week' ? 'bg-card shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
+              onClick={() => setSelectedPeriod(period)}
+              className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
+                selectedPeriod === period
+                  ? 'bg-white text-[#6E36E4] shadow-2xs border border-slate-200/60'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/50'
+              }`}
             >
               {period}
             </button>
@@ -180,7 +192,7 @@ export function Analytics() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Suspense
           fallback={
-            <div className="h-[300px] flex items-center justify-center bg-card rounded-xl border border-border/50">
+            <div className="h-[300px] flex items-center justify-center bg-white rounded-2xl border border-slate-200/80 shadow-2xs">
               <LoadingSpinner />
             </div>
           }
@@ -189,7 +201,7 @@ export function Analytics() {
         </Suspense>
         <Suspense
           fallback={
-            <div className="h-[300px] flex items-center justify-center bg-card rounded-xl border border-border/50">
+            <div className="h-[300px] flex items-center justify-center bg-white rounded-2xl border border-slate-200/80 shadow-2xs">
               <LoadingSpinner />
             </div>
           }
@@ -198,7 +210,7 @@ export function Analytics() {
         </Suspense>
         <Suspense
           fallback={
-            <div className="h-[300px] flex items-center justify-center bg-card rounded-xl border border-border/50">
+            <div className="h-[300px] flex items-center justify-center bg-white rounded-2xl border border-slate-200/80 shadow-2xs">
               <LoadingSpinner />
             </div>
           }

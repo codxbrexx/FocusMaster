@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { Save } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Save, NotebookPen } from 'lucide-react';
 
 const STORAGE_KEY = 'fm-quick-notes';
 
@@ -15,35 +14,35 @@ export const QuickNotesCard = () => {
   };
 
   return (
-    <Card className="bg-card border border-border/50 shadow-sm rounded-2xl">
-      <CardHeader className="pb-3 px-5 pt-5">
-        <div className="flex items-center justify-between">
-          <CardTitle className="text-sm font-semibold text-foreground">Quick Notes</CardTitle>
-          <button
-            id="quick-notes-save"
-            onClick={save}
-            className={`flex items-center gap-1 text-xs font-medium px-2.5 py-1.5 rounded-xl transition-all duration-200 ${
-              saved
-                ? 'bg-green-500/10 text-green-500'
-                : 'bg-secondary text-muted-foreground hover:text-foreground hover:bg-secondary/80'
-            }`}
-          >
-            <Save className="w-3 h-3" />
-            {saved ? 'Saved' : 'Save'}
-          </button>
-        </div>
-      </CardHeader>
-      <CardContent className="px-5 pb-5">
-        <textarea
-          id="quick-notes-textarea"
-          value={note}
-          onChange={(e) => setNote(e.target.value)}
-          onBlur={() => localStorage.setItem(STORAGE_KEY, note)}
-          placeholder="Write something important..."
-          rows={4}
-          className="w-full text-sm text-foreground placeholder-muted-foreground bg-secondary border border-border/40 rounded-xl p-3 resize-none outline-none focus:border-primary/40 transition-colors leading-relaxed"
-        />
-      </CardContent>
-    </Card>
+    <div className="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-2xs space-y-4 font-sans text-slate-900">
+      <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+        <h3 className="font-bold text-sm text-slate-900 flex items-center gap-2">
+          <NotebookPen className="w-4 h-4 text-[#6E36E4]" />
+          Quick Scratchpad
+        </h3>
+        <button
+          id="quick-notes-save"
+          onClick={save}
+          className={`flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-xl transition-all cursor-pointer border ${
+            saved
+              ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+              : 'bg-slate-50 text-slate-600 border-slate-200/80 hover:bg-slate-100'
+          }`}
+        >
+          <Save className="w-3 h-3" />
+          {saved ? 'Saved' : 'Save'}
+        </button>
+      </div>
+
+      <textarea
+        id="quick-notes-textarea"
+        value={note}
+        onChange={(e) => setNote(e.target.value)}
+        onBlur={() => localStorage.setItem(STORAGE_KEY, note)}
+        placeholder="Scratchpad for session thoughts & key takeaways..."
+        rows={4}
+        className="w-full text-xs font-medium text-slate-900 placeholder:text-slate-400 bg-slate-50 border border-slate-200/80 rounded-xl p-3 resize-none outline-none focus:border-[#6E36E4] transition-colors leading-relaxed"
+      />
+    </div>
   );
 };

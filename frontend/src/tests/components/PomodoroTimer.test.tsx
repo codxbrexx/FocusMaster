@@ -129,14 +129,14 @@ describe('PomodoroTimer', () => {
 
   it('switches modes', () => {
     renderTimer();
-    const shortBreakBtn = screen.getByText('Short Break');
+    const shortBreakBtn = screen.getByText(/Short Break/i);
     fireEvent.click(shortBreakBtn);
     expect(mockSetMode).toHaveBeenCalledWith('short-break');
   });
 
   it('renders task section', () => {
     renderTimer();
-    // Use flexible matcher for "Working On" label
-    expect(screen.getByText(/Working On/i)).toBeInTheDocument();
+    // Use flexible matcher for "Linked Task" label
+    expect(screen.getByText(/Linked Task/i)).toBeInTheDocument();
   });
 });

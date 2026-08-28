@@ -11,10 +11,7 @@ import {
   LogOut,
   ExternalLink,
 } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
-import { Badge } from '@/components/ui/badge';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
 
@@ -42,18 +39,15 @@ export function SpotifyPanel() {
   const [playbackState, setPlaybackState] = useState<PlaybackState | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Check connection status on mount
   useEffect(() => {
     checkConnection();
   }, []);
 
-  // Poll for playback state if connected
   useEffect(() => {
     let interval: any;
     if (isConnected) {
       fetchPlaybackState();
-      fetchPlaylists();
-      interval = setInterval(fetchPlaybackState, 5000); // Poll every 5s
+      interval = setInterval(fetchPlaybackState, 5000);
     }
     return () => clearInterval(interval);
   }, [isConnected]);
@@ -65,7 +59,6 @@ export function SpotifyPanel() {
         setIsConnected(false);
       } else {
         setIsConnected(true);
-        // Handle potential 204 or empty state
         if (res.data.item) {
           setPlaybackState(res.data);
         }
@@ -84,7 +77,6 @@ export function SpotifyPanel() {
       if (res.data && res.data.item) {
         setPlaybackState(res.data);
       } else {
-        // Spotify returns 204 if nothing is playing/active
         setPlaybackState((prev) => (prev ? { ...prev, is_playing: false } : null));
       }
     } catch (error) {
@@ -92,16 +84,7 @@ export function SpotifyPanel() {
     }
   };
 
-  const fetchPlaylists = async () => {
-    try {
-      // Future implementation: Fetch playlists from backend proxy
-    } catch (error) {
-      console.error('Fetch playlists failed', error);
-    }
-  };
-
   const handleLogin = async () => {
-    // Open popup immediately to prevent browser blocking
     const width = 600;
     const height = 800;
     const left = window.screen.width / 2 - width / 2;
@@ -118,7 +101,6 @@ export function SpotifyPanel() {
         authWindow.location.href = res.data.url;
       }
 
-      // Poll for successful connection in the background
       const pollInterval = setInterval(async () => {
         try {
           const check = await axios.get(`${API_URL}/spotify/player`, { withCredentials: true });
@@ -127,7 +109,6 @@ export function SpotifyPanel() {
             setIsConnected(true);
             setPlaybackState(check.data.item ? check.data : null);
             toast.success('Spotify Connected Successfully!');
-            // Fetch usage data
             fetchPlaybackState();
           }
         } catch {
@@ -135,7 +116,6 @@ export function SpotifyPanel() {
         }
       }, 2000);
 
-      // Stop polling after 5 minutes (user abandoned)
       setTimeout(() => clearInterval(pollInterval), 300000);
     } catch {
       if (authWindow) authWindow.close();
@@ -163,34 +143,38 @@ export function SpotifyPanel() {
 
   if (loading)
     return (
-      <div className="p-10 text-center animate-pulse text-muted-foreground">Loading Spotify...</div>
+      <div className="p-10 text-center animate-pulse text-slate-400 text-xs font-semibold">
+        Connecting to Spotify Services...
+      </div>
     );
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="max-w-6xl mx-auto space-y-6 sm:space-y-8 pb-20 px-0.5 sm:px-0"
+      className="max-w-6xl mx-auto space-y-6 p-4 md:p-6 pb-24 font-sans text-slate-900"
     >
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h2 className="text-2xl font-bold font-heading tracking-tight flex items-center gap-2">
-            <Music className="text-xl sm:text-2xl md:text-3xl w-8 h-8 text-primary" /> Spotify Integration
-          </h2>
-          <p className="text-muted-foreground text-sm sm:text-base md:text-lg mt-1">
-            Control your focus soundtrack directly from the dashboard.
+      {/* Hero Header Card */}
+      <div className="bg-white border border-slate-200/80 rounded-2xl p-6 sm:p-8 shadow-2xs flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className="space-y-1">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100 text-xs font-semibold">
+            <Music className="w-3.5 h-3.5 text-emerald-600" />
+            <span>Focus Soundtrack</span>
+          </div>
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+            Spotify Integration & Playback Control
+          </h1>
+          <p className="text-xs text-slate-500 font-medium max-w-xl">
+            Control your Spotify focus playlists directly while tracking work sessions.
           </p>
         </div>
         {isConnected && (
-          <Button
-            variant="ghost"
-            className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
-            onClick={() => {
-              /* Implement disconnect logic later if needed */
-            }}
+          <button
+            onClick={() => {}}
+            className="text-xs font-bold text-red-600 hover:bg-red-50 px-4 py-2.5 rounded-xl border border-red-200 transition-colors flex items-center gap-1.5 cursor-pointer"
           >
-            <LogOut className="w-4 h-4 mr-2" /> Disconnect
-          </Button>
+            <LogOut className="w-4 h-4" /> Disconnect Spotify
+          </button>
         )}
       </div>
 
@@ -198,172 +182,132 @@ export function SpotifyPanel() {
         {!isConnected ? (
           <motion.div
             key="connect"
-            initial={{ opacity: 0, scale: 0.95 }}
+            initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            className="flex flex-col"
+            exit={{ opacity: 0, scale: 0.98 }}
+            className="bg-white border border-slate-200/80 rounded-2xl p-10 sm:p-16 shadow-2xs text-center flex flex-col items-center justify-center max-w-xl mx-auto space-y-5"
           >
-            <Card className="bg-card border border-border shadow-sm relative group overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-accent-1/10 via-transparent to-accent-2/10 pointer-events-none group-hover:opacity-100 transition-opacity duration-700 opacity-50" />
-              <CardContent className="py-12 sm:py-24 text-center relative z-10 flex flex-col items-center justify-center max-w-lg mx-auto px-4">
-                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-accent-1/20 to-accent-2/20 flex items-center justify-center mb-6 shadow-glow border border-white/5">
-                  <Music className="w-12 h-12 text-primary" />
-                </div>
-                <h3 className="text-3xl font-bold mb-4 font-heading bg-clip-text text-transparent bg-gradient-to-r from-white to-white/70">
-                  Soundtrack Your Flow
-                </h3>
-                <p className="text-muted-foreground mb-10 text-lg leading-relaxed">
-                  Connect your Spotify Premium account to access playlists, control playback, and
-                  sync music with your deep work sessions.
-                </p>
-                <Button
-                  onClick={handleLogin}
-                  size="lg"
-                  className="gap-3 rounded-full px-10 h-14 text-base font-semibold bg-[#1DB954] hover:bg-[#1ed760] text-black shadow-lg hover:scale-105 transition-all w-full sm:w-auto"
-                >
-                  Connect Spotify <ExternalLink className="w-5 h-5 opacity-70" />
-                </Button>
-                <p className="text-xs text-muted-foreground/50 mt-8">
-                  Requires Spotify Premium for full playback control.
-                </p>
-              </CardContent>
-            </Card>
+            <div className="w-20 h-20 rounded-2xl bg-emerald-50 text-[#1DB954] border border-emerald-100 flex items-center justify-center">
+              <Music className="w-10 h-10" />
+            </div>
+            <div className="space-y-1">
+              <h2 className="text-2xl font-bold tracking-tight text-slate-900">Soundtrack Your Deep Work</h2>
+              <p className="text-xs text-slate-500 font-medium leading-relaxed max-w-md mx-auto">
+                Connect your Spotify Premium account to access playlists, control playback, and sync music with your focus timer.
+              </p>
+            </div>
+            <button
+              onClick={handleLogin}
+              className="bg-[#1DB954] hover:bg-[#1ed760] text-black font-bold px-8 py-3.5 rounded-xl text-xs shadow-2xs transition-all flex items-center gap-2 cursor-pointer"
+            >
+              <span>Connect Spotify Premium</span>
+              <ExternalLink className="w-4 h-4" />
+            </button>
+            <p className="text-[11px] text-slate-400 font-medium">
+              Requires Spotify Premium for live playback API controls.
+            </p>
           </motion.div>
         ) : (
           <motion.div
             key="dashboard"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="grid grid-cols-1 lg:grid-cols-12 gap-6"
+            className="space-y-6"
           >
             {/* Player Card */}
-            <div className="lg:col-span-12">
-              <Card className="bg-card border border-border shadow-sm relative group overflow-hidden">
-                {/* Ambient Background based on album art color could go here */}
-                <div className="absolute inset-0 bg-gradient-to-r from-accent-1/5 to-accent-2/5 z-0 pointer-events-none" />
+            <div className="bg-white border border-slate-200/80 rounded-2xl shadow-2xs p-6 sm:p-8">
+              <div className="flex flex-col md:flex-row items-center gap-8">
+                {/* Album Art */}
+                <div className="w-48 h-48 sm:w-56 sm:h-56 rounded-2xl overflow-hidden bg-slate-100 border border-slate-200/80 shadow-2xs shrink-0 flex items-center justify-center">
+                  {playbackState?.item?.album.images[0]?.url ? (
+                    <img
+                      src={playbackState.item.album.images[0].url}
+                      alt="Album Art"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <Music className="w-12 h-12 text-slate-300" />
+                  )}
+                </div>
 
-                <CardContent className="p-0 relative z-20">
-                  <div className="flex flex-col md:flex-row h-full md:min-h-[300px]">
-                    {/* Album Art */}
-                    <div className="w-full md:w-[300px] p-4 sm:p-6 flex flex-col items-center justify-center relative">
-                      {playbackState?.item?.album.images[0]?.url ? (
-                        <img
-                          src={playbackState.item.album.images[0].url}
-                          alt="Album Art"
-                          className="w-48 h-48 sm:w-64 sm:h-64 rounded-xl shadow-2xl object-cover animate-in fade-in zoom-in duration-700 ring-1 ring-white/10"
-                        />
-                      ) : (
-                        <div className="w-48 h-48 sm:w-64 sm:h-64 rounded-xl bg-white/5 flex items-center justify-center ring-1 ring-white/10">
-                          <Music className="w-12 h-12 text-white/20" />
-                        </div>
-                      )}
+                {/* Controls & Track Info */}
+                <div className="flex-1 min-w-0 space-y-5 text-center md:text-left w-full">
+                  <div className="space-y-1">
+                    {playbackState?.is_playing && (
+                      <span className="inline-block px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-purple-50 text-[#6E36E4] border border-purple-100 mb-1">
+                        Now Playing
+                      </span>
+                    )}
+                    <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 truncate">
+                      {playbackState?.item?.name || 'No Active Track'}
+                    </h2>
+                    <p className="text-xs sm:text-sm text-slate-500 font-semibold truncate">
+                      {playbackState?.item?.artists.map((a) => a.name).join(', ') ||
+                        'Open Spotify on your device to start playback'}
+                    </p>
+                  </div>
+
+                  {/* Progress Bar */}
+                  <div className="space-y-1.5 max-w-xl mx-auto md:mx-0">
+                    <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-[#6E36E4] transition-all duration-1000 ease-linear rounded-full"
+                        style={{
+                          width: playbackState?.item
+                            ? `${(playbackState.progress_ms / playbackState.item.duration_ms) * 100}%`
+                            : '0%',
+                        }}
+                      />
                     </div>
-
-                    {/* Controls & Info */}
-                    <div className="flex-1 p-4 sm:p-6 md:p-8 flex flex-col justify-center text-center md:text-left items-center md:items-stretch">
-                      <div className="space-y-1.5 mb-5 md:mb-8 w-full flex flex-col items-center md:items-start">
-                        {playbackState?.is_playing && (
-                          <Badge
-                            variant="outline"
-                            className="text-accent-2 border-accent-2/30 bg-accent-2/10 mb-2 px-3 py-1"
-                          >
-                            Now Playing
-                          </Badge>
-                        )}
-                        <h2 className="text-xl sm:text-2xl md:text-4xl font-bold font-heading tracking-tight w-full text-foreground/90 line-clamp-2">
-                          {playbackState?.item?.name || 'No Track Playing'}
-                        </h2>
-                        <p className="text-sm sm:text-base md:text-xl text-muted-foreground w-full font-medium line-clamp-1">
-                          {playbackState?.item?.artists.map((a) => a.name).join(', ') ||
-                            'Start music in Spotify app'}
-                        </p>
-                      </div>
-
-                      {/* Progress Bar */}
-                      <div className="space-y-2 mb-5 md:mb-8 max-w-2xl w-full">
-                        <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
-                          <div
-                            className="h-full bg-gradient-to-r from-accent-1 to-accent-2 transition-all duration-1000 ease-linear shadow-[0_0_10px_rgba(124,58,237,0.5)]"
-                            style={{
-                              width: playbackState?.item
-                                ? `${(playbackState.progress_ms / playbackState.item.duration_ms) * 100}%`
-                                : '0%',
-                            }}
-                          />
-                        </div>
-                        <div className="flex justify-between text-xs font-medium text-muted-foreground">
-                          <span>{formatTime(playbackState?.progress_ms || 0)}</span>
-                          <span>{formatTime(playbackState?.item?.duration_ms || 0)}</span>
-                        </div>
-                      </div>
-
-                      {/* Controls */}
-                      <div className="flex items-center justify-center md:justify-start gap-6 w-full">
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          className="h-12 w-12 rounded-full border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 transition-all shrink-0"
-                          onClick={() =>
-                            axios.post(`${API_URL}/spotify/prev`, {}, { withCredentials: true })
-                          }
-                        >
-                          <SkipBack className="w-5 h-5 text-white/80" />
-                        </Button>
-
-                        <Button
-                          className="h-16 w-16 rounded-full shadow-glow-lg bg-gradient-to-br from-accent-1 to-accent-2 text-white hover:scale-105 transition-transform border border-white/10 shrink-0"
-                          onClick={handlePlayPause}
-                        >
-                          {playbackState?.is_playing ? (
-                            <Pause className="w-8 h-8 fill-current" />
-                          ) : (
-                            <Play className="w-8 h-8 fill-current ml-1" />
-                          )}
-                        </Button>
-
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          className="h-12 w-12 rounded-full border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 transition-all shrink-0"
-                          onClick={() =>
-                            axios.post(`${API_URL}/spotify/next`, {}, { withCredentials: true })
-                          }
-                        >
-                          <SkipForward className="w-5 h-5 text-white/80" />
-                        </Button>
-
-                        <div className="flex items-center gap-3 w-full max-w-[140px] ml-6 hidden sm:flex">
-                          <Volume2 className="w-5 h-5 text-muted-foreground" />
-                          <Slider
-                            defaultValue={[50]}
-                            max={100}
-                            step={1}
-                            className="cursor-pointer"
-                          />
-                        </div>
-                      </div>
+                    <div className="flex justify-between text-[11px] font-mono text-slate-400 font-bold">
+                      <span>{formatTime(playbackState?.progress_ms || 0)}</span>
+                      <span>{formatTime(playbackState?.item?.duration_ms || 0)}</span>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
+
+                  {/* Playback Buttons */}
+                  <div className="flex items-center justify-center md:justify-start gap-4">
+                    <button
+                      onClick={() => axios.post(`${API_URL}/spotify/prev`, {}, { withCredentials: true })}
+                      className="p-3 rounded-xl bg-slate-50 border border-slate-200/80 text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
+                    >
+                      <SkipBack className="w-5 h-5" />
+                    </button>
+
+                    <button
+                      onClick={handlePlayPause}
+                      className="p-4 rounded-2xl bg-[#6E36E4] hover:bg-[#5B2AC6] text-white shadow-2xs transition-all cursor-pointer"
+                    >
+                      {playbackState?.is_playing ? (
+                        <Pause className="w-6 h-6 fill-current" />
+                      ) : (
+                        <Play className="w-6 h-6 fill-current ml-0.5" />
+                      )}
+                    </button>
+
+                    <button
+                      onClick={() => axios.post(`${API_URL}/spotify/next`, {}, { withCredentials: true })}
+                      className="p-3 rounded-xl bg-slate-50 border border-slate-200/80 text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
+                    >
+                      <SkipForward className="w-5 h-5" />
+                    </button>
+
+                    <div className="hidden sm:flex items-center gap-3 ml-6 w-36">
+                      <Volume2 className="w-4 h-4 text-slate-400" />
+                      <Slider defaultValue={[50]} max={100} step={1} className="cursor-pointer" />
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            {/* Playlists Placeholder */}
-            <div className="lg:col-span-12">
-              <Card className="bg-card border border-border hover:bg-accent/5 transition-colors shadow-sm">
-                <CardContent className="p-6 sm:p-10 flex flex-col items-center justify-center text-center min-h-[160px] h-auto">
-                  <div className="p-3 rounded-full bg-white/5 mb-4">
-                    <ListMusic className="w-8 h-8 text-accent-2/80" />
-                  </div>
-                  <h4 className="text-lg font-medium text-white/90 font-heading">
-                    Playlists Coming Soon
-                  </h4>
-                  <p className="text-sm text-muted-foreground max-w-sm mt-2">
-                    We are enhancing the playlist selection to sync directly with your library. For
-                    now, please select your focus playlist in the Spotify app.
-                  </p>
-                </CardContent>
-              </Card>
+            {/* Playlists Notice */}
+            <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-2xs text-center space-y-2">
+              <ListMusic className="w-6 h-6 text-[#6E36E4] mx-auto" />
+              <h4 className="text-sm font-bold text-slate-900">Custom Focus Playlists Sync</h4>
+              <p className="text-xs text-slate-500 font-medium max-w-md mx-auto">
+                Playlists can be selected directly inside your Spotify app. Custom playlist syncing for deep work rooms will be automatically supported in upcoming releases.
+              </p>
             </div>
           </motion.div>
         )}

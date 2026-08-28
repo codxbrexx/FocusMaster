@@ -9,9 +9,6 @@ import { WelcomeHeader } from './dashboard/WelcomeHeader';
 import { StatsOverview } from './dashboard/StatsOverview';
 import { PriorityTasks } from './dashboard/PriorityTasks';
 import { DailyOverviewChart } from './dashboard/DailyOverviewChart';
-import { AiInsightsPanel } from './dashboard/AiInsightsPanel';
-import { StudyPlanCard } from './dashboard/StudyPlanCard';
-import { RecommendationsCard } from './dashboard/RecommendationsCard';
 import { WeeklyDigestCard } from './dashboard/WeeklyDigestCard';
 import { useAiStore } from '@/store/useAiStore';
 
@@ -147,12 +144,37 @@ export function Dashboard() {
           averageFocusDuration={averageFocusDuration}
         />
 
-        <AiInsightsPanel />
+        {/* Live Focus Rooms & Co-Working CTA Banner */}
+        <div className="lg:col-span-3 bg-white border border-slate-200/80 rounded-2xl p-6 shadow-2xs flex flex-col md:flex-row items-center justify-between gap-6 font-sans">
+          <div className="space-y-1.5 text-center md:text-left">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-50 text-[#6E36E4] border border-purple-100 text-xs font-semibold">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span>Real-Time Co-Working Active</span>
+            </div>
+            <h3 className="text-xl font-bold text-slate-900 tracking-tight">
+              Synchronized Focus Rooms & Leaderboards
+            </h3>
+            <p className="text-xs text-slate-500 font-medium max-w-xl">
+              Study together in real-time with students across Engineering, Medical, Commerce and Competitive streams.
+              Earn +15 XP bonus on every room session!
+            </p>
+          </div>
 
-        <div className="lg:col-span-2">
-          <StudyPlanCard />
+          <div className="flex items-center gap-3 shrink-0">
+            <a
+              href="/rooms"
+              className="bg-[#6E36E4] hover:bg-[#5B2AC6] text-white font-bold px-4 py-2.5 rounded-xl text-xs shadow-2xs transition-colors"
+            >
+              Browse Focus Rooms
+            </a>
+            <a
+              href="/leaderboard"
+              className="bg-white border border-slate-200/80 text-slate-700 hover:bg-slate-50 font-semibold px-4 py-2.5 rounded-xl text-xs transition-colors"
+            >
+              View Leaderboards
+            </a>
+          </div>
         </div>
-        <RecommendationsCard />
 
         <div className="block lg:col-span-3">
           <WeeklyDigestCard />

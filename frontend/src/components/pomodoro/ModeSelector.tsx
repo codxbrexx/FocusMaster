@@ -1,5 +1,4 @@
-import { Brain, Coffee, Armchair } from 'lucide-react';
-import type { LucideIcon } from 'lucide-react';
+import { Brain, Coffee, Armchair, type LucideIcon } from 'lucide-react';
 import type { TimerMode } from '@/store/useTimerStore';
 
 interface ModeSelectorProps {
@@ -12,53 +11,49 @@ const MODES: {
   id: TimerMode;
   icon: LucideIcon;
   label: string;
-  activeClasses: string;
-  dotColor: string;
 }[] = [
   {
     id: 'pomodoro',
     icon: Brain,
-    label: 'Focus',
-    activeClasses: 'bg-violet-600 text-white shadow-md shadow-violet-500/30 border-violet-700',
-    dotColor: 'bg-violet-400',
+    label: 'Focus Session',
   },
   {
     id: 'short-break',
     icon: Coffee,
     label: 'Short Break',
-    activeClasses: 'bg-emerald-500 text-white shadow-md shadow-emerald-500/30 border-emerald-600',
-    dotColor: 'bg-emerald-400',
   },
   {
     id: 'long-break',
     icon: Armchair,
     label: 'Long Break',
-    activeClasses: 'bg-sky-500 text-white shadow-md shadow-sky-500/30 border-sky-600',
-    dotColor: 'bg-sky-400',
   },
 ];
 
 export const ModeSelector = ({ mode, setMode, resetTimer }: ModeSelectorProps) => {
   return (
-    <div className="flex items-center gap-1 p-1 bg-secondary rounded-xl border border-border/40">
-      {MODES.map(({ id, icon: Icon, label, activeClasses }) => {
+    <div className="flex items-center gap-1.5 p-1.5 bg-slate-100/90 rounded-2xl border border-slate-200/60 font-sans">
+      {MODES.map(({ id, icon: Icon, label }) => {
         const active = mode === id;
         return (
           <button
             key={id}
             id={`mode-${id}`}
-            onClick={() => { setMode(id); resetTimer(); }}
+            onClick={() => {
+              setMode(id);
+              resetTimer();
+            }}
             className={`
-              flex items-center gap-2 px-3.5 py-2 rounded-lg text-sm font-semibold
-              transition-all duration-200 border
-              ${active
-                ? `${activeClasses}`
-                : 'text-muted-foreground hover:text-foreground hover:bg-card/60 border-transparent'
+              flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold
+              transition-all duration-200 cursor-pointer
+              ${
+                active
+                  ? 'bg-white text-[#6E36E4] shadow-2xs border border-slate-200/80'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/50 border border-transparent'
               }
             `}
           >
-            <Icon className="w-3.5 h-3.5 flex-shrink-0" />
-            <span className="hidden sm:inline whitespace-nowrap">{label}</span>
+            <Icon className={`w-4 h-4 shrink-0 ${active ? 'text-[#6E36E4]' : 'text-slate-400'}`} />
+            <span className="whitespace-nowrap">{label}</span>
           </button>
         );
       })}

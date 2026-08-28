@@ -9,6 +9,11 @@ import {
   ShieldCheck,
   ChevronLeft,
   ChevronRight,
+  Users,
+  BookOpen,
+  Trophy,
+  User,
+  Settings as SettingsIcon,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
@@ -23,11 +28,11 @@ interface SidebarProps {
   onOpenChange: (open: boolean) => void;
 }
 
-import { BookOpen } from 'lucide-react';
-
 const MENU_ITEMS = [
   { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { path: '/pomodoro', label: 'Pomodoro', icon: Timer },
+  { path: '/rooms', label: 'Focus Rooms', icon: Users },
+  { path: '/leaderboard', label: 'Leaderboards', icon: Trophy },
   { path: '/clock', label: 'Clock In/Out', icon: Clock },
   { path: '/tasks', label: 'Tasks', icon: ListTodo },
   { path: '/study', label: 'Study AI', icon: BookOpen },
@@ -36,8 +41,8 @@ const MENU_ITEMS = [
   { path: '/spotify', label: 'Spotify', icon: Music },
 ];
 
-const SIDEBAR_WIDTH = 280;
-const SIDEBAR_WIDTH_COLLAPSED = 80;
+const SIDEBAR_WIDTH = 260;
+const SIDEBAR_WIDTH_COLLAPSED = 76;
 
 export const Sidebar = ({ open, onOpenChange }: SidebarProps) => {
   const navigate = useNavigate();
@@ -46,8 +51,6 @@ export const Sidebar = ({ open, onOpenChange }: SidebarProps) => {
   const isScreenSmall = useMediaQuery('(max-width: 1023px)');
   const isMobile = deviceType === 'mobile' || deviceType === 'tablet' || isScreenSmall;
 
-  // Desktop: Width animates 280 <-> 80
-  // Mobile:  Width is fixed 280, X animates 0 <-> -100%
   const sidebarVariants = {
     desktop: {
       width: open ? SIDEBAR_WIDTH : SIDEBAR_WIDTH_COLLAPSED,
@@ -76,21 +79,19 @@ export const Sidebar = ({ open, onOpenChange }: SidebarProps) => {
       transition={{
         type: 'spring',
         stiffness: 300,
-        damping: 24,
+        damping: 26,
         opacity: { duration: 0.2 },
       }}
       className={cn(
-        'h-screen fixed left-0 top-0 z-40 flex flex-col',
-        'bg-background/80 backdrop-blur-2xl border-r border-border/40',
-        isMobile && 'bg-card/95 backdrop-blur-3xl border-r border-border w-full max-w-[80vw]'
+        'h-screen fixed left-0 top-0 z-40 flex flex-col font-sans border-r border-slate-200/80 bg-white shadow-2xs text-slate-900',
+        isMobile && 'w-full max-w-[280px]'
       )}
-      onClick={() => !isMobile && onOpenChange(!open)}
     >
-      {/* --- HEADER --- */}
+      {/* Header */}
       <div
         className={cn(
-          'h-14 lg:h-16 flex items-center mb-2 relative group transition-all duration-300 z-10',
-          open ? 'justify-between px-6' : 'justify-center'
+          'h-16 flex items-center border-b border-slate-100 relative group transition-all duration-300 shrink-0',
+          open ? 'justify-between px-5' : 'justify-center'
         )}
       >
         <div
@@ -111,37 +112,35 @@ export const Sidebar = ({ open, onOpenChange }: SidebarProps) => {
           <AnimatePresence>
             {open && (
               <motion.div
-                initial={{ opacity: 0, x: -10, filter: 'blur(10px)' }}
-                animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
-                exit={{ opacity: 0, x: -10, filter: 'blur(10px)' }}
-                transition={{ duration: 0.2 }}
-                className="flex flex-col"
+                initial={{ opacity: 0, x: -8 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -8 }}
+                transition={{ duration: 0.15 }}
+                className="flex flex-col min-w-0"
               >
-                <h1 className="font-serif font-bold text-xl tracking-tight text-foreground">
+                <h1 className="font-bold text-base tracking-tight text-slate-900 leading-tight">
                   FocusMaster
                 </h1>
-                <div className="flex items-center gap-1.5">
-                  <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-[0.15em]">
-                    Deep Work Workspace
-                  </p>
-                </div>
+                <span className="text-[9px] text-[#6E36E4] font-bold uppercase tracking-wider">
+                  Deep Work Workspace
+                </span>
               </motion.div>
             )}
           </AnimatePresence>
         </div>
       </div>
 
-      {/* --- MENU ITEMS --- */}
+      {/* Menu List */}
+      <div className="flex-1 px-3 py-4 space-y-1 overflow-y-auto scrollbar-none">
+        {/* Admin Link */}
+        {user?.role === 'admin' && (
+          <SidebarItem
+            item={{ path: '/admin', label: 'Admin Panel', icon: ShieldCheck }}
+            isOpen={open}
+            onClick={() => isMobile && onOpenChange(false)}
+          />
+        )}
 
-      {/* Admin Link */}
-      {user?.role === 'admin' && (
-        <SidebarItem
-          item={{ path: '/admin', label: 'Admin Panel', icon: ShieldCheck }}
-          isOpen={open}
-          onClick={() => isMobile && onOpenChange(false)}
-        />
-      )}
-      <div className="flex-1 px-4 space-y-1.5 overflow-y-auto overflow-x-hidden scrollbar-none pb-4">
         {MENU_ITEMS.map((item) => (
           <SidebarItem
             key={item.path}
@@ -150,24 +149,36 @@ export const Sidebar = ({ open, onOpenChange }: SidebarProps) => {
             onClick={() => isMobile && onOpenChange(false)}
           />
         ))}
-
       </div>
 
-      {/* Edge Toggle Button */}
+      {/* Footer Profile & Settings Shortcuts */}
+      <div className="p-3 border-t border-slate-100 bg-slate-50/50 shrink-0 space-y-1">
+        <SidebarItem
+          item={{ path: '/profile', label: 'My Profile', icon: User }}
+          isOpen={open}
+          onClick={() => isMobile && onOpenChange(false)}
+        />
+        <SidebarItem
+          item={{ path: '/settings', label: 'Settings', icon: SettingsIcon }}
+          isOpen={open}
+          onClick={() => isMobile && onOpenChange(false)}
+        />
+      </div>
+
+      {/* Edge Collapse Trigger */}
       {!isMobile && (
         <button
-          aria-label={open ? "Close Sidebar" : "Open Sidebar"}
+          aria-label={open ? 'Close Sidebar' : 'Open Sidebar'}
           onClick={() => onOpenChange(!open)}
-          className="absolute top-1/2 -translate-y-1/2 -right-4 w-8 h-8 flex items-center justify-center bg-card border border-border/50 rounded-full shadow-lg text-muted-foreground hover:text-foreground hover:border-border transition-all z-50 group hover:shadow-primary/20"
+          className="absolute top-1/2 -translate-y-1/2 -right-3.5 w-7 h-7 flex items-center justify-center bg-white border border-slate-200/80 rounded-full shadow-2xs text-slate-500 hover:text-slate-900 hover:bg-slate-50 transition-all z-50 cursor-pointer"
         >
           {open ? (
-            <ChevronLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
+            <ChevronLeft className="w-3.5 h-3.5" />
           ) : (
-            <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+            <ChevronRight className="w-3.5 h-3.5" />
           )}
         </button>
       )}
-
     </motion.aside>
   );
 };

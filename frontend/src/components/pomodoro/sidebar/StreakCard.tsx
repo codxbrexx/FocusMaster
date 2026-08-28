@@ -1,6 +1,6 @@
 import { useHistoryStore } from '@/store/useHistoryStore';
 import { useMemo } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Flame } from 'lucide-react';
 
 const WEEKDAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
@@ -69,59 +69,72 @@ export const StreakCard = () => {
   const weeklyCount = weekDays.filter((d) => focusDays.has(d.toLocaleDateString('en-CA'))).length;
 
   return (
-    <Card className="bg-card border border-border/50 shadow-sm rounded-2xl">
-      <CardHeader className="pb-2 px-5 pt-5">
-        <CardTitle className="text-sm font-semibold text-foreground">Current Streak</CardTitle>
-      </CardHeader>
-      <CardContent className="px-5 pb-5">
-        {/* Streak count */}
-        <div className="flex items-center gap-3 mb-5">
-          <span className="text-3xl">🔥</span>
-          <div className="flex items-baseline gap-1">
-            <span className="text-4xl font-extrabold text-foreground tabular-nums leading-none">{current}</span>
-            <span className="text-sm text-muted-foreground">days</span>
-          </div>
-        </div>
+    <div className="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-2xs space-y-4 font-sans text-slate-900">
+      <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+        <h3 className="font-bold text-sm text-slate-900 flex items-center gap-2">
+          <Flame className="w-4 h-4 text-amber-500" />
+          Focus Streak
+        </h3>
+        <span className="text-xs font-semibold text-slate-400">Streak Stats</span>
+      </div>
 
-        {/* Week dots */}
-        <div className="flex items-center justify-between mb-5">
-          {weekDays.map((d, i) => {
-            const key = d.toLocaleDateString('en-CA');
-            const done = focusDays.has(key);
-            const isToday = key === todayKey;
-            return (
-              <div key={i} className="flex flex-col items-center gap-1.5">
-                <span className="text-[10px] font-medium text-muted-foreground">{WEEKDAYS[i].slice(0, 2)}</span>
-                <div
-                  className={`w-6 h-6 rounded-full transition-all duration-300 ${
-                    done
-                      ? 'bg-primary shadow-sm'
-                      : isToday
-                      ? 'border-2 border-primary border-dashed'
-                      : 'bg-secondary'
-                  }`}
-                />
-              </div>
-            );
-          })}
+      {/* Streak count */}
+      <div className="flex items-center gap-3">
+        <div className="p-3 bg-amber-50 rounded-2xl border border-amber-100 text-amber-500">
+          <Flame className="w-6 h-6" />
         </div>
+        <div className="flex items-baseline gap-1.5">
+          <span className="text-3xl font-extrabold font-mono text-slate-900 leading-none">
+            {current}
+          </span>
+          <span className="text-xs font-semibold text-slate-500">days streak</span>
+        </div>
+      </div>
 
-        {/* Stats */}
-        <div className="space-y-2.5 border-t border-border/40 pt-4">
-          {[
-            { label: 'Longest Streak', value: `${longest} days` },
-            { label: "Today's Status", value: todayDone ? '✓ Completed' : '○ Pending', accent: true, done: todayDone },
-            { label: 'Weekly Average', value: `${weeklyCount} / 7 days` },
-          ].map(({ label, value, accent, done }) => (
-            <div key={label} className="flex justify-between text-sm">
-              <span className="text-muted-foreground">{label}</span>
-              <span className={`font-semibold ${accent ? (done ? 'text-green-500' : 'text-yellow-500') : 'text-foreground'}`}>
-                {value}
+      {/* Week dots */}
+      <div className="flex items-center justify-between pt-1">
+        {weekDays.map((d, i) => {
+          const key = d.toLocaleDateString('en-CA');
+          const done = focusDays.has(key);
+          const isToday = key === todayKey;
+          return (
+            <div key={i} className="flex flex-col items-center gap-1.5">
+              <span className="text-[10px] font-bold text-slate-400 uppercase">
+                {WEEKDAYS[i].slice(0, 2)}
               </span>
+              <div
+                className={`w-6 h-6 rounded-full flex items-center justify-center transition-all ${
+                  done
+                    ? 'bg-[#6E36E4] text-white shadow-2xs'
+                    : isToday
+                      ? 'border-2 border-[#6E36E4] border-dashed bg-purple-50'
+                      : 'bg-slate-100'
+                }`}
+              />
             </div>
-          ))}
+          );
+        })}
+      </div>
+
+      {/* Stats */}
+      <div className="space-y-2 border-t border-slate-100 pt-3 text-xs font-semibold">
+        <div className="flex justify-between text-slate-600">
+          <span>Longest Streak</span>
+          <span className="font-mono font-bold text-slate-900">{longest} days</span>
         </div>
-      </CardContent>
-    </Card>
+        <div className="flex justify-between text-slate-600">
+          <span>Today's Status</span>
+          <span
+            className={`font-bold ${todayDone ? 'text-emerald-600' : 'text-amber-600'}`}
+          >
+            {todayDone ? '✓ Session Completed' : '○ In Progress'}
+          </span>
+        </div>
+        <div className="flex justify-between text-slate-600">
+          <span>Weekly Active</span>
+          <span className="font-mono font-bold text-slate-900">{weeklyCount} / 7 days</span>
+        </div>
+      </div>
+    </div>
   );
 };

@@ -1,4 +1,3 @@
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import type { ClockEntry } from '@/store/useHistoryStore';
 
 interface WorkTimelineProps {
@@ -25,35 +24,28 @@ export function WorkTimeline({ entries }: WorkTimelineProps) {
   if (entries.length === 0) return null;
 
   return (
-    <Card className="border border-border/50 bg-card shadow-sm">
-      <CardHeader className="border-b border-border/50 pb-4">
-        <CardTitle className="text-base">Working Hours</CardTitle>
-      </CardHeader>
-      <CardContent className="pt-4">
-        <div className="space-y-3 max-h-[240px] overflow-y-auto pr-2 custom-scrollbar">
-          {entries.map((entry) => (
-            <div key={entry.id} className="flex items-center gap-2">
-              <div className="text-sm text-muted-foreground min-w-[140px] flex items-center gap-2">
-                <span>
-                  {formatArrivalTime(new Date(entry.clockIn))} -{' '}
-                  {entry.clockOut ? formatArrivalTime(new Date(entry.clockOut)) : 'Active'}
-                </span>
-                {entry.clockOut && (
-                  <span className="text-xs font-medium text-gray-500 bg-indigo-500/10 px-1.5 py-0.5 rounded">
-                    {calculateDuration(entry.clockIn, entry.clockOut)}
-                  </span>
-                )}
-              </div>
-              <div className="flex-1 h-2 bg-muted/20 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-gray-500 rounded-full"
-                  style={{ width: '100%' }}
-                />
-              </div>
+    <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-2xs space-y-4 font-sans text-slate-900">
+      <div className="border-b border-slate-100 pb-3">
+        <h3 className="text-sm font-bold text-slate-900">Working Hours Timeline</h3>
+      </div>
+
+      <div className="space-y-3 max-h-[220px] overflow-y-auto pr-1 scrollbar-none">
+        {entries.map((entry) => (
+          <div key={entry.id} className="flex items-center gap-3 p-2.5 bg-slate-50 rounded-xl border border-slate-100">
+            <div className="text-xs text-slate-600 font-mono font-medium min-w-[140px] flex items-center gap-2">
+              <span>
+                {formatArrivalTime(new Date(entry.clockIn))} -{' '}
+                {entry.clockOut ? formatArrivalTime(new Date(entry.clockOut)) : 'Active'}
+              </span>
             </div>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
+            {entry.clockOut && (
+              <span className="text-[11px] font-bold text-[#6E36E4] bg-purple-50 border border-purple-100 px-2 py-0.5 rounded-md">
+                {calculateDuration(entry.clockIn, entry.clockOut)}
+              </span>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }

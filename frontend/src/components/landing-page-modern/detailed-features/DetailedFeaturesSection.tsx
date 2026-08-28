@@ -6,6 +6,8 @@ import {
   Music2,
   Clock,
   Bot,
+  Users,
+  Trophy,
 } from 'lucide-react';
 
 const detailedFeatures = [
@@ -18,6 +20,30 @@ const detailedFeatures = [
       'Fully customizable session lengths',
       'Auto-start cycles and smart break management',
       'Every session stored for analytics',
+    ],
+  },
+  {
+    icon: Users,
+    color: 'rose',
+    title: 'Study together in real-time virtual focus rooms.',
+    subtitle: 'Multiplayer Focus Rooms',
+    features: [
+      'Join live public & private study spaces with synchronized Pomodoro timers',
+      'Built-in customizable ambient sound mixer (Lofi, Rain, White Noise, Nature)',
+      'See live participant presence, status updates, and group productivity counters',
+      'Distraction-free environment built to keep your study sessions accountable',
+    ],
+  },
+  {
+    icon: Trophy,
+    color: 'fuchsia',
+    title: 'Level up your productivity with XP and achievements.',
+    subtitle: 'Gamification & Tiers',
+    features: [
+      'Earn Focus XP for every completed timer session and daily streak',
+      'Unlock milestone badges and advance through productivity tiers',
+      'Compete on focus leaderboards and track your progress over time',
+      'Personalize your focus profile with unlocked achievements and stats',
     ],
   },
   {
@@ -79,17 +105,19 @@ const detailedFeatures = [
 ];
 
 const colorMap: Record<string, { bg: string; text: string; badge: string; dot: string }> = {
-  indigo: { bg: 'bg-indigo-500/10', text: 'text-indigo-400', badge: 'bg-indigo-500/20', dot: 'bg-indigo-400' },
-  emerald: { bg: 'bg-emerald-500/10', text: 'text-emerald-400', badge: 'bg-emerald-500/20', dot: 'bg-emerald-400' },
-  violet: { bg: 'bg-violet-500/10', text: 'text-violet-400', badge: 'bg-violet-500/20', dot: 'bg-violet-400' },
-  pink: { bg: 'bg-pink-500/10', text: 'text-pink-400', badge: 'bg-pink-500/20', dot: 'bg-pink-400' },
-  amber: { bg: 'bg-amber-500/10', text: 'text-amber-400', badge: 'bg-amber-500/20', dot: 'bg-amber-400' },
-  cyan: { bg: 'bg-cyan-500/10', text: 'text-cyan-400', badge: 'bg-cyan-500/20', dot: 'bg-cyan-400' },
+  indigo: { bg: 'bg-indigo-500/10', text: 'text-indigo-600', badge: 'bg-indigo-500/20', dot: 'bg-indigo-500' },
+  rose: { bg: 'bg-rose-500/10', text: 'text-rose-600', badge: 'bg-rose-500/20', dot: 'bg-rose-500' },
+  fuchsia: { bg: 'bg-fuchsia-500/10', text: 'text-fuchsia-600', badge: 'bg-fuchsia-500/20', dot: 'bg-fuchsia-500' },
+  emerald: { bg: 'bg-emerald-500/10', text: 'text-emerald-600', badge: 'bg-emerald-500/20', dot: 'bg-emerald-500' },
+  violet: { bg: 'bg-violet-500/10', text: 'text-violet-600', badge: 'bg-violet-500/20', dot: 'bg-violet-500' },
+  pink: { bg: 'bg-pink-500/10', text: 'text-pink-600', badge: 'bg-pink-500/20', dot: 'bg-pink-500' },
+  amber: { bg: 'bg-amber-500/10', text: 'text-amber-600', badge: 'bg-amber-500/20', dot: 'bg-amber-500' },
+  cyan: { bg: 'bg-cyan-500/10', text: 'text-cyan-600', badge: 'bg-cyan-500/20', dot: 'bg-cyan-500' },
 };
 
 export const DetailedFeaturesSection = () => {
   return (
-    <section className="relative w-full bg-transparent py-20 md:py-32 lg:py-40 px-4 md:px-8 lg:px-20">
+    <section className="relative w-full bg-transparent py-20 md:py-32 lg:py-40 px-4 md:px-8 lg:px-20" id="features">
       <div className="mx-auto max-w-6xl">
         {/* Features List */}
         <div className="space-y-16 md:space-y-24">
@@ -136,7 +164,7 @@ export const DetailedFeaturesSection = () => {
                         viewport={{ once: true }}
                       >
                         <div
-                          className={`w-1.5 h-1.5 rounded-full flex-shrink-0 mt-2.5 ${colors.dot}`}
+                          className={`w-1.5 h-1.5 rounded-full shrink-0 mt-2.5 ${colors.dot}`}
                         />
                         <span className="text-slate-600 text-lg leading-relaxed">
                           {feat}
@@ -159,6 +187,20 @@ export const DetailedFeaturesSection = () => {
                       <img
                         src="/deep_work_elements.png"
                         alt="Deep Work Focus Session"
+                        className="w-full h-auto object-contain drop-shadow-2xl"
+                      />
+                    )}
+                    {feature.subtitle === 'Multiplayer Focus Rooms' && (
+                      <img
+                        src="/room-ui.png"
+                        alt="Multiplayer Focus Rooms"
+                        className="w-full h-auto object-contain drop-shadow-2xl"
+                      />
+                    )}
+                    {feature.subtitle === 'Gamification & Tiers' && (
+                      <img
+                        src="/leaderboard-ui.png"
+                        alt="Gamification & Leaderboards"
                         className="w-full h-auto object-contain drop-shadow-2xl"
                       />
                     )}
@@ -204,8 +246,6 @@ export const DetailedFeaturesSection = () => {
           })}
         </div>
       </div>
-
-      {/* Decorative elements removed */}
     </section>
   );
 };

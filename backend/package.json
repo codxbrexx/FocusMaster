@@ -34,6 +34,7 @@
     "node-cron": "^4.2.1",
     "nodemailer": "^9.0.5",
     "pdf-parse": "1.1.1",
+    "socket.io": "^4.8.3",
     "xss": "^1.0.15",
     "zod": "^4.3.6"
   },

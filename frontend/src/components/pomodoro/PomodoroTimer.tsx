@@ -1,33 +1,33 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { Maximize2 } from 'lucide-react';
-import { useTaskStore } from '@/store/useTaskStore';
-import { useHistoryStore } from '@/store/useHistoryStore';
-import { useSettingsStore } from '@/store/useSettingsStore';
-import { useTimerStore } from '@/store/useTimerStore';
-import type { TimerState } from '@/store/useTimerStore';
+import { useState, useEffect, useRef, useCallback } from "react";
+import { Maximize2, Timer } from "lucide-react";
+import { useTaskStore } from "@/store/useTaskStore";
+import { useHistoryStore } from "@/store/useHistoryStore";
+import { useSettingsStore } from "@/store/useSettingsStore";
+import { useTimerStore } from "@/store/useTimerStore";
+import type { TimerState } from "@/store/useTimerStore";
 
-import { MoodSelectionModal } from './MoodSelectionModal';
-import { FocusModeOverlay } from './FocusModeOverlay';
-import { TimerDisplay } from './TimerDisplay';
-import { TimerControls } from './TimerControls';
-import { SessionManager } from './SessionManager';
-import { ModeSelector } from './ModeSelector';
-import { AdaptiveTimerSuggestion } from './AdaptiveTimerSuggestion';
+import { MoodSelectionModal } from "./MoodSelectionModal";
+import { FocusModeOverlay } from "./FocusModeOverlay";
+import { TimerDisplay } from "./TimerDisplay";
+import { TimerControls } from "./TimerControls";
+import { SessionManager } from "./SessionManager";
+import { ModeSelector } from "./ModeSelector";
+import { AdaptiveTimerSuggestion } from "./AdaptiveTimerSuggestion";
 
 // Sidebar
-import { CalendarCard } from './sidebar/CalendarCard';
-import { StreakCard } from './sidebar/StreakCard';
-import { TasksCard } from './sidebar/TasksCard';
-import { QuickNotesCard } from './sidebar/QuickNotesCard';
+import { CalendarCard } from "./sidebar/CalendarCard";
+import { StreakCard } from "./sidebar/StreakCard";
+import { TasksCard } from "./sidebar/TasksCard";
+import { QuickNotesCard } from "./sidebar/QuickNotesCard";
 
 // Right bar
-import { ProgressCard } from './rightbar/ProgressCard';
-import { WeeklyAnalyticsCard } from './rightbar/WeeklyAnalyticsCard';
-import { AchievementsCard } from './rightbar/AchievementsCard';
-import { DailyQuoteCard } from './rightbar/DailyQuoteCard';
+import { ProgressCard } from "./rightbar/ProgressCard";
+import { WeeklyAnalyticsCard } from "./rightbar/WeeklyAnalyticsCard";
+import { AchievementsCard } from "./rightbar/AchievementsCard";
+import { DailyQuoteCard } from "./rightbar/DailyQuoteCard";
 
 // Bottom
-import { BottomPanel } from './bottom/BottomPanel';
+import { BottomPanel } from "./bottom/BottomPanel";
 
 export function PomodoroTimer() {
   const { tasks } = useTaskStore();
@@ -56,7 +56,7 @@ export function PomodoroTimer() {
       sDate.getDate() === today.getDate() &&
       sDate.getMonth() === today.getMonth() &&
       sDate.getFullYear() === today.getFullYear() &&
-      s.type === 'pomodoro'
+      s.type === "pomodoro"
     );
   }).length;
 
@@ -65,10 +65,10 @@ export function PomodoroTimer() {
   const [overrideDuration, setOverrideDuration] = useState<number | null>(null);
 
   const status = isActive
-    ? 'running'
+    ? "running"
     : timeLeft < totalDuration && timeLeft > 0
-      ? 'paused'
-      : 'idle';
+      ? "paused"
+      : "idle";
 
   const sessionStartTime = useRef<Date | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -76,14 +76,14 @@ export function PomodoroTimer() {
   // Sync duration from settings or override
   useEffect(() => {
     if (!isActive) {
-      if (overrideDuration !== null && mode === 'pomodoro') {
+      if (overrideDuration !== null && mode === "pomodoro") {
         if (totalDuration !== overrideDuration) {
           useTimerStore.getState().setTotalDuration(overrideDuration);
         }
       } else {
         let newDuration = settings.pomodoroDuration * 60;
-        if (mode === 'short-break') newDuration = settings.shortBreakDuration * 60;
-        if (mode === 'long-break') newDuration = settings.longBreakDuration * 60;
+        if (mode === "short-break") newDuration = settings.shortBreakDuration * 60;
+        if (mode === "long-break") newDuration = settings.longBreakDuration * 60;
         if (totalDuration !== newDuration) {
           useTimerStore.getState().setTotalDuration(newDuration);
         }
@@ -106,13 +106,13 @@ export function PomodoroTimer() {
   const handleReset = useCallback(() => {
     resetTimer();
     sessionStartTime.current = null;
-    setOverrideDuration(null); // Clear override on reset
+    setOverrideDuration(null);
   }, [resetTimer]);
 
   useEffect(() => {
     const audio = new Audio();
     audio.src =
-      'data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YTxvT19vT19vT19vT19vT19vT19vT19vT19vT19vT19vT19vT19vT19vT19vT19vT19vT19vT19vT19vT19vT19vT18=';
+      "data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YTxvT19vT19vT19vT19vT19vT19vT19vT19vT19vT19vT19vT19vT19vT19vT19vT19vT19vT19vT19vT19vT19vT18=";
     audioRef.current = audio;
   }, []);
 
@@ -122,21 +122,22 @@ export function PomodoroTimer() {
         e.target instanceof HTMLInputElement ||
         e.target instanceof HTMLTextAreaElement ||
         (e.target as HTMLElement).isContentEditable
-      ) return;
-      if (e.code === 'Space' || e.code === 'Enter') {
+      )
+        return;
+      if (e.code === "Space" || e.code === "Enter") {
         e.preventDefault();
-        if (status === 'running') handlePause();
+        if (status === "running") handlePause();
         else handleStart();
       }
-      if (e.key === 'Escape' && focusMode) setFocusMode(false);
+      if (e.key === "Escape" && focusMode) setFocusMode(false);
     };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [status, focusMode, handlePause, handleStart]);
 
   // Timer completion
   useEffect(() => {
-    if (timeLeft === 0 && mode === 'pomodoro' && !showMoodModal && !isActive) {
+    if (timeLeft === 0 && mode === "pomodoro" && !showMoodModal && !isActive) {
       if (audioRef.current) audioRef.current.play().catch(console.error);
       setTimeout(() => setShowMoodModal(true), 0);
     }
@@ -144,26 +145,27 @@ export function PomodoroTimer() {
 
   const savePomodoroSession = async (selectedMood: string) => {
     const sessionDuration = Math.floor(totalDuration / 60);
-    const startTime = sessionStartTime.current || new Date(Date.now() - sessionDuration * 60 * 1000);
+    const startTime =
+      sessionStartTime.current || new Date(Date.now() - sessionDuration * 60 * 1000);
     await addSession({
-      type: 'pomodoro',
+      type: "pomodoro",
       duration: sessionDuration,
       startTime,
       endTime: new Date(),
       tag: selectedTag,
-      taskId: selectedTaskId !== 'none' ? selectedTaskId : undefined,
+      taskId: selectedTaskId !== "none" ? selectedTaskId : undefined,
       mood: selectedMood,
     });
     setShowMoodModal(false);
     resetTimer();
     sessionStartTime.current = null;
-    setOverrideDuration(null); // Clear override on completion
+    setOverrideDuration(null);
   };
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
   };
 
   const progress = ((totalDuration - timeLeft) / totalDuration) * 100;
@@ -194,13 +196,36 @@ export function PomodoroTimer() {
   }
 
   return (
-    <div className="animate-fade-in space-y-6 -mx-4 md:-mx-6 px-4 md:px-6">
-      {/* ── Main 3-column dashboard ── */}
-      <div className="grid grid-cols-1 xl:grid-cols-[300px_1fr_280px] gap-6 items-start">
+    <div className="animate-fade-in space-y-6 max-w-7xl mx-auto p-4 md:p-6 pb-24 font-sans text-slate-900">
+      {/* Hero Header Card */}
+      <div className="bg-white border border-slate-200/80 rounded-2xl p-6 sm:p-8 shadow-2xs flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className="space-y-1">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-50 text-[#6E36E4] border border-purple-100 text-xs font-semibold">
+            <Timer className="w-3.5 h-3.5 text-[#6E36E4]" />
+            <span>Pomodoro Focus Engine</span>
+          </div>
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+            Deep Work Timer
+          </h1>
+          <p className="text-xs text-slate-500 font-medium max-w-xl">
+            Sustain peak productivity with customizable focus intervals, task tagging, and real-time focus analytics.
+          </p>
+        </div>
 
-        {/* ════════════════════════════
-            LEFT SIDEBAR
-            ════════════════════════════ */}
+        <button
+          id="focus-mode-btn"
+          onClick={() => setFocusMode(true)}
+          title="Enter Fullscreen Focus Mode (F)"
+          className="bg-[#6E36E4] hover:bg-[#5B2AC6] text-white font-bold px-5 py-2.5 rounded-xl text-xs shadow-2xs transition-colors flex items-center gap-2 cursor-pointer shrink-0"
+        >
+          <Maximize2 className="w-4 h-4" />
+          <span>Full Screen Focus</span>
+        </button>
+      </div>
+
+      {/* Main 3-Column Dashboard Grid */}
+      <div className="grid grid-cols-1 xl:grid-cols-[280px_1fr_280px] gap-6 items-start">
+        {/* LEFT SIDEBAR */}
         <div className="hidden xl:flex flex-col gap-4">
           <CalendarCard />
           <StreakCard />
@@ -208,11 +233,9 @@ export function PomodoroTimer() {
           <QuickNotesCard />
         </div>
 
-        {/* ════════════════════════════
-            CENTER — TIMER
-            ════════════════════════════ */}
-        <div className="flex flex-col items-center w-full">
-          {mode === 'pomodoro' && (
+        {/* CENTER TIMER */}
+        <div className="flex flex-col items-center w-full space-y-4">
+          {mode === "pomodoro" && (
             <div className="w-full">
               <AdaptiveTimerSuggestion
                 onApply={(focus) => setOverrideDuration(focus * 60)}
@@ -220,24 +243,15 @@ export function PomodoroTimer() {
             </div>
           )}
 
-          {/* Card shell */}
-          <div className="w-full bg-card border border-border/50 shadow-sm rounded-2xl flex flex-col items-center overflow-hidden">
-
-            {/* ── Card Header: Mode selector + Focus button ── */}
-            <div className="w-full flex items-center justify-between px-6 pt-6 pb-0">
+          {/* Card Shell */}
+          <div className="w-full bg-white border border-slate-200/80 shadow-2xs rounded-2xl flex flex-col items-center overflow-hidden p-6">
+            {/* Mode selector */}
+            <div className="w-full flex items-center justify-center pb-4 border-b border-slate-100">
               <ModeSelector mode={mode} setMode={setMode} resetTimer={resetTimer} />
-              <button
-                id="focus-mode-btn"
-                onClick={() => setFocusMode(true)}
-                title="Enter Focus Mode (F)"
-                className="flex-shrink-0 ml-3 p-2.5 rounded-xl bg-secondary hover:bg-secondary/70 text-muted-foreground hover:text-foreground border border-border/40 transition-all duration-200 hover:scale-105"
-              >
-                <Maximize2 className="w-4 h-4" />
-              </button>
             </div>
 
-            {/* ── Timer ring ── */}
-            <div className="w-full flex flex-col items-center px-6 pt-6 pb-2">
+            {/* Timer ring */}
+            <div className="w-full flex flex-col items-center py-6">
               <TimerDisplay
                 mode={mode}
                 timeLeft={timeLeft}
@@ -248,8 +262,8 @@ export function PomodoroTimer() {
               />
             </div>
 
-            {/* ── Controls ── */}
-            <div className="w-full px-6 pb-6">
+            {/* Controls */}
+            <div className="w-full pt-2">
               <TimerControls
                 status={status}
                 handleStart={handleStart}
@@ -257,10 +271,9 @@ export function PomodoroTimer() {
                 handleReset={handleReset}
               />
 
-              {/* ── Divider ── */}
-              <div className="mt-8 border-t border-border/40" />
+              <div className="mt-6 border-t border-slate-100" />
 
-              {/* ── Session manager: tags + task + mini stats ── */}
+              {/* Session manager */}
               <SessionManager
                 activeTasks={activeTasks}
                 selectedTaskId={selectedTaskId}
@@ -272,8 +285,8 @@ export function PomodoroTimer() {
             </div>
           </div>
 
-          {/* Mobile: sidebar cards below timer */}
-          <div className="xl:hidden w-full mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {/* Mobile Sidebar Cards */}
+          <div className="xl:hidden w-full grid grid-cols-1 sm:grid-cols-2 gap-4">
             <CalendarCard />
             <StreakCard />
             <TasksCard />
@@ -281,10 +294,7 @@ export function PomodoroTimer() {
           </div>
         </div>
 
-
-        {/* ════════════════════════════
-            RIGHT SIDEBAR
-            ════════════════════════════ */}
+        {/* RIGHT SIDEBAR */}
         <div className="hidden xl:flex flex-col gap-4">
           <ProgressCard sessionCount={sessionCount} />
           <WeeklyAnalyticsCard />
@@ -293,12 +303,10 @@ export function PomodoroTimer() {
         </div>
       </div>
 
-      {/* ════════════════════════════
-          BOTTOM PRODUCTIVITY PANEL
-          ════════════════════════════ */}
+      {/* BOTTOM PRODUCTIVITY PANEL */}
       <BottomPanel sessionCount={sessionCount} selectedTaskId={selectedTaskId} />
 
-      {/* Right bar on tablet */}
+      {/* Mobile/Tablet Rightbar Cards */}
       <div className="xl:hidden grid grid-cols-1 sm:grid-cols-2 gap-4">
         <ProgressCard sessionCount={sessionCount} />
         <WeeklyAnalyticsCard />

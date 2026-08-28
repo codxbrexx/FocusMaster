@@ -6,23 +6,26 @@ const { validateEnv } = require("./config/env");
 const startCleanupJob = require("./scripts/cleanupOldData");
 const logger = require("./utils/logger");
 
+const http = require("http");
+const initSocketServer = require("./sockets");
+
 const env = validateEnv();
 const PORT = env.PORT;
 
 let server;
+let io;
 
 const startServer = async () => {
   try {
     await connectDB();
-    server = app.listen(PORT, () => {
+    const httpServer = http.createServer(app);
+    io = initSocketServer(httpServer);
+
+    server = httpServer.listen(PORT, () => {
       console.log(
         `Server running in ${process.env.NODE_ENV || "development"} mode on port ${PORT}`,
       );
 
-      // node-cron only runs on traditional long-lived servers (local dev,
-      // Render, Railway, etc.). On Vercel, the serverless function has no
-      // persistent process, so Vercel Cron calls POST /api/cron/cleanup
-      // instead — the schedule is defined in vercel.json.
       if (!process.env.VERCEL) {
         startCleanupJob();
       } else {
